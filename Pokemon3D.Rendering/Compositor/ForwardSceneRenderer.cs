@@ -8,7 +8,7 @@ using Pokemon3D.Rendering.Data;
 
 namespace Pokemon3D.Rendering.Compositor
 {
-    class DefaultSceneRenderer : GameContextObject, SceneRenderer
+    class ForwardSceneRenderer : GameContextObject, SceneRenderer
     {
         private readonly GraphicsDevice _device;
         private readonly SceneEffect _sceneEffect;
@@ -24,17 +24,17 @@ namespace Pokemon3D.Rendering.Compositor
 
         private readonly List<RenderQueue> _renderQueues;
         private readonly RenderQueue _shadowCasterQueue;
-        private bool _enableShadows;
         private readonly Light _light; 
 
-        public DefaultSceneRenderer(GameContext context, SceneEffect effect, int shadowMapSize) : base(context)
+        public ForwardSceneRenderer(GameContext context, SceneEffect effect, RenderSettings settings) : base(context)
         {
             _device = context.GraphicsDevice;
-            _light = new Light(context.GraphicsDevice, shadowMapSize)
+            _light = new Light(context.GraphicsDevice, settings.ShadowMapSize)
             {
                 Direction = new Vector3(1, 1, 1)
             };
             _sceneEffect = effect;
+            RenderSettings = settings;
 
             var width = context.ScreenBounds.Width;
             var height = context.ScreenBounds.Height;
@@ -82,19 +82,6 @@ namespace Pokemon3D.Rendering.Compositor
         public Vector4 AmbientLight { get; set; }
         public bool EnablePostProcessing { get; set; }
 
-        public bool EnableShadows
-        {
-            get { return _enableShadows; }
-            set
-            {
-                if (_enableShadows != value)
-                {
-                    _enableShadows = value;
-                    _shadowCasterQueue.IsEnabled = value;
-                }
-            }
-        }
-
         private IEnumerable<SceneNode> GetTransparentObjects()
         {
             return _transparentObjects;
@@ -111,27 +98,34 @@ namespace Pokemon3D.Rendering.Compositor
             _postProcessingSteps.Add(step);
         }
 
-        public void Draw(bool hasSceneNodesChanged, IList<SceneNode> allNodes, IList<Camera> cameras)
+        public void Draw(Scene scene)
         {
             RenderStatistics.Instance.StartFrame();
             PreparePostProcessing();
 
-            UpdateNodeLists(allNodes);
+            UpdateNodeLists(scene.AllSceneNodes);
 
             _sceneEffect.AmbientLight = AmbientLight;
 
-            for (var i = 0; i < cameras.Count; i++)
+            for (var i = 0; i < scene.AllCameras.Count; i++)
             {
-                DrawSceneForCamera(cameras[i], hasSceneNodesChanged);
+                DrawSceneForCamera(scene.AllCameras[i], scene.HasSceneNodesChanged);
             }
 
             DoPostProcessing();
             RenderStatistics.Instance.EndFrame();
+
+#if DEBUG_RENDERING
+            if (_settings.EnableShadows) DrawDebugShadowMap(GameContext.SpriteBatch, new Rectangle(0,0,128,128));
+#endif
+            scene.HasSceneNodesChanged = false;
         }
+
+        public RenderSettings RenderSettings { get; }
 
         private void HandleSolidObjects(Material material)
         {
-            _sceneEffect.ActivateLightingTechnique(false, material.IsUnlit, material.ReceiveShadow && EnableShadows);
+            _sceneEffect.ActivateLightingTechnique(false, material.IsUnlit, material.ReceiveShadow && RenderSettings.EnableShadows);
         }
 
         private void HandleEffectTransparentObjects(Material material)
@@ -172,16 +166,21 @@ namespace Pokemon3D.Rendering.Compositor
             GameContext.SpriteBatch.End();
         }
 
-        public void DrawDebugShadowMap(SpriteBatch spriteBatch, Rectangle target)
+        private void DrawDebugShadowMap(SpriteBatch spriteBatch, Rectangle target)
         {
             spriteBatch.Begin(effect: _sceneEffect.ShadowMapDebugEffect);
             spriteBatch.Draw(_light.ShadowMap, target, Color.White);
             spriteBatch.End();
         }
-        
+
+        public void SetRenderSettings(RenderSettings renderSettings)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private void DrawSceneForCamera(Camera camera, bool hasSceneNodesChanged)
         {
-            if (EnableShadows)
+            if (RenderSettings.EnableShadows)
             {
                 _light.UpdateLightViewMatrixForCamera(camera, _shadowCastersObjects);
                 _sceneEffect.ShadowMap = null;

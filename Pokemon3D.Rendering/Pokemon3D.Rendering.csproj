@@ -62,11 +62,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
-    <Compile Include="Compositor\DefaultSceneRenderer.cs" />
+    <Compile Include="Compositor\ForwardSceneRenderer.cs" />
     <Compile Include="Compositor\DrawableElement.cs" />
     <Compile Include="Compositor\GaussianBlurPostProcessingStep.cs" />
     <Compile Include="Compositor\RenderQueue.cs" />
+    <Compile Include="Compositor\RenderSettings.cs" />
     <Compile Include="Compositor\RenderStatistics.cs" />
+    <Compile Include="Compositor\SceneRendererFactory.cs" />
     <Compile Include="Compositor\ShadowCastRenderQueue.cs" />
     <Compile Include="Compositor\StaticMeshBatch.cs" />
     <Compile Include="Data\GeometryData.cs" />

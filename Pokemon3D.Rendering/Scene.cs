@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Pokemon3D.Common;
-using Pokemon3D.Rendering.Compositor;
 
 namespace Pokemon3D.Rendering
 {
@@ -11,63 +9,47 @@ namespace Pokemon3D.Rendering
     /// </summary>
     public class Scene : GameContextObject
     {
-        private readonly List<SceneNode> _allNodes;
-        private readonly List<Camera> _allCameras; 
+        internal bool HasSceneNodesChanged { get; set; }
 
-        public SceneRenderer Renderer { get; }
-        public bool HasSceneNodesChanged { get; private set; }
+        internal List<SceneNode> AllSceneNodes { get; }
+        internal List<Camera> AllCameras { get; }
 
-        public Scene(GameContext context, SceneEffect effect, int shadowMapSize, bool enableShadows) : base(context)
+        public Scene(GameContext context) : base(context)
         {
-            Renderer = new DefaultSceneRenderer(context, effect, shadowMapSize)
-            {
-                LightDirection = new Vector3(1, -1, -1),
-                EnableShadows = enableShadows,
-            };
-            _allNodes = new List<SceneNode>();
-            _allCameras = new List<Camera>();
+            AllSceneNodes = new List<SceneNode>();
+            AllCameras = new List<Camera>();
         }
 
         public SceneNode CreateSceneNode()
         {
             HasSceneNodesChanged = true;
             var sceneNode = new SceneNode();
-            _allNodes.Add(sceneNode);
+            AllSceneNodes.Add(sceneNode);
             return sceneNode;
         }
         
         public void RemoveSceneNode(SceneNode node)
         { 
             HasSceneNodesChanged = true;
-            _allNodes.Remove(node);
-            _allCameras.Remove(node as Camera);
+            AllSceneNodes.Remove(node);
+            AllCameras.Remove(node as Camera);
         }
 
         public Camera CreateCamera()
         {
             HasSceneNodesChanged = true;
             var camera = new Camera(GameContext.GraphicsDevice.Viewport);
-            _allCameras.Add(camera);
-            _allNodes.Add(camera);
+            AllCameras.Add(camera);
+            AllSceneNodes.Add(camera);
             return camera;
         }
 
         public void Update(float elapsedTime)
         {
-            foreach (var sceneNode in _allNodes.OrderBy(n => n.Parent != null))
+            foreach (var sceneNode in AllSceneNodes.OrderBy(n => n.Parent != null))
             {
                 sceneNode.Update();
             }
-        }
-
-        public void Draw()
-        {
-            Renderer.Draw(HasSceneNodesChanged, _allNodes, _allCameras);
-            HasSceneNodesChanged = false;
-
-#if DEBUG_RENDERING
-            if (Renderer.EnableShadows) Renderer.DrawDebugShadowMap(GameContext.SpriteBatch, new Rectangle(0,0,128,128));
-#endif
         }
 
         /// <summary>
@@ -81,7 +63,7 @@ namespace Pokemon3D.Rendering
         {
             HasSceneNodesChanged = true;
             var cloned = nodeToClone.Clone(cloneMeshs);
-            _allNodes.Add(cloned);
+            AllSceneNodes.Add(cloned);
             CloneChildren(cloned, nodeToClone, cloneMeshs);
             return cloned;
         }
@@ -91,7 +73,7 @@ namespace Pokemon3D.Rendering
             foreach (var childNode in parentOriginal.Children)
             {
                 var clonedChild = childNode.Clone(cloneMeshs);
-                _allNodes.Add(clonedChild);
+                AllSceneNodes.Add(clonedChild);
                 parentCloned.AddChild(clonedChild);
 
                 CloneChildren(clonedChild, childNode, cloneMeshs);

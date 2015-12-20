@@ -24,6 +24,7 @@ namespace Pokemon3D.UI.Screens
 
         private GameMode _gameMode;
         private Map _currentMap;
+        private SceneRenderer _renderer;
         private Scene _scene;
         private Player _player;
 
@@ -36,9 +37,18 @@ namespace Pokemon3D.UI.Screens
             _gameMode = Game.GameModeManager.LoadGameMode(gameModes.First());
             Game.Resources.SetPrimitiveProvider(_gameMode);
 
-            _scene = new Scene(Game, new WindowsSceneEffect(Game.Content), ShadowMapSizeForQuality[Game.GameConfig.ShadowQuality], Game.GameConfig.ShadowsEnabled);
-            _scene.Renderer.LightDirection = new Vector3(-1.5f,-1,-0.5f);
-            _scene.Renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
+            var settings = new RenderSettings
+            {
+                EnableShadows = Game.GameConfig.ShadowsEnabled,
+                ShadowMapSize = ShadowMapSizeForQuality[Game.GameConfig.ShadowQuality],
+                EnableSoftShadows = Game.GameConfig.SoftShadows
+            };
+            _renderer = SceneRendererFactory.Create(Game, new WindowsSceneEffect(Game.Content), settings);
+            _renderer.LightDirection = new Vector3(-1.5f,-1,-0.5f);
+            _renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
+
+            _scene = new Scene(Game);
+
             _currentMap = _gameMode.MapManager.GetMap(_gameMode.GameModeInfo.StartMap, _scene, Game.Resources);
 
             _player = new Player(_scene);
@@ -63,8 +73,8 @@ namespace Pokemon3D.UI.Screens
             }
             if (Game.Keyboard.IsKeyDownOnce(Keys.F11))
             {
-                _scene.Renderer.EnableShadows = !_scene.Renderer.EnableShadows;
-                if (_scene.Renderer.EnableShadows)
+                _renderer.RenderSettings.EnableShadows = !_renderer.RenderSettings.EnableShadows;
+                if (_renderer.RenderSettings.EnableShadows)
                 {
                     Game.NotificationBar.PushNotification(NotificationKind.Information, "Enabled Shadows");
                 }
@@ -99,7 +109,7 @@ namespace Pokemon3D.UI.Screens
 
         public void OnDraw(GameTime gameTime)
         {
-            _scene.Draw();
+            _renderer.Draw(_scene);
 
             if (_showRenderStatistics) DrawRenderStatsitics();
         }
