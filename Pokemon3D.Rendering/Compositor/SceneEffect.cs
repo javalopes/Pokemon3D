@@ -27,7 +27,8 @@ namespace Pokemon3D.Rendering.Compositor
         /// <param name="linearSampling">Linear Sampling</param>
         /// <param name="unlit">Ignore lighting</param>
         /// <param name="receiveShadows">Is an object receiving shadows.</param>
-        void ActivateLightingTechnique(bool linearSampling, bool unlit, bool receiveShadows);
+        /// <param name="pcfShadows">If PCF Filtering is enabled</param>
+        void ActivateLightingTechnique(bool linearSampling, bool unlit, bool receiveShadows, bool pcfShadows);
 
         /// <summary>
         /// Light Matrix for Shadow Map.

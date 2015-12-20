@@ -102,6 +102,47 @@ float CalculateShadowFactor(float4 lightPosition)
 	return shadowFactor;
 }
 
+//calculates a shadow factor based on light position.
+float CalculateShadowFactorPCF(float4 lightPosition)
+{
+	float2 projectedTexCoords;
+	projectedTexCoords[0] = lightPosition.x / lightPosition.w / 2.0f + 0.5f;
+	projectedTexCoords[1] = -lightPosition.y / lightPosition.w / 2.0f + 0.5f;
+
+	const int range = 2;
+	const float samples = (range*2.0f + 1.0f)*(range*2.0f + 1.0f);
+
+	float inShadowCount = samples;
+
+	if ((saturate(projectedTexCoords).x == projectedTexCoords.x) && (saturate(projectedTexCoords).y == projectedTexCoords.y))
+	{
+		float realDistance = lightPosition.z / lightPosition.w;
+		float2 currentTexcoords;
+		float depthStoredInShadowMap;
+
+		[unroll]
+		for (int i = -range; i <= range; i++)
+		{
+			[unroll]
+			for (int j = -range; j <= range; j++)
+			{
+				currentTexcoords = projectedTexCoords;
+				currentTexcoords[0] += (i * ShadowScale);
+				currentTexcoords[1] += (j * ShadowScale);
+
+				depthStoredInShadowMap = tex2D(ShadowMapSampler, currentTexcoords).x;
+
+				if ((realDistance -12.0f*ShadowScale) > depthStoredInShadowMap)
+				{
+					inShadowCount--;
+				}
+			}
+		}
+	}
+
+	return 0.5f + (inShadowCount / samples);
+}
+
 //Modulates two colors and preserves alpha value from source color. this is important for transparent objects.
 float4 ModulatePreserveAlpha(float4 perserveColor, float4 modulate)
 {
@@ -153,28 +194,21 @@ VertexShaderShadowReceiverOutput LitShadowReceiverVS(VertexShaderShadowReceiverI
 
 float4 LitShadowReceiverPS(VertexShaderShadowReceiverOutput input) : COLOR0
 {
-	/*float2 projectedTexCoords;
-	projectedTexCoords[0] = input.LightPosition.x / input.LightPosition.w / 2.0f + 0.5f;
-	projectedTexCoords[1] = -input.LightPosition.y / input.LightPosition.w / 2.0f + 0.5f;
-
-	float diffuseFactor = 0.0f;
-
-	if ((saturate(projectedTexCoords).x == projectedTexCoords.x) && (saturate(projectedTexCoords).y == projectedTexCoords.y))
-	{
-		float depthStoredInShadowMap = tex2D(ShadowMapSampler, projectedTexCoords).r;
-		float realDistance = input.LightPosition.z / input.LightPosition.w;
-		if ((realDistance - 2.0f*ShadowScale) <= depthStoredInShadowMap)
-		{
-			diffuseFactor = GetDiffuseFactor(input.Normal, LightDirection);
-		}
-	}*/
-
 	float shadowFactor = CalculateShadowFactor(input.LightPosition);
 	float4 lightColor = CalculateAmbientDiffuseLighting(input.Normal, LightDirection, shadowFactor);
 	float4 colorFromTexture = tex2D(DiffuseSampler, input.TexCoord);
 
 	return ModulatePreserveAlpha(colorFromTexture, lightColor);
 }
+
+float4 LitShadowReceiverPCFPS(VertexShaderShadowReceiverOutput input) : COLOR0
+{
+	float shadowFactor = CalculateShadowFactorPCF(input.LightPosition);
+	float4 lightColor = CalculateAmbientDiffuseLighting(input.Normal, LightDirection, shadowFactor);
+	float4 colorFromTexture = tex2D(DiffuseSampler, input.TexCoord);
+
+	return ModulatePreserveAlpha(colorFromTexture, lightColor);
+	}
 
 technique Lit
 {
@@ -191,6 +225,15 @@ technique LitShadowReceiver
 	{
 		VertexShader = compile vs_4_0 LitShadowReceiverVS();
 		PixelShader = compile ps_4_0 LitShadowReceiverPS();
+	}
+}
+
+technique LitShadowReceiverPCF
+{
+	pass Pass1
+	{
+		VertexShader = compile vs_4_0 LitShadowReceiverVS();
+		PixelShader = compile ps_4_0 LitShadowReceiverPCFPS();
 	}
 }
 

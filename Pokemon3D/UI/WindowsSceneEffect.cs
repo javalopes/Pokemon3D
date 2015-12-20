@@ -10,6 +10,7 @@ namespace Pokemon3D.UI
         private readonly Effect _basicEffect;
         private readonly EffectTechnique _shadowCasterTechnique;
         private readonly EffectTechnique _litShadowReceiver;
+        private readonly EffectTechnique _litShadowReceiverPCF; 
         private readonly EffectTechnique _litTechnique;
         private readonly EffectTechnique _unlitTechnique;
         private readonly EffectTechnique _unlitLinearSampledTechnique;
@@ -36,6 +37,7 @@ namespace Pokemon3D.UI
             _litTechnique = _basicEffect.Techniques["Lit"];
             _shadowCasterTechnique = _basicEffect.Techniques["ShadowCaster"];
             _litShadowReceiver = _basicEffect.Techniques["LitShadowReceiver"];
+            _litShadowReceiverPCF = _basicEffect.Techniques["LitShadowReceiverPCF"];
             _unlitTechnique = _basicEffect.Techniques["Unlit"];
             _unlitLinearSampledTechnique = _basicEffect.Techniques["UnlitLinearSampled"];
             ShadowMapDebugEffect = content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
@@ -62,7 +64,7 @@ namespace Pokemon3D.UI
             _basicEffect.CurrentTechnique = _shadowCasterTechnique;
         }
 
-        public void ActivateLightingTechnique(bool linearSampling, bool unlit, bool receiveShadows)
+        public void ActivateLightingTechnique(bool linearSampling, bool unlit, bool receiveShadows, bool pcfShadows)
         {
             if (unlit)
             {
@@ -70,7 +72,7 @@ namespace Pokemon3D.UI
             }
             else
             {
-                _basicEffect.CurrentTechnique = receiveShadows ? _litShadowReceiver : _litTechnique;
+                _basicEffect.CurrentTechnique = receiveShadows ? (pcfShadows ? _litShadowReceiverPCF : _litShadowReceiver) : _litTechnique;
             }
         }
 
