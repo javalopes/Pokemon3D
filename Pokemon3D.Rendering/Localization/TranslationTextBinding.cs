@@ -31,6 +31,8 @@ namespace Pokemon3D.Rendering.Localization
 
         private string TranslateText(string text)
         {
+            if (string.IsNullOrEmpty(text)) return string.Empty;
+
             var matches = Regex.Matches(text, @"{i18n:\w+:\w+}");
 
             for (var i = matches.Count - 1; i >= 0; i--)

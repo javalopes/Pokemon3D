@@ -20,8 +20,7 @@ namespace Pokemon3D.Rendering.GUI
                 new TextBlockSkinItemDescriptor(),
                 new ButtonSkinItemDescriptor(),
                 new TextBoxSkinItemDescriptor(),
-                new CheckBoxSkinItemDescriptor(),
-                new ComboBoxItemDescriptor()
+                new CheckBoxSkinItemDescriptor()
             };
         }
 
@@ -69,7 +68,6 @@ namespace Pokemon3D.Rendering.GUI
                 case "TextBox": return new TextBox(this, element);
                 case "ScrollViewer": return new ScrollViewer(this, element);
                 case "CheckBox": return new CheckBox(this, element);
-                case "ComboBox": return new ComboBox(this, element);
             }
 
             throw new ArgumentException("Invalid Element Type", nameof(element));

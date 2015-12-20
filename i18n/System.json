@@ -24,12 +24,28 @@
 				"Val" : "Back"
 			},
 			{
+				"Id" : "Save",
+				"Val" : "Save"
+			},
+			{
 				"Id" : "EnableShadows",
 				"Val" : "Enable Shadows"
 			},
 			{
 				"Id" : "EnableSoftShadows",
 				"Val" : "Soft Shadows"
+			},
+			{
+				"Id" : "SmallShadowMap",
+				"Val" : "Small"
+			},
+			{
+				"Id" : "MediumShadowMap",
+				"Val" : "Medium"
+			},
+			{
+				"Id" : "LargeShadowMap",
+				"Val" : "Large"
 			}
 		]
 	},
@@ -58,12 +74,28 @@
 				"Val" : "Zurueck"
 			},
 			{
+				"Id" : "Save",
+				"Val" : "Speichern"
+			},
+			{
 				"Id" : "EnableShadows",
 				"Val" : "Schatten verwenden"
 			},
 			{
 				"Id" : "EnableSoftShadows",
 				"Val" : "Weiche Schatten"
+			},
+			{
+				"Id" : "SmallShadowMap",
+				"Val" : "Klein"
+			},
+			{
+				"Id" : "MediumShadowMap",
+				"Val" : "Mittel"
+			},
+			{
+				"Id" : "LargeShadowMap",
+				"Val" : "Gross"
 			}
 		]
 	}

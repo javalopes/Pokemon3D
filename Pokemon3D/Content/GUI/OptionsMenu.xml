@@ -17,9 +17,30 @@
                HorizontalAlignment="Left" />
   </CheckBox>
 
-  <ComboBox Id="ShadowQualityComboBox" HorizontalAlignment="Left" Margin="10" />
+  <Grid Margin="10">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
 
-  <Button Margin="10" Id="BackToMainMenuButton" HorizontalAlignment="Left">
-    <TextBlock Text="{i18n:System:Back}" />
-  </Button>
+    <Button Id="DecreaseShadowSizeButton" Grid.Column="0">
+      <TextBlock Text="-" />
+    </Button>
+
+    <TextBlock Id="ShadowSizeText" Grid.Column="1" Margin="2" Width="100" HorizontalAlignment="Center" Color="ffffffff"/>
+
+    <Button Id="IncreaseShadowSizeButton" Grid.Column="2">
+      <TextBlock Text="+" />
+    </Button>
+  </Grid>
+
+  <StackPanel Orientation="Horizontal">
+    <Button Id="BackToMainMenuButton" HorizontalAlignment="Left" Margin="5">
+      <TextBlock Text="{i18n:System:Back}" />
+    </Button>
+    <Button  Id="SaveSettingsButton" HorizontalAlignment="Left" Margin="5">
+      <TextBlock Text="{i18n:System:Save}" />
+    </Button>
+  </StackPanel>
 </StackPanel>

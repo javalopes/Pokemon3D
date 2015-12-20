@@ -15,6 +15,14 @@ namespace Pokemon3D.UI.Screens
         private GuiPanel _mainMenuPanel;
         private GuiPanel _optionsMenuPanel;
 
+        private TextBlock _shadowSizeTextBlock;
+
+        private readonly string[] _shadowSizesResourceKeys = {
+            "SmallShadowMap", "MediumShadowMap",  "LargeShadowMap"
+        };
+
+        private int _shadowSizeIndex = 1;
+
         protected override void OnInitialize(object enterInformation)
         {
             _headerSprite = new Sprite(Game.Content.Load<Texture2D>(ResourceNames.Textures.P3D))
@@ -43,13 +51,37 @@ namespace Pokemon3D.UI.Screens
 
             root = Game.GuiSystem.CreateGuiHierarchyFromXml<GuiElement>("Content/Gui/OptionsMenu.xml");
             root.FindGuiElementById<Button>("BackToMainMenuButton").Click += OnBackToMainMenuButtonClick;
-            var shadowQualityComboBox = root.FindGuiElementById<ComboBox>("ShadowQualityComboBox");
-            shadowQualityComboBox.AddItem("Small");
-            shadowQualityComboBox.AddItem("Medium");
-            shadowQualityComboBox.AddItem("Large");
-            shadowQualityComboBox.SelectedIndex = 0;
+
+            _shadowSizeTextBlock = root.FindGuiElementById<TextBlock>("ShadowSizeText");
+            _shadowSizeIndex = 1;
+            UpdateShadowMapSizeText();
+            root.FindGuiElementById<Button>("IncreaseShadowSizeButton").Click += OnIncreaseShadowSize;
+            root.FindGuiElementById<Button>("DecreaseShadowSizeButton").Click += OnDecreaseShadowSize;
+            root.FindGuiElementById<Button>("SaveSettingsButton").Click += SaveSettingsClicked;
 
             _optionsMenuPanel = new GuiPanel(Game, root, guiSpace) { IsEnabled = false };
+        }
+
+        private void SaveSettingsClicked()
+        {
+            
+        }
+
+        private void UpdateShadowMapSizeText()
+        {
+            _shadowSizeTextBlock.Text = Game.TranslationProvider.GetTranslation("System", _shadowSizesResourceKeys[_shadowSizeIndex]);
+        }
+
+        private void OnDecreaseShadowSize()
+        {
+            if (--_shadowSizeIndex < 0) _shadowSizeIndex = _shadowSizesResourceKeys.Length - 1;
+            UpdateShadowMapSizeText();
+        }
+
+        private void OnIncreaseShadowSize()
+        {
+            if (++_shadowSizeIndex == _shadowSizesResourceKeys.Length) _shadowSizeIndex = 0;
+            UpdateShadowMapSizeText();
         }
 
         private void OnBackToMainMenuButtonClick()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters;
 using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -212,5 +213,13 @@ namespace Pokemon3D.Rendering.GUI
         public abstract void Draw(SpriteBatch spriteBatch);
 
         public abstract void Update(float elapsedTime);
+
+        public virtual void FringeDraw(SpriteBatch spriteBatch)
+        {
+            for (var i = 0; i < Children.Count; i++)
+            {
+                Children[i].FringeDraw(spriteBatch);
+            }
+        }
     }
 }
