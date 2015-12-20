@@ -8,11 +8,11 @@ namespace Pokemon3D.UI
     class WindowsSceneEffect : SceneEffect
     {
         private readonly Effect _basicEffect;
-        private readonly EffectTechnique _shadowDepthTechnique;
-        private readonly EffectTechnique _defaultWithShadowsTechnique;
+        private readonly EffectTechnique _shadowCasterTechnique;
+        private readonly EffectTechnique _litShadowReceiver;
+        private readonly EffectTechnique _litTechnique;
         private readonly EffectTechnique _unlitTechnique;
         private readonly EffectTechnique _unlitLinearSampledTechnique;
-        private readonly EffectTechnique _defaultTechnique;
 
         private readonly EffectParameter _lightWorldViewProjection;
         private readonly EffectParameter _world;
@@ -24,16 +24,18 @@ namespace Pokemon3D.UI
         private readonly EffectParameter _texcoordOffset;
         private readonly EffectParameter _texcoordScale;
         private readonly EffectParameter _ambientLight;
+        private readonly EffectParameter _ambientIntensity;
+        private readonly EffectParameter _diffuseIntensity;
 
         public WindowsSceneEffect(ContentManager content)
         {
             _basicEffect = content.Load<Effect>(ResourceNames.Effects.BasicEffect);
             PostProcessingEffect = content.Load<Effect>(ResourceNames.Effects.PostProcessing);
 
-            _defaultTechnique = _basicEffect.Techniques["Default"];
-            _shadowDepthTechnique = _basicEffect.Techniques["ShadowCaster"];
-            _defaultWithShadowsTechnique = _basicEffect.Techniques["DefaultWithShadows"];
-            _unlitTechnique = _basicEffect.Techniques["DefaultBillboard"];
+            _litTechnique = _basicEffect.Techniques["Lit"];
+            _shadowCasterTechnique = _basicEffect.Techniques["ShadowCaster"];
+            _litShadowReceiver = _basicEffect.Techniques["LitShadowReceiver"];
+            _unlitTechnique = _basicEffect.Techniques["Unlit"];
             _unlitLinearSampledTechnique = _basicEffect.Techniques["UnlitLinearSampled"];
             ShadowMapDebugEffect = content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
 
@@ -47,13 +49,15 @@ namespace Pokemon3D.UI
             _texcoordOffset = _basicEffect.Parameters["TexcoordOffset"];
             _texcoordScale = _basicEffect.Parameters["TexcoordScale"];
             _ambientLight = _basicEffect.Parameters["AmbientLight"];
+            _ambientIntensity = _basicEffect.Parameters["AmbientIntensity"];
+            _diffuseIntensity = _basicEffect.Parameters["DiffuseIntensity"];
         }
 
         public Effect ShadowMapDebugEffect { get; }
         
         public void ActivateShadowDepthMapPass()
         {
-            _basicEffect.CurrentTechnique = _shadowDepthTechnique;
+            _basicEffect.CurrentTechnique = _shadowCasterTechnique;
         }
 
         public void ActivateLightingTechnique(bool linearSampling, bool unlit, bool receiveShadows)
@@ -64,7 +68,7 @@ namespace Pokemon3D.UI
             }
             else
             {
-                _basicEffect.CurrentTechnique = receiveShadows ? _defaultWithShadowsTechnique : _defaultTechnique;
+                _basicEffect.CurrentTechnique = receiveShadows ? _litShadowReceiver : _litTechnique;
             }
         }
 
@@ -72,6 +76,12 @@ namespace Pokemon3D.UI
         {
             get { return _lightWorldViewProjection.GetValueMatrix(); }
             set { _lightWorldViewProjection.SetValue(value); }
+        }
+
+        public float DiffuseIntensity
+        {
+            get { return _diffuseIntensity.GetValueSingle(); }
+            set { _diffuseIntensity.SetValue(value); }
         }
 
         public Matrix World
@@ -96,6 +106,12 @@ namespace Pokemon3D.UI
         {
             get { return _lightDirection.GetValueVector3(); }
             set { _lightDirection.SetValue(value); }
+        }
+
+        public float AmbientIntensity
+        {
+            get { return _ambientIntensity.GetValueSingle(); }
+            set { _ambientIntensity.SetValue(value); }
         }
 
         public Texture2D ShadowMap

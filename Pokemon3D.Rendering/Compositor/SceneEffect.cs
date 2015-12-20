@@ -45,6 +45,21 @@ namespace Pokemon3D.Rendering.Compositor
         Vector4 AmbientLight { get; set; }
 
         /// <summary>
+        /// Light Direction for directional light.
+        /// </summary>
+        Vector3 LightDirection { get; set; }
+
+        /// <summary>
+        /// Intensity of Ambient part.
+        /// </summary>
+        float AmbientIntensity { get; set; }
+
+        /// <summary>
+        /// Intensity of Diffuse part.
+        /// </summary>
+        float DiffuseIntensity { get; set; }
+
+        /// <summary>
         /// World Matrix for normal mesh rendering with lighting.
         /// </summary>
         Matrix World { get; set; }
@@ -58,11 +73,6 @@ namespace Pokemon3D.Rendering.Compositor
         /// Projection Matrix for normal mesh rendering with lighting.
         /// </summary>
         Matrix Projection { get; set; }
-
-        /// <summary>
-        /// Light Direction for directional light.
-        /// </summary>
-        Vector3 LightDirection { get; set; }
 
         /// <summary>
         /// Shadow Map for Rendering shadowed objects.

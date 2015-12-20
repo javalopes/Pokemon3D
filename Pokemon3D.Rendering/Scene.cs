@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Pokemon3D.Common;
 
 namespace Pokemon3D.Rendering
@@ -9,17 +10,36 @@ namespace Pokemon3D.Rendering
     /// </summary>
     public class Scene : GameContextObject
     {
-        internal bool HasSceneNodesChanged { get; set; }
+        /// <summary>
+        /// Ambient Light for all Objects. Default is white.
+        /// </summary>
+        public Vector4 AmbientLight { get; set; }
+        
+        /// <summary>
+        /// Currently single light just supported.
+        /// </summary>
+        public Light Light { get; set; }
 
+        internal bool HasSceneNodesChanged { get; set; }
         internal List<SceneNode> AllSceneNodes { get; }
         internal List<Camera> AllCameras { get; }
 
+        /// <summary>
+        /// Creates a new scene for rendering objects.
+        /// </summary>
+        /// <param name="context">Game Context.</param>
         public Scene(GameContext context) : base(context)
         {
             AllSceneNodes = new List<SceneNode>();
             AllCameras = new List<Camera>();
+            AmbientLight = new Vector4(1,1,1,1);
+            Light = new Light(GameContext.GraphicsDevice);
         }
 
+        /// <summary>
+        /// Creates a new sceneNode instance.
+        /// </summary>
+        /// <returns></returns>
         public SceneNode CreateSceneNode()
         {
             HasSceneNodesChanged = true;
@@ -28,6 +48,10 @@ namespace Pokemon3D.Rendering
             return sceneNode;
         }
         
+        /// <summary>
+        /// Removes Scenenode from scene.
+        /// </summary>
+        /// <param name="node">scene node</param>
         public void RemoveSceneNode(SceneNode node)
         { 
             HasSceneNodesChanged = true;
@@ -35,6 +59,10 @@ namespace Pokemon3D.Rendering
             AllCameras.Remove(node as Camera);
         }
 
+        /// <summary>
+        /// Creates a new camera with default viewport of screen.
+        /// </summary>
+        /// <returns>Camera</returns>
         public Camera CreateCamera()
         {
             HasSceneNodesChanged = true;
@@ -44,6 +72,10 @@ namespace Pokemon3D.Rendering
             return camera;
         }
 
+        /// <summary>
+        /// Updates all sceneNodes.
+        /// </summary>
+        /// <param name="elapsedTime">elapsed time since last call.</param>
         public void Update(float elapsedTime)
         {
             foreach (var sceneNode in AllSceneNodes.OrderBy(n => n.Parent != null))

@@ -21,27 +21,25 @@ namespace Pokemon3D.Rendering.Compositor
 
         private RenderTarget2D _activeInputSource;
         private RenderTarget2D _activeRenderTarget;
+        private readonly RenderTarget2D _directionalLightShadowMap;
 
         private readonly List<RenderQueue> _renderQueues;
         private readonly RenderQueue _shadowCasterQueue;
-        private readonly Light _light; 
 
         public ForwardSceneRenderer(GameContext context, SceneEffect effect, RenderSettings settings) : base(context)
         {
             _device = context.GraphicsDevice;
-            _light = new Light(context.GraphicsDevice, settings.ShadowMapSize)
-            {
-                Direction = new Vector3(1, 1, 1)
-            };
             _sceneEffect = effect;
             RenderSettings = settings;
+
+            _directionalLightShadowMap = new RenderTarget2D(_device, RenderSettings.ShadowMapSize, RenderSettings.ShadowMapSize, false, SurfaceFormat.Single, DepthFormat.Depth24);
 
             var width = context.ScreenBounds.Width;
             var height = context.ScreenBounds.Height;
             _activeInputSource = new RenderTarget2D(_device, width, height, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
             _activeRenderTarget = new RenderTarget2D(_device, width, height, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
 
-            _shadowCasterQueue = new ShadowCastRenderQueue(context, HandleShadowCasterObjects, GetShadowCasterSceneNodes, _sceneEffect)
+            _shadowCasterQueue = new RenderQueue(context, HandleShadowCasterObjects, GetShadowCasterSceneNodes, _sceneEffect)
             {
                 BlendState = BlendState.Opaque,
                 DepthStencilState = DepthStencilState.Default,
@@ -73,13 +71,6 @@ namespace Pokemon3D.Rendering.Compositor
             return _shadowCastersObjects;
         }
 
-        public Vector3 LightDirection
-        {
-            get { return _light.Direction; }
-            set { _light.Direction = value; }
-        }
-
-        public Vector4 AmbientLight { get; set; }
         public bool EnablePostProcessing { get; set; }
 
         private IEnumerable<SceneNode> GetTransparentObjects()
@@ -105,18 +96,18 @@ namespace Pokemon3D.Rendering.Compositor
 
             UpdateNodeLists(scene.AllSceneNodes);
 
-            _sceneEffect.AmbientLight = AmbientLight;
+            _sceneEffect.AmbientLight = scene.AmbientLight;
 
             for (var i = 0; i < scene.AllCameras.Count; i++)
             {
-                DrawSceneForCamera(scene.AllCameras[i], scene.HasSceneNodesChanged);
+                DrawSceneForCamera(scene, scene.AllCameras[i], scene.HasSceneNodesChanged);
             }
 
             DoPostProcessing();
             RenderStatistics.Instance.EndFrame();
 
 #if DEBUG_RENDERING
-            if (_settings.EnableShadows) DrawDebugShadowMap(GameContext.SpriteBatch, new Rectangle(0,0,128,128));
+            if (RenderSettings.EnableShadows) DrawDebugShadowMap(GameContext.SpriteBatch, new Rectangle(0,0,128,128));
 #endif
             scene.HasSceneNodesChanged = false;
         }
@@ -169,42 +160,48 @@ namespace Pokemon3D.Rendering.Compositor
         private void DrawDebugShadowMap(SpriteBatch spriteBatch, Rectangle target)
         {
             spriteBatch.Begin(effect: _sceneEffect.ShadowMapDebugEffect);
-            spriteBatch.Draw(_light.ShadowMap, target, Color.White);
+            spriteBatch.Draw(_directionalLightShadowMap, target, Color.White);
             spriteBatch.End();
         }
 
-        public void SetRenderSettings(RenderSettings renderSettings)
+        private void DrawSceneForCamera(Scene scene, Camera camera, bool hasSceneNodesChanged)
         {
-            throw new System.NotImplementedException();
-        }
+            DrawShadowCastersToDepthmap(scene, camera, hasSceneNodesChanged);
+            HandleCameraClearOrSkyPass(camera);
 
-        private void DrawSceneForCamera(Camera camera, bool hasSceneNodesChanged)
-        {
-            if (RenderSettings.EnableShadows)
-            {
-                _light.UpdateLightViewMatrixForCamera(camera, _shadowCastersObjects);
-                _sceneEffect.ShadowMap = null;
-                _sceneEffect.LightWorldViewProjection = _light.LightViewMatrix;
-                
-                _shadowCasterQueue.Draw(camera, _light, hasSceneNodesChanged);
-            }
-
-            _sceneEffect.ShadowMap = _light.ShadowMap;
+            _sceneEffect.ShadowMap = _directionalLightShadowMap;
             _sceneEffect.View = camera.ViewMatrix;
             _sceneEffect.Projection = camera.ProjectionMatrix;
-            _sceneEffect.LightDirection = LightDirection;
-
-            HandleCameraPass(camera);
+            _sceneEffect.LightDirection = scene.Light.Direction;
+            _sceneEffect.AmbientIntensity = scene.Light.AmbientIntensity;
+            _sceneEffect.DiffuseIntensity = scene.Light.DiffuseIntensity;
 
             for (var i = 0; i < _renderQueues.Count; i++)
             {
                 var renderQueue = _renderQueues[i];
                 if (!renderQueue.IsEnabled) continue;
-                renderQueue.Draw(camera, _light, hasSceneNodesChanged);
+                renderQueue.Draw(camera, scene.Light, hasSceneNodesChanged);
             }
         }
 
-        private void HandleCameraPass(Camera camera)
+        private void DrawShadowCastersToDepthmap(Scene scene, Camera camera, bool hasSceneNodesChanged)
+        {
+            if (!RenderSettings.EnableShadows) return;
+
+            scene.Light.UpdateLightViewMatrixForCamera(camera, _shadowCastersObjects);
+            _sceneEffect.ShadowMap = null;
+            _sceneEffect.LightWorldViewProjection = scene.Light.LightViewMatrix;
+
+            var oldRenderTargets = GameContext.GraphicsDevice.GetRenderTargets();
+            GameContext.GraphicsDevice.SetRenderTarget(_directionalLightShadowMap);
+            GameContext.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+
+            _shadowCasterQueue.Draw(camera, scene.Light, hasSceneNodesChanged);
+
+            GameContext.GraphicsDevice.SetRenderTargets(oldRenderTargets);
+        }
+
+        private void HandleCameraClearOrSkyPass(Camera camera)
         {
             var clearFlags = ClearOptions.DepthBuffer;
             if (camera.ClearColor.HasValue) clearFlags |= ClearOptions.Target;

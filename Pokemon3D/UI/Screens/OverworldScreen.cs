@@ -44,10 +44,12 @@ namespace Pokemon3D.UI.Screens
                 EnableSoftShadows = Game.GameConfig.SoftShadows
             };
             _renderer = SceneRendererFactory.Create(Game, new WindowsSceneEffect(Game.Content), settings);
-            _renderer.LightDirection = new Vector3(-1.5f,-1,-0.5f);
-            _renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
 
-            _scene = new Scene(Game);
+            _scene = new Scene(Game)
+            {
+                Light = {Direction = new Vector3(-1.5f, -1, -0.5f)},
+                AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f)
+            };
 
             _currentMap = _gameMode.MapManager.GetMap(_gameMode.GameModeInfo.StartMap, _scene, Game.Resources);
 

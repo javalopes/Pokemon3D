@@ -1,14 +1,21 @@
-﻿float4x4 World;
+﻿//Parameters for normal rendering.
+float4x4 World;
 float4x4 View;
 float4x4 Projection;
+float2 TexcoordOffset;
+float2 TexcoordScale;
+
+//Parameters for shadow mapping.
 float4x4 LightWorldViewProjection;
 texture DiffuseTexture;
 texture ShadowMap;
-float3 LightDirection = float3(1, -1,  -1);
-float4 AmbientLight = float4(0.5f, 0.5f, 0.5f, 1.0f);
-float2 TexcoordOffset;
-float2 TexcoordScale;
 float ShadowScale = 1.0f / 1024.0f;
+
+//parameters for lighting
+float3 LightDirection = float3(1, -1,  -1);
+float4 AmbientLight;
+float AmbientIntensity;
+float DiffuseIntensity;
 
 sampler2D DiffuseSampler = sampler_state {
 	Texture = (DiffuseTexture);
@@ -22,6 +29,14 @@ sampler2D ShadowMapSampler = sampler_state {
 	Texture = (ShadowMap);
 	MagFilter = Point;
 	MinFilter = Point;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
+sampler2D LinearSampler = sampler_state {
+	Texture = (DiffuseTexture);
+	MagFilter = Linear;
+	MinFilter = Linear;
 	AddressU = Clamp;
 	AddressV = Clamp;
 };
@@ -68,7 +83,12 @@ float4 CalculateLighting(float4 diffuseTextureColor, float diffuseFactor)
 	return colorLit;
 }
 
-VertexShaderOutput DefaultVertexShaderFunction(VertexShaderInput input)
+float2 TransformTexcoord(float2 texcoord)
+{
+	return TexcoordOffset + float2(texcoord.x * TexcoordScale.x, texcoord.y * TexcoordScale.y);
+}
+
+VertexShaderOutput LitVS(VertexShaderInput input)
 {
 	VertexShaderOutput output;
 
@@ -76,12 +96,12 @@ VertexShaderOutput DefaultVertexShaderFunction(VertexShaderInput input)
 	float4 viewPosition = mul(worldPosition, View);
 	output.Position = mul(viewPosition, Projection);
 	output.Normal = mul(input.Normal, (float3x3)World);
-	output.TexCoord = TexcoordOffset + float2(input.TexCoord.x * TexcoordScale.x, input.TexCoord.y * TexcoordScale.y);
+	output.TexCoord = TransformTexcoord(input.TexCoord);
 
 	return output;
 }
 
-float4 DefaultPixelShaderFunction(VertexShaderOutput input) : COLOR0
+float4 LitPS(VertexShaderOutput input) : COLOR0
 {
 	float diffuseFactor = GetDiffuseFactor(input.Normal, LightDirection);
 	float4 colorFromTexture = tex2D(DiffuseSampler, input.TexCoord);
@@ -89,7 +109,7 @@ float4 DefaultPixelShaderFunction(VertexShaderOutput input) : COLOR0
 	return CalculateLighting(colorFromTexture, diffuseFactor);
 }
 
-VertexShaderShadowReceiverOutput DefaultVertexShaderShadowReceiverFunction(VertexShaderShadowReceiverInput input)
+VertexShaderShadowReceiverOutput LitShadowReceiverVS(VertexShaderShadowReceiverInput input)
 {
 	VertexShaderShadowReceiverOutput output;
 
@@ -97,13 +117,13 @@ VertexShaderShadowReceiverOutput DefaultVertexShaderShadowReceiverFunction(Verte
 	float4 viewPosition = mul(worldPosition, View);
 	output.Position = mul(viewPosition, Projection);
 	output.Normal = mul(input.Normal, (float3x3)World);
-	output.TexCoord = TexcoordOffset + float2(input.TexCoord.x * TexcoordScale.x, input.TexCoord.y * TexcoordScale.y);
+	output.TexCoord = TransformTexcoord(input.TexCoord);
 	output.LightPosition = mul(worldPosition, LightWorldViewProjection);
 
 	return output;
 }
 
-float4 DefaultPixelShaderShadowReceiverFunction(VertexShaderShadowReceiverOutput input) : COLOR0
+float4 LitShadowReceiverPS(VertexShaderShadowReceiverOutput input) : COLOR0
 {
 	float2 projectedTexCoords;
 	projectedTexCoords[0] = input.LightPosition.x / input.LightPosition.w / 2.0f + 0.5f;
@@ -126,31 +146,21 @@ float4 DefaultPixelShaderShadowReceiverFunction(VertexShaderShadowReceiverOutput
 	return CalculateLighting(colorFromTexture, diffuseFactor);
 }
 
-technique Default
+technique Lit
 {
 	pass Pass1
 	{
-#ifdef MACOSX
-		VertexShader = compile vs_3_0 DefaultVertexShaderFunction();
-		PixelShader = compile ps_3_0 DefaultPixelShaderFunction();
-#else
-		VertexShader = compile vs_4_0 DefaultVertexShaderFunction();
-		PixelShader = compile ps_4_0 DefaultPixelShaderFunction();
-#endif
+		VertexShader = compile vs_4_0 LitVS();
+		PixelShader = compile ps_4_0 LitPS();
 	}
 }
 
-technique DefaultWithShadows
+technique LitShadowReceiver
 {
 	pass Pass1
 	{
-#ifdef MACOSX
-		VertexShader = compile vs_3_0 DefaultVertexShaderShadowReceiverFunction();
-		PixelShader = compile ps_3_0 DefaultPixelShaderShadowReceiverFunction();
-#else
-		VertexShader = compile vs_4_0 DefaultVertexShaderShadowReceiverFunction();
-		PixelShader = compile ps_4_0 DefaultPixelShaderShadowReceiverFunction();
-#endif
+		VertexShader = compile vs_4_0 LitShadowReceiverVS();
+		PixelShader = compile ps_4_0 LitShadowReceiverPS();
 	}
 }
 
@@ -169,7 +179,7 @@ struct VSOutputShadowReceiver
 	float4 DepthPosition : TEXCOORD0;
 };
 
-VSOutputShadowReceiver DepthVertexShader(VSInputShadowCaster input)
+VSOutputShadowReceiver ShadowCasterVS(VSInputShadowCaster input)
 {
 	VSOutputShadowReceiver output;
 
@@ -180,7 +190,7 @@ VSOutputShadowReceiver DepthVertexShader(VSInputShadowCaster input)
 	return output;
 }
 
-float4 DepthPixelShader(VSOutputShadowReceiver input) : SV_TARGET
+float4 ShadowCasterPS(VSOutputShadowReceiver input) : SV_TARGET
 {
 	float depthValue = input.DepthPosition.z / input.DepthPosition.w;
 	return float4(depthValue, depthValue, depthValue, 1.0f);
@@ -190,103 +200,66 @@ technique ShadowCaster
 {
 	pass Pass1
 	{
-#ifdef MACOSX
-		VertexShader = compile vs_3_0 DepthVertexShader();
-		PixelShader = compile ps_3_0 DepthPixelShader();
-#else
-		VertexShader = compile vs_4_0 DepthVertexShader();
-		PixelShader = compile ps_4_0 DepthPixelShader();
-#endif
+		VertexShader = compile vs_4_0 ShadowCasterVS();
+		PixelShader = compile ps_4_0 ShadowCasterPS();
 	}
 }
 
 //-----------------------------------------------------------------------------
-// Billboard
+// Unlit
 //-----------------------------------------------------------------------------
 
-sampler2D BillboardSampler = sampler_state {
-	Texture = (DiffuseTexture);
-	MagFilter = Point;
-	MinFilter = Point;
-	AddressU = Clamp;
-	AddressV = Clamp;
-};
-
-sampler2D LinearUnlitSampler = sampler_state {
-	Texture = (DiffuseTexture);
-	MagFilter = Linear;
-	MinFilter = Linear;
-	AddressU = Clamp;
-	AddressV = Clamp;
-};
-
-struct VertexShaderBillboardInput
+struct UnlitInputVS
 {
 	float4 Position : SV_Position0;
 	float2 TexCoord : TEXCOORD0;
 	float3 Normal   : NORMAL0;
 };
 
-struct VertexShaderBillboardOutput
+struct UnlitOutputVS
 {
 	float4 Position : POSITION0;
 	float2 TexCoord : TEXCOORD0;
 	float3 Normal   : TEXCOORD1;
 };
 
-VertexShaderBillboardOutput VertexShaderBillboard(VertexShaderBillboardInput input)
+UnlitOutputVS UnlitVS(UnlitInputVS input)
 {
-	VertexShaderBillboardOutput output;
+	UnlitOutputVS output;
 
 	float4 worldPosition = mul(input.Position, World);
 	float4 viewPosition = mul(worldPosition, View);
 	output.Position = mul(viewPosition, Projection);
 	output.Normal = mul(input.Normal, (float3x3)World);
-	output.TexCoord = TexcoordOffset + float2(input.TexCoord.x * TexcoordScale.x, input.TexCoord.y * TexcoordScale.y);
+	output.TexCoord = TransformTexcoord(input.TexCoord);
 
 	return output;
 }
 
-float4 PixelShaderFunctionBillboard(VertexShaderBillboardOutput input) : COLOR0
+float4 UnlitPS(UnlitOutputVS input) : COLOR0
 {
-	float4 colorFromTexture = tex2D(BillboardSampler, input.TexCoord);
-	float diffuseFactor = saturate(dot(normalize(input.Normal), normalize(-LightDirection)));
-
-	return colorFromTexture;
+	return tex2D(DiffuseSampler, input.TexCoord);
 }
 
-float4 PixelShaderUnlitLinearSampled(VertexShaderBillboardOutput input) : COLOR0
+float4 UnlitPSLinearSampled(UnlitOutputVS input) : COLOR0
 {
-	float4 colorFromTexture = tex2D(LinearUnlitSampler, input.TexCoord);
-	float diffuseFactor = saturate(dot(normalize(input.Normal), normalize(-LightDirection)));
-
-	return colorFromTexture;
+	return tex2D(LinearSampler, input.TexCoord);
 }
 
-technique DefaultBillboard
+technique Unlit
 {
-	pass Pass1
+	pass p0
 	{
-#ifdef MACOSX
-		VertexShader = compile vs_3_0 VertexShaderBillboard();
-		PixelShader = compile ps_3_0 PixelShaderFunctionBillboard();
-#else
-		VertexShader = compile vs_4_0 VertexShaderBillboard();
-		PixelShader = compile ps_4_0 PixelShaderFunctionBillboard();
-#endif
+		VertexShader = compile vs_4_0 UnlitVS();
+		PixelShader = compile ps_4_0 UnlitPS();
 	}
 }
 
 technique UnlitLinearSampled
 {
-	pass Pass1
+	pass p0
 	{
-#ifdef MACOSX
-		VertexShader = compile vs_3_0 VertexShaderBillboard();
-		PixelShader = compile ps_3_0 PixelShaderUnlitLinearSampled();
-#else
-		VertexShader = compile vs_4_0 VertexShaderBillboard();
-		PixelShader = compile ps_4_0 PixelShaderUnlitLinearSampled();
-#endif
+		VertexShader = compile vs_4_0 UnlitVS();
+		PixelShader = compile ps_4_0 UnlitPSLinearSampled();
 	}
 }
