@@ -26,6 +26,7 @@ namespace Pokemon3D.UI
         private readonly EffectParameter _ambientLight;
         private readonly EffectParameter _ambientIntensity;
         private readonly EffectParameter _diffuseIntensity;
+        private readonly EffectParameter _shadowScale;
 
         public WindowsSceneEffect(ContentManager content)
         {
@@ -51,6 +52,7 @@ namespace Pokemon3D.UI
             _ambientLight = _basicEffect.Parameters["AmbientLight"];
             _ambientIntensity = _basicEffect.Parameters["AmbientIntensity"];
             _diffuseIntensity = _basicEffect.Parameters["DiffuseIntensity"];
+            _shadowScale = _basicEffect.Parameters["ShadowScale"];
         }
 
         public Effect ShadowMapDebugEffect { get; }
@@ -118,6 +120,12 @@ namespace Pokemon3D.UI
         {
             get { return _shadowMap.GetValueTexture2D(); }
             set { _shadowMap.SetValue(value); }
+        }
+
+        public float ShadowScale
+        {
+            get { return _shadowScale.GetValueSingle(); }
+            set { _shadowScale.SetValue(value);}
         }
 
         public Texture2D DiffuseTexture

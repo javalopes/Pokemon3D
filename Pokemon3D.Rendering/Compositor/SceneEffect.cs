@@ -80,6 +80,12 @@ namespace Pokemon3D.Rendering.Compositor
         Texture2D ShadowMap { get; set; }
 
         /// <summary>
+        /// Size of one Pixel of Shadow map in texture coordinates.
+        /// This is needed for shadow accuracy correction.
+        /// </summary>
+        float ShadowScale { get; set; }
+
+        /// <summary>
         /// Texture for rendering.
         /// </summary>
         Texture2D DiffuseTexture { get; set; }

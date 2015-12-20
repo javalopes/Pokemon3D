@@ -70,17 +70,45 @@ struct VertexShaderShadowReceiverOutput
 	float4 LightPosition : TEXCOORD2;
 };
 
-float GetDiffuseFactor(float3 normal, float3 lightDir)
+//Calculates light equatation for diffuse and ambient with shadow factor.
+float4 CalculateAmbientDiffuseLighting(float3 normal, float3 lightDir, float shadowFactor)
 {
-	return saturate(dot(normalize(normal), normalize(-lightDir)));
+	float diffuseFactor = saturate(dot(normalize(normal), normalize(-lightDir)));
+	float4 diffuseColor = float4(1, 1, 1, 1) * diffuseFactor * DiffuseIntensity;
+	float4 ambientColor = AmbientLight * AmbientIntensity;
+
+	return ambientColor + diffuseColor * shadowFactor;
 }
 
-float4 CalculateLighting(float4 diffuseTextureColor, float diffuseFactor) 
+//calculates a shadow factor based on light position.
+float CalculateShadowFactor(float4 lightPosition)
 {
-	float alpha = diffuseTextureColor.a;
-	float4 colorLit = diffuseTextureColor * (diffuseFactor + AmbientLight * (1-diffuseFactor));
-	colorLit.a = alpha;
-	return colorLit;
+	float2 projectedTexCoords;
+	projectedTexCoords[0] = lightPosition.x / lightPosition.w / 2.0f + 0.5f;
+	projectedTexCoords[1] = -lightPosition.y / lightPosition.w / 2.0f + 0.5f;
+
+	float shadowFactor = 0.5f;
+
+	if ((saturate(projectedTexCoords).x == projectedTexCoords.x) && (saturate(projectedTexCoords).y == projectedTexCoords.y))
+	{
+		float depthStoredInShadowMap = tex2D(ShadowMapSampler, projectedTexCoords).r;
+		float realDistance = lightPosition.z / lightPosition.w;
+		if ((realDistance - 2.0f*ShadowScale) <= depthStoredInShadowMap)
+		{
+			shadowFactor = 1.0f;
+		}
+	}
+
+	return shadowFactor;
+}
+
+//Modulates two colors and preserves alpha value from source color. this is important for transparent objects.
+float4 ModulatePreserveAlpha(float4 perserveColor, float4 modulate)
+{
+	float alpha = perserveColor.a;
+	float4 resultColor = perserveColor * modulate;
+	resultColor.a = alpha;
+	return resultColor;
 }
 
 float2 TransformTexcoord(float2 texcoord)
@@ -103,10 +131,10 @@ VertexShaderOutput LitVS(VertexShaderInput input)
 
 float4 LitPS(VertexShaderOutput input) : COLOR0
 {
-	float diffuseFactor = GetDiffuseFactor(input.Normal, LightDirection);
 	float4 colorFromTexture = tex2D(DiffuseSampler, input.TexCoord);
+	float4 lightColor = CalculateAmbientDiffuseLighting(input.Normal, LightDirection, 1.0f);
 
-	return CalculateLighting(colorFromTexture, diffuseFactor);
+	return ModulatePreserveAlpha(colorFromTexture, lightColor);
 }
 
 VertexShaderShadowReceiverOutput LitShadowReceiverVS(VertexShaderShadowReceiverInput input)
@@ -125,7 +153,7 @@ VertexShaderShadowReceiverOutput LitShadowReceiverVS(VertexShaderShadowReceiverI
 
 float4 LitShadowReceiverPS(VertexShaderShadowReceiverOutput input) : COLOR0
 {
-	float2 projectedTexCoords;
+	/*float2 projectedTexCoords;
 	projectedTexCoords[0] = input.LightPosition.x / input.LightPosition.w / 2.0f + 0.5f;
 	projectedTexCoords[1] = -input.LightPosition.y / input.LightPosition.w / 2.0f + 0.5f;
 
@@ -139,11 +167,13 @@ float4 LitShadowReceiverPS(VertexShaderShadowReceiverOutput input) : COLOR0
 		{
 			diffuseFactor = GetDiffuseFactor(input.Normal, LightDirection);
 		}
-	}
+	}*/
 
+	float shadowFactor = CalculateShadowFactor(input.LightPosition);
+	float4 lightColor = CalculateAmbientDiffuseLighting(input.Normal, LightDirection, shadowFactor);
 	float4 colorFromTexture = tex2D(DiffuseSampler, input.TexCoord);
 
-	return CalculateLighting(colorFromTexture, diffuseFactor);
+	return ModulatePreserveAlpha(colorFromTexture, lightColor);
 }
 
 technique Lit

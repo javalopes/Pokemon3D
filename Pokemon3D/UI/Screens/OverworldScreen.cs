@@ -47,7 +47,12 @@ namespace Pokemon3D.UI.Screens
 
             _scene = new Scene(Game)
             {
-                Light = {Direction = new Vector3(-1.5f, -1, -0.5f)},
+                Light =
+                {
+                    Direction = new Vector3(-1.5f, -1, -0.5f),
+                    AmbientIntensity = 0.5f,
+                    DiffuseIntensity = 0.8f
+                },
                 AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f)
             };
 

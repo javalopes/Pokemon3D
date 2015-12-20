@@ -170,6 +170,7 @@ namespace Pokemon3D.Rendering.Compositor
             HandleCameraClearOrSkyPass(camera);
 
             _sceneEffect.ShadowMap = _directionalLightShadowMap;
+            _sceneEffect.ShadowScale = 1.0f/_directionalLightShadowMap.Width;
             _sceneEffect.View = camera.ViewMatrix;
             _sceneEffect.Projection = camera.ProjectionMatrix;
             _sceneEffect.LightDirection = scene.Light.Direction;
