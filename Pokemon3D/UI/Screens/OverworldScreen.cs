@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Pokemon3D.DataModel.Json.GameCore;
 using Pokemon3D.Rendering;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
@@ -13,6 +15,13 @@ namespace Pokemon3D.UI.Screens
 {
     class OverworldScreen : GameObject, Screen
     {
+        private static readonly Dictionary<ShadowQuality, int> ShadowMapSizeForQuality = new Dictionary<ShadowQuality, int>
+        {
+            { ShadowQuality.Small, 512 },
+            { ShadowQuality.Medium, 1024 },
+            { ShadowQuality.Large, 2048 }
+        }; 
+
         private GameMode _gameMode;
         private Map _currentMap;
         private Scene _scene;
@@ -27,10 +36,9 @@ namespace Pokemon3D.UI.Screens
             _gameMode = Game.GameModeManager.LoadGameMode(gameModes.First());
             Game.Resources.SetPrimitiveProvider(_gameMode);
 
-            _scene = new Scene(Game, new WindowsSceneEffect(Game.Content));
+            _scene = new Scene(Game, new WindowsSceneEffect(Game.Content), ShadowMapSizeForQuality[Game.GameConfig.ShadowQuality], Game.GameConfig.ShadowsEnabled);
             _scene.Renderer.LightDirection = new Vector3(-1.5f,-1,-0.5f);
             _scene.Renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
-            _scene.Renderer.EnableShadows = true;
             _currentMap = _gameMode.MapManager.GetMap(_gameMode.GameModeInfo.StartMap, _scene, Game.Resources);
 
             _player = new Player(_scene);

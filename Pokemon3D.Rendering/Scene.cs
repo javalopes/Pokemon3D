@@ -17,9 +17,13 @@ namespace Pokemon3D.Rendering
         public SceneRenderer Renderer { get; }
         public bool HasSceneNodesChanged { get; private set; }
 
-        public Scene(GameContext context, SceneEffect effect) : base(context)
+        public Scene(GameContext context, SceneEffect effect, int shadowMapSize, bool enableShadows) : base(context)
         {
-            Renderer = new DefaultSceneRenderer(context, effect) { LightDirection = new Vector3(1, -1, -1)};
+            Renderer = new DefaultSceneRenderer(context, effect, shadowMapSize)
+            {
+                LightDirection = new Vector3(1, -1, -1),
+                EnableShadows = enableShadows,
+            };
             _allNodes = new List<SceneNode>();
             _allCameras = new List<Camera>();
         }

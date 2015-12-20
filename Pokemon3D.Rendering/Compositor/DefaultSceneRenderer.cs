@@ -25,12 +25,12 @@ namespace Pokemon3D.Rendering.Compositor
         private readonly List<RenderQueue> _renderQueues;
         private readonly RenderQueue _shadowCasterQueue;
         private bool _enableShadows;
-        private readonly Light _light;
+        private readonly Light _light; 
 
-        public DefaultSceneRenderer(GameContext context, SceneEffect effect) : base(context)
+        public DefaultSceneRenderer(GameContext context, SceneEffect effect, int shadowMapSize) : base(context)
         {
             _device = context.GraphicsDevice;
-            _light = new Light(context.GraphicsDevice, 1024)
+            _light = new Light(context.GraphicsDevice, shadowMapSize)
             {
                 Direction = new Vector3(1, 1, 1)
             };
