@@ -12,7 +12,7 @@ namespace Pokemon3D.UI.Screens
         public abstract void OnUpdate(float elapsedTime);
         public abstract void OnClosing();
 
-        public void OnOpening(object enterInformation)
+        public virtual void OnOpening(object enterInformation)
         {
             if (!_isInitialized) OnInitialize(enterInformation);
             _isInitialized = true;

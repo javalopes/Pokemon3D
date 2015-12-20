@@ -1,5 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common;
+using Pokemon3D.DataModel.Json.GameCore;
 using Pokemon3D.Rendering.GUI;
 using Pokemon3D.UI.Transitions;
 using Button = Pokemon3D.Rendering.GUI.Button;
@@ -16,10 +20,20 @@ namespace Pokemon3D.UI.Screens
         private GuiPanel _optionsMenuPanel;
 
         private TextBlock _shadowSizeTextBlock;
+        private CheckBox _shadowsEnabledCheckBox;
+        private CheckBox _softShadowsCheckBox;
 
         private readonly string[] _shadowSizesResourceKeys = {
             "SmallShadowMap", "MediumShadowMap",  "LargeShadowMap"
         };
+
+        private static readonly LookupDictionary<int, ShadowQuality> ShadowQualityLookup = new LookupDictionary<int, ShadowQuality>(
+            new[]
+            {
+                new KeyValuePair<int, ShadowQuality>(0, ShadowQuality.Small), 
+                new KeyValuePair<int, ShadowQuality>(1, ShadowQuality.Medium), 
+                new KeyValuePair<int, ShadowQuality>(2, ShadowQuality.Large)
+            });
 
         private int _shadowSizeIndex = 1;
 
@@ -53,8 +67,8 @@ namespace Pokemon3D.UI.Screens
             root.FindGuiElementById<Button>("BackToMainMenuButton").Click += OnBackToMainMenuButtonClick;
 
             _shadowSizeTextBlock = root.FindGuiElementById<TextBlock>("ShadowSizeText");
-            _shadowSizeIndex = 1;
-            UpdateShadowMapSizeText();
+            _shadowsEnabledCheckBox = root.FindGuiElementById<CheckBox>("EnableShadowsCheckbox");
+            _softShadowsCheckBox = root.FindGuiElementById<CheckBox>("EnableSoftShadowsCheckbox");
             root.FindGuiElementById<Button>("IncreaseShadowSizeButton").Click += OnIncreaseShadowSize;
             root.FindGuiElementById<Button>("DecreaseShadowSizeButton").Click += OnDecreaseShadowSize;
             root.FindGuiElementById<Button>("SaveSettingsButton").Click += SaveSettingsClicked;
@@ -62,9 +76,26 @@ namespace Pokemon3D.UI.Screens
             _optionsMenuPanel = new GuiPanel(Game, root, guiSpace) { IsEnabled = false };
         }
 
+        public override void OnOpening(object enterInformation)
+        {
+            base.OnOpening(enterInformation);
+
+            var config = Game.GameConfig;
+
+            _shadowSizeIndex = ShadowQualityLookup.Convert(config.ShadowQuality);
+            UpdateShadowMapSizeText();
+
+            _shadowsEnabledCheckBox.IsChecked = config.ShadowsEnabled;
+            _softShadowsCheckBox.IsChecked = config.SoftShadows;
+        }
+
         private void SaveSettingsClicked()
         {
-            
+            var config = Game.GameConfig;
+
+            config.ShadowQuality = ShadowQualityLookup.Convert(_shadowSizeIndex);
+            config.ShadowsEnabled = _shadowsEnabledCheckBox.IsChecked;
+            config.SoftShadows = _softShadowsCheckBox.IsChecked;
         }
 
         private void UpdateShadowMapSizeText()

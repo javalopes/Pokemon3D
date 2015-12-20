@@ -18,23 +18,8 @@ namespace Pokemon3D.GameCore
         public event EventHandler ConfigFileLoaded;
 
         public string DisplayLanguage => _dataModel.DisplayLanguage;
+        public SizeModel WindowSize => _dataModel.WindowSize;
 
-        public SizeModel WindowSize
-        {
-            get
-            {
-                if (_dataModel.WindowSize == null)
-                {
-                    _dataModel.WindowSize = new SizeModel()
-                    {
-                        Width = 1024,
-                        Height = 600
-                    };
-                }
-                return _dataModel.WindowSize;
-            }
-        }
-        
         public GameConfiguration()
         {
             if (File.Exists(StaticFileProvider.ConfigFile))
@@ -64,12 +49,30 @@ namespace Pokemon3D.GameCore
             FileObserver.Instance.StartFileObserve(StaticFileProvider.ConfigFile, ReloadFile);
         }
 
+        public bool ShadowsEnabled
+        {
+            get { return _dataModel.ShadowsEnabled; }
+            set { _dataModel.ShadowsEnabled = value; }
+        }
+
+        public bool SoftShadows
+        {
+            get { return _dataModel.SoftShadows; }
+            set { _dataModel.SoftShadows = value; }
+        }
+
+        public ShadowQuality ShadowQuality
+        {
+            get { return _dataModel.ShadowQuality; }
+            set { _dataModel.ShadowQuality = value; }
+        }
+
         private void ReloadFile(object sender, FileSystemEventArgs e)
         {
             try
             {
                 _dataModel = JsonDataModel<ConfigurationModel>.FromFile(StaticFileProvider.ConfigFile);
-                ConfigFileLoaded(this, EventArgs.Empty);
+                ConfigFileLoaded?.Invoke(this, EventArgs.Empty);
             }
             catch (JsonDataLoadException)
             {

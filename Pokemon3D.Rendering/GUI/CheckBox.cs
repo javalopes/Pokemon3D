@@ -6,7 +6,7 @@ using Pokemon3D.Rendering.GUI.ItemDescriptors;
 
 namespace Pokemon3D.Rendering.GUI
 {
-    class CheckBox : ContentControl
+    public class CheckBox : ContentControl
     {
         private Sprite _normalBorder;
         private Sprite _hoverBorder;
