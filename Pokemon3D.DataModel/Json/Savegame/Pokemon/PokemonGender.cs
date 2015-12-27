@@ -1,4 +1,4 @@
-﻿namespace Pokemon3D.DataModel.Json.Savegame
+﻿namespace Pokemon3D.DataModel.Json.Savegame.Pokemon
 {
     public enum PokemonGender
     {
