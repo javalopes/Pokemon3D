@@ -43,30 +43,33 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
         public EvolutionConditionModel[] EvolutionConditions;
 
         [DataMember(Order = 8)]
-        public int BaseFriendship;
+        public bool IsLegendary;
 
         [DataMember(Order = 9)]
-        public PokemonStatSetModel RewardEV;
+        public int BaseFriendship;
 
         [DataMember(Order = 10)]
-        public double IsMale;
+        public PokemonStatSetModel RewardEV;
 
         [DataMember(Order = 11)]
-        public bool IsGenderless;
+        public double IsMale;
 
         [DataMember(Order = 12)]
-        public bool CanBreed;
+        public bool IsGenderless;
 
         [DataMember(Order = 13)]
-        public int BaseEggSteps;
+        public bool CanBreed;
 
         [DataMember(Order = 14)]
-        public int EggPokemon;
+        public int BaseEggSteps;
 
         [DataMember(Order = 15)]
-        public int Devolution;
+        public int EggPokemon;
 
         [DataMember(Order = 16)]
+        public int Devolution;
+
+        [DataMember(Order = 17)]
         public string[] EggGroups;
 
         public override object Clone()

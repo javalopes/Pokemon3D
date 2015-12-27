@@ -12,6 +12,8 @@ namespace Pokemon3D.GameModes.Pokemon
     /// </summary>
     static class PokemonExperienceCalculator
     {
+        #region Public methods
+
         public static int ExperienceNeededForLevel(ExperienceType experienceType, int level)
         {
             switch (experienceType)
@@ -33,8 +35,26 @@ namespace Pokemon3D.GameModes.Pokemon
             }
         }
 
+        /// <summary>
+        /// Returns the equivalent level for an experience value.
+        /// </summary>
+        public static int LevelForExperienceValue(ExperienceType experienceType, int experience)
+        {
+            // returns level 1 if no experience (or negative value):
+            if (experience <= 0)
+                return 1;
+
+            int level = 1;
+            while (ExperienceNeededForLevel(experienceType, level) <= experience)
+                level++;
+
+            return level;
+        }
+
+        #endregion
+
         // for simpler writing, "level" is refered to as "n":
-        
+
         private static double ExperienceNeededForLevelErratic(double n)
         {
             // EXP = 
