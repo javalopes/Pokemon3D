@@ -6,6 +6,8 @@
     public enum ExperienceType
     {
         Fast,
+        Erratic,
+        Fluctuating,
         MediumFast,
         MediumSlow,
         Slow
