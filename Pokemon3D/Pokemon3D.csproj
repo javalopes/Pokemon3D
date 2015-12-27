@@ -93,6 +93,7 @@
     <Compile Include="GameModes\Maps\MapManager.cs" />
     <Compile Include="GameModes\Maps\Player.cs" />
     <Compile Include="GameModes\Maps\PlayerMovementMode.cs" />
+    <Compile Include="GameModes\Pokemon\Pokemon.cs" />
     <Compile Include="GameModes\Resources\PrimitiveManager.cs" />
     <Compile Include="ResourceNames.cs">
       <AutoGen>True</AutoGen>
@@ -220,7 +221,9 @@
       <Name>Pokemon3D.Rendering</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="BattleSystem\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

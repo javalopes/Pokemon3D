@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using Pokemon3D.DataModel.Json.Pokemon;
 
 // Disable Code Analysis for warning CS0649: Field is never assigned to, and will always have its default value.
 #pragma warning disable 0649

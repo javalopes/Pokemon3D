@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using Pokemon3D.DataModel.Json.Pokemon;
 
 // Disable Code Analysis for warning CS0649: Field is never assigned to, and will always have its default value.
 #pragma warning disable 0649
@@ -28,7 +29,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
         public PokemonFormModel[] Forms;
 
         [DataMember(Order = 5)]
-        public HeldItemModel[] HeldItems;
+        public SpawnHeldItemModel[] HeldItems;
 
         [DataMember(Order = 6, Name = "ExperienceType")]
         private string _experienceType;
@@ -73,7 +74,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
             var clone = (PokemonModel)MemberwiseClone();
             clone.PokedexEntry = PokedexEntry.CloneModel();
             clone.Forms = (PokemonFormModel[])Forms.Clone();
-            clone.HeldItems = (HeldItemModel[])HeldItems.Clone();
+            clone.HeldItems = (SpawnHeldItemModel[])HeldItems.Clone();
             clone.EvolutionConditions = (EvolutionConditionModel[])EvolutionConditions.Clone();
             clone.RewardEV = RewardEV.CloneModel();
             clone.EggGroups = (string[])EggGroups.Clone();

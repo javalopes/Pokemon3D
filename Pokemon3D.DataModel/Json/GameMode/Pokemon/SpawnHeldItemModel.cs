@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
     /// A data model for an item held by a wild Pokémon.
     /// </summary>
     [DataContract]
-    public class HeldItemModel : JsonDataModel<HeldItemModel>
+    public class SpawnHeldItemModel : JsonDataModel<SpawnHeldItemModel>
     {
         /// <summary>
         /// The Id of the item.
