@@ -52,9 +52,6 @@ namespace Pokemon3D.GameModes
             }
 
             IsValid = true;
-
-            var bulbasaur = PokemonFactory.Create("Bulbasaur", 10);
-            Console.ReadKey();
         }
         
         public GeometryData GetPrimitiveData(string primitiveName)
