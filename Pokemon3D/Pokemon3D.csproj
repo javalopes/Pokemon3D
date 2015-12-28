@@ -93,8 +93,11 @@
     <Compile Include="GameModes\Maps\MapManager.cs" />
     <Compile Include="GameModes\Maps\Player.cs" />
     <Compile Include="GameModes\Maps\PlayerMovementMode.cs" />
+    <Compile Include="GameModes\Pokemon\NatureManager.cs" />
     <Compile Include="GameModes\Pokemon\Pokemon.cs" />
     <Compile Include="GameModes\Pokemon\PokemonExperienceCalculator.cs" />
+    <Compile Include="GameModes\Pokemon\PokemonFactory.cs" />
+    <Compile Include="GameModes\Pokemon\PokemonStatCalculator.cs" />
     <Compile Include="GameModes\Resources\PrimitiveManager.cs" />
     <Compile Include="ResourceNames.cs">
       <AutoGen>True</AutoGen>

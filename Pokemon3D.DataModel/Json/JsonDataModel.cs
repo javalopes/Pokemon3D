@@ -101,7 +101,7 @@ namespace Pokemon3D.DataModel.Json
         /// <summary>
         /// Converts a <see cref="string"/> array to an array of the given enum type.
         /// </summary>
-        protected static ICollection<TEnum> ConvertStringCollectionToEnumCollection<TEnum>(ICollection<string> enumMemberArray)
+        protected static TEnum[] ConvertStringCollectionToEnumCollection<TEnum>(ICollection<string> enumMemberArray)
         {
             TEnum[] enumArr = new TEnum[enumMemberArray.Count];
 
@@ -114,7 +114,7 @@ namespace Pokemon3D.DataModel.Json
         /// <summary>
         /// Converts an enum member array to a <see cref="string"/> array (using ToString).
         /// </summary>
-        protected static ICollection<string> ConvertEnumCollectionToStringCollection<TEnum>(ICollection<TEnum> enumArray)
+        protected static string[] ConvertEnumCollectionToStringCollection<TEnum>(ICollection<TEnum> enumArray)
         {
             string[] stringArr = new string[enumArray.Count];
 

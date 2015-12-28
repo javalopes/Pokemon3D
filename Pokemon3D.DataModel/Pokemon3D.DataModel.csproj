@@ -58,6 +58,7 @@
     <Compile Include="Json\GameMode\Battle\TargetType.cs" />
     <Compile Include="Json\GameMode\Definitions\BadgeModel.cs" />
     <Compile Include="Json\GameMode\Definitions\BodyStyleModel.cs" />
+    <Compile Include="Json\GameMode\Definitions\NatureModel.cs" />
     <Compile Include="Json\GameMode\Definitions\PrimitiveModel.cs" />
     <Compile Include="Json\GameMode\Definitions\TypeModel.cs" />
     <Compile Include="Json\GameMode\Definitions\VertexModel.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Json\i18n\TokenModel.cs" />
     <Compile Include="Json\JsonDataLoadException.cs" />
     <Compile Include="Json\JsonDataModel.cs" />
+    <Compile Include="Json\Pokemon\PokemonStatType.cs" />
     <Compile Include="Json\RangeModel.cs" />
     <Compile Include="Json\RectangleModel.cs" />
     <Compile Include="Json\Savegame\Inventory\InventoryItemModel.cs" />

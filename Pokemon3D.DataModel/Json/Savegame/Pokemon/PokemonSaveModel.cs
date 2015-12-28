@@ -6,11 +6,14 @@ using Pokemon3D.DataModel.Json.Pokemon;
 
 namespace Pokemon3D.DataModel.Json.Savegame.Pokemon
 {
+    /// <summary>
+    /// Holds saved information about a Pokémon instance.
+    /// </summary>
     [DataContract]
     public class PokemonSaveModel : JsonDataModel<PokemonSaveModel>
     {
         [DataMember(Order = 0)]
-        public int Id;
+        public string Id;
 
         [DataMember(Order = 1, Name = "Gender")]
         private string _gender;
@@ -28,10 +31,10 @@ namespace Pokemon3D.DataModel.Json.Savegame.Pokemon
         public bool IsShiny;
 
         [DataMember(Order = 4)]
-        public int AbilityId;
+        public string AbilityId;
 
         [DataMember(Order = 5)]
-        public int NatureId;
+        public string NatureId;
 
         [DataMember(Order = 6)]
         public string OT;

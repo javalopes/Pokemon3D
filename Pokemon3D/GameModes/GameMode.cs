@@ -14,6 +14,8 @@ using Pokemon3D.DataModel.Json.GameMode.Definitions;
 using Pokemon3D.DataModel.Json.GameMode.Map;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes.Maps;
+using Pokemon3D.GameModes.Pokemon;
+using Pokemon3D.GameModes.Resources;
 
 namespace Pokemon3D.GameModes
 {
@@ -25,8 +27,10 @@ namespace Pokemon3D.GameModes
         public GameModeInfo GameModeInfo { get; }
 
         public MapManager MapManager { get; private set; }
-        public Resources.PrimitiveManager PrimitiveManager { get; private set; }
+        public PrimitiveManager PrimitiveManager { get; private set; }
         
+        public NatureManager NatureManager { get; private set; }
+
         public bool IsValid { get; private set; }
 
         /// <summary>
@@ -39,8 +43,9 @@ namespace Pokemon3D.GameModes
             // only continue if the game mode config file loaded correctly.
             if (GameModeInfo.IsValid)
             {
-                PrimitiveManager = new Resources.PrimitiveManager(this);
+                PrimitiveManager = new PrimitiveManager(this);
                 MapManager = new MapManager(this);
+                NatureManager = new NatureManager(this);
             }
 
             IsValid = true;

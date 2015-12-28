@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Pokemon3D.DataModel.Json.GameMode.Pokemon;
 using Pokemon3D.DataModel.Json.Savegame.Pokemon;
+using Pokemon3D.DataModel.Json.Pokemon;
+using Pokemon3D.DataModel.Json.GameMode.Definitions;
 
 namespace Pokemon3D.GameModes.Pokemon
 {
@@ -13,8 +15,29 @@ namespace Pokemon3D.GameModes.Pokemon
     /// </summary>
     class Pokemon
     {
+        private const string DEFAULT_FORM_VALUE = "Default";
+
+        private GameMode _gameMode;
+
         private PokemonModel _dataModel;
         private PokemonSaveModel _saveModel;
+
+        private string _activeForm;
+
+        public PokemonStatSetModel EVs
+        {
+            get { return _saveModel.EVs; }
+        }
+
+        public PokemonStatSetModel IVs
+        {
+            get { return _saveModel.IVs; }
+        }
+
+        public PokemonStatSetModel BaseStats
+        {
+            get { return ActiveFormModel.BaseStats; }
+        }
 
         public int Experience
         {
@@ -36,6 +59,11 @@ namespace Pokemon3D.GameModes.Pokemon
             }
         }
 
+        public NatureModel Nature
+        {
+            get { return _gameMode.NatureManager.GetNature(_saveModel.NatureId); }
+        }
+
         public string DisplayName
         {
             get
@@ -47,15 +75,27 @@ namespace Pokemon3D.GameModes.Pokemon
             }
         }
 
-        public Pokemon(PokemonModel dataModel)
+        private PokemonFormModel ActiveFormModel
         {
-            _dataModel = dataModel;
+            get { return _dataModel.Forms.Single(x => x.FormName == _activeForm); }
         }
 
-        public Pokemon(PokemonModel dataModel, PokemonSaveModel saveModel)
+        public Pokemon(GameMode gameMode, PokemonModel dataModel, PokemonSaveModel saveModel)
         {
+            _gameMode = gameMode;
+
             _dataModel = dataModel;
             _saveModel = saveModel;
+
+            FormChangeTriggerHandle();
+        }
+
+        private void FormChangeTriggerHandle()
+        {
+            // determine the current form of the Pokémon here.
+            // if no special form applies, set to "Default".
+
+            _activeForm = DEFAULT_FORM_VALUE;
         }
 
     }

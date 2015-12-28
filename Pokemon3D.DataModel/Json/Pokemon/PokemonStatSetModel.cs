@@ -47,6 +47,30 @@ namespace Pokemon3D.DataModel.Json.Pokemon
         [DataMember(Order = 5)]
         public int Speed;
 
+        /// <summary>
+        /// Returns the stat of this stat set defined in the stat type.
+        /// </summary>
+        public int GetStat(PokemonStatType statType)
+        {
+            switch (statType)
+            {
+                case PokemonStatType.HP:
+                    return HP;
+                case PokemonStatType.Attack:
+                    return Atk;
+                case PokemonStatType.Defense:
+                    return Def;
+                case PokemonStatType.SpecialAttack:
+                    return SpAtk;
+                case PokemonStatType.SpecialDefense:
+                    return SpDef;
+                case PokemonStatType.Speed:
+                    return Speed;
+            }
+            // should not happen, as all cases are covered above
+            return 0;
+        }
+
         public override object Clone()
         {
             return MemberwiseClone();

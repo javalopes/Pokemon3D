@@ -14,6 +14,7 @@ namespace Pokemon3D.GameModes
         private const string PATH_MAPS = "Maps";
         private const string PATH_FRAGMENTS = "Fragments";
         private const string PATH_DATA_i18n = "i18n";
+        private const string PATH_DATA_POKEMON = "Pokemon";
 
         public const string FILE_DATA_PRIMITIVES = "Primitives.json";
 
@@ -41,6 +42,8 @@ namespace Pokemon3D.GameModes
         /// The path to the fragments base folder of this GameMode.
         /// </summary>
         public string FragmentsPath => Path.Combine(GameModeInfo.DirectoryPath, PATH_FRAGMENTS);
+
+        public string PokemonDataPath => Path.Combine(DataPath, PATH_DATA_POKEMON);
 
         public string i18nPath => Path.Combine(DataPath, PATH_DATA_i18n);
     }
