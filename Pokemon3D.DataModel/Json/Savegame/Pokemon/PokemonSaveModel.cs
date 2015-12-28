@@ -37,30 +37,27 @@ namespace Pokemon3D.DataModel.Json.Savegame.Pokemon
         public string NatureId;
 
         [DataMember(Order = 6)]
-        public string OT;
-
-        [DataMember(Order = 7)]
         public PokemonCatchInfo CatchInfo;
 
-        [DataMember(Order = 8)]
+        [DataMember(Order = 7)]
         public string PersonalityValue;
 
-        [DataMember(Order = 9)]
+        [DataMember(Order = 8)]
         public int HP;
 
-        [DataMember(Order = 10)]
+        [DataMember(Order = 9)]
         public int Experience;
 
-        [DataMember(Order = 11)]
+        [DataMember(Order = 10)]
         public string Nickname;
 
-        [DataMember(Order = 12)]
+        [DataMember(Order = 11)]
         public int Friendship;
 
-        [DataMember(Order = 13)]
+        [DataMember(Order = 12)]
         public HeldItemModel Item;
 
-        [DataMember(Order = 14, Name = "Status")]
+        [DataMember(Order = 13, Name = "Status")]
         private string _status;
 
         public PokemonStatus Status
@@ -69,16 +66,16 @@ namespace Pokemon3D.DataModel.Json.Savegame.Pokemon
             set { _status = value.ToString(); }
         }
 
-        [DataMember(Order = 15)]
+        [DataMember(Order = 14)]
         public PokemonStatSetModel EVs;
 
-        [DataMember(Order = 16)]
+        [DataMember(Order = 15)]
         public int EggSteps;
 
-        [DataMember(Order = 17)]
+        [DataMember(Order = 16)]
         public string AdditionalData;
 
-        [DataMember(Order = 18)]
+        [DataMember(Order = 17)]
         public PokemonMoveModel[] Moves;
 
         public override object Clone()

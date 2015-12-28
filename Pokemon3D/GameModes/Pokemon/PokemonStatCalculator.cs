@@ -10,10 +10,15 @@ namespace Pokemon3D.GameModes.Pokemon
 {
     class PokemonStatCalculator
     {
-        public static int CalculateHP(int baseHP, int IVHP, int EVHP, int level)
+        public static int CalculateHP(Pokemon pokemon)
         {
             // HP = 
             // (floor((2 * Base + IV + floor(EV / 4)) * Level) + Level + 10)
+
+            int baseHP = pokemon.BaseStats.HP;
+            int IVHP = pokemon.IVs.HP;
+            int level = pokemon.Level;
+            int EVHP = pokemon.EVs.HP;
 
             return (int)(Floor(((2 * baseHP + IVHP + Floor((double)EVHP / 4)) * level) / 100) + level + 10);
         }

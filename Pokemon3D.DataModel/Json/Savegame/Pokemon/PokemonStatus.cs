@@ -2,6 +2,7 @@
 {
     public enum PokemonStatus
     {
+        None,
         Burn,
         Freeze,
         Paralysis,

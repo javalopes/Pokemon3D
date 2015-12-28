@@ -15,9 +15,12 @@ namespace Pokemon3D.DataModel.Json.Savegame.Pokemon
         public string TrainerName;
 
         [DataMember(Order = 2)]
-        public string BallItemId;
+        public string OT;
 
         [DataMember(Order = 3)]
+        public string BallItemId;
+
+        [DataMember(Order = 4)]
         public string Method;
 
         public override object Clone()

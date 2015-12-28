@@ -39,6 +39,15 @@ namespace Pokemon3D.GameModes.Pokemon
             get { return ActiveFormModel.BaseStats; }
         }
 
+        /// <summary>
+        /// The current health points of this Pokémon.
+        /// </summary>
+        public int HP
+        {
+            get { return _saveModel.HP; }
+            set { _saveModel.HP = value; }
+        }
+
         public int Experience
         {
             get { return _saveModel.Experience; }
@@ -79,7 +88,7 @@ namespace Pokemon3D.GameModes.Pokemon
         {
             get { return _dataModel.Forms.Single(x => x.FormName == _activeForm); }
         }
-
+        
         public Pokemon(GameMode gameMode, PokemonModel dataModel, PokemonSaveModel saveModel)
         {
             _gameMode = gameMode;

@@ -17,7 +17,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
         public string Name;
         
         [DataMember(Order = 1)]
-        public int Number;
+        public string Id;
 
         [DataMember(Order = 2)]
         public PokedexEntryModel PokedexEntry;
