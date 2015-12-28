@@ -31,6 +31,8 @@ namespace Pokemon3D.GameModes
         
         public NatureManager NatureManager { get; private set; }
 
+        public PokemonFactory PokemonFactory { get; private set; }
+
         public bool IsValid { get; private set; }
 
         /// <summary>
@@ -46,9 +48,13 @@ namespace Pokemon3D.GameModes
                 PrimitiveManager = new PrimitiveManager(this);
                 MapManager = new MapManager(this);
                 NatureManager = new NatureManager(this);
+                PokemonFactory = new PokemonFactory(this);
             }
 
             IsValid = true;
+
+            var bulbasaur = PokemonFactory.Create("Bulbasaur", 10);
+            Console.ReadKey();
         }
         
         public GeometryData GetPrimitiveData(string primitiveName)

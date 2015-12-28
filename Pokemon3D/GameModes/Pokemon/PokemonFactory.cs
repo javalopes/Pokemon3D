@@ -53,7 +53,7 @@ namespace Pokemon3D.GameModes.Pokemon
                 }
                 else
                 {
-                    GameLogger.Instance.Log(MessageType.Error, "Pokémon data file at \"" + path + "\" not found.");
+                    GameLogger.Instance.Log(MessageType.Error, "Pokémon data file (id: \"" + id + "\") at \"" + path + "\" not found.");
                 }
 
                 _definitionModelbuffer.Add(id, definitionModel);
@@ -190,6 +190,8 @@ namespace Pokemon3D.GameModes.Pokemon
             saveModel.Nickname = "";
 
             saveModel.Status = PokemonStatus.None;
+
+            saveModel.AdditionalData = "";
         }
     }
 }

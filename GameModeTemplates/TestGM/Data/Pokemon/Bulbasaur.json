@@ -1,0 +1,202 @@
+{
+    "Id" : "Bulbasaur",
+    "Number" : 1,
+    "Name" : "Bulbasaur",
+    "PokedexEntry" : {
+        "Text" : "For some time after its birth, it grows by gaining nourishment from the seed on its back.",
+        "Species" : "Seed",
+        "Height" : 0.7,
+        "Weight" : 6.9,
+        "Color" : {
+            "Red" : 64,
+            "Green" : 184,
+            "Blue" : 104
+        },
+        "BodyStyle" : "Quadruped"
+    },
+    "InitScript" : "",
+    "Forms" : [
+        {
+            "Id" : "Default",
+            "Activation" : null,
+            "BaseStats" : {
+                "HP" : 45,
+                "Atk" : 49,
+                "Def" : 49,
+                "SpAtk" : 65,
+                "SpDef" : 65,
+                "Speed" : 45
+            },
+            "MenuTexture" : 
+            {
+                "Source" : "some texture",
+                "Rectangle" : null
+            },
+            "SpriteTexture" : 
+            {
+                "Source" : "some texture",
+                "Rectangle" : null
+            },
+            "OverworldTexture" : 
+            {
+                "Source" : "some texture",
+                "Rectangle" : null
+            },
+            "Type1" : "Grass",
+            "Type2" : "None",
+            "CatchRate" : 45,
+            "Abilities" : [
+                "Overgrow",
+                "Chlorophyll"
+            ],
+            "LevelMoves" : [
+                {
+                    "Level" : 1,
+                    "Id" : "Tackle"
+                },
+                {
+                    "Level" : 3,
+                    "Id" : "Growl"
+                },
+                {
+                    "Level" : 7,
+                    "Id" : "Leech Seed"
+                },
+                {
+                    "Level" : 9,
+                    "Id" : "Vine Whip"
+                },
+                {
+                    "Level" : 13,
+                    "Id" : "Poison Powder"
+                },
+                {
+                    "Level" : 13,
+                    "Id" : "Sleep Powder"
+                },
+                {
+                    "Level" : 15,
+                    "Id" : "Take Down"
+                },
+                {
+                    "Level" : 19,
+                    "Id" : "Razor Leaf"
+                },
+                {
+                    "Level" : 21,
+                    "Id" : "Sweet Scent"
+                },
+                {
+                    "Level" : 25,
+                    "Id" : "Growth"
+                },
+                {
+                    "Level" : 27,
+                    "Id" : "Double-Edge"
+                },
+                {
+                    "Level" : 31,
+                    "Id" : "Worry Seed"
+                },
+                {
+                    "Level" : 33,
+                    "Id" : "Synthesis"
+                },
+                {
+                    "Level" : 37,
+                    "Id" : "Seed Bomb"
+                }
+            ],
+            "MachineMoves" : [
+                "Toxic",
+                "Venoshock",
+                "Hidden Power",
+                "Sunny Day",
+                "Light Screen",
+                "Protect",
+                "Safeguard",
+                "Frustration",
+                "Solar Beam",
+                "Return",
+                "Double Team",
+                "Sludge Bomb",
+                "Facade",
+                "Rest",
+                "Attract",
+                "Round",
+                "Echoed Voice",
+                "Energy Ball",
+                "Flash",
+                "Swords Dance",
+                "Grass Knot",
+                "Swagger",
+                "Sleep Talk",
+                "Substitute",
+                "Rock SmashXY",
+                "Secret PowerORAS",
+                "Nature Power",
+                "Confide",
+                "Cut",
+                "Strength",
+                "Rock Smash"
+            ],
+            "EggMoves" : [
+                "Amnesia",
+                "Charm",
+                "Curse",
+                "Endure",
+                "Giga Drain",
+                "Grass Whistle",
+                "Grassy Terrain",
+                "Ingrain",
+                "Leaf Storm",
+                "Magical Leaf",
+                "Nature Power",
+                "Petal Dance",
+                "Power Whip",
+                "Skull Bash",
+                "Sludge"
+            ],
+            "TutorMoves" : [
+                "Bind",
+                "Giga Drain",
+                "Grass Pledge",
+                "Knock Off",
+                "Seed Bomb",
+                "Snore",
+                "Synthesis",
+                "Worry Seed"
+            ]
+        }
+    ],
+    "HeldItems" : [],
+    "ExperienceType" : "MediumSlow",
+    "EvolutionConditions" : [
+        {
+            "ConditionType" : "Level",
+            "Condition" : "16",
+            "Evolution" : "Ivysaur",
+            "Trigger" : "LevelUp"
+        }
+    ],
+    "IsLegendary" : false,
+    "BaseFriendship" : 70,
+    "RewardEV" : {
+        "HP" : 0,
+        "Atk" : 0,
+        "Def" : 0,
+        "SpAtk" : 1,
+        "SpDef" : 0,
+        "Speed" : 0
+    },
+    "IsMale" : 87.5,
+    "IsGenderless" : false,
+    "CanBreed" : true,
+    "BaseEggSteps" : 5355,
+    "EggPokemon" : "Bulbasaur",
+    "Devolution" : "",
+    "EggGroups" : [
+        "Monster",
+        "Grass"
+    ]
+}

@@ -14,24 +14,27 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
     public class PokemonModel : JsonDataModel<PokemonModel>
     {
         [DataMember(Order = 0)]
-        public string Name;
-        
-        [DataMember(Order = 1)]
         public string Id;
 
+        [DataMember(Order = 1)]
+        public int Number;
+
         [DataMember(Order = 2)]
+        public string Name;
+        
+        [DataMember(Order = 3)]
         public PokedexEntryModel PokedexEntry;
 
-        [DataMember(Order = 3)]
+        [DataMember(Order = 4)]
         public string InitScript;
 
-        [DataMember(Order = 4)]
+        [DataMember(Order = 5)]
         public PokemonFormModel[] Forms;
 
-        [DataMember(Order = 5)]
+        [DataMember(Order = 6)]
         public SpawnHeldItemModel[] HeldItems;
 
-        [DataMember(Order = 6, Name = "ExperienceType")]
+        [DataMember(Order = 7, Name = "ExperienceType")]
         private string _experienceType;
         
         public ExperienceType ExperienceType
@@ -39,37 +42,37 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
             get { return ConvertStringToEnum<ExperienceType>(_experienceType); }
         }
         
-        [DataMember(Order = 7)]
+        [DataMember(Order = 8)]
         public EvolutionConditionModel[] EvolutionConditions;
 
-        [DataMember(Order = 8)]
+        [DataMember(Order = 9)]
         public bool IsLegendary;
 
-        [DataMember(Order = 9)]
+        [DataMember(Order = 10)]
         public int BaseFriendship;
 
-        [DataMember(Order = 10)]
+        [DataMember(Order = 11)]
         public PokemonStatSetModel RewardEV;
 
-        [DataMember(Order = 11)]
+        [DataMember(Order = 12)]
         public double IsMale;
 
-        [DataMember(Order = 12)]
+        [DataMember(Order = 13)]
         public bool IsGenderless;
 
-        [DataMember(Order = 13)]
+        [DataMember(Order = 14)]
         public bool CanBreed;
 
-        [DataMember(Order = 14)]
+        [DataMember(Order = 15)]
         public int BaseEggSteps;
 
-        [DataMember(Order = 15)]
-        public int EggPokemon;
-
         [DataMember(Order = 16)]
-        public int Devolution;
+        public string EggPokemon;
 
         [DataMember(Order = 17)]
+        public string Devolution;
+
+        [DataMember(Order = 18)]
         public string[] EggGroups;
 
         public override object Clone()

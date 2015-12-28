@@ -32,7 +32,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
         /// The Id of the Pokémon this Pokémon will evolve into.
         /// </summary>
         [DataMember(Order = 2)]
-        public int Evolution;
+        public string Evolution;
 
         [DataMember(Order = 3, Name = "Trigger")]
         private string _trigger;

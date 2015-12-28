@@ -30,7 +30,7 @@ namespace Pokemon3D.GameModes.Pokemon
 
         private void LoadNatures()
         {
-            string path = Path.Combine(_gameMode.PokemonDataPath, NATURES_FILE_NAME);
+            string path = Path.Combine(_gameMode.DataPath, NATURES_FILE_NAME);
 
             if (File.Exists(path))
             {

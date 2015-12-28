@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
     public class PokemonFormModel : JsonDataModel<PokemonFormModel>
     {
         [DataMember(Order = 0)]
-        public string FormName;
+        public string Id;
 
         [DataMember(Order = 1)]
         public PokemonFormActivationModel Activation;
@@ -37,19 +37,19 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
         public int CatchRate;
 
         [DataMember(Order = 9)]
-        public int[] Abilities;
+        public string[] Abilities;
 
         [DataMember(Order = 10)]
         public LevelUpMoveModel[] LevelMoves;
 
         [DataMember(Order = 11)]
-        public int[] MachineMoves;
+        public string[] MachineMoves;
 
         [DataMember(Order = 12)]
-        public int[] EggMoves;
+        public string[] EggMoves;
 
         [DataMember(Order = 13)]
-        public int[] TutorMoves;
+        public string[] TutorMoves;
 
         public override object Clone()
         {
@@ -59,11 +59,11 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
             clone.MenuTexture = MenuTexture.CloneModel();
             clone.SpriteTexture = SpriteTexture.CloneModel();
             clone.OverworldTexture = OverworldTexture.CloneModel();
-            clone.Abilities = (int[])Abilities.Clone();
+            clone.Abilities = (string[])Abilities.Clone();
             clone.LevelMoves = (LevelUpMoveModel[])LevelMoves.Clone();
-            clone.MachineMoves = (int[])MachineMoves.Clone();
-            clone.EggMoves = (int[])EggMoves.Clone();
-            clone.TutorMoves = (int[])TutorMoves.Clone();
+            clone.MachineMoves = (string[])MachineMoves.Clone();
+            clone.EggMoves = (string[])EggMoves.Clone();
+            clone.TutorMoves = (string[])TutorMoves.Clone();
             return clone;
         }
     }

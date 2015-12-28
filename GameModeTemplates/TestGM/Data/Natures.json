@@ -1,0 +1,48 @@
+[
+    {
+        "Id" : "Hardy",
+        "Name" : "Hardy",
+        "StatIncrease" : [],
+        "StatDecrease" : []
+    },
+    {
+        "Id" : "Lonely",
+        "Name" : "Lonely",
+        "StatIncrease" : [
+            "Attack"
+        ],
+        "StatDecrease" : [
+            "Defense"
+        ]
+    },
+    {
+        "Id" : "Brave",
+        "Name" : "Brave",
+        "StatIncrease" : [
+            "Attack"
+        ],
+        "StatDecrease" : [
+            "Speed"
+        ]
+    },
+    {
+        "Id" : "Adamant",
+        "Name" : "Adamant",
+        "StatIncrease" : [
+            "Attack"
+        ],
+        "StatDecrease" : [
+            "SpecialAttack"
+        ]
+    },
+    {
+        "Id" : "Naughty",
+        "Name" : "Naughty",
+        "StatIncrease" : [
+            "Attack"
+        ],
+        "StatDecrease" : [
+            "SpecialDefense"
+        ]
+    }
+]

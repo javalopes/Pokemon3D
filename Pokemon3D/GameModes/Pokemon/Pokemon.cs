@@ -24,16 +24,28 @@ namespace Pokemon3D.GameModes.Pokemon
 
         private string _activeForm;
 
+        /// <summary>
+        /// The effort values of this Pokémon.
+        /// </summary>
+        /// <remarks>http://bulbapedia.bulbagarden.net/wiki/Effort_values</remarks>
         public PokemonStatSetModel EVs
         {
             get { return _saveModel.EVs; }
         }
 
+        /// <summary>
+        /// The individual values of this Pokémon.
+        /// </summary>
+        /// <remarks>http://bulbapedia.bulbagarden.net/wiki/Individual_values</remarks>
         public PokemonStatSetModel IVs
         {
             get { return _saveModel.IVs; }
         }
 
+        /// <summary>
+        /// The base stats of this Pokémon.
+        /// </summary>
+        /// <remarks>http://bulbapedia.bulbagarden.net/wiki/Statistic</remarks>
         public PokemonStatSetModel BaseStats
         {
             get { return ActiveFormModel.BaseStats; }
@@ -86,7 +98,7 @@ namespace Pokemon3D.GameModes.Pokemon
 
         private PokemonFormModel ActiveFormModel
         {
-            get { return _dataModel.Forms.Single(x => x.FormName == _activeForm); }
+            get { return _dataModel.Forms.Single(x => x.Id == _activeForm); }
         }
         
         public Pokemon(GameMode gameMode, PokemonModel dataModel, PokemonSaveModel saveModel)
