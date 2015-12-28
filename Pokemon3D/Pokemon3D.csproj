@@ -58,6 +58,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="FileSystem\DataRequest.cs" />
+    <Compile Include="FileSystem\DataRequestStatus.cs" />
     <Compile Include="FileSystem\FileProvider.cs" />
     <Compile Include="FileSystem\GameModeFileProvider.cs" />
     <Compile Include="FileSystem\i18nFileProvider.cs" />
