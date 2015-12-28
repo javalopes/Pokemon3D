@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Pokemon3D.DataModel.Json.Pokemon;
+using static System.Math;
 
 namespace Pokemon3D.GameModes.Pokemon
 {
@@ -14,7 +15,7 @@ namespace Pokemon3D.GameModes.Pokemon
             // HP = 
             // (floor((2 * Base + IV + floor(EV / 4)) * Level) + Level + 10)
 
-            return (int)(Math.Floor(((2 * baseHP + IVHP + Math.Floor((double)EVHP / 4)) * level) / 100) + level + 10);
+            return (int)(Floor(((2 * baseHP + IVHP + Floor((double)EVHP / 4)) * level) / 100) + level + 10);
         }
 
         public static int CalculateStat(Pokemon pokemon, PokemonStatType statType)
@@ -33,7 +34,7 @@ namespace Pokemon3D.GameModes.Pokemon
             else if (pokemon.Nature.StatDecrease.Contains(statType))
                 nature = 0.9d;
 
-            return (int)((Math.Floor((Math.Floor(2 * baseStat + IV + Math.Floor((double)EV / 4)) * pokemon.Level) / 100) + 5) * nature);
+            return (int)((Floor((Floor(2 * baseStat + IV + Floor((double)EV / 4)) * pokemon.Level) / 100) + 5) * nature);
         }
     }
 }
