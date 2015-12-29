@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -65,21 +66,34 @@ namespace Pokemon3D.UI.Screens
             LoadMap();
         }
 
+        private Dispatcher _dispatcher;
+
         private void LoadMap()
         {
+            _dispatcher = Dispatcher.CurrentDispatcher;
             var request = _gameMode.MapManager.CreateDataRequest(_gameMode.GameModeInfo.StartMap);
             request.Finished += FinishedLoadingMapModel;
-            request.Start();
+            request.StartThreaded();
         }
 
         private void FinishedLoadingMapModel(object sender, EventArgs e)
         {
             var request = (DataRequest<MapModel>)sender;
-            _currentMap = new Map(_gameMode, request.ResultModel, _scene, Game.Resources);
+
+            _dispatcher.Invoke(() =>
+            {
+                _currentMap = new Map(_gameMode, request.ResultModel, _scene, Game.Resources);
+                _maploaded = true;
+            });
+            
         }
+
+        private bool _maploaded;
 
         public void OnUpdate(float elapsedTime)
         {
+            //if (!_maploaded) return;
+
             _player.Update(elapsedTime);
             _currentMap?.Update(elapsedTime);
             _scene.Update(elapsedTime);
@@ -131,6 +145,7 @@ namespace Pokemon3D.UI.Screens
 
         public void OnDraw(GameTime gameTime)
         {
+            //if (!_maploaded) return;
             _renderer.Draw(_scene);
 
             if (_showRenderStatistics) DrawRenderStatsitics();

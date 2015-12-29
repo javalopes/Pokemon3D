@@ -68,6 +68,10 @@ namespace Pokemon3D.Rendering.Compositor
 
             _elementsToDraw.Clear();
 
+            _elementsToDraw.AddRange(sceneNodes);
+            _isOptimized = true;
+            return;
+
             var staticNodes = new List<SceneNode>();
             var dynamicNodes = new List<SceneNode>();
             for (var i = 0; i < sceneNodes.Length; i++)
