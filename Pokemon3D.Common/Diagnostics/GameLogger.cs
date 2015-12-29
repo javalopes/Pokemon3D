@@ -49,8 +49,12 @@ namespace Pokemon3D.Common.Diagnostics
         public void Log(MessageType messageType, string message)
         {
             var icon = GetMessageTypeIcon(messageType);
-            var outLine = string.Format(LoggerFileLineFormat, DateTime.Now.ToLongTimeString(), icon, message);
-            File.AppendAllText(_logFilePath, outLine);
+
+            if (messageType != MessageType.Debug)
+            {
+                var outLine = string.Format(LoggerFileLineFormat, DateTime.Now.ToLongTimeString(), icon, message);
+                File.AppendAllText(_logFilePath, outLine);
+            }
 
 #if DEBUG
             if (Debugger.IsAttached) Debug.Print(LoggerVsFormat, DateTime.Now.ToLongTimeString(), icon, message);

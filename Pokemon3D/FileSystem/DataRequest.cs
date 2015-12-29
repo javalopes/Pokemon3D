@@ -8,6 +8,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Pokemon3D.DataModel.Json;
+using Pokemon3D.Common.Diagnostics;
 
 namespace Pokemon3D.FileSystem
 {
@@ -77,6 +78,8 @@ namespace Pokemon3D.FileSystem
             if (Started != null)
                 Started(this, EventArgs.Empty);
 
+            GameLogger.Instance.Log(MessageType.Debug, "Data Request for data path \"" + DataPath + "\" started (async).");
+
             if (true) // check if game is running in server mode or offline mode
             {
                 // offline mode
@@ -95,6 +98,8 @@ namespace Pokemon3D.FileSystem
         public void Start()
         {
             Status = DataRequestStatus.Incomplete;
+
+            GameLogger.Instance.Log(MessageType.Debug, "Data Request for data path \"" + DataPath + "\" started.");
 
             if (Started != null)
                 Started(this, EventArgs.Empty);
@@ -141,6 +146,8 @@ namespace Pokemon3D.FileSystem
             {
                 Status = DataRequestStatus.Error;
             }
+
+            GameLogger.Instance.Log(MessageType.Debug, "Data Request for data path \"" + DataPath + "\" finished  (Status:" + Status.ToString() + ").");
 
             if (Finished != null)
                 Finished(this, EventArgs.Empty);
