@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Pokemon3D.DataModel.Json.GameMode.Items
 {
     [DataContract]
-    public class InventoryDefinitionModel : JsonDataModel<InventoryDefinitionModel>
+    public class InventoryDefinitionModel : DataModel<InventoryDefinitionModel>
     {
         [DataMember(Name = "ItemCategory", Order = 0)]
         private string _itemCategory;

@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Battle
     /// Data model for a move a Pokémon can use in battle.
     /// </summary>
     [DataContract]
-    public class MoveModel : JsonDataModel<MoveModel>
+    public class MoveModel : DataModel<MoveModel>
     {
         /* Members:
          x Id

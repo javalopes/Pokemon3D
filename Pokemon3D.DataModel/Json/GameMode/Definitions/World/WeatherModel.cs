@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Definitions.World
     /// The data model for a weather definition.
     /// </summary>
     [DataContract]
-    public class WeatherModel : JsonDataModel<WeatherModel>
+    public class WeatherModel : DataModel<WeatherModel>
     {
         [DataMember(Order = 0, Name = "WeatherType")]
         private string _weatherType;

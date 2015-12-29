@@ -11,7 +11,7 @@ namespace Pokemon3D.DataModel.Json
     /// The data model for a <see cref="Vector2"/> definition.
     /// </summary>
     [DataContract]
-    public class Vector2Model : JsonDataModel<Vector2Model>
+    public class Vector2Model : DataModel<Vector2Model>
     {
         /// <summary>
         /// The X coordinate of this vector.

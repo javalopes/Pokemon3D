@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Map.Entities
     /// The render mode model for an entity.
     /// </summary>
     [DataContract]
-    public class EntityRenderModeModel : JsonDataModel<EntityRenderModeModel>
+    public class EntityRenderModeModel : DataModel<EntityRenderModeModel>
     {
         [DataMember(Name = "RenderMethod", Order = 0)]
         private string RenderMethodStr;

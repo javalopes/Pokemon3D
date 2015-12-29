@@ -9,7 +9,7 @@ namespace Pokemon3D.DataModel.Json.Pokemon
     /// The data model for a stat definition for a Pokémon.
     /// </summary>
     [DataContract]
-    public class PokemonStatSetModel : JsonDataModel<PokemonStatSetModel>
+    public class PokemonStatSetModel : DataModel<PokemonStatSetModel>
     {
         /// <summary>
         /// The Health Points stat.

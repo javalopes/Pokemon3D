@@ -36,7 +36,7 @@ namespace Pokemon3D.GameModes.Pokemon
             {
                 try
                 {
-                    _natures = JsonDataModel<NatureModel[]>.FromFile(path);
+                    _natures = DataModel<NatureModel[]>.FromFile(path);
                 }
                 catch (JsonDataLoadException ex)
                 {

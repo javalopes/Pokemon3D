@@ -44,7 +44,7 @@ namespace Pokemon3D.GameModes.Pokemon
                 {
                     try
                     {
-                        definitionModel = JsonDataModel<PokemonModel>.FromFile(path);
+                        definitionModel = DataModel<PokemonModel>.FromFile(path);
                     }
                     catch (JsonDataLoadException ex)
                     {

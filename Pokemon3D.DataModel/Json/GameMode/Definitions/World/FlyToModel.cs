@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Definitions.World
     /// A data model for the fly destination used by a map object.
     /// </summary>
     [DataContract]
-    public class FlyToModel : JsonDataModel<FlyToModel>
+    public class FlyToModel : DataModel<FlyToModel>
     {
         [DataMember(Order = 0)]
         public Vector3Model Position;

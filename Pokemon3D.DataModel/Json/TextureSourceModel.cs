@@ -9,7 +9,7 @@ namespace Pokemon3D.DataModel.Json
     /// Describes a texture source.
     /// </summary>
     [DataContract]
-    public class TextureSourceModel : JsonDataModel<TextureSourceModel>
+    public class TextureSourceModel : DataModel<TextureSourceModel>
     {
         /// <summary>
         /// The source file for this texture.

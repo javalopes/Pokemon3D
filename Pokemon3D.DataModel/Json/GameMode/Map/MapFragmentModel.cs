@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Pokemon3D.DataModel.Json.GameMode.Map
 {
     [DataContract]
-    public class MapFragmentModel : JsonDataModel<MapFragmentModel>
+    public class MapFragmentModel : DataModel<MapFragmentModel>
     {
         [DataMember(Order = 0)]
         public string Id;

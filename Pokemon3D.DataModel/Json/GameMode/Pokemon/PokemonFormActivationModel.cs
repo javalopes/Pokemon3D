@@ -6,7 +6,7 @@
 namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
 {
     [DataContract]
-    public class PokemonFormActivationModel : JsonDataModel<PokemonFormActivationModel>
+    public class PokemonFormActivationModel : DataModel<PokemonFormActivationModel>
     {
         [DataMember(Order = 0)]
         public string Type;

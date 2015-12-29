@@ -6,7 +6,7 @@
 namespace Pokemon3D.DataModel.Json.GameMode.Map
 {
     [DataContract]
-    public class MapPokemonModel : JsonDataModel<MapPokemonModel>
+    public class MapPokemonModel : DataModel<MapPokemonModel>
     {
         [DataMember(Order = 0)]
         public bool ShowFollower;

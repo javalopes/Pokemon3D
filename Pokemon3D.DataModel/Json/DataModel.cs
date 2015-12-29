@@ -11,7 +11,7 @@ namespace Pokemon3D.DataModel.Json
     /// The base data model class.
     /// </summary>
     [DataContract]
-    public abstract class JsonDataModel<T> : ICloneable
+    public abstract class DataModel<T> : ICloneable
     {
         /// <summary>
         /// Creates a data model of a specific type, loaded from a file.

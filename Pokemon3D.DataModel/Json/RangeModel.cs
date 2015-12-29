@@ -11,7 +11,7 @@ namespace Pokemon3D.DataModel.Json
     /// The data model for a range.
     /// </summary>
     [DataContract]
-    public class RangeModel : JsonDataModel<RangeModel>
+    public class RangeModel : DataModel<RangeModel>
     {
         /// <summary>
         /// The lower bound of the range.

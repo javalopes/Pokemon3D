@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
     /// The data model for a Pokédex entry of a Pokémon.
     /// </summary>
     [DataContract]
-    public class PokedexEntryModel : JsonDataModel<PokedexEntryModel>
+    public class PokedexEntryModel : DataModel<PokedexEntryModel>
     {
         /// <summary>
         /// The description text of the entry.

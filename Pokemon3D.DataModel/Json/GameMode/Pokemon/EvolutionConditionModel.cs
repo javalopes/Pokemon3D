@@ -9,7 +9,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
     /// The data model for an evolution condition of a Pokémon.
     /// </summary>
     [DataContract]
-    public class EvolutionConditionModel : JsonDataModel<EvolutionConditionModel>
+    public class EvolutionConditionModel : DataModel<EvolutionConditionModel>
     {
         [DataMember(Order = 0, Name = "ConditionType")]
         private string _conditionType;

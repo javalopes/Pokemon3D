@@ -27,6 +27,9 @@ namespace Pokemon3D.GameModes
         public GameModeInfo GameModeInfo { get; }
 
         public MapManager MapManager { get; private set; }
+
+        public MapFragmentManager MapFragmentManager { get; private set; }
+
         public PrimitiveManager PrimitiveManager { get; private set; }
         
         public NatureManager NatureManager { get; private set; }
@@ -47,6 +50,7 @@ namespace Pokemon3D.GameModes
             {
                 PrimitiveManager = new PrimitiveManager(this);
                 MapManager = new MapManager(this);
+                MapFragmentManager = new MapFragmentManager(this);
                 NatureManager = new NatureManager(this);
                 PokemonFactory = new PokemonFactory(this);
             }
@@ -66,7 +70,7 @@ namespace Pokemon3D.GameModes
             if (disposing)
             {
                 // free managed resources
-                MapManager.Dispose();
+                // MapManager.Dispose();
                 PrimitiveManager.Dispose();
             }
 

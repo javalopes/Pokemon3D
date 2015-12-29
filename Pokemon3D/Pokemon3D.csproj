@@ -59,6 +59,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="FileSystem\DataRequest.cs" />
+    <Compile Include="FileSystem\DataRequestModelManager.cs" />
     <Compile Include="FileSystem\DataRequestStatus.cs" />
     <Compile Include="FileSystem\FileProvider.cs" />
     <Compile Include="FileSystem\GameModeFileProvider.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="GameModes\Maps\Generators\SimpleEntityGenerator.cs" />
     <Compile Include="GameModes\Maps\Generators\TexturedCubeEntityGenerator.cs" />
     <Compile Include="GameModes\Maps\Map.cs" />
+    <Compile Include="GameModes\Maps\MapFragmentManager.cs" />
     <Compile Include="GameModes\Maps\MapManager.cs" />
     <Compile Include="GameModes\Maps\Player.cs" />
     <Compile Include="GameModes\Maps\PlayerMovementMode.cs" />

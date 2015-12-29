@@ -6,7 +6,7 @@
 namespace Pokemon3D.DataModel.Json.i18n
 {
     [DataContract]
-    public class TokenModel : JsonDataModel<TokenModel>
+    public class TokenModel : DataModel<TokenModel>
     {
         [DataMember]
         public string Id;

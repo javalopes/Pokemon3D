@@ -24,7 +24,7 @@ namespace Pokemon3D.UI.Localization
                 {
                     try
                     {
-                        sectionModels.AddRange(JsonDataModel<SectionModel[]>.FromFile(file));
+                        sectionModels.AddRange(DataModel<SectionModel[]>.FromFile(file));
                     }
                     catch (JsonDataLoadException)
                     {

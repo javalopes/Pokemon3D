@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Pokemon3D.DataModel.Json.GameMode.Items
 {
     [DataContract]
-    public class ItemClassificationModel : JsonDataModel<ItemClassificationModel>
+    public class ItemClassificationModel : DataModel<ItemClassificationModel>
     {
         [DataMember]
         public bool IsBall;

@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Map
     /// The battle map data for this map. Can be null at runtime.
     /// </summary>
     [DataContract]
-    public class BattleMapDataModel : JsonDataModel<BattleMapDataModel>
+    public class BattleMapDataModel : DataModel<BattleMapDataModel>
     {
         [DataMember]
         public string BattleMapFile;

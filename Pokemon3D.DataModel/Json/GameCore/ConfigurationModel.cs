@@ -8,7 +8,7 @@ using System;
 namespace Pokemon3D.DataModel.Json.GameCore
 {
     [DataContract]
-    public class ConfigurationModel : JsonDataModel<ConfigurationModel>
+    public class ConfigurationModel : DataModel<ConfigurationModel>
     {
         [DataMember(Order = 0)]
         public string DisplayLanguage;

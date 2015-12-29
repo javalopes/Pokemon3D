@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Definitions.World
     /// A data model to represent a region world map.
     /// </summary>
     [DataContract]
-    public class WorldmapModel : JsonDataModel<WorldmapModel>
+    public class WorldmapModel : DataModel<WorldmapModel>
     {
         [DataMember(Order = 0)]
         public string Region;

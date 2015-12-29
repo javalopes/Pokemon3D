@@ -11,7 +11,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
     /// The data model for a Pokémon definition.
     /// </summary>
     [DataContract]
-    public class PokemonModel : JsonDataModel<PokemonModel>
+    public class PokemonModel : DataModel<PokemonModel>
     {
         [DataMember(Order = 0)]
         public string Id;

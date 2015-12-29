@@ -7,6 +7,9 @@ using Pokemon3D.Rendering.Data;
 using Pokemon3D.DataModel.Json.GameMode.Map;
 using Pokemon3D.DataModel.Json.GameMode.Map.Entities;
 using Pokemon3D.GameModes.Maps.Generators;
+using System;
+using Pokemon3D.DataModel.Json;
+using Pokemon3D.FileSystem;
 
 namespace Pokemon3D.GameModes.Maps
 {
@@ -40,19 +43,29 @@ namespace Pokemon3D.GameModes.Maps
             {
                 foreach (var fragmentImport in _mapModel.Fragments)
                 {
-                    var fragmentModel = _gameMode.MapManager.GetMapFragment(fragmentImport.Id);
+                    var request = _gameMode.MapFragmentManager.CreateDataRequest(fragmentImport.Id);
+                    request.DataContext.Add("Positions", fragmentImport.Positions);
+                    request.Finished += FinishLoadingMapFragment;
+                    request.Start();
+                }
+            }
+        }
+        
+        private void FinishLoadingMapFragment(object sender, EventArgs e)
+        {
+            var request = (DataRequest<MapFragmentModel>)sender;
+            var fragmentModel = request.ResultModel;
+            var positions = (Vector3Model[])request.DataContext["Positions"];
 
-                    foreach (var position in fragmentImport.Positions)
+            foreach (var position in positions)
+            {
+                Vector3 fragmentOffset = position.GetVector3();
+
+                foreach (var entityDefinition in fragmentModel.Entities)
+                {
+                    foreach (var entityPlacing in entityDefinition.Placing)
                     {
-                        Vector3 fragmentOffset = position.GetVector3();
-
-                        foreach (var entityDefinition in fragmentModel.Entities)
-                        {
-                            foreach (var entityPlacing in entityDefinition.Placing)
-                            {
-                                PlaceEntities(entityDefinition, entityPlacing, fragmentOffset);
-                            }
-                        }
+                        PlaceEntities(entityDefinition, entityPlacing, fragmentOffset);
                     }
                 }
             }

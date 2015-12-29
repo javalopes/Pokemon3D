@@ -11,7 +11,7 @@ namespace Pokemon3D.DataModel.Json
     /// The data model for an RGB color.
     /// </summary>
     [DataContract]
-    public class ColorModel : JsonDataModel<ColorModel>
+    public class ColorModel : DataModel<ColorModel>
     {
         /// <summary>
         /// The red part of the color.

@@ -10,6 +10,8 @@ using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
 using Pokemon3D.GameModes.Maps;
 using Pokemon3D.Rendering.Compositor;
+using Pokemon3D.FileSystem;
+using Pokemon3D.DataModel.Json.GameMode.Map;
 
 namespace Pokemon3D.UI.Screens
 {
@@ -56,17 +58,30 @@ namespace Pokemon3D.UI.Screens
                 AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f)
             };
 
-            _currentMap = _gameMode.MapManager.GetMap(_gameMode.GameModeInfo.StartMap, _scene, Game.Resources);
-
             _player = new Player(_scene);
 
             _debugSpriteFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
+
+            LoadMap();
+        }
+
+        private void LoadMap()
+        {
+            var request = _gameMode.MapManager.CreateDataRequest(_gameMode.GameModeInfo.StartMap);
+            request.Finished += FinishedLoadingMapModel;
+            request.Start();
+        }
+
+        private void FinishedLoadingMapModel(object sender, EventArgs e)
+        {
+            var request = (DataRequest<MapModel>)sender;
+            _currentMap = new Map(_gameMode, request.ResultModel, _scene, Game.Resources);
         }
 
         public void OnUpdate(float elapsedTime)
         {
             _player.Update(elapsedTime);
-            _currentMap.Update(elapsedTime);
+            _currentMap?.Update(elapsedTime);
             _scene.Update(elapsedTime);
 
             if (Game.Keyboard.IsKeyDown(Keys.Escape))

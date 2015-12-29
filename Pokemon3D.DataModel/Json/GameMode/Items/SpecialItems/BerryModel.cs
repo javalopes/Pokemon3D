@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Pokemon3D.DataModel.Json.GameMode.Items.SpecialItems
 {
     [DataContract]
-    public class BerryModel : JsonDataModel<BerryModel>
+    public class BerryModel : DataModel<BerryModel>
     {
         /// <summary>
         /// The time it takes this berry item to grow one stage when planted.

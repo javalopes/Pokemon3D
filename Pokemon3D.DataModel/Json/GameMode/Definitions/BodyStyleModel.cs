@@ -9,7 +9,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
     /// The data model for a body style of a Pokémon.
     /// </summary>
     [DataContract]
-    public class BodyStyleModel : JsonDataModel<BodyStyleModel>
+    public class BodyStyleModel : DataModel<BodyStyleModel>
     {
         /// <summary>
         /// The identification of this BodyStyle.

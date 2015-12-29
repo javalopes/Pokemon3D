@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Pokemon3D.DataModel.Json.GameMode.Items.SpecialItems
 {
     [DataContract]
-    public class MegaStoneModel : JsonDataModel<MegaStoneModel>
+    public class MegaStoneModel : DataModel<MegaStoneModel>
     {
         /// <summary>
         /// The number of the Pokémon in the Pokedex that this Mega Stone applies to.

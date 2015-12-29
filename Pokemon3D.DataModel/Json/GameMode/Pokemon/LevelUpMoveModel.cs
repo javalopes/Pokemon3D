@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Pokemon
     /// The data model for a move a Pokémon learns at level up.
     /// </summary>
     [DataContract]
-    public class LevelUpMoveModel : JsonDataModel<LevelUpMoveModel>
+    public class LevelUpMoveModel : DataModel<LevelUpMoveModel>
     {
         /// <summary>
         /// The level the Pokémon learns the move at.

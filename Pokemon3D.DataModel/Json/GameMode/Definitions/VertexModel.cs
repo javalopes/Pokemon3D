@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Definitions
     /// The data model for a vertex declaration with Position, Normal and Texture Coordinate within a primitive model.
     /// </summary>
     [DataContract]
-    public class VertexModel : JsonDataModel<VertexModel>
+    public class VertexModel : DataModel<VertexModel>
     {
         [DataMember(Order = 0)]
         public Vector3Model Position;

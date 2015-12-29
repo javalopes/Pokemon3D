@@ -29,7 +29,7 @@ namespace Pokemon3D.GameModes.Resources
                 {
                     try
                     {
-                        sectionModels.AddRange(JsonDataModel<SectionModel[]>.FromFile(file));
+                        sectionModels.AddRange(DataModel<SectionModel[]>.FromFile(file));
                     }
                     catch (JsonDataLoadException)
                     {

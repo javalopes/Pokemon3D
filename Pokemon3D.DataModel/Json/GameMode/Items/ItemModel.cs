@@ -11,7 +11,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Items
     /// The data model for an item that can be obtained by the player and stored in the inventory.
     /// </summary>
     [DataContract]
-    public class ItemModel : JsonDataModel<ItemModel>
+    public class ItemModel : DataModel<ItemModel>
     {
         [DataMember(Order = 0)]
         public string Id;

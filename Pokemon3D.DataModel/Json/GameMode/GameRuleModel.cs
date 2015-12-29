@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Pokemon3D.DataModel.Json.GameMode
 {
     [DataContract]
-    public class GameRuleModel : JsonDataModel<GameRuleModel>
+    public class GameRuleModel : DataModel<GameRuleModel>
     {
         [DataMember(Order = 0)]
         public string Id;

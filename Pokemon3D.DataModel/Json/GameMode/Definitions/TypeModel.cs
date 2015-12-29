@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Definitions
     /// The data model for a Pokémon or move type in the game.
     /// </summary>
     [DataContract]
-    public class TypeModel : JsonDataModel<TypeModel>
+    public class TypeModel : DataModel<TypeModel>
     {
         /// <summary>
         /// The identification of the type.

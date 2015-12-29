@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Map
     /// A data model for a map.
     /// </summary>
     [DataContract]
-    public class MapModel : JsonDataModel<MapModel>
+    public class MapModel : DataModel<MapModel>
     {
         /// <summary>
         /// Display name of the map.

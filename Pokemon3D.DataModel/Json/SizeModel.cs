@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Pokemon3D.DataModel.Json
 {
     [DataContract]
-    public class SizeModel : JsonDataModel<SizeModel>
+    public class SizeModel : DataModel<SizeModel>
     {
         [DataMember(Order = 1)]
         public int Width;

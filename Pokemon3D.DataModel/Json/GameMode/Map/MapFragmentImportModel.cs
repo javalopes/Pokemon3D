@@ -6,7 +6,7 @@
 namespace Pokemon3D.DataModel.Json.GameMode.Map
 {
     [DataContract]
-    public class MapFragmentImportModel : JsonDataModel<MapFragmentImportModel>
+    public class MapFragmentImportModel : DataModel<MapFragmentImportModel>
     {
         [DataMember(Order = 0)]
         public string Id;

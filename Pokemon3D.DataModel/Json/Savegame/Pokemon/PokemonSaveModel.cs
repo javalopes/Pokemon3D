@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.Savegame.Pokemon
     /// Holds saved information about a Pokémon instance.
     /// </summary>
     [DataContract]
-    public class PokemonSaveModel : JsonDataModel<PokemonSaveModel>
+    public class PokemonSaveModel : DataModel<PokemonSaveModel>
     {
         [DataMember(Order = 0)]
         public string Id;

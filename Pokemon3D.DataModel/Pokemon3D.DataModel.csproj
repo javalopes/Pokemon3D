@@ -119,7 +119,7 @@
     <Compile Include="Json\i18n\SectionModel.cs" />
     <Compile Include="Json\i18n\TokenModel.cs" />
     <Compile Include="Json\JsonDataLoadException.cs" />
-    <Compile Include="Json\JsonDataModel.cs" />
+    <Compile Include="Json\DataModel.cs" />
     <Compile Include="Json\Pokemon\PokemonStatType.cs" />
     <Compile Include="Json\RangeModel.cs" />
     <Compile Include="Json\RectangleModel.cs" />

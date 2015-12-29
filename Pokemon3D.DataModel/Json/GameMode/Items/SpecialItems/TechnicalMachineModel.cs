@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Pokemon3D.DataModel.Json.GameMode.Items.SpecialItems
 {
     [DataContract]
-    public class TechnicalMachineModel : JsonDataModel<TechnicalMachineModel>
+    public class TechnicalMachineModel : DataModel<TechnicalMachineModel>
     {
         [DataMember(Order = 0)]
         public int MoveId;

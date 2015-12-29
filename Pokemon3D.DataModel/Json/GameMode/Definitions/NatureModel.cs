@@ -7,7 +7,7 @@ using Pokemon3D.DataModel.Json.Pokemon;
 namespace Pokemon3D.DataModel.Json.GameMode.Definitions
 {
     [DataContract]
-    public class NatureModel : JsonDataModel<NatureModel>
+    public class NatureModel : DataModel<NatureModel>
     {
         [DataMember(Order = 0)]
         public string Id;

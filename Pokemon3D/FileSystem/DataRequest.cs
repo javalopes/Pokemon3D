@@ -14,7 +14,7 @@ namespace Pokemon3D.FileSystem
     /// <summary>
     /// A container for data request results to file content.
     /// </summary>
-    class DataRequest<T> where T : JsonDataModel<T>
+    class DataRequest<T> where T : DataModel<T>
     {
         private GameMode _gameMode;
 
@@ -49,6 +49,11 @@ namespace Pokemon3D.FileSystem
         public event EventHandler Finished;
 
         /// <summary>
+        /// Data context that holds customizable data entires.
+        /// </summary>
+        public Dictionary<string, object> DataContext { get; }
+
+        /// <summary>
         /// Creates a GameMode data request to a file containing data.
         /// </summary>
         public DataRequest(GameMode gameMode, string dataPath)
@@ -57,6 +62,7 @@ namespace Pokemon3D.FileSystem
 
             _gameMode = gameMode;
             DataPath = dataPath;
+            DataContext = new Dictionary<string, object>();
 
             ResultData = string.Empty;
         }
@@ -119,7 +125,7 @@ namespace Pokemon3D.FileSystem
                 try
                 {
                     ResultData = File.ReadAllText(path);
-                    ResultModel = JsonDataModel<T>.FromString(ResultData);
+                    ResultModel = DataModel<T>.FromString(ResultData);
                     Status = DataRequestStatus.Complete;
                 }
                 catch (IOException)

@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Definitions.World
     /// The data model for a zone inside a region.
     /// </summary>
     [DataContract]
-    public class ZoneModel : JsonDataModel<ZoneModel>
+    public class ZoneModel : DataModel<ZoneModel>
     {
         /// <summary>
         /// Referenced in: <see cref="Map.MapModel.Zone"/>.

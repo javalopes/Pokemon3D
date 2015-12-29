@@ -9,7 +9,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Map
     /// A data model for an offset map.
     /// </summary>
     [DataContract]
-    public class OffsetMapModel : JsonDataModel<OffsetMapModel>
+    public class OffsetMapModel : DataModel<OffsetMapModel>
     {
         [DataMember(Order = 0)]
         public string MapFile;

@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Pokemon3D.DataModel.Json.i18n
 {
     [DataContract]
-    public class SectionModel : JsonDataModel<SectionModel>
+    public class SectionModel : DataModel<SectionModel>
     {
         [DataMember(Order = 0)]
         public string Id;

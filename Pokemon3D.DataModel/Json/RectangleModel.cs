@@ -11,7 +11,7 @@ namespace Pokemon3D.DataModel.Json
     /// The data model for a rectangle definition.
     /// </summary>
     [DataContract]
-    public class RectangleModel : JsonDataModel<RectangleModel>
+    public class RectangleModel : DataModel<RectangleModel>
     {
         /// <summary>
         /// The x position of this rectangle model.

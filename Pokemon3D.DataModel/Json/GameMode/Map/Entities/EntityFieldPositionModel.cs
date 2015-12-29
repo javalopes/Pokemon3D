@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Map.Entities
     /// The positioning of an entity field.
     /// </summary>
     [DataContract]
-    public class EntityFieldPositionModel : JsonDataModel<EntityFieldPositionModel>
+    public class EntityFieldPositionModel : DataModel<EntityFieldPositionModel>
     {
         [DataMember(Order = 0)]
         public Vector3Model Position;

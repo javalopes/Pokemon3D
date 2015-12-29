@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Pokemon3D.DataModel.Json.GameMode.Items
 {
     [DataContract]
-    public class ItemUsageModel : JsonDataModel<ItemUsageModel>
+    public class ItemUsageModel : DataModel<ItemUsageModel>
     {
         [DataMember(Order = 0)]
         public bool Overworld;

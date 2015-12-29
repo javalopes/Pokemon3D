@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Definitions
     /// The data model for a badge.
     /// </summary>
     [DataContract]
-    public class BadgeModel : JsonDataModel<BadgeModel>
+    public class BadgeModel : DataModel<BadgeModel>
     {
         /// <summary>
         /// The identification of the badge.

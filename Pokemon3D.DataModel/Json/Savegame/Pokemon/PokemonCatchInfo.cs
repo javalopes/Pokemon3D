@@ -6,7 +6,7 @@
 namespace Pokemon3D.DataModel.Json.Savegame.Pokemon
 {
     [DataContract]
-    public class PokemonCatchInfo : JsonDataModel<PokemonCatchInfo>
+    public class PokemonCatchInfo : DataModel<PokemonCatchInfo>
     {
         [DataMember(Order = 0)]
         public string Location;

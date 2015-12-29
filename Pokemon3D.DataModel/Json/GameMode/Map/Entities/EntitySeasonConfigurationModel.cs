@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Map.Entities
     /// Palette applied to the entity at a specific season.
     /// </summary>
     [DataContract]
-    public class EntitySeasonPaletteModel : JsonDataModel<EntitySeasonPaletteModel>
+    public class EntitySeasonPaletteModel : DataModel<EntitySeasonPaletteModel>
     {
         [DataMember(Order = 0)]
         public string Season;

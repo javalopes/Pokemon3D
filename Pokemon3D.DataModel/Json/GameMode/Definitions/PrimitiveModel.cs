@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Definitions
     /// The data model for a primitive model.
     /// </summary>
     [DataContract]
-    public class PrimitiveModel : JsonDataModel<PrimitiveModel>
+    public class PrimitiveModel : DataModel<PrimitiveModel>
     {
         /// <summary>
         /// Referenced in: <see cref="Map.Entities.EntityRenderModeModel.PrimitiveModelId"/>.

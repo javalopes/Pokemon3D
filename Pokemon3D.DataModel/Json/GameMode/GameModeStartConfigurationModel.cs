@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Pokemon3D.DataModel.Json.GameMode
 {
     [DataContract]
-    public class GameModeStartConfigurationModel : JsonDataModel<GameModeStartConfigurationModel>
+    public class GameModeStartConfigurationModel : DataModel<GameModeStartConfigurationModel>
     {
         /// <summary>
         /// The path to the startup map of the GameMode (relative to Maps\, no file extension).

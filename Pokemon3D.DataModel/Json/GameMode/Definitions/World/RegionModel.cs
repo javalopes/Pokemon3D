@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.Json.GameMode.Definitions.World
     /// The data model for a region.
     /// </summary>
     [DataContract]
-    public class RegionModel : JsonDataModel<RegionModel>
+    public class RegionModel : DataModel<RegionModel>
     {
         /// <summary>
         /// Referenced in: <see cref="Map.MapModel.Region"/>.

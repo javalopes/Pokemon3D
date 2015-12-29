@@ -6,7 +6,7 @@
 namespace Pokemon3D.DataModel.Json.Savegame.Inventory
 {
     [DataContract]
-    public class InventoryItemModel : JsonDataModel<InventoryItemModel>
+    public class InventoryItemModel : DataModel<InventoryItemModel>
     {
         [DataMember(Order = 0)]
         public string Id;
