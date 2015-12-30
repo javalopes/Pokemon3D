@@ -233,14 +233,35 @@ namespace Pokemon3D.Rendering.Compositor
 
         private void UpdateStaticNodes(List<SceneNode> staticNodes)
         {
+            var sortedNodes = staticNodes.OrderBy(n => n.Material.CompareId).ToArray();
+
             _batchesToUpdate.Clear();
-            for (int i = 0; i < staticNodes.Count; i++)
+            for (var i = 0; i < sortedNodes.Length; i++)
             {
                 var currentNode = staticNodes[i];
-                if (!_registeredStaticNodes.Contains(currentNode.Id))
+                if (_registeredStaticNodes.Contains(currentNode.Id)) continue;
+
+                var materialId = currentNode.Material.CompareId;
+
+                _registeredStaticNodes.Add(currentNode.Id);
+
+                var addedToExisting = false;
+                foreach (var suitableBatch in _staticBatches.Where(s => s.Material.CompareId == materialId))
                 {
-                    _registeredStaticNodes.Add(currentNode.Id);
-                    //add to batch
+                    addedToExisting |= suitableBatch.AddBatch(currentNode);
+                    if (addedToExisting)
+                    {
+                        _batchesToUpdate.Add(suitableBatch);
+                        break;
+                    }
+                }
+
+                if (!addedToExisting)
+                {
+                    var staticBatch = new StaticMeshBatch(GameContext, currentNode.Material);
+                    staticBatch.AddBatch(currentNode);
+                    _staticBatches.Add(staticBatch);
+                    _batchesToUpdate.Add(staticBatch);
                 }
             }
 

@@ -10,15 +10,5 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
     {
         public StaticEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         { }
-
-        public override void OnComponentAdded()
-        {
-           //todo
-        }
-
-        public override void OnComponentRemove()
-        {
-            //todo
-        }
     }
 }

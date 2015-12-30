@@ -4,7 +4,6 @@ using Pokemon3D.DataModel.Json;
 using Pokemon3D.DataModel.Json.GameMode.Map.Entities;
 using Pokemon3D.GameModes.Maps.EntityComponents;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
@@ -39,10 +38,7 @@ namespace Pokemon3D.GameModes.Maps
 
             InitializeComponents();
 
-            if (_fieldSourceModel.Scale != null)
-                SceneNode.Scale = _fieldSourceModel.Scale.GetVector3();
-            else
-                SceneNode.Scale = Vector3.One;
+            SceneNode.Scale = _fieldSourceModel.Scale?.GetVector3() ?? Vector3.One;
 
             if (_fieldSourceModel.Rotation != null)
             {
@@ -88,6 +84,11 @@ namespace Pokemon3D.GameModes.Maps
             else
             {
                 //todo: model not yet supported.
+            }
+
+            if (IsStatic)
+            {
+                Scene.ConvertToStaticSceneNode(SceneNode);
             }
         }
 

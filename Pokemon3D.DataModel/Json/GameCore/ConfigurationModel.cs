@@ -41,7 +41,7 @@ namespace Pokemon3D.DataModel.Json.GameCore
         {
             get
             {
-                return new ConfigurationModel()
+                return new ConfigurationModel
                 {
                     DisplayLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                     MusicVolume = 75,
@@ -49,7 +49,7 @@ namespace Pokemon3D.DataModel.Json.GameCore
                     ShadowsEnabled = true,
                     SoftShadows = true,
                     ShadowQuality = ShadowQuality.Medium,
-                    WindowSize = new SizeModel()
+                    WindowSize = new SizeModel
                     {
                         Width = 1024,
                         Height = 600

@@ -54,25 +54,12 @@ namespace Pokemon3D.Rendering
         /// <summary>
         /// Creates a static mesh which can be merged.
         /// </summary>
-        /// <param name="rotation"></param>
-        /// <param name="material"></param>
-        /// <param name="mesh"></param>
-        /// <param name="position"></param>
-        /// <param name="scale"></param>
-        public void CreateStaticSceneNode(Vector3 position, Vector3 scale, Vector3 rotation, Material material, Mesh mesh)
+        public void ConvertToStaticSceneNode(SceneNode node)
         {
-            var staticNode = new SceneNode
-            {
-                Position = position,
-                Scale = scale,
-                Material = material,
-                Mesh = mesh
-            };
-            staticNode.RotateX(rotation.X);
-            staticNode.RotateY(rotation.Y);
-            staticNode.RotateZ(rotation.Z);
-            staticNode.Update();
+            var staticNode = node.Clone(false);
+            RemoveSceneNode(node);
 
+            staticNode.Update();
             StaticNodes.Add(staticNode);
         }
 
