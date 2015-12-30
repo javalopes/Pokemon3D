@@ -13,12 +13,12 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 
         public override void OnComponentAdded()
         {
-            Parent.SceneNode.IsStatic = true;
+           //todo
         }
 
         public override void OnComponentRemove()
         {
-            Parent.SceneNode.IsStatic = false;
+            //todo
         }
     }
 }

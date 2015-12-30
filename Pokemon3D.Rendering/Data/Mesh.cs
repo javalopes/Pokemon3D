@@ -18,9 +18,9 @@ namespace Pokemon3D.Rendering.Data
         public GeometryData GeometryData { get; }
         public BoundingBox LocalBounds { get; private set; }
 
-        public Mesh(GraphicsDevice device, GeometryData data)
+        public Mesh(GraphicsDevice device, GeometryData data, bool holdGeometryData = true)
         {
-            GeometryData = data;
+            GeometryData = holdGeometryData ? data : null;
             VertexCount = data.Vertices.Length;
             IndexCount = data.Indices.Length;
 

@@ -11,9 +11,7 @@ namespace Pokemon3D.Rendering.Compositor
     internal class RenderQueue : GameContextObject
     {
         private readonly Action<Material> _handleEffect;
-        private readonly Func<IEnumerable<SceneNode>> _getSceneNodes;
-        private readonly List<DrawableElement> _elementsToDraw = new List<DrawableElement>();
-        private bool _isOptimized;
+        private readonly Func<IList<DrawableElement>> _getDrawableElements;
 
         protected SceneEffect SceneEffect { get; }
         public BlendState BlendState { get; set; }
@@ -24,13 +22,12 @@ namespace Pokemon3D.Rendering.Compositor
 
         public RenderQueue(GameContext context, 
                            Action<Material> handleEffect,
-                           Func<IEnumerable<SceneNode>> getSceneNodes,
+                           Func<IList<DrawableElement>> getDrawableElements,
                            SceneEffect sceneEffect) : base(context)
         {
             _handleEffect = handleEffect;
-            _getSceneNodes = getSceneNodes;
+            _getDrawableElements = getDrawableElements;
             SceneEffect = sceneEffect;
-            _isOptimized = false;
             IsEnabled = true;
         }
 
@@ -40,10 +37,10 @@ namespace Pokemon3D.Rendering.Compositor
             GameContext.GraphicsDevice.DepthStencilState = DepthStencilState;
             GameContext.GraphicsDevice.RasterizerState = RasterizerState;
 
-            HandleBatching(hasSceneNodesChanged);
+            var drawableElements = _getDrawableElements();
 
-            var nodes = SortNodesBackToFront ? _elementsToDraw.OrderByDescending(n => (camera.GlobalPosition - n.GlobalPosition).LengthSquared()).ToList()
-                                             : _elementsToDraw;
+            var nodes = SortNodesBackToFront ? drawableElements.OrderByDescending(n => (camera.GlobalPosition - n.GlobalPosition).LengthSquared()).ToList()
+                                             : drawableElements;
 
             for (var i = 0; i < nodes.Count; i++)
             {
@@ -60,63 +57,58 @@ namespace Pokemon3D.Rendering.Compositor
             return element.IsActive && camera.Frustum.Contains(element.BoundingBox) != ContainmentType.Disjoint;
         }
 
-        private void HandleBatching(bool hasSceneNodesChanged)
-        {
-            if (_isOptimized && !hasSceneNodesChanged) return;
+        //private void HandleBatching(bool hasSceneNodesChanged)
+        //{
 
-            var sceneNodes = _getSceneNodes().ToArray();
+        //    //_elementsToDraw.AddRange(sceneNodes);
+        //    //_isOptimized = true;
+        //    //return;
 
-            _elementsToDraw.Clear();
+        //    var staticNodes = new List<SceneNode>();
+        //    var dynamicNodes = new List<SceneNode>();
+        //    for (var i = 0; i < sceneNodes.Length; i++)
+        //    {
+        //        //if (sceneNodes[i].IsStatic)
+        //        //{
+        //        //    staticNodes.Add(sceneNodes[i]);
+        //        //}
+        //        //else
+        //        {
+        //            dynamicNodes.Add(sceneNodes[i]);
+        //        }
+        //    }
 
-            _elementsToDraw.AddRange(sceneNodes);
-            _isOptimized = true;
-            return;
+        //    Texture2D currentTexture = null;
+        //    StaticMeshBatch currentBatch = null;
+        //    for (var i = 0; i < staticNodes.Count; i++)
+        //    {
+        //        var node = sceneNodes[i];
 
-            var staticNodes = new List<SceneNode>();
-            var dynamicNodes = new List<SceneNode>();
-            for (var i = 0; i < sceneNodes.Length; i++)
-            {
-                if (sceneNodes[i].IsStatic)
-                {
-                    staticNodes.Add(sceneNodes[i]);
-                }
-                else
-                {
-                    dynamicNodes.Add(sceneNodes[i]);
-                }
-            }
+        //        if (currentTexture != node.Material.DiffuseTexture || i == 0)
+        //        {
+        //            currentTexture = node.Material.DiffuseTexture;
+        //            currentBatch?.Build();
+        //            currentBatch = new StaticMeshBatch(GameContext, node.Material);
+        //            _elementsToDraw.Add(currentBatch);
+        //        }
 
-            Texture2D currentTexture = null;
-            StaticMeshBatch currentBatch = null;
-            for (var i = 0; i < staticNodes.Count; i++)
-            {
-                var node = sceneNodes[i];
+        //        if (currentBatch != null)
+        //        {
+        //            var success = currentBatch.AddBatch(node);
+        //            if (!success)
+        //            {
+        //                currentBatch.Build();
+        //                currentBatch = new StaticMeshBatch(GameContext, node.Material);
+        //                _elementsToDraw.Add(currentBatch);
+        //            }
+        //        }
+        //    }
+        //    currentBatch?.Build();
 
-                if (currentTexture != node.Material.DiffuseTexture || i == 0)
-                {
-                    currentTexture = node.Material.DiffuseTexture;
-                    currentBatch?.Build();
-                    currentBatch = new StaticMeshBatch(GameContext, node.Material);
-                    _elementsToDraw.Add(currentBatch);
-                }
+        //    _elementsToDraw.AddRange(dynamicNodes);
 
-                if (currentBatch != null)
-                {
-                    var success = currentBatch.AddBatch(node);
-                    if (!success)
-                    {
-                        currentBatch.Build();
-                        currentBatch = new StaticMeshBatch(GameContext, node.Material);
-                        _elementsToDraw.Add(currentBatch);
-                    }
-                }
-            }
-            currentBatch?.Build();
-
-            _elementsToDraw.AddRange(dynamicNodes);
-
-            _isOptimized = true;
-        }
+        //    _isOptimized = true;
+        //}
 
         private void DrawElement(Camera camera, DrawableElement element)
         {

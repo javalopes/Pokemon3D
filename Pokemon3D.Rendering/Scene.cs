@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Pokemon3D.Common;
+using Pokemon3D.Rendering.Data;
 
 namespace Pokemon3D.Rendering
 {
@@ -23,6 +24,7 @@ namespace Pokemon3D.Rendering
         internal bool HasSceneNodesChanged { get; set; }
         internal List<SceneNode> AllSceneNodes { get; }
         internal List<Camera> AllCameras { get; }
+        internal List<SceneNode> StaticNodes { get; }
 
         /// <summary>
         /// Creates a new scene for rendering objects.
@@ -32,6 +34,7 @@ namespace Pokemon3D.Rendering
         {
             AllSceneNodes = new List<SceneNode>();
             AllCameras = new List<Camera>();
+            StaticNodes = new List<SceneNode>();
             AmbientLight = new Vector4(1,1,1,1);
             Light = new Light(GameContext.GraphicsDevice);
         }
@@ -47,7 +50,32 @@ namespace Pokemon3D.Rendering
             AllSceneNodes.Add(sceneNode);
             return sceneNode;
         }
-        
+
+        /// <summary>
+        /// Creates a static mesh which can be merged.
+        /// </summary>
+        /// <param name="rotation"></param>
+        /// <param name="material"></param>
+        /// <param name="mesh"></param>
+        /// <param name="position"></param>
+        /// <param name="scale"></param>
+        public void CreateStaticSceneNode(Vector3 position, Vector3 scale, Vector3 rotation, Material material, Mesh mesh)
+        {
+            var staticNode = new SceneNode
+            {
+                Position = position,
+                Scale = scale,
+                Material = material,
+                Mesh = mesh
+            };
+            staticNode.RotateX(rotation.X);
+            staticNode.RotateY(rotation.Y);
+            staticNode.RotateZ(rotation.Z);
+            staticNode.Update();
+
+            StaticNodes.Add(staticNode);
+        }
+
         /// <summary>
         /// Removes Scenenode from scene.
         /// </summary>

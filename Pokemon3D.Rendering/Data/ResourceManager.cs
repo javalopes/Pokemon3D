@@ -59,6 +59,7 @@ namespace Pokemon3D.Rendering.Data
                 {
                     memoryStream.Seek(0, SeekOrigin.Begin);
                     texture = Texture2D.FromStream(_device, memoryStream);
+                    texture.Name = pathWithExtension;
                     _texturesByFilePath.Add(pathWithoutExtension, texture);
                 }
             }

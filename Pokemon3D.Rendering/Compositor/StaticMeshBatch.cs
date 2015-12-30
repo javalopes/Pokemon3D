@@ -14,6 +14,7 @@ namespace Pokemon3D.Rendering.Compositor
         private readonly int _maxIndicesCount;
         private readonly List<VertexPositionNormalTexture> _vertices = new List<VertexPositionNormalTexture>(1000); 
         private readonly List<ushort> _indices = new List<ushort>(1000);
+        private readonly HashSet<int> _sceneNodes = new HashSet<int>();
 
         public StaticMeshBatch(GameContext context, Material sharedMaterial) : base(context)
         { 
@@ -25,14 +26,22 @@ namespace Pokemon3D.Rendering.Compositor
             _maxIndicesCount = _maxVertexCount*3;
         }
 
-        public bool AddBatch(SceneNode sceneNode)
+        public bool CanAddToBatch(SceneNode sceneNode)
         {
             var meshData = sceneNode.Mesh.GeometryData;
             if (_vertices.Count + meshData.Vertices.Length > _maxVertexCount) return false;
             if (_indices.Count + meshData.Indices.Length > _maxIndicesCount) return false;
+            return true;
+        }
 
+        public bool AddBatch(SceneNode sceneNode)
+        {
+            if (!CanAddToBatch(sceneNode)) return false;
+
+            _sceneNodes.Add(sceneNode.Id);
+
+            var meshData = sceneNode.Mesh.GeometryData;
             var world = sceneNode.GetWorldMatrix(null);
-
             
             for (var i = 0; i < meshData.Indices.Length; i++)
             {
@@ -85,6 +94,7 @@ namespace Pokemon3D.Rendering.Compositor
         {
             Dispose(false);
         }
+
         // The bulk of the clean-up code is implemented in Dispose(bool)
         protected void Dispose(bool disposing)
         {

@@ -83,17 +83,11 @@ namespace Pokemon3D.UI.Screens
             _dispatcher.Invoke(() =>
             {
                 _currentMap = new Map(_gameMode, request.ResultModel, _scene, Game.Resources);
-                _maploaded = true;
             });
-            
         }
-
-        private bool _maploaded;
 
         public void OnUpdate(float elapsedTime)
         {
-            //if (!_maploaded) return;
-
             _player.Update(elapsedTime);
             _currentMap?.Update(elapsedTime);
             _scene.Update(elapsedTime);
@@ -145,7 +139,6 @@ namespace Pokemon3D.UI.Screens
 
         public void OnDraw(GameTime gameTime)
         {
-            //if (!_maploaded) return;
             _renderer.Draw(_scene);
 
             if (_showRenderStatistics) DrawRenderStatsitics();

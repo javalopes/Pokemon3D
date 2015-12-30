@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Pokemon3D.Common;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering.Data;
@@ -13,7 +14,7 @@ namespace Pokemon3D.Rendering
     /// Part of a Scene with contains Transformation and Optional Rendering Attachments.
     /// SceneNodes can be arranged in a hierarchy to allow complex transformations.
     /// </summary>
-    public class SceneNode : DrawableElement
+    public class SceneNode : IdObject, DrawableElement
     {
         private readonly List<SceneNode> _childNodes;
         
@@ -45,9 +46,7 @@ namespace Pokemon3D.Rendering
             Forward = Vector3.Forward;
             SetDirty();
         }
-
-        public bool IsStatic { get; set; }
-
+        
         public bool IsActive
         {
             get { return _isActive; }

@@ -14,9 +14,13 @@ namespace Pokemon3D.Rendering.Compositor
         private readonly SceneEffect _sceneEffect;
         private RenderTargetBinding[] _oldBindings;
 
-        private readonly List<SceneNode> _solidObjects = new List<SceneNode>();
-        private readonly List<SceneNode> _transparentObjects = new List<SceneNode>();
-        private readonly List<SceneNode> _shadowCastersObjects = new List<SceneNode>();
+        private readonly HashSet<int> _registeredStaticNodes = new HashSet<int>();
+        private readonly List<StaticMeshBatch> _staticBatches = new List<StaticMeshBatch>();
+
+        private readonly List<DrawableElement> _allDrawableElements = new List<DrawableElement>(); 
+        private readonly List<DrawableElement> _solidObjects = new List<DrawableElement>();
+        private readonly List<DrawableElement> _transparentObjects = new List<DrawableElement>();
+        private readonly List<DrawableElement> _shadowCastersObjects = new List<DrawableElement>();
         private readonly List<PostProcessingStep> _postProcessingSteps = new List<PostProcessingStep>();
 
         private RenderTarget2D _activeInputSource;
@@ -66,19 +70,19 @@ namespace Pokemon3D.Rendering.Compositor
             };
         }
 
-        private IEnumerable<SceneNode> GetShadowCasterSceneNodes()
+        private IList<DrawableElement> GetShadowCasterSceneNodes()
         {
             return _shadowCastersObjects;
         }
 
         public bool EnablePostProcessing { get; set; }
 
-        private IEnumerable<SceneNode> GetTransparentObjects()
+        private IList<DrawableElement> GetTransparentObjects()
         {
             return _transparentObjects;
         }
 
-        private IEnumerable<SceneNode> GetSolidObjects()
+        private IList<DrawableElement> GetSolidObjects()
         {
             return _solidObjects;
         }
@@ -94,6 +98,7 @@ namespace Pokemon3D.Rendering.Compositor
             RenderStatistics.Instance.StartFrame();
             PreparePostProcessing();
 
+            UpdateStaticNodes(scene.StaticNodes);
             UpdateNodeLists(scene.AllSceneNodes);
 
             _sceneEffect.AmbientLight = scene.AmbientLight;
@@ -111,7 +116,7 @@ namespace Pokemon3D.Rendering.Compositor
 #endif
             scene.HasSceneNodesChanged = false;
         }
-
+        
         public RenderSettings RenderSettings { get; }
 
         private void HandleSolidObjects(Material material)
@@ -224,16 +229,46 @@ namespace Pokemon3D.Rendering.Compositor
             }
         }
 
-        private void UpdateNodeLists(IList<SceneNode> allNodes)
+        private readonly List<StaticMeshBatch> _batchesToUpdate = new List<StaticMeshBatch>(); 
+
+        private void UpdateStaticNodes(List<SceneNode> staticNodes)
         {
+            _batchesToUpdate.Clear();
+            for (int i = 0; i < staticNodes.Count; i++)
+            {
+                var currentNode = staticNodes[i];
+                if (!_registeredStaticNodes.Contains(currentNode.Id))
+                {
+                    _registeredStaticNodes.Add(currentNode.Id);
+                    //add to batch
+                }
+            }
+
+            for (int i = 0; i < _batchesToUpdate.Count; i++)
+            {
+                _batchesToUpdate[i].Build();
+            }
+        }
+
+        private void UpdateNodeLists(IList<SceneNode> allDynamicNodes)
+        {
+            _allDrawableElements.Clear();
+            _allDrawableElements.AddRange(_staticBatches);
+            _allDrawableElements.AddRange(allDynamicNodes);
+
             _solidObjects.Clear();
             _transparentObjects.Clear();
             _shadowCastersObjects.Clear();
 
-            for (var i = 0; i < allNodes.Count; i++)
+            for (var i = 0; i < _allDrawableElements.Count; i++)
             {
-                var node = allNodes[i];
+                var node = _allDrawableElements[i];
                 if (node.Mesh == null || node.Material == null || !node.IsActive) continue;
+
+                if (node.Material.CastShadow && !node.Material.UseTransparency)
+                {
+                    _shadowCastersObjects.Add(node);
+                }
 
                 if (node.Material.UseTransparency)
                 {
@@ -242,11 +277,6 @@ namespace Pokemon3D.Rendering.Compositor
                 else
                 {
                     _solidObjects.Add(node);
-                }
-
-                if (node.Material.CastShadow && !node.Material.UseTransparency)
-                {
-                    _shadowCastersObjects.Add(node);
                 }
             }
         }

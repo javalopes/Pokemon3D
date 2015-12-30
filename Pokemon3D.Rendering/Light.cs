@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Rendering.Compositor;
 
 namespace Pokemon3D.Rendering
 {
@@ -59,7 +60,7 @@ namespace Pokemon3D.Rendering
         /// </summary>
         /// <param name="camera">needed for billboards.</param>
         /// <param name="shadowCasters">All Nodes casting a shadow for the scene.</param>
-        internal void UpdateLightViewMatrixForCamera(Camera camera, IList<SceneNode> shadowCasters)
+        internal void UpdateLightViewMatrixForCamera(Camera camera, IList<DrawableElement> shadowCasters)
         {
             var directionNormalized = Vector3.Normalize(Direction);
             var lightViewMatrix = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.Up);
