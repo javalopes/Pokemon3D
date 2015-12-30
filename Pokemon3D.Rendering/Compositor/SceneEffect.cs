@@ -1,3 +1,4 @@
+using System.Net.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -18,7 +19,7 @@ namespace Pokemon3D.Rendering.Compositor
         /// <summary>
         /// Activates a technique for drawing shadow depth map objects.
         /// </summary>
-        void ActivateShadowDepthMapPass();
+        void ActivateShadowDepthMapPass(bool transparent);
 
         /// <summary>
         /// Activates to Draw Objekt unlit or using directional lighting.
@@ -33,7 +34,12 @@ namespace Pokemon3D.Rendering.Compositor
         /// <summary>
         /// Light Matrix for Shadow Map.
         /// </summary>
-        Matrix LightWorldViewProjection { get; set; }
+        Matrix LightViewProjection { get; set; }
+
+        /// <summary>
+        /// World Matrix to light. Differs to World for Billboards.
+        /// </summary>
+        Matrix WorldLight { get; set; }
 
         /// <summary>
         /// Passes of current activated technique.

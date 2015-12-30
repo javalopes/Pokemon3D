@@ -1,12 +1,13 @@
 ﻿//Parameters for normal rendering.
 float4x4 World;
+float4x4 WorldLight;
 float4x4 View;
 float4x4 Projection;
 float2 TexcoordOffset;
 float2 TexcoordScale;
 
 //Parameters for shadow mapping.
-float4x4 LightWorldViewProjection;
+float4x4 LightViewProjection;
 texture DiffuseTexture;
 texture ShadowMap;
 float ShadowScale = 1.0f / 1024.0f;
@@ -187,7 +188,9 @@ VertexShaderShadowReceiverOutput LitShadowReceiverVS(VertexShaderShadowReceiverI
 	output.Position = mul(viewPosition, Projection);
 	output.Normal = mul(input.Normal, (float3x3)World);
 	output.TexCoord = TransformTexcoord(input.TexCoord);
-	output.LightPosition = mul(worldPosition, LightWorldViewProjection);
+
+	float4 lightWorldPos = mul(input.Position, WorldLight);
+	output.LightPosition = mul(lightWorldPos, LightViewProjection);
 
 	return output;
 }
@@ -257,7 +260,9 @@ VSOutputShadowReceiver ShadowCasterVS(VSInputShadowCaster input)
 	VSOutputShadowReceiver output;
 
 	input.Position.w = 1.0f;
-	output.Position = mul(input.Position, LightWorldViewProjection);
+
+	float4 worldPosition = mul(input.Position, WorldLight);
+	output.Position = mul(worldPosition, LightViewProjection);
 	output.DepthPosition = output.Position;
 
 	return output;
@@ -269,12 +274,62 @@ float4 ShadowCasterPS(VSOutputShadowReceiver input) : SV_TARGET
 	return float4(depthValue, depthValue, depthValue, 1.0f);
 }
 
+struct VSInputShadowCasterTransparent
+{
+	float4 Position : SV_POSITION;
+	float2 Texcoord: TEXCOORD0;
+};
+
+struct VSOutputShadowReceiverTransparent
+{
+	float4 Position : POSITION;
+	float4 DepthPosition : TEXCOORD0;
+	float2 Texcoord : TEXCOORD1;
+};
+
+
+VSOutputShadowReceiverTransparent ShadowCasterTransparentVS(VSInputShadowCasterTransparent input)
+{
+	VSOutputShadowReceiverTransparent output;
+
+	input.Position.w = 1.0f;
+
+	float4 worldPosition = mul(input.Position, WorldLight);
+	output.Position = mul(worldPosition, LightViewProjection);
+	output.DepthPosition = output.Position;
+	output.Texcoord = TransformTexcoord(input.Texcoord);
+
+	return output;
+}
+
+float4 ShadowCasterTransparentPS(VSOutputShadowReceiverTransparent input) : SV_TARGET
+{
+	float alpha = tex2D(DiffuseSampler, input.Texcoord).a;
+
+	if (alpha < 0.001f)
+	{
+		discard;
+		return float4(0, 0, 0, 0);
+	}
+	float depthValue = input.DepthPosition.z / input.DepthPosition.w;
+	return float4(depthValue, depthValue, depthValue, 1.0f);
+}
+
 technique ShadowCaster
 {
 	pass Pass1
 	{
 		VertexShader = compile vs_4_0 ShadowCasterVS();
 		PixelShader = compile ps_4_0 ShadowCasterPS();
+	}
+}
+
+technique ShadowCasterTransparent
+{
+	pass Pass1
+	{
+		VertexShader = compile vs_4_0 ShadowCasterTransparentVS();
+		PixelShader = compile ps_4_0 ShadowCasterTransparentPS();
 	}
 }
 

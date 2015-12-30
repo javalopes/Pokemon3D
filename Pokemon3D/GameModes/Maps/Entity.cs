@@ -74,7 +74,7 @@ namespace Pokemon3D.GameModes.Maps
             {
                 SceneNode.Mesh = map.ResourceManager.GetMeshFromPrimitiveName(renderMode.PrimitiveModelId);
                 SceneNode.Material.Color = new Color(_dataModel.RenderMode.Shading.GetVector3());
-                SceneNode.Material.CastShadow = !_dataModel.RenderMode.UseTransparency;
+                SceneNode.Material.CastShadow = true;
                 SceneNode.Material.ReceiveShadow = !_dataModel.RenderMode.UseTransparency;
                 SceneNode.Material.UseTransparency = _dataModel.RenderMode.UseTransparency;
                 SceneNode.Material.IsUnlit = false;

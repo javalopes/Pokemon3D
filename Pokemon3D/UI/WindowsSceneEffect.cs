@@ -10,13 +10,15 @@ namespace Pokemon3D.UI
         private readonly Effect _basicEffect;
         private readonly EffectTechnique _shadowCasterTechnique;
         private readonly EffectTechnique _litShadowReceiver;
-        private readonly EffectTechnique _litShadowReceiverPCF; 
+        private readonly EffectTechnique _litShadowReceiverPcf; 
         private readonly EffectTechnique _litTechnique;
         private readonly EffectTechnique _unlitTechnique;
         private readonly EffectTechnique _unlitLinearSampledTechnique;
+        private EffectTechnique _shadowCasterTransparentTechnique;
 
-        private readonly EffectParameter _lightWorldViewProjection;
+        private readonly EffectParameter _lightViewProjection;
         private readonly EffectParameter _world;
+        private readonly EffectParameter _worldLight;
         private readonly EffectParameter _view;
         private readonly EffectParameter _projection;
         private readonly EffectParameter _lightDirection;
@@ -28,7 +30,7 @@ namespace Pokemon3D.UI
         private readonly EffectParameter _ambientIntensity;
         private readonly EffectParameter _diffuseIntensity;
         private readonly EffectParameter _shadowScale;
-
+        
         public WindowsSceneEffect(ContentManager content)
         {
             _basicEffect = content.Load<Effect>(ResourceNames.Effects.BasicEffect);
@@ -36,14 +38,16 @@ namespace Pokemon3D.UI
 
             _litTechnique = _basicEffect.Techniques["Lit"];
             _shadowCasterTechnique = _basicEffect.Techniques["ShadowCaster"];
+            _shadowCasterTransparentTechnique = _basicEffect.Techniques["ShadowCasterTransparent"];
             _litShadowReceiver = _basicEffect.Techniques["LitShadowReceiver"];
-            _litShadowReceiverPCF = _basicEffect.Techniques["LitShadowReceiverPCF"];
+            _litShadowReceiverPcf = _basicEffect.Techniques["LitShadowReceiverPCF"];
             _unlitTechnique = _basicEffect.Techniques["Unlit"];
             _unlitLinearSampledTechnique = _basicEffect.Techniques["UnlitLinearSampled"];
             ShadowMapDebugEffect = content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
 
-            _lightWorldViewProjection = _basicEffect.Parameters["LightWorldViewProjection"];
+            _lightViewProjection = _basicEffect.Parameters["LightViewProjection"];
             _world = _basicEffect.Parameters["World"];
+            _worldLight = _basicEffect.Parameters["WorldLight"];
             _view = _basicEffect.Parameters["View"];
             _projection = _basicEffect.Parameters["Projection"];
             _lightDirection = _basicEffect.Parameters["LightDirection"];
@@ -59,9 +63,9 @@ namespace Pokemon3D.UI
 
         public Effect ShadowMapDebugEffect { get; }
         
-        public void ActivateShadowDepthMapPass()
+        public void ActivateShadowDepthMapPass(bool transparent)
         {
-            _basicEffect.CurrentTechnique = _shadowCasterTechnique;
+            _basicEffect.CurrentTechnique = transparent ? _shadowCasterTransparentTechnique : _shadowCasterTechnique;
         }
 
         public void ActivateLightingTechnique(bool linearSampling, bool unlit, bool receiveShadows, bool pcfShadows)
@@ -72,14 +76,20 @@ namespace Pokemon3D.UI
             }
             else
             {
-                _basicEffect.CurrentTechnique = receiveShadows ? (pcfShadows ? _litShadowReceiverPCF : _litShadowReceiver) : _litTechnique;
+                _basicEffect.CurrentTechnique = receiveShadows ? (pcfShadows ? _litShadowReceiverPcf : _litShadowReceiver) : _litTechnique;
             }
         }
 
-        public Matrix LightWorldViewProjection
+        public Matrix LightViewProjection
         {
-            get { return _lightWorldViewProjection.GetValueMatrix(); }
-            set { _lightWorldViewProjection.SetValue(value); }
+            get { return _lightViewProjection.GetValueMatrix(); }
+            set { _lightViewProjection.SetValue(value); }
+        }
+
+        public Matrix WorldLight
+        {
+            get { return _worldLight.GetValueMatrix(); }
+            set { _worldLight.SetValue(value); }
         }
 
         public float DiffuseIntensity

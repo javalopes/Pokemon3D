@@ -269,14 +269,14 @@ namespace Pokemon3D.Rendering
             _isDirty = false;
         }
 
-        public Matrix GetWorldMatrix(Camera currentCamera)
+        public Matrix GetWorldMatrix(float yRotationForBillboards)
         {
-            return IsBillboard ? CalculateBillboardMatrix(currentCamera) : _world;
+            return IsBillboard ? CalculateBillboardMatrix(yRotationForBillboards) : _world;
         }
 
-        private Matrix CalculateBillboardMatrix(SceneNode currentCamera)
+        private Matrix CalculateBillboardMatrix(float yRotationForBillboards)
         {
-            return Matrix.CreateScale(Scale)* Matrix.CreateRotationY(currentCamera.GlobalEulerAngles.Y) * Matrix.CreateTranslation(Position);
+            return Matrix.CreateScale(Scale)* Matrix.CreateRotationY(yRotationForBillboards) * Matrix.CreateTranslation(Position);
         }
 
         internal SceneNode Clone(bool cloneMesh)

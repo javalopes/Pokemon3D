@@ -33,7 +33,7 @@ namespace Pokemon3D.Rendering
         protected override void HandleIsDirty()
         {
             base.HandleIsDirty();
-            ViewMatrix = Matrix.Invert(GetWorldMatrix(null));
+            ViewMatrix = Matrix.Invert(GetWorldMatrix(0.0f));
             ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView(FieldOfView, Viewport.AspectRatio, NearClipDistance, FarClipDistance);
             Frustum.Matrix = ViewMatrix*ProjectionMatrix;
         }

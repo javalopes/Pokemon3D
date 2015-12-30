@@ -31,7 +31,7 @@ namespace Pokemon3D.Rendering.Compositor
             IsEnabled = true;
         }
 
-        public virtual void Draw(Camera camera, Light light, bool hasSceneNodesChanged)
+        public void Draw(Camera camera, Light light, float yRotationForBillboards)
         {
             GameContext.GraphicsDevice.BlendState = BlendState;
             GameContext.GraphicsDevice.DepthStencilState = DepthStencilState;
@@ -48,23 +48,24 @@ namespace Pokemon3D.Rendering.Compositor
 
                 if (!IsValidForRendering(camera, element)) continue;
                 _handleEffect(element.Material);
-                DrawElement(camera, element);
+                DrawElement(camera, element, yRotationForBillboards);
             }
         }
 
-        protected virtual bool IsValidForRendering(Camera camera, DrawableElement element)
+        protected bool IsValidForRendering(Camera camera, DrawableElement element)
         {
             return element.IsActive && camera.Frustum.Contains(element.BoundingBox) != ContainmentType.Disjoint;
         }
 
-        private void DrawElement(Camera camera, DrawableElement element)
+        private void DrawElement(Camera camera, DrawableElement element, float yRotationForBillboards)
         {
-            DrawElement(camera, element, SceneEffect);
+            DrawElement(camera, element, SceneEffect, yRotationForBillboards);
         }
 
-        internal static void DrawElement(Camera camera, DrawableElement element, SceneEffect sceneEffect)
+        internal static void DrawElement(Camera camera, DrawableElement element, SceneEffect sceneEffect, float yRotationForBillboards)
         {
-            sceneEffect.World = element.GetWorldMatrix(camera);
+            sceneEffect.World = element.GetWorldMatrix(camera.GlobalEulerAngles.Y);
+            sceneEffect.WorldLight = element.GetWorldMatrix(yRotationForBillboards);
             sceneEffect.DiffuseTexture = element.Material.DiffuseTexture;
             sceneEffect.TexcoordScale = element.Material.TexcoordScale;
             sceneEffect.TexcoordOffset = element.Material.TexcoordOffset;

@@ -41,7 +41,7 @@ namespace Pokemon3D.Rendering.Compositor
             _sceneNodes.Add(sceneNode.Id);
 
             var meshData = sceneNode.Mesh.GeometryData;
-            var world = sceneNode.GetWorldMatrix(null);
+            var world = sceneNode.GetWorldMatrix(0.0f);
             
             for (var i = 0; i < meshData.Indices.Length; i++)
             {
@@ -76,7 +76,8 @@ namespace Pokemon3D.Rendering.Compositor
         public bool IsActive => true;
         public Mesh Mesh { get; private set; }
         public Material Material { get; }
-        public Matrix GetWorldMatrix(Camera camera)
+
+        public Matrix GetWorldMatrix(float yRotationForBillboards)
         {
             return Matrix.Identity;
         }

@@ -8,7 +8,7 @@ namespace Pokemon3D.Rendering.Compositor
         bool IsActive { get; }
         Mesh Mesh { get; }
         Material Material { get; }
-        Matrix GetWorldMatrix(Camera camera);
+        Matrix GetWorldMatrix(float yRotationForBillboards);
         Vector3 GlobalPosition { get; }
         BoundingBox BoundingBox { get; }
     }
