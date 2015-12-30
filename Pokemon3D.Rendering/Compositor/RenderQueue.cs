@@ -57,59 +57,6 @@ namespace Pokemon3D.Rendering.Compositor
             return element.IsActive && camera.Frustum.Contains(element.BoundingBox) != ContainmentType.Disjoint;
         }
 
-        //private void HandleBatching(bool hasSceneNodesChanged)
-        //{
-
-        //    //_elementsToDraw.AddRange(sceneNodes);
-        //    //_isOptimized = true;
-        //    //return;
-
-        //    var staticNodes = new List<SceneNode>();
-        //    var dynamicNodes = new List<SceneNode>();
-        //    for (var i = 0; i < sceneNodes.Length; i++)
-        //    {
-        //        //if (sceneNodes[i].IsStatic)
-        //        //{
-        //        //    staticNodes.Add(sceneNodes[i]);
-        //        //}
-        //        //else
-        //        {
-        //            dynamicNodes.Add(sceneNodes[i]);
-        //        }
-        //    }
-
-        //    Texture2D currentTexture = null;
-        //    StaticMeshBatch currentBatch = null;
-        //    for (var i = 0; i < staticNodes.Count; i++)
-        //    {
-        //        var node = sceneNodes[i];
-
-        //        if (currentTexture != node.Material.DiffuseTexture || i == 0)
-        //        {
-        //            currentTexture = node.Material.DiffuseTexture;
-        //            currentBatch?.Build();
-        //            currentBatch = new StaticMeshBatch(GameContext, node.Material);
-        //            _elementsToDraw.Add(currentBatch);
-        //        }
-
-        //        if (currentBatch != null)
-        //        {
-        //            var success = currentBatch.AddBatch(node);
-        //            if (!success)
-        //            {
-        //                currentBatch.Build();
-        //                currentBatch = new StaticMeshBatch(GameContext, node.Material);
-        //                _elementsToDraw.Add(currentBatch);
-        //            }
-        //        }
-        //    }
-        //    currentBatch?.Build();
-
-        //    _elementsToDraw.AddRange(dynamicNodes);
-
-        //    _isOptimized = true;
-        //}
-
         private void DrawElement(Camera camera, DrawableElement element)
         {
             DrawElement(camera, element, SceneEffect);
