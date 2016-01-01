@@ -58,6 +58,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="FileSystem\DataModelRequest.cs" />
     <Compile Include="FileSystem\DataRequest.cs" />
     <Compile Include="FileSystem\DataRequestErrorType.cs" />
     <Compile Include="FileSystem\DataRequestException.cs" />

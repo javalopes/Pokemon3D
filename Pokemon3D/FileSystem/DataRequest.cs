@@ -15,7 +15,7 @@ namespace Pokemon3D.FileSystem
     /// <summary>
     /// A container for data request results to file content.
     /// </summary>
-    class DataRequest<T> where T : DataModel<T>
+    abstract class DataRequest<T>
     {
         private GameMode _gameMode;
 
@@ -33,11 +33,6 @@ namespace Pokemon3D.FileSystem
         /// The resulting data of the request operation.
         /// </summary>
         public string ResultData { get; private set; }
-
-        /// <summary>
-        /// The final model created from the result data.
-        /// </summary>
-        public T ResultModel { get; private set; }
 
         /// <summary>
         /// Event that gets fired right when the request started.
@@ -135,7 +130,6 @@ namespace Pokemon3D.FileSystem
                 try
                 {
                     ResultData = File.ReadAllText(path);
-                    ResultModel = DataModel<T>.FromString(ResultData);
                     Status = DataRequestStatus.Complete;
                 }
                 catch (IOException ex)

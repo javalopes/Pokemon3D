@@ -80,7 +80,7 @@ namespace Pokemon3D.UI.Screens
 
         private void FinishedLoadingMapModel(object sender, EventArgs e)
         {
-            var request = (DataRequest<MapModel>)sender;
+            var request = (DataModelRequest<MapModel>)sender;
 
             if (request.Status == DataRequestStatus.Complete)
             {

@@ -53,7 +53,7 @@ namespace Pokemon3D.GameModes.Maps
         
         private void FinishLoadingMapFragment(object sender, EventArgs e)
         {
-            var request = (DataRequest<MapFragmentModel>)sender;
+            var request = (DataModelRequest<MapFragmentModel>)sender;
             var fragmentModel = request.ResultModel;
             var positions = (Vector3Model[])request.DataContext["Positions"];
 

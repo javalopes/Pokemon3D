@@ -18,7 +18,7 @@ namespace Pokemon3D.FileSystem
 
         private void FinishedLoadingModel(object sender, EventArgs e)
         {
-            var request = (DataRequest<T>)sender;
+            var request = (DataModelRequest<T>)sender;
             if (_modelBuffer.ContainsKey(request.DataPath))
             {
                 _modelBuffer[request.DataPath] = request.ResultModel;
@@ -34,9 +34,9 @@ namespace Pokemon3D.FileSystem
         /// <summary>
         /// Creates a new data request for a specific model defined by its path.
         /// </summary>
-        public virtual DataRequest<T> CreateDataRequest(string dataPath)
+        public virtual DataModelRequest<T> CreateDataRequest(string dataPath)
         {
-            var request = new DataRequest<T>(_gameMode, dataPath);
+            var request = new DataModelRequest<T>(_gameMode, dataPath);
             request.Finished += FinishedLoadingModel;
             return request;
         }
