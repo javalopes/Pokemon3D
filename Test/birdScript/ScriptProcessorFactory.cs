@@ -1,4 +1,4 @@
-﻿using birdScript;
+﻿using Pokemon3D.Scripting;
 
 namespace Test.birdScript
 {

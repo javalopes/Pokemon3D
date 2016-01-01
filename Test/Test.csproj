@@ -71,9 +71,9 @@
     <Folder Include="Pokémon3D\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\birdScript\birdScript.csproj">
+    <ProjectReference Include="..\Pokemon3D.Scripting\Pokemon3D.Scripting.csproj">
       <Project>{7c228bb5-e710-4170-9c70-8a588040e405}</Project>
-      <Name>birdScript</Name>
+      <Name>Pokemon3D.Scripting</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
