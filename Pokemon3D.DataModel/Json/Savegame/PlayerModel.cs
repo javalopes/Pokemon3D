@@ -8,8 +8,12 @@ namespace Pokemon3D.DataModel.Json.Savegame
     [DataContract]
     class PlayerModel : DataModel<PlayerModel>
     {
+        [DataMember(Order = 0)]
+        public string Name;
 
-
+        [DataMember(Order = 1)]
+        public int Money;
+        
         public override object Clone()
         {
             return MemberwiseClone();
