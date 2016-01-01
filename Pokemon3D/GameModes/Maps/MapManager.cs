@@ -18,7 +18,7 @@ namespace Pokemon3D.GameModes.Maps
 
         private string CreateKey(string dataPath)
         {
-            return "Maps\\" + dataPath + ".json";
+            return _gameMode.GetMapFilePath(dataPath);
         }
 
         public override DataModelRequest<MapModel> CreateDataRequest(string dataPath)

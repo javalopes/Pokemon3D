@@ -12,7 +12,7 @@ namespace Pokemon3D.FileSystem
     /// A <see cref="DataRequest{T}"/> to request a <see cref="DataModel{T}"/> from a file.
     /// </summary>
     /// <typeparam name="T">The type of the <see cref="DataModel{T}"/>.</typeparam>
-    class DataModelRequest<T> : DataRequest<T> where T : DataModel<T>
+    class DataModelRequest<T> : DataRequest where T : DataModel<T>
     {
         /// <summary>
         /// The final model created from the result data.

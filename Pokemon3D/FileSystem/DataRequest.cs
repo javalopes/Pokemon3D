@@ -15,7 +15,7 @@ namespace Pokemon3D.FileSystem
     /// <summary>
     /// A container for data request results to file content.
     /// </summary>
-    abstract class DataRequest<T>
+    class DataRequest
     {
         private GameMode _gameMode;
 
@@ -154,7 +154,7 @@ namespace Pokemon3D.FileSystem
                 Status = DataRequestStatus.Error;
             }
 
-            GameLogger.Instance.Log(MessageType.Debug, "Data Request for data path \"" + DataPath + "\" finished  (Status:" + Status.ToString() + ").");
+            GameLogger.Instance.Log(MessageType.Debug, "Data Request for data path \"" + DataPath + "\" finished  (Status: " + Status.ToString() + ").");
 
             if (Finished != null)
                 Finished(this, EventArgs.Empty);

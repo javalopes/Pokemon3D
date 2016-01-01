@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common;
-using Pokemon3D.Common.Diagnostics;
-using Pokemon3D.Rendering.Data;
-using Pokemon3D.DataModel;
-using Pokemon3D.DataModel.Json;
-using Pokemon3D.DataModel.Json.GameMode;
-using Pokemon3D.DataModel.Json.GameMode.Definitions;
-using Pokemon3D.DataModel.Json.GameMode.Map;
-using Pokemon3D.GameCore;
+﻿using Pokemon3D.DataModel;
 using Pokemon3D.GameModes.Maps;
 using Pokemon3D.GameModes.Pokemon;
 using Pokemon3D.GameModes.Resources;
+using Pokemon3D.Rendering.Data;
+using System;
 
 namespace Pokemon3D.GameModes
 {

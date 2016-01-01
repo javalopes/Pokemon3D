@@ -71,6 +71,11 @@ namespace Pokemon3D.GameCore
 
         public ShapeRenderer ShapeRenderer { get; private set; }
         
+        /// <summary>
+        /// A global randomizer instance.
+        /// </summary>
+        public Random Random { get; private set; }
+
         public GameController()
         {
             if (Instance != null) throw new InvalidOperationException("Game is singleton and can be created just once");
@@ -86,6 +91,7 @@ namespace Pokemon3D.GameCore
                 PreferredBackBufferWidth = GameConfig.WindowSize.Width,
                 PreferredBackBufferHeight = GameConfig.WindowSize.Height
             };
+            Random = new Random();
         }
         
         protected override void LoadContent()

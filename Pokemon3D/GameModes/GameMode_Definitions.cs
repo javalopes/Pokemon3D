@@ -10,9 +10,6 @@ namespace Pokemon3D.GameModes
         private const string PATH_CONTENT = "Content";
         private const string PATH_CONTENT_TEXTURES = "Textures";
         private const string PATH_CONTENT_MODELS = "Models";
-        private const string PATH_DATA = "Data";
-        private const string PATH_MAPS = "Maps";
-        private const string PATH_FRAGMENTS = "Fragments";
         private const string PATH_DATA_i18n = "i18n";
         private const string PATH_DATA_POKEMON = "Pokemon";
 
@@ -27,24 +24,37 @@ namespace Pokemon3D.GameModes
         /// The path to the texture base folder of this GameMode.
         /// </summary>
         public string DataPath => Path.Combine(GameModeInfo.DirectoryPath, PATH_DATA);
-
-        /// <summary>
-        /// The path to the model base folder of this GameMode.
-        /// </summary>
-        public string ModelPath => Path.Combine(GameModeInfo.DirectoryPath, PATH_CONTENT, PATH_CONTENT_MODELS);
-
-        /// <summary>
-        /// The path to the map base folder of this GameMode.
-        /// </summary>
-        public string MapPath => Path.Combine(GameModeInfo.DirectoryPath, PATH_MAPS);
-
-        /// <summary>
-        /// The path to the fragments base folder of this GameMode.
-        /// </summary>
-        public string FragmentsPath => Path.Combine(GameModeInfo.DirectoryPath, PATH_FRAGMENTS);
-
+        
         public string PokemonDataPath => Path.Combine(DataPath, PATH_DATA_POKEMON);
 
         public string i18nPath => Path.Combine(DataPath, PATH_DATA_i18n);
+
+        private const string JSON_FILE_EXTENSION = ".json";
+        private const string FILE_NATURES = "Natures";
+
+        private const string PATH_MAPS = "Maps";
+        private const string PATH_FRAGMENTS = "Fragments";
+        private const string PATH_DATA = "Data";
+
+        /// <summary>
+        /// Returns the path to a map file, relative to the GameMode's root folder.
+        /// </summary>
+        public string GetMapFilePath(string mapId)
+        {
+            return Path.Combine(PATH_MAPS, mapId + JSON_FILE_EXTENSION);
+        }
+
+        /// <summary>
+        /// Returns the path to a map fragment file, relative to the GameMode's root folder.
+        /// </summary>
+        public string GetMapFragmentFilePath(string mapFragmentId)
+        {
+            return Path.Combine(PATH_FRAGMENTS, mapFragmentId + JSON_FILE_EXTENSION);
+        }
+
+        /// <summary>
+        /// The file path to the file containing the nature data.
+        /// </summary>
+        public string NaturesFilePath => Path.Combine(PATH_DATA, FILE_NATURES + JSON_FILE_EXTENSION);
     }
 }

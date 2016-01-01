@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Pokemon3D.DataModel.Json;
+﻿using Pokemon3D.DataModel.Json;
 using Pokemon3D.DataModel.Json.GameMode.Definitions;
-using System.IO;
-using Pokemon3D.Common.Diagnostics;
+using Pokemon3D.FileSystem;
+using Pokemon3D.GameCore;
+using System;
+using System.Linq;
 
 namespace Pokemon3D.GameModes.Pokemon
 {
@@ -15,62 +12,39 @@ namespace Pokemon3D.GameModes.Pokemon
     /// </summary>
     class NatureManager
     {
-        private const string NATURES_FILE_NAME = "Natures.json";
-
         private GameMode _gameMode;
         private NatureModel[] _natures;
-        private bool _loaded = false;
-        private Random _randomizer;
+
+        public bool FinishedLoading { get; private set; } = false;
 
         public NatureManager(GameMode gameMode)
         {
             _gameMode = gameMode;
-            _randomizer = new Random();
+            InitiateDataRequest();
         }
 
-        private void LoadNatures()
+        private void InitiateDataRequest()
         {
-            string path = Path.Combine(_gameMode.DataPath, NATURES_FILE_NAME);
-
-            if (File.Exists(path))
-            {
-                try
-                {
-                    _natures = DataModel<NatureModel[]>.FromFile(path);
-                }
-                catch (JsonDataLoadException ex)
-                {
-                    GameLogger.Instance.Log(ex);
-                }
-            }
-            else
-            {
-                GameLogger.Instance.Log(MessageType.Error, NATURES_FILE_NAME + " file not found.");
-            }
-
-            _loaded = true;
+            var request = new DataRequest(_gameMode, _gameMode.NaturesFilePath);
+            request.Finished += RequestFinished;
+            request.StartThreaded();
         }
 
-        /// <summary>
-        /// Returns a nature with a given Id.
-        /// </summary>
+        private void RequestFinished(object sender, EventArgs e)
+        {
+            var request = (DataRequest)sender;
+            _natures = DataModel<NatureModel[]>.FromString(request.ResultData);
+            FinishedLoading = true;
+        }
+
         public NatureModel GetNature(string natureId)
         {
-            if (!_loaded)
-                LoadNatures();
-
-            return _natures.Single(n => n.Id == natureId);
+            return _natures.Single(x => x.Id == natureId);
         }
 
-        /// <summary>
-        /// Returns a random nature from all loaded natures.
-        /// </summary>
         public NatureModel GetRandomNature()
         {
-            if (!_loaded)
-                LoadNatures();
-
-            return _natures[_randomizer.Next(0, _natures.Length)];
+            return _natures[GameController.Instance.Random.Next(0, _natures.Length)];
         }
     }
 }

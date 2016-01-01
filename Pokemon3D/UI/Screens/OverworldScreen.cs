@@ -18,7 +18,7 @@ namespace Pokemon3D.UI.Screens
 {
     class OverworldScreen : GameObject, Screen
     {
-        // TODO: move this somewhere else...
+        // todo: move this somewhere else...
         private static readonly Dictionary<ShadowQuality, int> ShadowMapSizeForQuality = new Dictionary<ShadowQuality, int>
         {
             { ShadowQuality.Small, 512 },

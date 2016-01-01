@@ -109,6 +109,7 @@
     <Compile Include="Json\GameMode\Pokemon\EvolutionConditionType.cs" />
     <Compile Include="Json\GameMode\Pokemon\EvolutionTrigger.cs" />
     <Compile Include="Json\GameMode\Pokemon\ExperienceType.cs" />
+    <Compile Include="Json\GameMode\Pokemon\PokedexModel.cs" />
     <Compile Include="Json\GameMode\Pokemon\SpawnHeldItemModel.cs" />
     <Compile Include="Json\GameMode\Pokemon\LevelUpMoveModel.cs" />
     <Compile Include="Json\GameMode\Pokemon\PokedexEntryModel.cs" />
@@ -125,6 +126,10 @@
     <Compile Include="Json\RectangleModel.cs" />
     <Compile Include="Json\Savegame\Inventory\InventoryItemModel.cs" />
     <Compile Include="Json\Savegame\PlayerModel.cs" />
+    <Compile Include="Json\Savegame\Pokemon\PokedexEntrySaveModel.cs" />
+    <Compile Include="Json\Savegame\Pokemon\PokedexEntryType.cs" />
+    <Compile Include="Json\Savegame\Pokemon\PokedexSaveModel.cs" />
+    <Compile Include="Json\Savegame\SaveFileModel.cs" />
     <Compile Include="Json\Savegame\Pokemon\CatchInfoModel.cs" />
     <Compile Include="Json\Savegame\Pokemon\HeldItemModel.cs" />
     <Compile Include="Json\Savegame\Pokemon\PokemonCatchInfo.cs" />
