@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Diagnostics;
 using System.IO;
-using Microsoft.Xna.Framework;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Pokemon3D.Common.Diagnostics
 {
@@ -12,7 +15,7 @@ namespace Pokemon3D.Common.Diagnostics
     {
         private const string LoggerFileLineFormat = "{0} {1} {2}\r\n";
         private const string LoggerVsFormat = "{0} {1} {2}\r\n";
-        private const string ExceptionMessageFormat = "An exception occurred: {0}\r\n";
+        private const string ExceptionMessageFormat = "An exception occurred! Message: {0}; Type: {1}; Other details: {2}\r\n";
 
         private string _logFilePath;
         
@@ -66,7 +69,10 @@ namespace Pokemon3D.Common.Diagnostics
         /// </summary>
         public void Log(Exception ex)
         {
-            Log(MessageType.Error, string.Format(ExceptionMessageFormat, ex));
+            Log(MessageType.Error, string.Format(ExceptionMessageFormat, ex.Message, ex.GetType().Name, ""));
+
+            if (ex.InnerException != null)
+                Log(ex.InnerException);
         }
 
         /// <summary>

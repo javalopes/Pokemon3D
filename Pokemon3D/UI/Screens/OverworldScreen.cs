@@ -18,6 +18,7 @@ namespace Pokemon3D.UI.Screens
 {
     class OverworldScreen : GameObject, Screen
     {
+        // TODO: move this somewhere else...
         private static readonly Dictionary<ShadowQuality, int> ShadowMapSizeForQuality = new Dictionary<ShadowQuality, int>
         {
             { ShadowQuality.Small, 512 },
@@ -31,11 +32,15 @@ namespace Pokemon3D.UI.Screens
         private Scene _scene;
         private Player _player;
 
+        private Dispatcher _dispatcher;
+
         private SpriteFont _debugSpriteFont;
         private bool _showRenderStatistics;
 
         public void OnOpening(object enterInformation)
         {
+            _dispatcher = Dispatcher.CurrentDispatcher;
+
             var gameModes = Game.GameModeManager.GetGameModeInfos();
             _gameMode = Game.GameModeManager.LoadGameMode(gameModes.First());
             Game.Resources.SetPrimitiveProvider(_gameMode);
@@ -52,7 +57,7 @@ namespace Pokemon3D.UI.Screens
             {
                 Light =
                 {
-                    Direction = new Vector3(-1.5f, -1, -0.5f),
+                    Direction = new Vector3(-1.5f, -1.0f, -0.5f),
                     AmbientIntensity = 0.5f,
                     DiffuseIntensity = 0.8f
                 },
@@ -66,11 +71,8 @@ namespace Pokemon3D.UI.Screens
             LoadMap();
         }
 
-        private Dispatcher _dispatcher;
-
         private void LoadMap()
         {
-            _dispatcher = Dispatcher.CurrentDispatcher;
             var request = _gameMode.MapManager.CreateDataRequest(_gameMode.GameModeInfo.StartMap);
             request.Finished += FinishedLoadingMapModel;
             request.StartThreaded();
@@ -80,10 +82,18 @@ namespace Pokemon3D.UI.Screens
         {
             var request = (DataRequest<MapModel>)sender;
 
-            _dispatcher.Invoke(() =>
+            if (request.Status == DataRequestStatus.Complete)
             {
-                _currentMap = new Map(_gameMode, request.ResultModel, _scene, Game.Resources);
-            });
+                _dispatcher.Invoke(() =>
+                {
+                    _currentMap = new Map(_gameMode, request.ResultModel, _scene, Game.Resources);
+                });
+            }
+            else
+            {
+                Common.Diagnostics.GameLogger.Instance.Log(Common.Diagnostics.MessageType.Error, "Map (" + request.DataPath + ") loading failed! See next message for exception details.");
+                Common.Diagnostics.GameLogger.Instance.Log(request.RequestException);
+            }
         }
 
         public void OnUpdate(float elapsedTime)

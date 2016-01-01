@@ -59,6 +59,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="FileSystem\DataRequest.cs" />
+    <Compile Include="FileSystem\DataRequestErrorType.cs" />
+    <Compile Include="FileSystem\DataRequestException.cs" />
     <Compile Include="FileSystem\DataRequestModelManager.cs" />
     <Compile Include="FileSystem\DataRequestStatus.cs" />
     <Compile Include="FileSystem\FileProvider.cs" />

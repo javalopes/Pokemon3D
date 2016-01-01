@@ -20,7 +20,7 @@ using Pokemon3D.GameModes.Resources;
 namespace Pokemon3D.GameModes
 {
     /// <summary>
-    /// The main class to control a GameMode.
+    /// Contains methods and members that control a GameMode, a collection of maps, scripts and assets.
     /// </summary>
     partial class GameMode : IDataModelContainer, IDisposable, GameModeDataProvider
     {

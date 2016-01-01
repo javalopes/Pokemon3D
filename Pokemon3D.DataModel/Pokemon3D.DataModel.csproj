@@ -124,6 +124,7 @@
     <Compile Include="Json\RangeModel.cs" />
     <Compile Include="Json\RectangleModel.cs" />
     <Compile Include="Json\Savegame\Inventory\InventoryItemModel.cs" />
+    <Compile Include="Json\Savegame\PlayerModel.cs" />
     <Compile Include="Json\Savegame\Pokemon\CatchInfoModel.cs" />
     <Compile Include="Json\Savegame\Pokemon\HeldItemModel.cs" />
     <Compile Include="Json\Savegame\Pokemon\PokemonCatchInfo.cs" />

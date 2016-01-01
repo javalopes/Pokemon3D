@@ -53,6 +53,11 @@ namespace Pokemon3D.FileSystem
         /// Data context that holds customizable data entires.
         /// </summary>
         public Dictionary<string, object> DataContext { get; }
+        
+        /// <summary>
+        /// An exception that occurred during the request. If no exception occurred, this value is equal to null.
+        /// </summary>
+        public Exception RequestException { get; private set; }
 
         /// <summary>
         /// Creates a GameMode data request to a file containing data.
@@ -133,17 +138,25 @@ namespace Pokemon3D.FileSystem
                     ResultModel = DataModel<T>.FromString(ResultData);
                     Status = DataRequestStatus.Complete;
                 }
-                catch (IOException)
+                catch (IOException ex)
                 {
+                    RequestException = new DataRequestException(this, DataRequestErrorType.FileReadError, ex);
                     Status = DataRequestStatus.Error;
                 }
-                catch (JsonDataLoadException)
+                catch (JsonDataLoadException ex)
                 {
+                    RequestException = new DataRequestException(this, DataRequestErrorType.JsonDataError, ex);
+                    Status = DataRequestStatus.Error;
+                }
+                catch (Exception ex)
+                {
+                    RequestException = new DataRequestException(this, DataRequestErrorType.MiscError, ex);
                     Status = DataRequestStatus.Error;
                 }
             }
             else
             {
+                RequestException = new DataRequestException(this, DataRequestErrorType.FileNotFound, null);
                 Status = DataRequestStatus.Error;
             }
 
