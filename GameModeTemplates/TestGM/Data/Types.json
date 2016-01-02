@@ -3,9 +3,9 @@
         "Id" : "Normal",
         "Name" : "Normal",
         "Color" : {
-            "R" : 168,
-            "G" : 168,
-            "B" : 120
+            "Red" : 168,
+            "Green" : 168,
+            "Blue" : 120
         },
         "Texture" : {
             "Source" : "sometexture",
@@ -19,5 +19,33 @@
         "Unaffected" : [
             "Ghost"
         ]
+    },
+	{
+        "Id" : "Grass",
+        "Name" : "Grass",
+        "Color" : {
+            "Red" : 120,
+            "Green" : 200,
+            "Blue" : 80
+        },
+        "Texture" : {
+            "Source" : "sometexture",
+            "Rectangle" : null
+        },
+        "Effective" : [
+            "Ground",
+            "Rock",
+            "Water"
+        ],
+        "Ineffective" : [
+            "Bug",
+            "Dragon",
+            "Fire",
+            "Flying",
+            "Grass",
+            "Poison",
+            "Steel"
+        ],
+        "Unaffected" : []
     }
 ]

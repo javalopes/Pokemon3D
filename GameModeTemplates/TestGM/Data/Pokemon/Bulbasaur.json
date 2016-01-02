@@ -43,7 +43,7 @@
                 "Rectangle" : null
             },
             "Type1" : "Grass",
-            "Type2" : "None",
+            "Type2" : null,
             "CatchRate" : 45,
             "Abilities" : [
                 "Overgrow",

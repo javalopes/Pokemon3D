@@ -13,9 +13,15 @@ namespace Pokemon3D.GameModes.Pokemon
         public NatureManager(GameMode gameMode) : base(gameMode, gameMode.NaturesFilePath)
         { }
 
-        public NatureModel GetNature(string id)
+        /// <summary>
+        /// Returns the <see cref="NatureModel"/> for a nature id.
+        /// </summary>
+        public NatureModel GetNatureModel(string id)
         {
-            return _modelBuffer.Single(x => x.Id == id);
+            if (id == null)
+                return null;
+
+            return _modelBuffer.SingleOrDefault(x => x.Id == id);
         }
 
         public NatureModel GetRandomNature()

@@ -78,7 +78,17 @@ namespace Pokemon3D.GameModes.Pokemon
 
         public NatureModel Nature
         {
-            get { return _gameMode.NatureManager.GetNature(_saveModel.NatureId); }
+            get { return _gameMode.NatureManager.GetNatureModel(_saveModel.NatureId); }
+        }
+
+        public TypeModel Type1
+        {
+            get { return _gameMode.TypeManager.GetTypeModel(ActiveFormModel.Type1); }
+        }
+
+        public TypeModel Type2
+        {
+            get { return _gameMode.TypeManager.GetTypeModel(ActiveFormModel.Type2); }
         }
 
         public string DisplayName
@@ -96,7 +106,7 @@ namespace Pokemon3D.GameModes.Pokemon
         {
             get { return _dataModel.Forms.Single(x => x.Id == _activeForm); }
         }
-        
+
         public Pokemon(GameMode gameMode, PokemonModel dataModel, PokemonSaveModel saveModel)
         {
             _gameMode = gameMode;

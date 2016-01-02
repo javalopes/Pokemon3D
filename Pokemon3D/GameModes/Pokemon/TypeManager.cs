@@ -12,9 +12,15 @@ namespace Pokemon3D.GameModes.Pokemon
         public TypeManager(GameMode gameMode) : base(gameMode, gameMode.TypesFilePath)
         { }
 
-        public TypeModel GetType(string id)
+        /// <summary>
+        /// Returns the <see cref="TypeModel"/> for a type id.
+        /// </summary>
+        public TypeModel GetTypeModel(string id)
         {
-            return _modelBuffer.Single(x => x.Id == id);
+            if (id == null)
+                return null;
+
+            return _modelBuffer.SingleOrDefault(x => x.Id == id);
         }
     }
 }
