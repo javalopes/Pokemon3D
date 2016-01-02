@@ -57,6 +57,7 @@ namespace Pokemon3D.GameModes.Maps
                 IsUnlit = true
             };
             SceneNode.Position = new Vector3(10, 1, 8);
+            SceneNode.IsBillboard = true;
 
             _figureAnimator = new Animator();
             _figureAnimator.AddAnimation("WalkForward", Animation.CreateDiscrete(0.65f, new[]
@@ -89,8 +90,9 @@ namespace Pokemon3D.GameModes.Maps
             }, t => SceneNode.Material.TexcoordOffset = t, true));
 
             MovementMode = PlayerMovementMode.ThirdPerson;
+            _camera.Position = _cameraTargetPosition;
         }
-        
+
         public override void Update(float elapsedTime)
         {
             base.Update(elapsedTime);
@@ -132,6 +134,15 @@ namespace Pokemon3D.GameModes.Maps
             }
 
             _mouseState = currentMouseState;
+
+            if (_cameraTargetPosition.Z != _camera.Position.Z)
+            {
+                _camera.Position = new Vector3(_camera.Position.X, _camera.Position.Y, MathHelper.SmoothStep(_camera.Position.Z, _cameraTargetPosition.Z, 0.2f));
+            }
+            if (_cameraTargetPosition.Y != _camera.Position.Y)
+            {
+                _camera.Position = new Vector3(_camera.Position.X, MathHelper.SmoothStep(_camera.Position.Y, _cameraTargetPosition.Y, 0.2f), _camera.Position.Z);
+            }
         }
 
         private void DeactivateWalkingAnimation()
@@ -223,7 +234,17 @@ namespace Pokemon3D.GameModes.Maps
             {
                 SceneNode.RotateY(-RotationSpeed * elapsedTime);
             }
+            if (Game.Keyboard.IsKeyDown(Keys.Up))
+            {
+                _camera.RotateX(RotationSpeed * elapsedTime);
+            }
+            else if (Game.Keyboard.IsKeyDown(Keys.Down))
+            {
+                _camera.RotateX(-RotationSpeed * elapsedTime);
+            }
         }
+
+        private Vector3 _cameraTargetPosition = new Vector3(0, 1, 3);
 
         private void OnMovementModeChanged()
         {
@@ -233,13 +254,15 @@ namespace Pokemon3D.GameModes.Maps
                     SceneNode.IsActive = true;
                     _camera.SetParent(SceneNode);
                     _camera.EulerAngles = Vector3.Zero;
-                    _camera.Position = new Vector3(0, 1, 0);
+                    _cameraTargetPosition = new Vector3(0, 0.6f, 0);
+
                     break;
                 case PlayerMovementMode.ThirdPerson:
                     SceneNode.IsActive = true;
                     _camera.SetParent(SceneNode);
                     _camera.EulerAngles = Vector3.Zero;
-                    _camera.Position = new Vector3(0, 1, 3);
+                    _cameraTargetPosition = new Vector3(0, 1, 3);
+
                     break;
                 case PlayerMovementMode.GodMode:
                     _camera.SetParent(null);
