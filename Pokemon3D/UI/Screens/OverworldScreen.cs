@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.DataModel.Json.GameCore;
 using Pokemon3D.DataModel.Json.GameMode.Map;
-using Pokemon3D.FileSystem;
+using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
 using Pokemon3D.GameModes.Maps;
@@ -43,6 +43,7 @@ namespace Pokemon3D.UI.Screens
 
             var gameModes = Game.GameModeManager.GetGameModeInfos();
             _gameMode = Game.GameModeManager.LoadGameMode(gameModes.First());
+            _gameMode.LoadInitialData();
             Game.Resources.SetPrimitiveProvider(_gameMode);
 
             var settings = new RenderSettings

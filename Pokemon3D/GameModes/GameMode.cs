@@ -22,6 +22,8 @@ namespace Pokemon3D.GameModes
         
         public NatureManager NatureManager { get; private set; }
 
+        public TypeManager TypeManager { get; private set; }
+
         public PokemonFactory PokemonFactory { get; private set; }
 
         public bool IsValid { get; private set; }
@@ -41,11 +43,33 @@ namespace Pokemon3D.GameModes
                 MapFragmentManager = new MapFragmentManager(this);
                 NatureManager = new NatureManager(this);
                 PokemonFactory = new PokemonFactory(this);
+                TypeManager = new TypeManager(this);
             }
 
             IsValid = true;
         }
         
+        /// <summary>
+        /// Starts to load the initial data from files like Pokémon Natures/Types etc.
+        /// </summary>
+        public void LoadInitialData()
+        {
+            NatureManager.Start();
+            TypeManager.Start();
+        }
+
+        /// <summary>
+        /// Returns if all components of this GameMode have finished loading their data.
+        /// </summary>
+        public bool FinishedLoading
+        {
+            get
+            {
+                return NatureManager.FinishedLoading &&
+                    TypeManager.FinishedLoading;
+            }
+        }
+
         public GeometryData GetPrimitiveData(string primitiveName)
         {
             return PrimitiveManager.GetPrimitiveData(primitiveName);

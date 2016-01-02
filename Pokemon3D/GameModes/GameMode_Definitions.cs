@@ -30,6 +30,7 @@ namespace Pokemon3D.GameModes
 
         private const string JSON_FILE_EXTENSION = ".json";
         private const string FILE_DATA_NATURES = "Natures";
+        private const string FILE_DATA_TYPES = "Types";
 
         private const string PATH_MAPS = "Maps";
         private const string PATH_FRAGMENTS = "Fragments";
@@ -64,5 +65,10 @@ namespace Pokemon3D.GameModes
         /// The file path to the file containing the nature data.
         /// </summary>
         public string NaturesFilePath => Path.Combine(PATH_DATA, FILE_DATA_NATURES + JSON_FILE_EXTENSION);
+
+        /// <summary>
+        /// The file path to the file containing the Pokémon type data.
+        /// </summary>
+        public string TypesFilePath => Path.Combine(PATH_DATA, FILE_DATA_TYPES + JSON_FILE_EXTENSION);
     }
 }

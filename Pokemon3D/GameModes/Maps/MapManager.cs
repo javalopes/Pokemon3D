@@ -1,5 +1,5 @@
 ﻿using Pokemon3D.DataModel.Json.GameMode.Map;
-using Pokemon3D.FileSystem;
+using Pokemon3D.FileSystem.Requests;
 
 namespace Pokemon3D.GameModes.Maps
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Pokemon3D.FileSystem
+namespace Pokemon3D.FileSystem.Requests
 {
     /// <summary>
     /// An exception during a data request operation.

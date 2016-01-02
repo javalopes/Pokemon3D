@@ -2,7 +2,7 @@
 using Pokemon3D.DataModel.Json;
 using Pokemon3D.DataModel.Json.GameMode.Map;
 using Pokemon3D.DataModel.Json.GameMode.Map.Entities;
-using Pokemon3D.FileSystem;
+using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.GameModes.Maps.Generators;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;

@@ -3,7 +3,7 @@ using Pokemon3D.GameModes;
 using System;
 using System.Collections.Generic;
 
-namespace Pokemon3D.FileSystem
+namespace Pokemon3D.FileSystem.Requests
 {
     /// <summary>
     /// Manages models requested and loaded by a <see cref="DataRequest{T}"/>.
@@ -12,6 +12,14 @@ namespace Pokemon3D.FileSystem
     abstract class DataRequestModelManager<T> where T : DataModel<T>
     {
         private Dictionary<string, T> _modelBuffer;
+
+        protected GameMode _gameMode;
+
+        public DataRequestModelManager(GameMode gameMode)
+        {
+            _gameMode = gameMode;
+            _modelBuffer = new Dictionary<string, T>();
+        }
 
         private void FinishedLoadingModel(object sender, EventArgs e)
         {
@@ -26,8 +34,6 @@ namespace Pokemon3D.FileSystem
             }
         }
 
-        protected GameMode _gameMode;
-
         /// <summary>
         /// Creates a new data request for a specific model defined by its path.
         /// </summary>
@@ -36,12 +42,6 @@ namespace Pokemon3D.FileSystem
             var request = new DataModelRequest<T>(_gameMode, dataPath);
             request.Finished += FinishedLoadingModel;
             return request;
-        }
-
-        public DataRequestModelManager(GameMode gameMode)
-        {
-            _gameMode = gameMode;
-            _modelBuffer = new Dictionary<string, T>();
         }
 
         /// <summary>

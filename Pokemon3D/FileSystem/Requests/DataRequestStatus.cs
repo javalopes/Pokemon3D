@@ -1,4 +1,4 @@
-﻿namespace Pokemon3D.FileSystem
+﻿namespace Pokemon3D.FileSystem.Requests
 {
     enum DataRequestStatus
     {

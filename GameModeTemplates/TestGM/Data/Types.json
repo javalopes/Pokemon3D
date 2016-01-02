@@ -1,3 +1,23 @@
 [
-	
+	{
+        "Id" : "Normal",
+        "Name" : "Normal",
+        "Color" : {
+            "R" : 168,
+            "G" : 168,
+            "B" : 120
+        },
+        "Texture" : {
+            "Source" : "sometexture",
+            "Rectangle" : null
+        },
+        "Effective" : [],
+        "Ineffective" : [
+            "Rock",
+            "Steel"
+        ],
+        "Unaffected" : [
+            "Ghost"
+        ]
+    }
 ]

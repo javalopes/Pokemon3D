@@ -1,7 +1,7 @@
 ﻿using Pokemon3D.DataModel.Json.GameMode.Pokemon;
 using Pokemon3D.DataModel.Json.Pokemon;
 using Pokemon3D.DataModel.Json.Savegame.Pokemon;
-using Pokemon3D.FileSystem;
+using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.GameCore;
 using System;
 using System.Collections.Generic;

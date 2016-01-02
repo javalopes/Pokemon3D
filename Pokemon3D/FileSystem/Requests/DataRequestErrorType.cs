@@ -1,4 +1,4 @@
-﻿namespace Pokemon3D.FileSystem
+﻿namespace Pokemon3D.FileSystem.Requests
 {
     /// <summary>
     /// Different error types for a <see cref="DataRequest{T}"/>.

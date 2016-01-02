@@ -2,7 +2,7 @@
 using Pokemon3D.GameModes;
 using System;
 
-namespace Pokemon3D.FileSystem
+namespace Pokemon3D.FileSystem.Requests
 {
     /// <summary>
     /// A <see cref="DataRequest{T}"/> to request a <see cref="DataModel{T}"/> from a file.

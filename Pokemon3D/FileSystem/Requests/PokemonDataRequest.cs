@@ -3,7 +3,7 @@ using Pokemon3D.DataModel.Json.Savegame.Pokemon;
 using Pokemon3D.GameModes;
 using Pokemon3D.GameModes.Pokemon;
 
-namespace Pokemon3D.FileSystem
+namespace Pokemon3D.FileSystem.Requests
 {
     /// <summary>
     /// A request to read data from a Pokémon data file and create a <see cref="Pokemon"/> from that and additional information.
