@@ -16,6 +16,8 @@ namespace Pokemon3D.GameModes.Maps
         private PlayerMovementMode _movementMode;
         private MouseState _mouseState;
 
+        private Vector3 _cameraTargetPosition = new Vector3(0, 1, 3);
+
         public float Speed { get; set; }
         public float RotationSpeed { get; set; }
 
@@ -45,7 +47,7 @@ namespace Pokemon3D.GameModes.Maps
             };
 
             Speed = 2.0f;
-            RotationSpeed = MathHelper.PiOver4;
+            RotationSpeed = 2f;
 
             SceneNode.Mesh = new Mesh(Game.GraphicsDevice, Primitives.GenerateQuadForYBillboard());
             var diffuseTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
@@ -135,13 +137,16 @@ namespace Pokemon3D.GameModes.Maps
 
             _mouseState = currentMouseState;
 
-            if (_cameraTargetPosition.Z != _camera.Position.Z)
+            if (MovementMode != PlayerMovementMode.GodMode)
             {
-                _camera.Position = new Vector3(_camera.Position.X, _camera.Position.Y, MathHelper.SmoothStep(_camera.Position.Z, _cameraTargetPosition.Z, 0.2f));
-            }
-            if (_cameraTargetPosition.Y != _camera.Position.Y)
-            {
-                _camera.Position = new Vector3(_camera.Position.X, MathHelper.SmoothStep(_camera.Position.Y, _cameraTargetPosition.Y, 0.2f), _camera.Position.Z);
+                if (_cameraTargetPosition.Z != _camera.Position.Z)
+                {
+                    _camera.Position = new Vector3(_camera.Position.X, _camera.Position.Y, MathHelper.SmoothStep(_camera.Position.Z, _cameraTargetPosition.Z, 0.2f));
+                }
+                if (_cameraTargetPosition.Y != _camera.Position.Y)
+                {
+                    _camera.Position = new Vector3(_camera.Position.X, MathHelper.SmoothStep(_camera.Position.Y, _cameraTargetPosition.Y, 0.2f), _camera.Position.Z);
+                }
             }
         }
 
@@ -180,6 +185,47 @@ namespace Pokemon3D.GameModes.Maps
 
         private void HandleThirdPersonMovement(float elapsedTime, MouseState mouseState, Vector3 movementDirection)
         {
+            AnimateFigure(elapsedTime, movementDirection);
+
+            if (Game.Keyboard.IsKeyDown(Keys.Left))
+            {
+                SceneNode.RotateY(RotationSpeed * elapsedTime);
+            }
+            else if (Game.Keyboard.IsKeyDown(Keys.Right))
+            {
+                SceneNode.RotateY(-RotationSpeed * elapsedTime);
+            }
+        }
+
+        private void HandleFirstPersonMovement(float elapsedTime, MouseState mouseState, Vector3 movementDirection)
+        {
+            AnimateFigure(elapsedTime, movementDirection);
+
+            if (movementDirection.LengthSquared() > 0.0f)
+            {
+                SceneNode.Translate(Vector3.Normalize(movementDirection) * Speed * elapsedTime);
+            }
+
+            if (Game.Keyboard.IsKeyDown(Keys.Left))
+            {
+                SceneNode.RotateY(RotationSpeed * elapsedTime);
+            }
+            else if (Game.Keyboard.IsKeyDown(Keys.Right))
+            {
+                SceneNode.RotateY(-RotationSpeed * elapsedTime);
+            }
+            if (Game.Keyboard.IsKeyDown(Keys.Up))
+            {
+                _camera.RotateX(RotationSpeed * elapsedTime);
+            }
+            else if (Game.Keyboard.IsKeyDown(Keys.Down))
+            {
+                _camera.RotateX(-RotationSpeed * elapsedTime);
+            }
+        }
+
+        private void AnimateFigure(float elapsedTime, Vector3 movementDirection)
+        {
             if (movementDirection.LengthSquared() > 0.0f)
             {
                 SceneNode.Translate(Vector3.Normalize(movementDirection) * Speed * elapsedTime);
@@ -208,43 +254,7 @@ namespace Pokemon3D.GameModes.Maps
             {
                 DeactivateWalkingAnimation();
             }
-
-            if (Game.Keyboard.IsKeyDown(Keys.Left))
-            {
-                SceneNode.RotateY(RotationSpeed * elapsedTime);
-            }
-            else if (Game.Keyboard.IsKeyDown(Keys.Right))
-            {
-                SceneNode.RotateY(-RotationSpeed * elapsedTime);
-            }
         }
-
-        private void HandleFirstPersonMovement(float elapsedTime, MouseState mouseState, Vector3 movementDirection)
-        {
-            if (movementDirection.LengthSquared() > 0.0f)
-            {
-                SceneNode.Translate(Vector3.Normalize(movementDirection) * Speed * elapsedTime);
-            }
-
-            if (Game.Keyboard.IsKeyDown(Keys.Left))
-            {
-                SceneNode.RotateY(RotationSpeed * elapsedTime);
-            }
-            else if (Game.Keyboard.IsKeyDown(Keys.Right))
-            {
-                SceneNode.RotateY(-RotationSpeed * elapsedTime);
-            }
-            if (Game.Keyboard.IsKeyDown(Keys.Up))
-            {
-                _camera.RotateX(RotationSpeed * elapsedTime);
-            }
-            else if (Game.Keyboard.IsKeyDown(Keys.Down))
-            {
-                _camera.RotateX(-RotationSpeed * elapsedTime);
-            }
-        }
-
-        private Vector3 _cameraTargetPosition = new Vector3(0, 1, 3);
 
         private void OnMovementModeChanged()
         {
