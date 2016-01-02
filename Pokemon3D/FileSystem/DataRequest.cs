@@ -17,7 +17,7 @@ namespace Pokemon3D.FileSystem
     /// </summary>
     class DataRequest
     {
-        private GameMode _gameMode;
+        protected GameMode _gameMode;
 
         /// <summary>
         /// The current status of this data request.
@@ -44,11 +44,22 @@ namespace Pokemon3D.FileSystem
         /// </summary>
         public event EventHandler Finished;
 
+        private Dictionary<string, object> _dataContext;
+
         /// <summary>
         /// Data context that holds customizable data entires.
         /// </summary>
-        public Dictionary<string, object> DataContext { get; }
-        
+        public Dictionary<string, object> DataContext
+        {
+            get
+            {
+                if (_dataContext == null)
+                    _dataContext = new Dictionary<string, object>();
+
+                return _dataContext;
+            }
+        }
+
         /// <summary>
         /// An exception that occurred during the request. If no exception occurred, this value is equal to null.
         /// </summary>
@@ -63,7 +74,6 @@ namespace Pokemon3D.FileSystem
 
             _gameMode = gameMode;
             DataPath = dataPath;
-            DataContext = new Dictionary<string, object>();
 
             ResultData = string.Empty;
         }

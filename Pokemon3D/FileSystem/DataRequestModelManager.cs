@@ -62,5 +62,16 @@ namespace Pokemon3D.FileSystem
         {
             return _modelBuffer[dataPath];
         }
+
+        /// <summary>
+        /// Returns either the request to load a model or the model itself, if it exists in the buffer.
+        /// </summary>
+        public object GetRequestOrModel(string dataPath)
+        {
+            if (HasModelInBuffer(dataPath))
+                return GetModelFromBuffer(dataPath);
+            else
+                return CreateDataRequest(dataPath);
+        }
     }
 }

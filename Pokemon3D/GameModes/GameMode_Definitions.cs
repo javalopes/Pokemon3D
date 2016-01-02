@@ -11,7 +11,6 @@ namespace Pokemon3D.GameModes
         private const string PATH_CONTENT_TEXTURES = "Textures";
         private const string PATH_CONTENT_MODELS = "Models";
         private const string PATH_DATA_i18n = "i18n";
-        private const string PATH_DATA_POKEMON = "Pokemon";
 
         public const string FILE_DATA_PRIMITIVES = "Primitives.json";
 
@@ -30,11 +29,12 @@ namespace Pokemon3D.GameModes
         public string i18nPath => Path.Combine(DataPath, PATH_DATA_i18n);
 
         private const string JSON_FILE_EXTENSION = ".json";
-        private const string FILE_NATURES = "Natures";
+        private const string FILE_DATA_NATURES = "Natures";
 
         private const string PATH_MAPS = "Maps";
         private const string PATH_FRAGMENTS = "Fragments";
         private const string PATH_DATA = "Data";
+        private const string PATH_DATA_POKEMON = "Pokemon";
 
         /// <summary>
         /// Returns the path to a map file, relative to the GameMode's root folder.
@@ -53,8 +53,16 @@ namespace Pokemon3D.GameModes
         }
 
         /// <summary>
+        /// Returns the path to a pokemon data file, relative to the GameMode's root folder.
+        /// </summary>
+        public string GetPokemonFilePath(string pokemonId)
+        {
+            return Path.Combine(PATH_DATA, PATH_DATA_POKEMON, pokemonId + JSON_FILE_EXTENSION);
+        }
+
+        /// <summary>
         /// The file path to the file containing the nature data.
         /// </summary>
-        public string NaturesFilePath => Path.Combine(PATH_DATA, FILE_NATURES + JSON_FILE_EXTENSION);
+        public string NaturesFilePath => Path.Combine(PATH_DATA, FILE_DATA_NATURES + JSON_FILE_EXTENSION);
     }
 }

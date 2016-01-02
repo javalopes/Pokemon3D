@@ -1,13 +1,11 @@
-﻿using Pokemon3D.Common;
-using Pokemon3D.DataModel.Json;
-using Pokemon3D.DataModel.Json.GameMode.Pokemon;
+﻿using Pokemon3D.DataModel.Json.GameMode.Pokemon;
+using Pokemon3D.DataModel.Json.Pokemon;
 using Pokemon3D.DataModel.Json.Savegame.Pokemon;
+using Pokemon3D.FileSystem;
+using Pokemon3D.GameCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
-using Pokemon3D.Common.Diagnostics;
-using Pokemon3D.DataModel.Json.Pokemon;
 
 namespace Pokemon3D.GameModes.Pokemon
 {
@@ -16,52 +14,89 @@ namespace Pokemon3D.GameModes.Pokemon
     /// </summary>
     class PokemonFactory
     {
-        private const int PERSONALITY_VALUE_LENGTH = 10;
-        private const string POKEMON_FILE_EXTENSION = ".json";
-
+        private Dictionary<string, PokemonModel> _buffer = new Dictionary<string, PokemonModel>();
         private GameMode _gameMode;
         private int[] _charCodes;
-        private Random _randomizer;
+        private const int PERSONALITY_VALUE_LENGTH = 10;
 
-        private Dictionary<string, PokemonModel> _definitionModelbuffer;
-        
         public PokemonFactory(GameMode gameMode)
         {
             _gameMode = gameMode;
-            _randomizer = new Random();
-            _definitionModelbuffer = new Dictionary<string, PokemonModel>();
         }
 
-        private PokemonModel GetDefinitionModel(string id)
+        private string CreateKey(string pokemonId)
         {
-            if (!_definitionModelbuffer.ContainsKey(id))
+            return _gameMode.GetPokemonFilePath(pokemonId);
+        }
+
+        public object GetRequestOrPokemon(PokemonSaveModel saveModel)
+        {
+            string key = CreateKey(saveModel.Id);
+            if (_buffer.ContainsKey(key))
             {
-                PokemonModel definitionModel = null;
+                var dataModel = _buffer[key];
+                return new Pokemon(_gameMode, dataModel, saveModel);
+            }
+            else
+            {
+                return CreateDataRequest(saveModel);
+            }
+        }
 
-                string path = Path.Combine(_gameMode.PokemonDataPath, id + POKEMON_FILE_EXTENSION);
+        /// <summary>
+        /// Creates a data request from an already existing save model.
+        /// </summary>
+        public PokemonDataRequest CreateDataRequest(PokemonSaveModel saveModel)
+        {
+            var request = new PokemonDataRequest(_gameMode, saveModel);
+            request.Finished += FinishedRequest;
+            return request;
+        }
 
-                if (File.Exists(path))
-                {
-                    try
-                    {
-                        definitionModel = DataModel<PokemonModel>.FromFile(path);
-                    }
-                    catch (JsonDataLoadException ex)
-                    {
-                        GameLogger.Instance.Log(ex);
-                    }
-                }
-                else
-                {
-                    GameLogger.Instance.Log(MessageType.Error, "Pokémon data file (id: \"" + id + "\") at \"" + path + "\" not found.");
-                }
+        public object GetRequestOrPokemon(string pokemonId, int level)
+        {
+            string key = CreateKey(pokemonId);
+            if (_buffer.ContainsKey(key))
+            {
+                var dataModel = _buffer[key];
+                var saveModel = new PokemonSaveModel();
+                PopulateSaveModel(dataModel, saveModel, level);
+                return new Pokemon(_gameMode, dataModel, saveModel);
+            }
+            else
+            {
+                return CreateDataRequest(pokemonId, level);
+            }
+        }
 
-                _definitionModelbuffer.Add(id, definitionModel);
+        /// <summary>
+        /// Creates a data request from a path to a data model and the starting level of the Pokémon.
+        /// </summary>
+        public PokemonDataRequest CreateDataRequest(string pokemonId, int level)
+        {
+            var request = new PokemonDataRequest(_gameMode, CreateKey(pokemonId), level);
+            request.Finished += FinishedRequest;
+            return request;
+        }
+
+        private void FinishedRequest(object sender, EventArgs e)
+        {
+            var request = (PokemonDataRequest)sender;
+
+            if (_buffer.ContainsKey(request.DataPath))
+                _buffer[request.DataPath] = request.ResultModel;
+            else
+                _buffer.Add(request.DataPath, request.ResultModel);
+
+            if (request.SaveModel == null)
+            {
+                request.SaveModel = new PokemonSaveModel();
+                PopulateSaveModel(request.ResultModel, request.SaveModel, request.StartLevel);
             }
 
-            return _definitionModelbuffer[id];
+            request.ResultPokemon = new Pokemon(_gameMode, request.ResultModel, request.SaveModel);
         }
-
+        
         /// <summary>
         /// Generates a personality value for a Pokémon from 10 random numbers and letters.
         /// </summary>
@@ -82,40 +117,12 @@ namespace Pokemon3D.GameModes.Pokemon
             var personalityValue = string.Empty;
 
             while (personalityValue.Length < PERSONALITY_VALUE_LENGTH)
-                personalityValue += ((char)_charCodes[_randomizer.Next(0, _charCodes.Length)]).ToString();
+                personalityValue += ((char)_charCodes[GameController.Instance.Random.Next(0, _charCodes.Length)]).ToString();
 
             return personalityValue;
         }
 
-        /// <summary>
-        /// Creates a new <see cref="Pokemon"/> instance based on its datamodel id.
-        /// </summary>
-        public Pokemon Create(string id, int level)
-        {
-            var dataModel = GetDefinitionModel(id);
-            var saveModel = new PokemonSaveModel();
-
-            PopulateSaveModel(dataModel, ref saveModel, level);
-
-            var pokemon = new Pokemon(_gameMode, dataModel, saveModel);
-            // preset full HP:
-            pokemon.HP = PokemonStatCalculator.CalculateHP(pokemon);
-
-            return pokemon;
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="Pokemon"/> instance from a save model.
-        /// </summary>
-        public Pokemon Create(PokemonSaveModel saveModel)
-        {
-            var dataModel = GetDefinitionModel(saveModel.Id);
-
-            var pokemon = new Pokemon(_gameMode, dataModel, saveModel);
-            return pokemon;
-        }
-
-        private void PopulateSaveModel(PokemonModel dataModel, ref PokemonSaveModel saveModel, int level)
+        private void PopulateSaveModel(PokemonModel dataModel, PokemonSaveModel saveModel, int level)
         {
             // when generating a new Pokémon, the save model is empty, as it is a blank slate.
             // some values are generated by default or just set to their base values, so we do that here.
@@ -132,7 +139,7 @@ namespace Pokemon3D.GameModes.Pokemon
             }
             else
             {
-                var r = _randomizer.NextDouble();
+                var r = GameController.Instance.Random.NextDouble();
                 if (r <= (dataModel.IsMale / 100))
                 {
                     saveModel.Gender = PokemonGender.Male;
@@ -170,12 +177,12 @@ namespace Pokemon3D.GameModes.Pokemon
             // randomize IVs:
             saveModel.IVs = new PokemonStatSetModel()
             {
-                Atk = _randomizer.Next(0, 32),
-                Def = _randomizer.Next(0, 32),
-                SpAtk = _randomizer.Next(0, 32),
-                SpDef = _randomizer.Next(0, 32),
-                HP = _randomizer.Next(0, 32),
-                Speed = _randomizer.Next(0, 32)
+                Atk = GameController.Instance.Random.Next(0, 32),
+                Def = GameController.Instance.Random.Next(0, 32),
+                SpAtk = GameController.Instance.Random.Next(0, 32),
+                SpDef = GameController.Instance.Random.Next(0, 32),
+                HP = GameController.Instance.Random.Next(0, 32),
+                Speed = GameController.Instance.Random.Next(0, 32)
             };
 
             // set to random nature:
@@ -185,7 +192,7 @@ namespace Pokemon3D.GameModes.Pokemon
             saveModel.Friendship = dataModel.BaseFriendship;
 
             // chance of 1/4096 to be shiny:
-            saveModel.IsShiny = (_randomizer.Next(0, 4096) == 0);
+            saveModel.IsShiny = (GameController.Instance.Random.Next(0, 4096) == 0);
 
             saveModel.Nickname = "";
 
