@@ -1,5 +1,5 @@
-﻿using System;
-using Pokemon3D.Scripting.Types;
+﻿using Pokemon3D.Scripting.Types;
+using System;
 
 namespace Pokemon3D.Scripting
 {

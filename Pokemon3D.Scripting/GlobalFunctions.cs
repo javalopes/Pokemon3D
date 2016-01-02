@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Pokemon3D.Scripting.Types;
-using Pokemon3D.Scripting.Types.Prototypes;
+﻿using Pokemon3D.Scripting.Types;
+using System.Collections.Generic;
 
 namespace Pokemon3D.Scripting
 {

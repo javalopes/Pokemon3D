@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
-using Pokemon3D.Scripting;
 using System;
 
 namespace Test.birdScript.Adapters

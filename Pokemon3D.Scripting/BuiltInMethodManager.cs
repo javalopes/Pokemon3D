@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Pokemon3D.Scripting.Types;
+﻿using Pokemon3D.Scripting.Types;
 using Pokemon3D.Scripting.Types.Prototypes;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Pokemon3D.Scripting

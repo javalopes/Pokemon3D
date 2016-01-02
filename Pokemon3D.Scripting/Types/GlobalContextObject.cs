@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Pokemon3D.Scripting.Types
+﻿namespace Pokemon3D.Scripting.Types
 {
     /// <summary>
     /// A proxy "this" object for the global script context.

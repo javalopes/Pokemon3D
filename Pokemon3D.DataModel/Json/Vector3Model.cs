@@ -1,5 +1,5 @@
-﻿using System.Runtime.Serialization;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System.Runtime.Serialization;
 
 // Disable Code Analysis for warning CS0649: Field is never assigned to, and will always have its default value.
 #pragma warning disable 0649
