@@ -1,11 +1,11 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Animations;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
+using System;
 
 namespace Pokemon3D.GameModes.Maps
 {

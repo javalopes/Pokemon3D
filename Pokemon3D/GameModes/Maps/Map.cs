@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using System.Linq;
-using Pokemon3D.Rendering;
-using Pokemon3D.Rendering.Data;
+﻿using Microsoft.Xna.Framework;
+using Pokemon3D.DataModel.Json;
 using Pokemon3D.DataModel.Json.GameMode.Map;
 using Pokemon3D.DataModel.Json.GameMode.Map.Entities;
-using Pokemon3D.GameModes.Maps.Generators;
-using System;
-using Pokemon3D.DataModel.Json;
 using Pokemon3D.FileSystem;
+using Pokemon3D.GameModes.Maps.Generators;
+using Pokemon3D.Rendering;
+using Pokemon3D.Rendering.Data;
+using System;
+using System.Collections.Generic;
 
 namespace Pokemon3D.GameModes.Maps
 {

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Pokemon3D.DataModel.Json.Pokemon;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Pokemon3D.DataModel.Json.Pokemon;
 using static System.Math;
 
 namespace Pokemon3D.GameModes.Pokemon

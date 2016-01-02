@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Threading;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.DataModel.Json.GameCore;
-using Pokemon3D.Rendering;
+using Pokemon3D.DataModel.Json.GameMode.Map;
+using Pokemon3D.FileSystem;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
 using Pokemon3D.GameModes.Maps;
+using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
-using Pokemon3D.FileSystem;
-using Pokemon3D.DataModel.Json.GameMode.Map;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Threading;
 
 namespace Pokemon3D.UI.Screens
 {

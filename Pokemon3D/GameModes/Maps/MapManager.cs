@@ -1,12 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Pokemon3D.Rendering;
-using Pokemon3D.Rendering.Data;
-using Pokemon3D.DataModel.Json.GameMode.Map;
-using System;
-using System.IO;
-using Pokemon3D.Common.Diagnostics;
-using Pokemon3D.DataModel.Json;
+﻿using Pokemon3D.DataModel.Json.GameMode.Map;
 using Pokemon3D.FileSystem;
 
 namespace Pokemon3D.GameModes.Maps

@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using Pokemon3D.Common;
+﻿using Pokemon3D.Common;
+using System.Diagnostics;
 
 namespace Pokemon3D.Rendering.Compositor
 {

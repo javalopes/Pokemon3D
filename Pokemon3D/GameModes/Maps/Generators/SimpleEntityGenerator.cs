@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Pokemon3D.Common;
+﻿using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.Json.GameMode.Map.Entities;
+using System.Collections.Generic;
 
 namespace Pokemon3D.GameModes.Maps.Generators
 {

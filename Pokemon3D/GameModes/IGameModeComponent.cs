@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Pokemon3D.GameModes
+﻿namespace Pokemon3D.GameModes
 {
     /// <summary>
     /// A component of a <see cref="GameMode"/>.

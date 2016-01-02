@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Pokemon3D.Common.Localization;
 using Pokemon3D.DataModel.Json.i18n;
-using Pokemon3D.Common.Localization;
+using System;
+using System.Collections.Generic;
 
 namespace Pokemon3D.UI.Localization
 {

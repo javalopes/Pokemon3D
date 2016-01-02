@@ -1,5 +1,5 @@
-﻿using System.Xml;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System.Xml;
 
 namespace Pokemon3D.Rendering.GUI
 {

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.DataModel.Json;
 using Pokemon3D.DataModel.Json.GameMode.Definitions;
 using Pokemon3D.Rendering.Data;
-using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Pokemon3D.GameModes.Resources
 {

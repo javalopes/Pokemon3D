@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters;
-using System.Xml;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.Localization;
+using System;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace Pokemon3D.Rendering.GUI
 {

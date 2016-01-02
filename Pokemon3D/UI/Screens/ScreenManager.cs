@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
 using Pokemon3D.UI.Transitions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Pokemon3D.UI.Screens
 {

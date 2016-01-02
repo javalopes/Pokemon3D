@@ -1,5 +1,5 @@
-﻿using System.Globalization;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System.Globalization;
 
 namespace Pokemon3D.Common.Extensions
 {

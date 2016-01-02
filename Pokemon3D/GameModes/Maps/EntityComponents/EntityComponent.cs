@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Pokemon3D.DataModel.Json.GameMode.Map.Entities;
-
-namespace Pokemon3D.GameModes.Maps.EntityComponents
+﻿namespace Pokemon3D.GameModes.Maps.EntityComponents
 {
     /// <summary>
     /// A component of an <see cref="Entity"/>, responsible for the Entity's functionality.

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Pokemon3D.DataModel.Json;
+﻿using Pokemon3D.DataModel.Json;
 using Pokemon3D.GameModes;
+using System;
 
 namespace Pokemon3D.FileSystem
 {

@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Common;
-using Pokemon3D.Common.Extensions;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering.Data;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace Pokemon3D.Rendering

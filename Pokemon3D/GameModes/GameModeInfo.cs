@@ -1,9 +1,8 @@
-using System;
-using System.IO;
+using Pokemon3D.Common.Diagnostics;
 using Pokemon3D.DataModel.Json;
 using Pokemon3D.DataModel.Json.GameMode;
 using Pokemon3D.FileSystem;
-using Pokemon3D.Common.Diagnostics;
+using System.IO;
 
 namespace Pokemon3D.GameModes
 {

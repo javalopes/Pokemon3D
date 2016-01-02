@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Pokemon3D.FileSystem;
+using System.Collections.Generic;
 using System.IO;
-using Pokemon3D.FileSystem;
 
 namespace Pokemon3D.GameModes
 {

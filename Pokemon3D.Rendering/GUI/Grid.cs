@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common.Extensions;
 
 namespace Pokemon3D.Rendering.GUI
 {

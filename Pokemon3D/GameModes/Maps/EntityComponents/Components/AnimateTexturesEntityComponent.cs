@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
+﻿namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 {
     /// <summary>
     /// An entity component that flips through the entity's textures at a set interval.

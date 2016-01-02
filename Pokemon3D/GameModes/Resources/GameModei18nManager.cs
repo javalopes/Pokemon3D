@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Pokemon3D.UI.Localization;
-using System.IO;
-using Pokemon3D.DataModel.Json;
+﻿using Pokemon3D.DataModel.Json;
 using Pokemon3D.DataModel.Json.i18n;
+using Pokemon3D.UI.Localization;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Pokemon3D.GameModes.Resources
 {

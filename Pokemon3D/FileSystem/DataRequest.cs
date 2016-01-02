@@ -1,14 +1,10 @@
-﻿using Pokemon3D.GameModes;
-using Pokemon3D.GameCore;
+﻿using Pokemon3D.Common.Diagnostics;
+using Pokemon3D.DataModel.Json;
+using Pokemon3D.GameModes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
-using Pokemon3D.DataModel.Json;
-using Pokemon3D.Common.Diagnostics;
 
 namespace Pokemon3D.FileSystem
 {

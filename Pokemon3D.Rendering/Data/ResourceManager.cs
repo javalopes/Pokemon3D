@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Assimp;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Assimp;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Rendering.Data
 {

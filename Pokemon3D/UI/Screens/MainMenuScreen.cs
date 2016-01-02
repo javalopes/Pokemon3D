@@ -1,11 +1,11 @@
 ﻿
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common;
 using Pokemon3D.DataModel.Json.GameCore;
 using Pokemon3D.Rendering.GUI;
 using Pokemon3D.UI.Transitions;
+using System.Collections.Generic;
 using Button = Pokemon3D.Rendering.GUI.Button;
 using HorizontalAlignment = Pokemon3D.Rendering.GUI.HorizontalAlignment;
 

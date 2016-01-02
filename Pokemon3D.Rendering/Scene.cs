@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Common;
-using Pokemon3D.Rendering.Data;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Pokemon3D.Rendering
 {

@@ -1,10 +1,10 @@
-﻿using Pokemon3D.DataModel.Json;
+﻿using Pokemon3D.Common.Diagnostics;
+using Pokemon3D.Common.FileSystem;
+using Pokemon3D.DataModel.Json;
 using Pokemon3D.DataModel.Json.GameCore;
 using Pokemon3D.FileSystem;
-using System.IO;
-using Pokemon3D.Common.Diagnostics;
-using Pokemon3D.Common.FileSystem;
 using System;
+using System.IO;
 
 namespace Pokemon3D.GameCore
 {

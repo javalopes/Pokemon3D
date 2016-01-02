@@ -2,9 +2,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Pokemon3D.Common.Diagnostics
 {

@@ -1,16 +1,16 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.FileSystem;
-using Pokemon3D.UI.Screens;
-using Pokemon3D.UI.Localization;
 using Pokemon3D.Common;
 using Pokemon3D.Common.Diagnostics;
+using Pokemon3D.Common.Localization;
+using Pokemon3D.FileSystem;
+using Pokemon3D.GameModes;
 using Pokemon3D.Rendering.Data;
 using Pokemon3D.Rendering.GUI;
-using Pokemon3D.GameModes;
-using Pokemon3D.Common.Localization;
 using Pokemon3D.UI;
+using Pokemon3D.UI.Localization;
+using Pokemon3D.UI.Screens;
+using System;
 
 namespace Pokemon3D.GameCore
 {

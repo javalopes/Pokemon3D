@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System.Linq;
 using System.Xml;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Rendering.GUI
 {
