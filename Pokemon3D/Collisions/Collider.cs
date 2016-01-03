@@ -101,6 +101,41 @@ namespace Pokemon3D.Collisions
             UpdateBoundings();
         }
 
+        /// <summary>
+        /// Checks collision to another object.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public CollisionResult CheckCollision(Collider other)
+        {
+            switch (Type)
+            {
+                case ColliderType.BoundingBox:
+                    if (other.Type == ColliderType.BoundingBox)
+                    {
+                        BoundingBox.CollidesWithSat(other.BoundingBox);
+                    }
+                    return new CollisionResult
+                    {
+                        Collides = BoundingBox.Intersects(other.BoundingSphere)
+                    };
+                case ColliderType.BoundingSphere:
+                    if (other.Type == ColliderType.BoundingBox)
+                    {
+                        return new CollisionResult
+                        {
+                            Collides = BoundingSphere.Intersects(other.BoundingBox)
+                        };
+                    }
+                    return new CollisionResult
+                    {
+                        Collides = BoundingSphere.Intersects(other.BoundingSphere)
+                    };
+            }
+
+            return CollisionResult.Empty;
+        }
+
         private void UpdateBoundings()
         {
             switch (Type)

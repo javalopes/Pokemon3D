@@ -24,5 +24,10 @@ namespace Pokemon3D.Collisions
         {
             _allColliders.Remove(collider);
         }
+
+        public void CheckCollision(Collider collider)
+        {
+            
+        }
     }
 }

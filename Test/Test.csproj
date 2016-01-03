@@ -44,6 +44,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.4.0.456, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -64,6 +65,8 @@
     <Compile Include="birdScript\Adapters\ScriptInAdapterTests.cs" />
     <Compile Include="birdScript\Adapters\ScriptOutAdapterTests.cs" />
     <Compile Include="birdScript\ScriptProcessorFactory.cs" />
+    <Compile Include="Pokemon3D.Common\BoundingBoxExtensionTests.cs" />
+    <Compile Include="Pokemon3D.Common\Line1DTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +74,10 @@
     <Folder Include="Pokémon3D\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Pokemon3D.Common\Pokemon3D.Common.csproj">
+      <Project>{b29dc7f0-2a16-4585-80a2-b4030558ec35}</Project>
+      <Name>Pokemon3D.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Pokemon3D.Scripting\Pokemon3D.Scripting.csproj">
       <Project>{7c228bb5-e710-4170-9c70-8a588040e405}</Project>
       <Name>Pokemon3D.Scripting</Name>

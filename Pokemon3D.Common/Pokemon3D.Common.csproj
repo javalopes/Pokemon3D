@@ -56,8 +56,10 @@
     <Compile Include="Animations\Animator.cs" />
     <Compile Include="Animations\DeltaAnimation.cs" />
     <Compile Include="Animations\DiscreteAnimation.cs" />
+    <Compile Include="CollisionResult.cs" />
     <Compile Include="Diagnostics\GameLogger.cs" />
     <Compile Include="Diagnostics\MessageType.cs" />
+    <Compile Include="Extensions\BoundingBoxExtensions.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\PointExtension.cs" />
     <Compile Include="Extensions\RectangleExtension.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="GameContext.cs" />
     <Compile Include="GameContextObject.cs" />
     <Compile Include="IdObject.cs" />
+    <Compile Include="Line1D.cs" />
     <Compile Include="Localization\TranslationProvider.cs" />
     <Compile Include="Interaction\InputType.cs" />
     <Compile Include="Interaction\StringInputController.cs" />
