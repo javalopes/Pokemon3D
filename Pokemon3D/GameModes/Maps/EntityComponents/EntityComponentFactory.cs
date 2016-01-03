@@ -48,9 +48,6 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
                 case EntityComponent.IDs.Floor:
                     comp = new FloorEntityComponent(parameters);
                     break;
-                case EntityComponent.IDs.NoCollision:
-                    comp = new NoCollisionEntityComponent(parameters);
-                    break;
                 case EntityComponent.IDs.AnimateTextures:
                     comp = new AnimateTexturesEntityComponent(parameters);
                     break;

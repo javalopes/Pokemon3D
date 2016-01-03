@@ -48,9 +48,6 @@
             "Id": "isstatic"
           },
           {
-            "Id": "noCollision"
-          },
-          {
             "Id": "isFloor"
           }
         ]
@@ -439,9 +436,6 @@
             "Id": "isstatic"
           },
           {
-            "Id": "noCollision"
-          },
-          {
             "Id": "isFloor"
           }
         ]
@@ -509,9 +503,6 @@
         "Components": [
           {
             "Id": "isstatic"
-          },
-          {
-            "Id": "noCollision"
           },
           {
             "Id": "isFloor"
@@ -815,9 +806,6 @@
             "Id": "isstatic"
           },
           {
-            "Id": "noCollision"
-          },
-          {
             "Id": "isFloor"
           }
         ]
@@ -1061,9 +1049,6 @@
             "Id": "isstatic"
           },
           {
-            "Id": "noCollision"
-          },
-          {
             "Id": "isFloor"
           }
         ]
@@ -1131,9 +1116,6 @@
         "Components": [
           {
             "Id": "isstatic"
-          },
-          {
-            "Id": "noCollision"
           },
           {
             "Id": "isFloor"
@@ -1874,9 +1856,6 @@
         "Components": [
           {
             "Id": "isbillboard"
-          },
-          {
-            "Id": "noCollision"
           }
         ]
       },

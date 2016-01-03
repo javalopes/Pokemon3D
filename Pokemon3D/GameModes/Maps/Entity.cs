@@ -70,22 +70,26 @@ namespace Pokemon3D.GameModes.Maps
             SceneNode.Material = new Material();
 
             var renderMode = _dataModel.RenderMode;
-            if (renderMode.RenderMethod == RenderMethod.Primitive)
-            {
-                SceneNode.Mesh = map.ResourceManager.GetMeshFromPrimitiveName(renderMode.PrimitiveModelId);
-                SceneNode.Material.Color = new Color(_dataModel.RenderMode.Shading.GetVector3());
-                SceneNode.Material.CastShadow = true;
-                SceneNode.Material.ReceiveShadow = !_dataModel.RenderMode.UseTransparency;
-                SceneNode.Material.UseTransparency = _dataModel.RenderMode.UseTransparency;
-                SceneNode.Material.IsUnlit = false;
 
-                SetTexture(0);
-            }
-            else
+            if (renderMode != null)
             {
-                //todo: model not yet supported.
-            }
+                if (renderMode.RenderMethod == RenderMethod.Primitive)
+                {
+                    SceneNode.Mesh = map.ResourceManager.GetMeshFromPrimitiveName(renderMode.PrimitiveModelId);
+                    SceneNode.Material.Color = new Color(_dataModel.RenderMode.Shading.GetVector3());
+                    SceneNode.Material.CastShadow = true;
+                    SceneNode.Material.ReceiveShadow = !_dataModel.RenderMode.UseTransparency;
+                    SceneNode.Material.UseTransparency = _dataModel.RenderMode.UseTransparency;
+                    SceneNode.Material.IsUnlit = false;
 
+                    SetTexture(0);
+                }
+                else
+                {
+                    //todo: model not yet supported.
+                }
+            }
+            
             if (IsStatic)
             {
                 Scene.ConvertToStaticSceneNode(SceneNode);

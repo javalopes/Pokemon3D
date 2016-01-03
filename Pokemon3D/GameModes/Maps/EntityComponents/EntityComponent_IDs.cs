@@ -11,7 +11,6 @@
             public const string Billboard = "isbillboard";
             public const string Static = "isstatic";
             public const string Floor = "isfloor";
-            public const string NoCollision = "nocollision";
             public const string AnimateTextures = "animatetextures";
 
             // collision group:

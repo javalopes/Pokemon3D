@@ -25,7 +25,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
             if (Parent.HasComponent(IDs.CollisionSize))
                 return Parent.GetComponent(IDs.CollisionSize).GetData<Vector3>();
             else
-                return Vector3.One;
+                return Parent.Scale;
         }
 
         public Vector3 GetCollisionOffset()
@@ -33,7 +33,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
             if (Parent.HasComponent(IDs.CollisionOffset))
                 return Parent.GetComponent(IDs.CollisionOffset).GetData<Vector3>();
             else
-                return Vector3.One;
+                return Vector3.Zero;
         }
     }
 }
