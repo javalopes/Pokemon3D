@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.DataModel", "Poke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.Scripting", "Pokemon3D.Scripting\Pokemon3D.Scripting.csproj", "{7C228BB5-E710-4170-9C70-8A588040E405}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServer", "TestServer\TestServer.csproj", "{D590336E-FD67-45F0-97CB-3090894FB64C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,24 @@ Global
 		{7C228BB5-E710-4170-9C70-8A588040E405}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7C228BB5-E710-4170-9C70-8A588040E405}.Release|x86.ActiveCfg = Release|Any CPU
 		{7C228BB5-E710-4170-9C70-8A588040E405}.Release|x86.Build.0 = Release|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Debug|x86.Build.0 = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.DebugRendering|Any CPU.ActiveCfg = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.DebugRendering|Any CPU.Build.0 = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.DebugRendering|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.DebugRendering|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.DebugRendering|x86.ActiveCfg = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.DebugRendering|x86.Build.0 = Debug|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Release|x86.ActiveCfg = Release|Any CPU
+		{D590336E-FD67-45F0-97CB-3090894FB64C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

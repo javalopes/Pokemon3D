@@ -1,10 +1,12 @@
 ﻿using Pokemon3D.Common.Diagnostics;
+using Pokemon3D.DataModel.Json;
 using Pokemon3D.DataModel.Json.Requests;
 using Pokemon3D.GameModes;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 
 namespace Pokemon3D.FileSystem.Requests
@@ -73,6 +75,12 @@ namespace Pokemon3D.FileSystem.Requests
             DataPath = dataPath;
         }
 
+        // TEMP! Move to somewhere meaningful (and remove const, obviously) once implemented.
+        private static bool SERVER_MODE = true;
+        private const string SERVER_PATH = "localhost";
+        private const string SERVER_PORT = "8080";
+        private const string SERVER_API = "api";
+
         /// <summary>
         /// Starts the request using threading.
         /// </summary>
@@ -85,7 +93,7 @@ namespace Pokemon3D.FileSystem.Requests
 
             GameLogger.Instance.Log(MessageType.Debug, "Data Request for data path \"" + DataPath + "\" started (async).");
 
-            if (true) // check if game is running in server mode or offline mode
+            if (!SERVER_MODE) // check if game is running in server mode or offline mode
             {
                 // offline mode
                 ThreadPool.QueueUserWorkItem(new WaitCallback(GetDataOffline));
@@ -93,7 +101,7 @@ namespace Pokemon3D.FileSystem.Requests
             else
             {
                 // server mode
-                // nothing so far...
+                ThreadPool.QueueUserWorkItem(new WaitCallback(GetDataServer));
             }
         }
 
@@ -109,7 +117,7 @@ namespace Pokemon3D.FileSystem.Requests
             if (Started != null)
                 Started(this, EventArgs.Empty);
 
-            if (true) // check if game is running in server mode or offline mode
+            if (!SERVER_MODE) // check if game is running in server mode or offline mode
             {
                 // offline mode
                 GetDataOffline(null);
@@ -117,8 +125,44 @@ namespace Pokemon3D.FileSystem.Requests
             else
             {
                 // server mode
-                // nothing so far...
+                GetDataServer(null);
             }
+        }
+
+        private void GetDataServer(object o)
+        {
+            string serverPart = string.Format("http://{0}:{1}/{2}", SERVER_PATH, SERVER_PORT, SERVER_API);
+            string serverPath = Path.Combine(serverPart, DataPath).Replace("\\", "/");
+
+            try
+            {
+                HttpWebRequest request = WebRequest.CreateHttp(serverPath);
+                request.Method = "GET";
+                var response = request.GetResponse();
+                var reader = new StreamReader(response.GetResponseStream());
+                ResultData = DataModel<FileContentModel[]>.FromString(reader.ReadToEnd());
+                Status = DataRequestStatus.Complete;
+            }
+            catch (JsonDataLoadException ex)
+            {
+                RequestException = new DataRequestException(this, DataRequestErrorType.JsonDataError, ex);
+                Status = DataRequestStatus.Error;
+            }
+            catch (WebException ex)
+            {
+                RequestException = new DataRequestException(this, DataRequestErrorType.ServerError, ex);
+                Status = DataRequestStatus.Error;
+            }
+            catch (Exception ex)
+            {
+                RequestException = new DataRequestException(this, DataRequestErrorType.MiscError, ex);
+                Status = DataRequestStatus.Error;
+            }
+
+            GameLogger.Instance.Log(MessageType.Debug, "Data Request for data path \"" + DataPath + "\" finished  (Status: " + Status.ToString() + ").");
+
+            if (Finished != null)
+                Finished(this, EventArgs.Empty);
         }
 
         private void GetDataOffline(object o)

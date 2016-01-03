@@ -8,6 +8,7 @@
         JsonDataError,
         FileNotFound,
         FileReadError,
-        MiscError
+        MiscError,
+        ServerError
     }
 }
