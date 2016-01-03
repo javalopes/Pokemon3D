@@ -520,7 +520,15 @@
                 "Components": [
                     {
                         "Id": "hasCollision"
-                    }
+                    },
+					{
+						"Id" : "collisionsize",
+						"data" : "1.0f, 1.0f, 1.0f"
+					},
+					{
+						"Id" : "collisionoffset",
+						"data" : "0.0f, 0.0f, 0.0f"
+					}
                 ]
             },
             "Placing": [

@@ -19,19 +19,12 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 
         public Vector3 GetCollisionSizeVector3()
         {
-            if (Parent.HasComponent(IDs.CollisionSize))
-                return Parent.GetComponent(IDs.CollisionSize).GetData<Vector3>();
-            else
-                return Parent.Scale;
+            return Parent.HasComponent(IDs.CollisionSize) ? Parent.GetComponent(IDs.CollisionSize).GetData<Vector3>() : Parent.Scale;
         }
 
         public Vector3 GetCollisionOffset()
         {
-            return Parent.HasComponent(IDs.CollisionOffset) ? Parent.GetComponent(IDs.CollisionOffset).GetData<Vector3>() : Vector3.One;
-            if (Parent.HasComponent(IDs.CollisionOffset))
-                return Parent.GetComponent(IDs.CollisionOffset).GetData<Vector3>();
-            else
-                return Vector3.Zero;
+            return Parent.HasComponent(IDs.CollisionOffset) ? Parent.GetComponent(IDs.CollisionOffset).GetData<Vector3>() : Vector3.Zero;
         }
     }
 }

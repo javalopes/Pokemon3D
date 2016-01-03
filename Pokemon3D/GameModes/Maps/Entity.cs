@@ -97,6 +97,12 @@ namespace Pokemon3D.GameModes.Maps
             {
                 Scene.ConvertToStaticSceneNode(SceneNode);
             }
+
+            var colliderComponent = GetComponent<CollisionEntityComponent>(EntityComponent.IDs.Collision);
+            if (colliderComponent != null)
+            {
+                Collider = Collider.CreateBoundingBox(colliderComponent.GetCollisionSizeVector3(), colliderComponent.GetCollisionOffset());
+            }
         }
 
         public Entity(Scene scene)

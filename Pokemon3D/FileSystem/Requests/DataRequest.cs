@@ -76,7 +76,7 @@ namespace Pokemon3D.FileSystem.Requests
         }
 
         // TEMP! Move to somewhere meaningful (and remove const, obviously) once implemented.
-        private static bool SERVER_MODE = true;
+        private static bool SERVER_MODE = false;
         private const string SERVER_PATH = "localhost";
         private const string SERVER_PORT = "8080";
         private const string SERVER_API = "api";
