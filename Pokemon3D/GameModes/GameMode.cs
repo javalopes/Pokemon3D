@@ -57,6 +57,7 @@ namespace Pokemon3D.GameModes
         /// </summary>
         public void LoadInitialData()
         {
+            PrimitiveManager.Start();
             NatureManager.Start();
             TypeManager.Start();
             MoveManager.Start();
@@ -88,7 +89,7 @@ namespace Pokemon3D.GameModes
             {
                 // free managed resources
                 // MapManager.Dispose();
-                PrimitiveManager.Dispose();
+                // PrimitiveManager.Dispose();
             }
 
             // todo: free unmanaged resources.

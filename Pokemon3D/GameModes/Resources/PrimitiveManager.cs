@@ -1,47 +1,21 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.DataModel.Json;
 using Pokemon3D.DataModel.Json.GameMode.Definitions;
+using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.Rendering.Data;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Pokemon3D.GameModes.Resources
 {
-    class PrimitiveManager : IDisposable
+    class PrimitiveManager : InstantDataRequestModelManager<PrimitiveModel>
     {
-        private GameMode _gameMode;
-        private readonly Dictionary<string, PrimitiveModel> _primitiveModels;
-
-        /// <summary>
-        /// If the primitives file loaded without errors.
-        /// </summary>
-        public bool IsValid { get; private set; } = false;
-
-        public PrimitiveManager(GameMode gameMode)
-        {
-            _gameMode = gameMode;
-            
-            try
-            {
-                _primitiveModels = DataModel<PrimitiveModel[]>.FromFile(Path.Combine(_gameMode.DataPath, GameMode.FILE_DATA_PRIMITIVES))
-                    .ToDictionary(pm => pm.Id, pm => pm);
-
-                IsValid = true;
-            }
-            catch (Exception ex) when (ex is JsonDataLoadException || ex is FileNotFoundException)
-            {
-                // todo: log exception!
-
-                IsValid = false;
-            }
-        }
+        public PrimitiveManager(GameMode gameMode) : base(gameMode, gameMode.PrimitivesFilePath)
+        { }
         
-        public GeometryData GetPrimitiveData(string primitiveName)
+        public GeometryData GetPrimitiveData(string id)
         {
-            PrimitiveModel primitiveModel;
-            if (_primitiveModels.TryGetValue(primitiveName, out primitiveModel))
+            PrimitiveModel primitiveModel = _modelBuffer.SingleOrDefault(x => x.Id == id);
+            if (primitiveModel != null)
             {
                 return new GeometryData
                 {
@@ -55,34 +29,7 @@ namespace Pokemon3D.GameModes.Resources
                 };
             }
 
-            throw new ApplicationException("Invalid Primitive Type: " + primitiveName);
+            throw new ApplicationException("Invalid Primitive Type: " + id);
         }
-
-        #region Dispose
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // todo: free managed resources
-            }
-
-            // todo: free unmanaged resources
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        // Add, if this class has unmanaged resources
-        //~PrimitiveManager()
-        //{
-        //    // Destructor calls dipose to free unmanaged resources:
-        //    Dispose(false);
-        //}
-
-        #endregion
     }
 }

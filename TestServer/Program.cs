@@ -36,8 +36,8 @@ namespace TestServer
             requestUrl = requestUrl.TrimStart('/');
             requestUrl = requestUrl.Remove(0, SERVER_API.Length);
             requestUrl = requestUrl.TrimStart('/');
-
-            Console.WriteLine("Request received to: " + requestUrl);
+            
+            Console.WriteLine("Request received to: " + requestUrl + " from " + request.RemoteEndPoint.Address.ToString());
 
             string path = Path.Combine(StartupPath, "GameModes", _gameMode, requestUrl);
 
