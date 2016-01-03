@@ -58,6 +58,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Collisions\Collider.cs" />
+    <Compile Include="Collisions\ColliderType.cs" />
+    <Compile Include="Collisions\CollisionManager.cs" />
     <Compile Include="FileSystem\Requests\DataModelRequest.cs" />
     <Compile Include="FileSystem\Requests\DataRequest.cs" />
     <Compile Include="FileSystem\Requests\DataRequestErrorType.cs" />
