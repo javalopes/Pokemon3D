@@ -16,9 +16,10 @@ namespace Test.Pokemon3D.Common
         [TestCase(5,0,0, true, 5, 0, 0)]
         [TestCase(9, 0, 0, true, 1, 0, 0)]
         [TestCase(9, 8, 0, true, 1, 0, 0)]
-        [TestCase(-5, 0, 0, true, 5, 0, 0)]
-        [TestCase(-9, 0, 0, true, 1, 0, 0)]
-        [TestCase(-9, -8, 0, true, 1, 0, 0)]
+        [TestCase(-5, 0, 0, true, -5, 0, 0)]
+        [TestCase(-9, 0, 0, true, -1, 0, 0)]
+        [TestCase(-9, -8, 0, true, -1, 0, 0)]
+        [TestCase(6, 3, 9, true, 0, 0, 1)]
         public void CheckCollision(float x, float y, float z, bool hasCollision, float separationX, float separationY, float separationZ)
         {
             var distance = new Vector3(x,y,z);

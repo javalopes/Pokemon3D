@@ -51,7 +51,7 @@ namespace Pokemon3D.Common.Extensions
                     if (overlapValue < shortestOverlap)
                     {
                         shortestOverlap = overlapValue;
-                        shortestAxis = currentAxis;
+                        shortestAxis = p1.Min < p2.Min ? currentAxis : -currentAxis;
                     }
                 }
                 else
