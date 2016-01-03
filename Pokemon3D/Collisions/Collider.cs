@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Pokemon3D.Common;
+using Pokemon3D.Common.Extensions;
 
 namespace Pokemon3D.Collisions
 {
