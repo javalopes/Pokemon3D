@@ -4,8 +4,14 @@ using static System.Math;
 
 namespace Pokemon3D.GameModes.Pokemon
 {
+    /// <summary>
+    /// Utility class to calculate stats for Pokémon.
+    /// </summary>
     class PokemonStatCalculator
     {
+        /// <summary>
+        /// Returns the max HP stat for a Pokémon.
+        /// </summary>
         public static int CalculateHP(Pokemon pokemon)
         {
             // HP = 
@@ -19,6 +25,9 @@ namespace Pokemon3D.GameModes.Pokemon
             return (int)(Floor(((2 * baseHP + IVHP + Floor((double)EVHP / 4)) * level) / 100) + level + 10);
         }
 
+        /// <summary>
+        /// Returns a specific stat for a Pokémon.
+        /// </summary>
         public static int CalculateStat(Pokemon pokemon, PokemonStatType statType)
         {
             // Stat = 

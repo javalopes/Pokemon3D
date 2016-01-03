@@ -22,7 +22,7 @@ namespace Pokemon3D.FileSystem.Requests
 
         private void RequestFinished(object sender, EventArgs e)
         {
-            ResultModel = DataModel<T>.FromString(ResultData);
+            ResultModel = DataModel<T>.FromString(ResultData[0].FileContent);
         }
     }
 }

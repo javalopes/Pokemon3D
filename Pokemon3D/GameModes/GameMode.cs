@@ -26,6 +26,8 @@ namespace Pokemon3D.GameModes
 
         public PokemonFactory PokemonFactory { get; private set; }
 
+        public MoveManager MoveManager { get; private set; }
+
         public bool IsValid { get; private set; }
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace Pokemon3D.GameModes
                 NatureManager = new NatureManager(this);
                 PokemonFactory = new PokemonFactory(this);
                 TypeManager = new TypeManager(this);
+                MoveManager = new MoveManager(this);
             }
 
             IsValid = true;
@@ -56,6 +59,7 @@ namespace Pokemon3D.GameModes
         {
             NatureManager.Start();
             TypeManager.Start();
+            MoveManager.Start();
         }
 
         /// <summary>
@@ -66,7 +70,8 @@ namespace Pokemon3D.GameModes
             get
             {
                 return NatureManager.FinishedLoading &&
-                    TypeManager.FinishedLoading;
+                    TypeManager.FinishedLoading && 
+                    MoveManager.FinishedLoading;
             }
         }
 

@@ -94,7 +94,15 @@ namespace Pokemon3D.GameModes.Pokemon
                 PopulateSaveModel(request.ResultModel, request.SaveModel, request.StartLevel);
             }
 
-            request.ResultPokemon = new Pokemon(_gameMode, request.ResultModel, request.SaveModel);
+            var pokemon = new Pokemon(_gameMode, request.ResultModel, request.SaveModel);
+
+            pokemon.LearnStartupMoves();
+            if (request.StartLevel > 1)
+            {
+                pokemon.LevelUp(true, request.StartLevel - 1);
+            }
+
+            request.ResultPokemon = pokemon;
         }
         
         /// <summary>
@@ -199,6 +207,8 @@ namespace Pokemon3D.GameModes.Pokemon
             saveModel.Status = PokemonStatus.None;
 
             saveModel.AdditionalData = "";
+
+            saveModel.Moves = new PokemonMoveModel[0];
         }
     }
 }

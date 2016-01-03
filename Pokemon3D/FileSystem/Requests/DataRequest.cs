@@ -1,9 +1,10 @@
 ﻿using Pokemon3D.Common.Diagnostics;
-using Pokemon3D.DataModel.Json;
+using Pokemon3D.DataModel.Json.Requests;
 using Pokemon3D.GameModes;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace Pokemon3D.FileSystem.Requests
@@ -28,7 +29,7 @@ namespace Pokemon3D.FileSystem.Requests
         /// <summary>
         /// The resulting data of the request operation.
         /// </summary>
-        public string ResultData { get; private set; }
+        public FileContentModel[] ResultData { get; private set; }
 
         /// <summary>
         /// Event that gets fired right when the request started.
@@ -70,8 +71,6 @@ namespace Pokemon3D.FileSystem.Requests
 
             _gameMode = gameMode;
             DataPath = dataPath;
-
-            ResultData = string.Empty;
         }
 
         /// <summary>
@@ -129,30 +128,13 @@ namespace Pokemon3D.FileSystem.Requests
 
             string path = Path.Combine(_gameMode.GameModeInfo.DirectoryPath, DataPath);
 
-            // check if the file exists:
-
-            if (File.Exists(path))
+            if (Directory.Exists(path))
             {
-                try
-                {
-                    ResultData = File.ReadAllText(path);
-                    Status = DataRequestStatus.Complete;
-                }
-                catch (IOException ex)
-                {
-                    RequestException = new DataRequestException(this, DataRequestErrorType.FileReadError, ex);
-                    Status = DataRequestStatus.Error;
-                }
-                catch (JsonDataLoadException ex)
-                {
-                    RequestException = new DataRequestException(this, DataRequestErrorType.JsonDataError, ex);
-                    Status = DataRequestStatus.Error;
-                }
-                catch (Exception ex)
-                {
-                    RequestException = new DataRequestException(this, DataRequestErrorType.MiscError, ex);
-                    Status = DataRequestStatus.Error;
-                }
+                GetFolderContentOffline(path);
+            }
+            else if (File.Exists(path))
+            {
+                GetSingleFileOffline(path);
             }
             else
             {
@@ -164,6 +146,55 @@ namespace Pokemon3D.FileSystem.Requests
 
             if (Finished != null)
                 Finished(this, EventArgs.Empty);
+        }
+
+        private void GetSingleFileOffline(string path)
+        {
+            try
+            {
+                ResultData = new FileContentModel[] {
+                    new FileContentModel() {
+                        FileName = path,
+                        FileContent = File.ReadAllText(path)
+                    }
+                };
+
+                Status = DataRequestStatus.Complete;
+            }
+            catch (IOException ex)
+            {
+                RequestException = new DataRequestException(this, DataRequestErrorType.FileReadError, ex);
+                Status = DataRequestStatus.Error;
+            }
+            catch (Exception ex)
+            {
+                RequestException = new DataRequestException(this, DataRequestErrorType.MiscError, ex);
+                Status = DataRequestStatus.Error;
+            }
+        }
+
+        private void GetFolderContentOffline(string path)
+        {
+            try
+            {
+                ResultData = Directory.GetFiles(path).Select(file => new FileContentModel()
+                {
+                    FileName = file,
+                    FileContent = File.ReadAllText(file)
+                }).ToArray();
+                
+                Status = DataRequestStatus.Complete;
+            }
+            catch (IOException ex)
+            {
+                RequestException = new DataRequestException(this, DataRequestErrorType.FileReadError, ex);
+                Status = DataRequestStatus.Error;
+            }
+            catch (Exception ex)
+            {
+                RequestException = new DataRequestException(this, DataRequestErrorType.MiscError, ex);
+                Status = DataRequestStatus.Error;
+            }
         }
     }
 }

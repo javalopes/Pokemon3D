@@ -37,6 +37,13 @@ namespace Pokemon3D.GameModes
         private const string PATH_DATA = "Data";
         private const string PATH_DATA_POKEMON = "Pokemon";
 
+        private const string PATH_DATA_MOVES = "Moves";
+
+        /// <summary>
+        /// The path to the directory that contains the move files.
+        /// </summary>
+        public string MoveFilesPath => Path.Combine(PATH_DATA, PATH_DATA_MOVES);
+
         /// <summary>
         /// Returns the path to a map file, relative to the GameMode's root folder.
         /// </summary>

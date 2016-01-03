@@ -1,6 +1,7 @@
 ﻿using Pokemon3D.DataModel.Json;
 using Pokemon3D.GameModes;
 using System;
+using System.Collections.Generic;
 
 namespace Pokemon3D.FileSystem.Requests
 {
@@ -8,11 +9,12 @@ namespace Pokemon3D.FileSystem.Requests
     /// Manages multiple objects defined in a single file that are accessed through a <see cref="DataRequest"/>.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    abstract class SingleFileDataRequestModelManager<T> where T : DataModel<T>
+    abstract class InstantDataRequestModelManager<T> where T : DataModel<T>
     {
         protected T[] _modelBuffer;
         protected GameMode _gameMode;
         protected string _dataPath;
+        protected bool _singleModelPerFile; // if the file(s) that get loaded by this manager have a single model in them or an array of models.
 
         /// <summary>
         /// Getting fired once the loading finished.
@@ -23,11 +25,12 @@ namespace Pokemon3D.FileSystem.Requests
         /// If the data request for this manager has finished.
         /// </summary>
         public bool FinishedLoading { get; private set; } = false;
-
-        public SingleFileDataRequestModelManager(GameMode gameMode, string dataPath)
+        
+        public InstantDataRequestModelManager(GameMode gameMode, string dataPath, bool singleModelPerFile = false)
         {
             _gameMode = gameMode;
             _dataPath = dataPath;
+            _singleModelPerFile = singleModelPerFile;
         }
 
         /// <summary>
@@ -43,7 +46,18 @@ namespace Pokemon3D.FileSystem.Requests
         private void FinishedRequest(object sender, EventArgs e)
         {
             var request = (DataRequest)sender;
-            _modelBuffer = DataModel<T[]>.FromString(request.ResultData);
+
+            List<T> buffer = new List<T>();
+
+            foreach (var result in request.ResultData)
+            {
+                if (_singleModelPerFile)
+                    buffer.Add(DataModel<T>.FromString(result.FileContent));
+                else
+                    buffer.AddRange(DataModel<T[]>.FromString(result.FileContent));
+            }
+
+            _modelBuffer = buffer.ToArray();
             FinishedLoading = true;
 
             if (Finished != null)

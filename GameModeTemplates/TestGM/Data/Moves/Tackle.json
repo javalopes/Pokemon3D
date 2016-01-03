@@ -1,0 +1,19 @@
+{
+    "Id" : "Tackle",
+    "Name" : "Tackle",
+    "Description" : "A physical attack in which the user charges and slams into the target with its whole body.",
+    "Types" : [
+        "Normal"
+    ],
+    "MoveCategory" : "Physical",
+    "Power" : 50,
+    "Accuracy" : 100,
+    "PP" : 35,
+    "Priority" : 0,
+    "CriticalChance" : 1,
+    "TimesToAttack" : 1,
+    "Target" : "OneAdjacentTarget",
+    "IsHMMove" : false,
+    "ScriptBinding" : "somescript",
+    "Tags" : []
+}

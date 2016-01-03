@@ -8,7 +8,7 @@ namespace Pokemon3D.GameModes.Pokemon
     /// <summary>
     /// Manages Natures loaded from the Natures data file.
     /// </summary>
-    class NatureManager : SingleFileDataRequestModelManager<NatureModel>
+    class NatureManager : InstantDataRequestModelManager<NatureModel>
     {
         public NatureManager(GameMode gameMode) : base(gameMode, gameMode.NaturesFilePath)
         { }

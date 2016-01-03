@@ -68,7 +68,7 @@
     <Compile Include="FileSystem\GameModeFileProvider.cs" />
     <Compile Include="FileSystem\i18nFileProvider.cs" />
     <Compile Include="FileSystem\Requests\PokemonDataRequest.cs" />
-    <Compile Include="FileSystem\Requests\SingleFileDataRequestModelManager.cs" />
+    <Compile Include="FileSystem\Requests\InstantDataRequestModelManager.cs" />
     <Compile Include="FileSystem\StaticFileProvider.cs" />
     <Compile Include="GameCore\GameConfiguration.cs" />
     <Compile Include="GameCore\GameObject.cs" />
@@ -102,6 +102,7 @@
     <Compile Include="GameModes\Maps\MapManager.cs" />
     <Compile Include="GameModes\Maps\Player.cs" />
     <Compile Include="GameModes\Maps\PlayerMovementMode.cs" />
+    <Compile Include="GameModes\Pokemon\MoveManager.cs" />
     <Compile Include="GameModes\Pokemon\NatureManager.cs" />
     <Compile Include="GameModes\Pokemon\Pokemon.cs" />
     <Compile Include="GameModes\Pokemon\PokemonExperienceCalculator.cs" />

@@ -1,0 +1,19 @@
+{
+    "Id" : "Growl",
+    "Name" : "Growl",
+    "Description" : "The user growls in an endearing way, making opposing Pokémon less wary. This lowers their Attack stats.",
+    "Types" : [
+        "Normal"
+    ],
+    "MoveCategory" : "Status",
+    "Power" : 0,
+    "Accuracy" : 100,
+    "PP" : 40,
+    "Priority" : 0,
+    "CriticalChance" : 1,
+    "TimesToAttack" : 1,
+    "Target" : "AllAdjacentFoes",
+    "IsHMMove" : false,
+    "ScriptBinding" : "somescript",
+    "Tags" : []
+}

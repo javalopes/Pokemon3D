@@ -7,7 +7,7 @@ namespace Pokemon3D.GameModes.Pokemon
     /// <summary>
     /// Manages the elemental types for Pokémon.
     /// </summary>
-    class TypeManager : SingleFileDataRequestModelManager<TypeModel>
+    class TypeManager : InstantDataRequestModelManager<TypeModel>
     {
         public TypeManager(GameMode gameMode) : base(gameMode, gameMode.TypesFilePath)
         { }
