@@ -13,6 +13,11 @@
             public const string Floor = "isfloor";
             public const string NoCollision = "nocollision";
             public const string AnimateTextures = "animatetextures";
+
+            // collision group:
+            public const string Collision = "hascollision";
+            public const string CollisionOffset = "collisionoffset";
+            public const string CollisionSize = "collisionsize";
         }
     }
 }
