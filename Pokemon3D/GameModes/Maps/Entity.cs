@@ -8,6 +8,8 @@ using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 using System.Collections.Generic;
 using System.Linq;
+using Pokemon3D.Collisions;
+using Pokemon3D.GameModes.Maps.EntityComponents.Components;
 
 namespace Pokemon3D.GameModes.Maps
 {
@@ -26,6 +28,7 @@ namespace Pokemon3D.GameModes.Maps
         private readonly EntityFieldPositionModel _fieldSourceModel;
         private readonly Dictionary<string, EntityComponent> _components = new Dictionary<string, EntityComponent>();
         private readonly Map _map;
+        private Collider _collider;
 
         private ResourceManager Resources => _map.ResourceManager;
 
@@ -255,5 +258,17 @@ namespace Pokemon3D.GameModes.Maps
 
         #endregion
 
+        public Collider Collider
+        {
+            get { return _collider; }
+            set
+            {
+                if (_collider == value) return;
+
+                if (_collider != null) Game.CollisionManager.RemoveCollider(_collider);
+                _collider = value;
+                if (_collider != null) Game.CollisionManager.AddCollider(_collider);
+            }
+        }
     }
 }

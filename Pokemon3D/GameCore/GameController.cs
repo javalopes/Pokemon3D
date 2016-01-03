@@ -11,6 +11,7 @@ using Pokemon3D.UI;
 using Pokemon3D.UI.Localization;
 using Pokemon3D.UI.Screens;
 using System;
+using Pokemon3D.Collisions;
 
 namespace Pokemon3D.GameCore
 {
@@ -57,6 +58,7 @@ namespace Pokemon3D.GameCore
         public GameConfiguration GameConfig { get; private set; }
         public TranslationProvider TranslationProvider { get; private set; }
         public NotificationBar NotificationBar { get; private set; }
+        public CollisionManager CollisionManager { get; private set; }
 
         public string VersionInformation => string.Format("{0} {1}", VERSION, DEVELOPMENT_STAGE);
 
@@ -111,6 +113,7 @@ namespace Pokemon3D.GameCore
             ScreenManager = new ScreenManager();
             TranslationProvider = new CoreTranslationManager();
             NotificationBar = new NotificationBar(400);
+            CollisionManager = new CollisionManager();
 
             GameConfig.ConfigFileLoaded += TranslationProvider.OnLanguageChanged;
 
