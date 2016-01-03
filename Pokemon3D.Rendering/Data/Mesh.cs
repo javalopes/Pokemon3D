@@ -10,6 +10,7 @@ namespace Pokemon3D.Rendering.Data
     /// </summary>
     public class Mesh : IDisposable
     {
+        private readonly PrimitiveType _primitiveType;
         private VertexBuffer _vertexBuffer;
         private IndexBuffer _indexBuffer;
 
@@ -18,8 +19,9 @@ namespace Pokemon3D.Rendering.Data
         public GeometryData GeometryData { get; }
         public BoundingBox LocalBounds { get; private set; }
 
-        public Mesh(GraphicsDevice device, GeometryData data, bool holdGeometryData = true)
+        public Mesh(GraphicsDevice device, GeometryData data, PrimitiveType primitiveType = PrimitiveType.TriangleList, bool holdGeometryData = true)
         {
+            _primitiveType = primitiveType;
             GeometryData = holdGeometryData ? data : null;
             VertexCount = data.Vertices.Length;
             IndexCount = data.Indices.Length;
@@ -32,7 +34,7 @@ namespace Pokemon3D.Rendering.Data
 
             var min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var max  = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-            foreach (var vertex in GeometryData.Vertices)
+            foreach (var vertex in data.Vertices)
             {
                 min.X = MathHelper.Min(min.X, vertex.Position.X);
                 min.Y = MathHelper.Min(min.Y, vertex.Position.Y);
@@ -51,7 +53,7 @@ namespace Pokemon3D.Rendering.Data
             device.SetVertexBuffer(_vertexBuffer);
             device.Indices = _indexBuffer;
 
-            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,0, VertexCount, 0, IndexCount / 3);
+            device.DrawIndexedPrimitives(_primitiveType, 0,0, VertexCount, 0, IndexCount / 3);
             RenderStatistics.Instance.DrawCalls++;
         }
 
