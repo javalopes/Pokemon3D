@@ -65,6 +65,8 @@ namespace Pokemon3D.GameCore
         /// </summary>
         public GameModeManager GameModeManager { get; private set; }
 
+        public GameMode ActiveGameMode { get; set; }
+
         public ResourceManager Resources { get; private set; }
 
         public Rectangle ScreenBounds => Window.ClientBounds;

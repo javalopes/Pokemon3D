@@ -162,7 +162,7 @@ namespace Pokemon3D.UI.Screens
 
         private void OnStartClick()
         {
-            Game.ScreenManager.SetScreen(typeof(OverworldScreen), typeof(SlideTransition));
+            Game.ScreenManager.SetScreen(typeof(GameModeLoadingScreen), typeof(BlendTransition));
         }
     }
 }

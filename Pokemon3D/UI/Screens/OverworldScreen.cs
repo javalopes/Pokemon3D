@@ -36,15 +36,11 @@ namespace Pokemon3D.UI.Screens
 
         private SpriteFont _debugSpriteFont;
         private bool _showRenderStatistics;
-
+        
         public void OnOpening(object enterInformation)
         {
+            _gameMode = Game.ActiveGameMode;
             _dispatcher = Dispatcher.CurrentDispatcher;
-
-            var gameModes = Game.GameModeManager.GetGameModeInfos();
-            _gameMode = Game.GameModeManager.LoadGameMode(gameModes.First());
-            _gameMode.LoadInitialData();
-            Game.Resources.SetPrimitiveProvider(_gameMode);
 
             var settings = new RenderSettings
             {

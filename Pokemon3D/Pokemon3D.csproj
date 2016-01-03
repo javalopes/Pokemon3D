@@ -123,6 +123,7 @@
     <Compile Include="UI\NotificationBar.cs" />
     <Compile Include="UI\NotificationItem.cs" />
     <Compile Include="UI\NotificationKind.cs" />
+    <Compile Include="UI\Screens\GameModeLoadingScreen.cs" />
     <Compile Include="UI\Screens\InitializeableScreen.cs" />
     <Compile Include="UI\Screens\OverworldScreen.cs" />
     <Compile Include="UI\Transitions\BlendTransition.cs" />
