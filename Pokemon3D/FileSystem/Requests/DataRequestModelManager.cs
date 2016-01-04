@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Pokemon3D.FileSystem.Requests
 {
     /// <summary>
-    /// Manages models requested and loaded by a <see cref="DataRequest{T}"/>.
+    /// Manages models requested and loaded by a <see cref="DataRequest"/>.
     /// </summary>
     /// <typeparam name="T">The type of the data model.</typeparam>
     abstract class DataRequestModelManager<T> where T : DataModel<T>

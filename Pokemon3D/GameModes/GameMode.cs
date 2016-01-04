@@ -1,4 +1,5 @@
 ﻿using Pokemon3D.DataModel;
+using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.GameModes.Maps;
 using Pokemon3D.GameModes.Pokemon;
 using Pokemon3D.GameModes.Resources;
@@ -70,9 +71,10 @@ namespace Pokemon3D.GameModes
         {
             get
             {
-                return NatureManager.FinishedLoading &&
-                    TypeManager.FinishedLoading && 
-                    MoveManager.FinishedLoading;
+                return PrimitiveManager.Status == DataRequestStatus.Complete &&
+                    NatureManager.Status == DataRequestStatus.Complete &&
+                    TypeManager.Status == DataRequestStatus.Complete && 
+                    MoveManager.Status == DataRequestStatus.Complete;
             }
         }
 

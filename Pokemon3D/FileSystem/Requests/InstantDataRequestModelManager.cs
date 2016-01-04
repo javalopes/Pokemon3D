@@ -6,11 +6,12 @@ using System.Collections.Generic;
 namespace Pokemon3D.FileSystem.Requests
 {
     /// <summary>
-    /// Manages multiple objects defined in a single file that are accessed through a <see cref="DataRequest"/>.
+    /// Loads all resources at once instead of on demand through a <see cref="DataRequest"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type of the data model.</typeparam>
     abstract class InstantDataRequestModelManager<T> where T : DataModel<T>
     {
+        private DataRequest _request;
         protected T[] _modelBuffer;
         protected GameMode _gameMode;
         protected string _dataPath;
@@ -22,9 +23,15 @@ namespace Pokemon3D.FileSystem.Requests
         public event EventHandler Finished;
 
         /// <summary>
-        /// If the data request for this manager has finished.
+        /// The status of the <see cref="DataRequest"/> of this manager.
         /// </summary>
-        public bool FinishedLoading { get; private set; } = false;
+        public DataRequestStatus Status
+        {
+            get
+            {
+                return _request == null ? DataRequestStatus.NotStarted : _request.Status;
+            }
+        }
         
         public InstantDataRequestModelManager(GameMode gameMode, string dataPath, bool singleModelPerFile = false)
         {
@@ -38,18 +45,16 @@ namespace Pokemon3D.FileSystem.Requests
         /// </summary>
         public void Start()
         {
-            var request = new DataRequest(_gameMode, _dataPath);
-            request.Finished += FinishedRequest;
-            request.StartThreaded();
+            _request = new DataRequest(_gameMode, _dataPath);
+            _request.Finished += FinishedRequest;
+            _request.StartThreaded();
         }
 
         private void FinishedRequest(object sender, EventArgs e)
         {
-            var request = (DataRequest)sender;
-
             List<T> buffer = new List<T>();
 
-            foreach (var result in request.ResultData)
+            foreach (var result in _request.ResultData)
             {
                 if (_singleModelPerFile)
                     buffer.Add(DataModel<T>.FromString(result.FileContent));
@@ -58,7 +63,6 @@ namespace Pokemon3D.FileSystem.Requests
             }
 
             _modelBuffer = buffer.ToArray();
-            FinishedLoading = true;
 
             if (Finished != null)
                 Finished(this, EventArgs.Empty);
