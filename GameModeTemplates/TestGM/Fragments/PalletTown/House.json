@@ -394,6 +394,56 @@
           "Scale": { "X": 1, "Y": 1, "Z": 1 }
         }
       ]
-    }
+    },
+        {
+            "Entity": {
+                "Id": "Collisionbox",
+                "RenderMode": null,
+                "Components": [
+                    {
+                        "Id": "hasCollision"
+                    },
+					{
+						"Id" : "collisionsize",
+						"Data" : "4,2,2"
+					},
+					{
+						"Id" : "collisionoffset",
+						"Data" : "1.5,1,-0.5"
+					}
+                ]
+            },
+            "Placing": [
+                {
+                    "Position": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Size": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Fill": false,
+                    "Steps": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Rotation": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "CardinalRotation": true,
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    }
+                }
+            ]
+        }
   ]
 }

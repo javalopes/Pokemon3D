@@ -13,6 +13,7 @@ namespace Pokemon3D.Rendering.Data
         private readonly PrimitiveType _primitiveType;
         private VertexBuffer _vertexBuffer;
         private IndexBuffer _indexBuffer;
+        private int _primitiveCount;
 
         public int VertexCount { get; }
         public int IndexCount { get; }
@@ -45,6 +46,22 @@ namespace Pokemon3D.Rendering.Data
                 max.Z = MathHelper.Max(max.Z, vertex.Position.Z);
             }
             LocalBounds = new BoundingBox(min, max);
+
+            switch (primitiveType)
+            {
+                case PrimitiveType.TriangleList:
+                    _primitiveCount = IndexCount/3;
+                    break;
+                case PrimitiveType.TriangleStrip:
+                    break;
+                case PrimitiveType.LineList:
+                    _primitiveCount = IndexCount/2;
+                    break;
+                case PrimitiveType.LineStrip:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(primitiveType), primitiveType, null);
+            }
         }
 
         public void Draw()
@@ -53,7 +70,7 @@ namespace Pokemon3D.Rendering.Data
             device.SetVertexBuffer(_vertexBuffer);
             device.Indices = _indexBuffer;
 
-            device.DrawIndexedPrimitives(_primitiveType, 0,0, VertexCount, 0, IndexCount / 3);
+            device.DrawIndexedPrimitives(_primitiveType, 0, 0, VertexCount, 0, _primitiveCount);
             RenderStatistics.Instance.DrawCalls++;
         }
 
@@ -61,10 +78,9 @@ namespace Pokemon3D.Rendering.Data
         {
             var geometryData = new GeometryData
             {
-                Vertices = new VertexPositionNormalTexture[VertexCount],
-                Indices = new ushort[IndexCount],
+                Vertices = new VertexPositionNormalTexture[VertexCount], Indices = new ushort[IndexCount],
             };
-            
+
             _vertexBuffer.GetData(geometryData.Vertices);
             _indexBuffer.GetData(geometryData.Indices);
 
@@ -81,6 +97,7 @@ namespace Pokemon3D.Rendering.Data
         {
             Dispose(false);
         }
+
         // The bulk of the clean-up code is implemented in Dispose(bool)
         protected void Dispose(bool disposing)
         {

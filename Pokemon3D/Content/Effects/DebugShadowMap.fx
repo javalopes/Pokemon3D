@@ -22,31 +22,29 @@ technique Default
 }
 
 float4x4 WorldViewProjection;
+float4 Color = float4(0.0f, 1.0f, 0.0f, 1.0f);
 
 struct VertexShaderInput
 {
 	float4 Position : SV_Position0;
-	float4 Color : COLOR0;
 };
 
 struct VertexShaderOutput
 {
 	float4 Position : POSITION0;
-	float4 Color : COLOR0;
 };
 
 VertexShaderOutput LineDrawVS(VertexShaderInput input)
 {
 	VertexShaderOutput output;
 	output.Position = mul(input.Position, WorldViewProjection);
-	output.Color = input.Color;
 
 	return output;
 }
 
 float4 LineDrawPS(VertexShaderOutput input) : COLOR0
 {
-	return input.Color;
+	return Color;
 }
 
 technique LineDraw

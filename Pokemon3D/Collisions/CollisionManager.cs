@@ -30,6 +30,11 @@ namespace Pokemon3D.Collisions
                     new VertexPositionNormalTexture(new Vector3( 0.5f, -0.5f, -0.5f), Vector3.Zero, Vector2.Zero),
                     new VertexPositionNormalTexture(new Vector3(0.5f, -0.5f,  0.5f), Vector3.Zero, Vector2.Zero),
                     new VertexPositionNormalTexture(new Vector3(-0.5f, -0.5f, 0.5f), Vector3.Zero, Vector2.Zero),
+
+                    new VertexPositionNormalTexture(new Vector3(-0.5f, 0.5f, -0.5f), Vector3.Zero, Vector2.Zero),
+                    new VertexPositionNormalTexture(new Vector3( 0.5f, 0.5f, -0.5f), Vector3.Zero, Vector2.Zero),
+                    new VertexPositionNormalTexture(new Vector3(0.5f, 0.5f,  0.5f), Vector3.Zero, Vector2.Zero),
+                    new VertexPositionNormalTexture(new Vector3(-0.5f, 0.5f, 0.5f), Vector3.Zero, Vector2.Zero),
                 },
                 Indices = new ushort[]
                 {
@@ -65,8 +70,10 @@ namespace Pokemon3D.Collisions
         {
             if (!DrawDebugShapes) return;
 
+            Game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            Game.GraphicsDevice.BlendState = BlendState.Opaque;
+
             _lineDrawEffect.CurrentTechnique = _lineTechnique;
-            _lineDrawEffect.CurrentTechnique.Passes[0].Apply();
 
             for (var i = 0; i < _allColliders.Count; i++)
             {
@@ -91,6 +98,8 @@ namespace Pokemon3D.Collisions
                                       observer.ProjectionMatrix;
 
             _worldViewProjection.SetValue(worldViewProjection);
+
+            _lineDrawEffect.CurrentTechnique.Passes[0].Apply();
 
             _boundingBoxMesh.Draw();
         }

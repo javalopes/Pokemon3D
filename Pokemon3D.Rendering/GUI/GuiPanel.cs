@@ -151,7 +151,6 @@ namespace Pokemon3D.Rendering.GUI
             _root.Draw(GameContext.SpriteBatch);
 
 #if DEBUG_RENDERING
-
             DrawBounds(_root);
 #endif
         }

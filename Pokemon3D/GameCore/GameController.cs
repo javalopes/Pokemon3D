@@ -115,6 +115,10 @@ namespace Pokemon3D.GameCore
             NotificationBar = new NotificationBar(400);
             CollisionManager = new CollisionManager();
 
+#if DEBUG_RENDERING
+            CollisionManager.DrawDebugShapes = true;
+#endif
+
             GameConfig.ConfigFileLoaded += TranslationProvider.OnLanguageChanged;
 
             GuiSystem.SetSkin(new GuiSystemSkinParameters()

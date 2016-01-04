@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace Pokemon3D.GameModes.Maps.EntityComponents
@@ -43,9 +44,9 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
             {
                 float xResult, yResult, zResult;
 
-                if (float.TryParse(dataParts[0], out xResult))
-                    if (float.TryParse(dataParts[1], out yResult))
-                        if (float.TryParse(dataParts[2], out zResult))
+                if (float.TryParse(dataParts[0], NumberStyles.Number, CultureInfo.InvariantCulture, out xResult))
+                    if (float.TryParse(dataParts[1], NumberStyles.Number, CultureInfo.InvariantCulture, out yResult))
+                        if (float.TryParse(dataParts[2], NumberStyles.Number, CultureInfo.InvariantCulture, out zResult))
                             return new Vector3(xResult, yResult, zResult);
 
             }

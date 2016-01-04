@@ -102,6 +102,7 @@ namespace Pokemon3D.GameModes.Maps
             if (colliderComponent != null)
             {
                 Collider = Collider.CreateBoundingBox(colliderComponent.GetCollisionSizeVector3(), colliderComponent.GetCollisionOffset());
+                Collider.SetPosition(Position);
             }
         }
 

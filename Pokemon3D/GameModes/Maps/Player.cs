@@ -12,7 +12,6 @@ namespace Pokemon3D.GameModes.Maps
     class Player : Entity
     {
         private readonly Animator _figureAnimator;
-        private readonly Camera _camera;
         private PlayerMovementMode _movementMode;
         private MouseState _mouseState;
 
@@ -20,6 +19,8 @@ namespace Pokemon3D.GameModes.Maps
 
         public float Speed { get; set; }
         public float RotationSpeed { get; set; }
+
+        public Camera Camera { get; private set; }
 
         public PlayerMovementMode MovementMode
         {
@@ -36,11 +37,11 @@ namespace Pokemon3D.GameModes.Maps
 
         public Player(Scene scene) : base(scene)
         {
-            _camera = scene.CreateCamera();
-            _camera.SetParent(SceneNode);
-            _camera.FarClipDistance = 50.0f;
+            Camera = scene.CreateCamera();
+            Camera.SetParent(SceneNode);
+            Camera.FarClipDistance = 50.0f;
 
-            _camera.Skybox = new Skybox(Game)
+            Camera.Skybox = new Skybox(Game)
             {
                 Scale = 50,
                 Texture = Game.Content.Load<Texture2D>(ResourceNames.Textures.skybox_texture)
@@ -92,7 +93,7 @@ namespace Pokemon3D.GameModes.Maps
             }, t => SceneNode.Material.TexcoordOffset = t, true));
 
             MovementMode = PlayerMovementMode.ThirdPerson;
-            _camera.Position = _cameraTargetPosition;
+            Camera.Position = _cameraTargetPosition;
         }
 
         public override void Update(float elapsedTime)
@@ -139,13 +140,13 @@ namespace Pokemon3D.GameModes.Maps
 
             if (MovementMode != PlayerMovementMode.GodMode)
             {
-                if (_cameraTargetPosition.Z != _camera.Position.Z)
+                if (_cameraTargetPosition.Z != Camera.Position.Z)
                 {
-                    _camera.Position = new Vector3(_camera.Position.X, _camera.Position.Y, MathHelper.SmoothStep(_camera.Position.Z, _cameraTargetPosition.Z, 0.2f));
+                    Camera.Position = new Vector3(Camera.Position.X, Camera.Position.Y, MathHelper.SmoothStep(Camera.Position.Z, _cameraTargetPosition.Z, 0.2f));
                 }
-                if (_cameraTargetPosition.Y != _camera.Position.Y)
+                if (_cameraTargetPosition.Y != Camera.Position.Y)
                 {
-                    _camera.Position = new Vector3(_camera.Position.X, MathHelper.SmoothStep(_camera.Position.Y, _cameraTargetPosition.Y, 0.2f), _camera.Position.Z);
+                    Camera.Position = new Vector3(Camera.Position.X, MathHelper.SmoothStep(Camera.Position.Y, _cameraTargetPosition.Y, 0.2f), Camera.Position.Z);
                 }
             }
         }
@@ -169,17 +170,17 @@ namespace Pokemon3D.GameModes.Maps
                 var differenceX = mouseState.X - _mouseState.X;
                 var differenceY = mouseState.Y - _mouseState.Y;
 
-                _camera.RotateX(-differenceY * 0.1f * elapsedTime);
-                _camera.RotateY(-differenceX * 0.1f * elapsedTime);
+                Camera.RotateX(-differenceY * 0.1f * elapsedTime);
+                Camera.RotateY(-differenceX * 0.1f * elapsedTime);
             }
 
             if (movementDirection.LengthSquared() > 0.0f)
             {
-                _camera.Translate(Vector3.Normalize(movementDirection) * step);
+                Camera.Translate(Vector3.Normalize(movementDirection) * step);
             }
             if (Game.Keyboard.IsKeyDown(Keys.Space))
             {
-                _camera.Position += Vector3.UnitY * step;
+                Camera.Position += Vector3.UnitY * step;
             }
         }
 
@@ -216,11 +217,11 @@ namespace Pokemon3D.GameModes.Maps
             }
             if (Game.Keyboard.IsKeyDown(Keys.Up))
             {
-                _camera.RotateX(RotationSpeed * elapsedTime);
+                Camera.RotateX(RotationSpeed * elapsedTime);
             }
             else if (Game.Keyboard.IsKeyDown(Keys.Down))
             {
-                _camera.RotateX(-RotationSpeed * elapsedTime);
+                Camera.RotateX(-RotationSpeed * elapsedTime);
             }
         }
 
@@ -262,22 +263,22 @@ namespace Pokemon3D.GameModes.Maps
             {
                 case PlayerMovementMode.FirstPerson:
                     SceneNode.IsActive = true;
-                    _camera.SetParent(SceneNode);
-                    _camera.EulerAngles = Vector3.Zero;
+                    Camera.SetParent(SceneNode);
+                    Camera.EulerAngles = Vector3.Zero;
                     _cameraTargetPosition = new Vector3(0, 0.6f, 0);
 
                     break;
                 case PlayerMovementMode.ThirdPerson:
                     SceneNode.IsActive = true;
-                    _camera.SetParent(SceneNode);
-                    _camera.EulerAngles = Vector3.Zero;
+                    Camera.SetParent(SceneNode);
+                    Camera.EulerAngles = Vector3.Zero;
                     _cameraTargetPosition = new Vector3(0, 1, 3);
 
                     break;
                 case PlayerMovementMode.GodMode:
-                    _camera.SetParent(null);
+                    Camera.SetParent(null);
                     SceneNode.IsActive = false;
-                    _camera.Position = SceneNode.GlobalPosition + new Vector3(0, 1, 0);
+                    Camera.Position = SceneNode.GlobalPosition + new Vector3(0, 1, 0);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

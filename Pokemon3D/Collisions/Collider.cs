@@ -144,11 +144,11 @@ namespace Pokemon3D.Collisions
             {
                 case ColliderType.BoundingBox:
                     var size = BoundingBox.Max - BoundingBox.Min;
-                    _boundingBox.Min = -size*0.5f - OffsetToCenter + _position;
-                    _boundingBox.Max = size * 0.5f - OffsetToCenter + _position;
+                    _boundingBox.Min = -size*0.5f + OffsetToCenter + _position;
+                    _boundingBox.Max = size * 0.5f + OffsetToCenter + _position;
                     break;
                 case ColliderType.BoundingSphere:
-                    _boundingSphere.Center = _position - OffsetToCenter;
+                    _boundingSphere.Center = _position + OffsetToCenter;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
