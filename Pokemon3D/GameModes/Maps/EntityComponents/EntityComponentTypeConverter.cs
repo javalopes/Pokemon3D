@@ -62,8 +62,8 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
             {
                 float xResult, yResult;
 
-                if (float.TryParse(dataParts[0], out xResult))
-                    if (float.TryParse(dataParts[1], out yResult))
+                if (float.TryParse(dataParts[0], NumberStyles.Number, CultureInfo.InvariantCulture, out xResult))
+                    if (float.TryParse(dataParts[1], NumberStyles.Number, CultureInfo.InvariantCulture, out yResult))
                         return new Vector2(xResult, yResult);
 
             }
@@ -74,14 +74,14 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
         private static object ToSingle(string data)
         {
             float result = 0;
-            float.TryParse(data, out result);
+            float.TryParse(data, NumberStyles.Number, CultureInfo.InvariantCulture, out result);
             return result;
         }
 
         private static object ToInt32(string data)
         {
             int result = 0;
-            int.TryParse(data, out result);
+            int.TryParse(data, NumberStyles.Number, CultureInfo.InvariantCulture, out result);
             return result;
         }
 
