@@ -94,6 +94,8 @@ namespace Pokemon3D.GameModes.Maps
 
             MovementMode = PlayerMovementMode.ThirdPerson;
             Camera.Position = _cameraTargetPosition;
+
+            Collider = Collisions.Collider.CreateBoundingBox(new Vector3(0.35f,0.6f, 0.35f), new Vector3(0.0f, 0.3f, 0.0f));
         }
 
         public override void Update(float elapsedTime)
@@ -148,6 +150,15 @@ namespace Pokemon3D.GameModes.Maps
                 {
                     Camera.Position = new Vector3(Camera.Position.X, MathHelper.SmoothStep(Camera.Position.Y, _cameraTargetPosition.Y, 0.2f), Camera.Position.Z);
                 }
+            }
+
+            Collider.SetPosition(SceneNode.Position);
+
+            var result = Game.CollisionManager.CheckCollision(Collider);
+            if (result.Collides)
+            {
+                SceneNode.Position = SceneNode.Position += result.Axis;
+                Collider.SetPosition(SceneNode.Position);
             }
         }
 

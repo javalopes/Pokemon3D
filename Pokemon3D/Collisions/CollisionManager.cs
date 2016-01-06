@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
+using Pokemon3D.Common;
 
 namespace Pokemon3D.Collisions
 {
@@ -61,9 +62,17 @@ namespace Pokemon3D.Collisions
             _allColliders.Remove(collider);
         }
 
-        public void CheckCollision(Collider collider)
+        public CollisionResult CheckCollision(Collider collider)
         {
-            
+            foreach(var possibleCollider in _allColliders)
+            {
+                if (collider == possibleCollider) continue;
+
+                var result = possibleCollider.CheckCollision(collider);
+                if (result.Collides) return result;
+            }
+
+            return CollisionResult.Empty;
         }
 
         public void Draw(Camera observer)

@@ -115,7 +115,7 @@ namespace Pokemon3D.Collisions
                 case ColliderType.BoundingBox:
                     if (other.Type == ColliderType.BoundingBox)
                     {
-                        BoundingBox.CollidesWithSat(other.BoundingBox);
+                        return BoundingBox.CollidesWithSat(other.BoundingBox);
                     }
                     return new CollisionResult
                     {
