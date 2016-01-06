@@ -154,10 +154,13 @@ namespace Pokemon3D.GameModes.Maps
 
             Collider.SetPosition(SceneNode.Position);
 
-            var result = Game.CollisionManager.CheckCollision(Collider);
-            if (result.Collides)
+            var collidingObjects = Game.CollisionManager.CheckCollision(Collider);
+            if (collidingObjects.Length > 0)
             {
-                SceneNode.Position = SceneNode.Position += result.Axis;
+                for(var i = 0; i < collidingObjects.Length; i++)
+                {
+                    SceneNode.Position = SceneNode.Position += collidingObjects[i].Axis;
+                }
                 Collider.SetPosition(SceneNode.Position);
             }
         }

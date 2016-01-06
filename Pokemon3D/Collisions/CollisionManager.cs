@@ -62,17 +62,23 @@ namespace Pokemon3D.Collisions
             _allColliders.Remove(collider);
         }
 
-        public CollisionResult CheckCollision(Collider collider)
+        private List<CollisionResult> _colliderList = new List<CollisionResult>();
+
+        public CollisionResult[] CheckCollision(Collider collider)
         {
-            foreach(var possibleCollider in _allColliders)
+            _colliderList.Clear();
+            foreach (var possibleCollider in _allColliders)
             {
                 if (collider == possibleCollider) continue;
 
                 var result = possibleCollider.CheckCollision(collider);
-                if (result.Collides) return result;
+                if (result.Collides)
+                {
+                    _colliderList.Add(result);
+                }
             }
 
-            return CollisionResult.Empty;
+            return _colliderList.ToArray();
         }
 
         public void Draw(Camera observer)
