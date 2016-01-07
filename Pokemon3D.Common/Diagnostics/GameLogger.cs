@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using Pokemon3D.Common.FileSystem;
 
 namespace Pokemon3D.Common.Diagnostics
 {
@@ -18,6 +19,7 @@ namespace Pokemon3D.Common.Diagnostics
         
         private GameLogger()
         {
+            Initialize();
         }
 
         private void EnsureFolderExists()
@@ -26,21 +28,13 @@ namespace Pokemon3D.Common.Diagnostics
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
         }
 
-        private void OnGameExit(object sender, EventArgs e)
-        {
-            Log(MessageType.Message, "Exiting game.");
-        }
-
         /// <summary>
         /// Initializes the logger.
         /// </summary>
-        public void Initialize(Game game, string logFilePath)
+        public void Initialize()
         {
-            game.Exiting += OnGameExit;
-            _logFilePath = logFilePath;
+            _logFilePath = LogPathProvider.LogFile;
             EnsureFolderExists();
-
-            Log(MessageType.Message, "Game started.");
         }
 
         /// <summary>
@@ -58,6 +52,7 @@ namespace Pokemon3D.Common.Diagnostics
 
 #if DEBUG
             if (Debugger.IsAttached) Debug.Print(LoggerVsFormat, DateTime.Now.ToLongTimeString(), icon, message);
+            Console.WriteLine(LoggerVsFormat, DateTime.Now.ToLongTimeString(), icon, message);
 #endif
         }
         

@@ -13,11 +13,11 @@ namespace Pokemon3D.UI.Localization
     {
         public CoreTranslationManager()
         {
-            if (Directory.Exists(StaticFileProvider.i18nDirectory))
+            if (Directory.Exists(i18nPathProvider.LookupPath))
             {
                 List<SectionModel> sectionModels = new List<SectionModel>();
 
-                var files = Directory.GetFiles(StaticFileProvider.i18nDirectory).
+                var files = Directory.GetFiles(i18nPathProvider.LookupPath).
                     Where(m => m.EndsWith(i18nFileExtension, StringComparison.OrdinalIgnoreCase));
 
                 foreach (var file in files)

@@ -66,6 +66,8 @@
     <Compile Include="Extensions\TextureExtensions.cs" />
     <Compile Include="Extensions\Vector2Extension.cs" />
     <Compile Include="FileSystem\FileObserver.cs" />
+    <Compile Include="FileSystem\LogPathProvider.cs" />
+    <Compile Include="FileSystem\PathProvider.cs" />
     <Compile Include="FileSystem\WatchedDirectory.cs" />
     <Compile Include="FileSystem\WatchedDirectoryChangeEventHandler.cs" />
     <Compile Include="FileSystem\WatchedDirectoryEventArgs.cs" />

@@ -15,7 +15,7 @@ namespace Pokemon3D.GameModes
         public GameModeInfo[] GetGameModeInfos()
         {
             var gameModes = new List<GameModeInfo>();
-            foreach (var gameModeDirectory in Directory.GetDirectories(GameModeFileProvider.GameModeFolder, "*.*", SearchOption.TopDirectoryOnly))
+            foreach (var gameModeDirectory in Directory.GetDirectories(GameModePathProvider.GameModeFolder, "*.*", SearchOption.TopDirectoryOnly))
             {
                 gameModes.Add(new GameModeInfo(gameModeDirectory));
             }

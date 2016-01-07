@@ -1,16 +1,14 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.IO;
 
-namespace Pokemon3D.FileSystem
+namespace Pokemon3D.Common.FileSystem
 {
-    /// <summary>
-    /// Provides paths to static files of the game.
-    /// </summary>
-    class StaticFileProvider : FileProvider
+    public class LogPathProvider : PathProvider
     {
-        #region Logs
-
         const string LOG_FILE_EXTENSION = ".txt";
         const string LOG_FILE_PREFIX = "log_";
         const string LOG_DIRECTORY = "Logs";
@@ -53,41 +51,5 @@ namespace Pokemon3D.FileSystem
                 return Path.Combine(LogDirectory, sb.ToString());
             }
         }
-
-        #endregion
-
-        #region Configuration
-
-        private const string CONFIG_FILE_NAME = "configuration.json";
-
-        /// <summary>
-        /// The path to the main configuration file of the game.
-        /// </summary>
-        public static string ConfigFile
-        {
-            get
-            {
-                return Path.Combine(StartupPath, CONFIG_FILE_NAME);
-            }
-        }
-
-        #endregion
-
-        #region i18n
-
-        const string i18n_DIRECTORY_NAME = "i18n";
-
-        /// <summary>
-        /// The path to the internationalization directory.
-        /// </summary>
-        public static string i18nDirectory
-        {
-            get
-            {
-                return Path.Combine(StartupPath, i18n_DIRECTORY_NAME);
-            }
-        }
-
-        #endregion
     }
 }

@@ -22,11 +22,11 @@ namespace Pokemon3D.GameCore
 
         public GameConfiguration()
         {
-            if (File.Exists(StaticFileProvider.ConfigFile))
+            if (File.Exists(StaticPathProvider.ConfigFile))
             {
                 try
                 {
-                    _dataModel = DataModel<ConfigurationModel>.FromFile(StaticFileProvider.ConfigFile);
+                    _dataModel = DataModel<ConfigurationModel>.FromFile(StaticPathProvider.ConfigFile);
                 }
                 catch (JsonDataLoadException)
                 {
@@ -46,7 +46,7 @@ namespace Pokemon3D.GameCore
 
             Game.Exiting += OnGameExiting;
 
-            FileObserver.Instance.StartFileObserve(StaticFileProvider.ConfigFile, ReloadFile);
+            FileObserver.Instance.StartFileObserve(StaticPathProvider.ConfigFile, ReloadFile);
         }
 
         public bool ShadowsEnabled
@@ -71,7 +71,7 @@ namespace Pokemon3D.GameCore
         {
             try
             {
-                _dataModel = DataModel<ConfigurationModel>.FromFile(StaticFileProvider.ConfigFile);
+                _dataModel = DataModel<ConfigurationModel>.FromFile(StaticPathProvider.ConfigFile);
                 ConfigFileLoaded?.Invoke(this, EventArgs.Empty);
             }
             catch (JsonDataLoadException)
@@ -92,7 +92,7 @@ namespace Pokemon3D.GameCore
         public void Save()
         {
             GameLogger.Instance.Log(MessageType.Message, "Saving configuration file.");
-            _dataModel.ToFile(StaticFileProvider.ConfigFile);
+            _dataModel.ToFile(StaticPathProvider.ConfigFile);
         }
     }
 }

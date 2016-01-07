@@ -12,6 +12,7 @@ using Pokemon3D.UI.Localization;
 using Pokemon3D.UI.Screens;
 using System;
 using Pokemon3D.Collisions;
+using Pokemon3D.Common.FileSystem;
 
 namespace Pokemon3D.GameCore
 {
@@ -74,7 +75,7 @@ namespace Pokemon3D.GameCore
         public Rectangle ScreenBounds => Window.ClientBounds;
 
         public ShapeRenderer ShapeRenderer { get; private set; }
-        
+
         /// <summary>
         /// A global randomizer instance.
         /// </summary>
@@ -84,7 +85,8 @@ namespace Pokemon3D.GameCore
         {
             if (Instance != null) throw new InvalidOperationException("Game is singleton and can be created just once");
 
-            GameLogger.Instance.Initialize(this, StaticFileProvider.LogFile);
+            GameLogger.Instance.Log(MessageType.Message, "Game started.");
+            Exiting += OnGameExit;
 
             Instance = this;
 
@@ -97,7 +99,7 @@ namespace Pokemon3D.GameCore
             };
             Random = new Random();
         }
-        
+
         protected override void LoadContent()
         {
             base.LoadContent();
@@ -109,7 +111,7 @@ namespace Pokemon3D.GameCore
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             Keyboard = new KeyboardEx();
             GuiSystem = new GuiSystem(this);
-            ShapeRenderer =  new ShapeRenderer(SpriteBatch, GraphicsDevice);
+            ShapeRenderer = new ShapeRenderer(SpriteBatch, GraphicsDevice);
             ScreenManager = new ScreenManager();
             TranslationProvider = new CoreTranslationManager();
             NotificationBar = new NotificationBar(400);
@@ -135,7 +137,7 @@ namespace Pokemon3D.GameCore
             ScreenManager.SetScreen(typeof(IntroScreen));
 #endif
         }
-        
+
         protected override void Update(GameTime gameTime)
         {
             var elapsedSeconds = gameTime.ElapsedGameTime.Milliseconds * 0.001f;
@@ -152,6 +154,10 @@ namespace Pokemon3D.GameCore
             NotificationBar.Draw();
             base.Draw(gameTime);
         }
-        
+
+        private void OnGameExit(object sender, EventArgs e)
+        {
+            GameLogger.Instance.Log(MessageType.Message, "Exiting game.");
+        }
     }
 }

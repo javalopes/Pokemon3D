@@ -16,10 +16,10 @@ namespace Pokemon3D.GameModes
         public GameModeInfo(string directory)
         {
             DirectioryName = Path.GetFileName(directory);
-            DirectoryPath = Path.Combine(GameModeFileProvider.GameModeFolder, DirectioryName);
+            DirectoryPath = Path.Combine(GameModePathProvider.GameModeFolder, DirectioryName);
             
             IsValid = false;
-            string gameModeFile = GameModeFileProvider.GetGameModeFile(directory);
+            string gameModeFile = GameModePathProvider.GetGameModeFile(directory);
             
             if (File.Exists(gameModeFile))
             {
