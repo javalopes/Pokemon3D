@@ -7,6 +7,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="DataTemplates/TreeView.xaml" />
                 <ResourceDictionary Source="DataTemplates/DataModelDataTemplates.xaml" />
+                <ResourceDictionary Source="DataTemplates/DetailDataTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

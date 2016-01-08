@@ -1,17 +1,21 @@
-﻿using Pokemon3D.Editor.Core.Framework;
+﻿using Pokemon3D.DataModel.Json;
+using Pokemon3D.Editor.Core.Framework;
 using System.Collections.ObjectModel;
 
 namespace Pokemon3D.Editor.Core.Framework
 {
-    public abstract class DataModelViewModel : ViewModel
+    public abstract class DataModelViewModel: ViewModel
     {
         private ObservableCollection<DataModelPropertyViewModel> _properties;
         private string _fileName;
 
         public ReadOnlyObservableCollection<DataModelPropertyViewModel> Properties { get; }
 
-        protected DataModelViewModel(string fileName)
+        public object Model { get; protected set; }
+
+        protected DataModelViewModel(object dataModel, string fileName)
         {
+            Model = dataModel;
             FileName = fileName;
             _properties = new ObservableCollection<DataModelPropertyViewModel>();
             Properties = new ReadOnlyObservableCollection<DataModelPropertyViewModel>(_properties);
@@ -26,6 +30,12 @@ namespace Pokemon3D.Editor.Core.Framework
         {
             get { return _fileName; }
             set { SetProperty(ref _fileName, value); }
+        }
+
+        protected void SetDataViewModelProperty<TModel>(ref TModel model, DataModelViewModel dataModelViewModel)
+        {
+            model = (TModel)dataModelViewModel.Model;
+            Model = dataModelViewModel.Model;
         }
     }
 }

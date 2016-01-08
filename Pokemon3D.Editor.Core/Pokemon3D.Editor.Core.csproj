@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationViewModel.cs" />
+    <Compile Include="DataModelViewModels\GameModeStartConfigrationDataViewModel.cs" />
+    <Compile Include="DetailViewModels\TextureDetailViewModel.cs" />
     <Compile Include="Framework\DataModelPropertyViewModel.cs" />
     <Compile Include="Framework\DataModelViewModel.cs" />
     <Compile Include="Framework\CommandViewModel.cs" />

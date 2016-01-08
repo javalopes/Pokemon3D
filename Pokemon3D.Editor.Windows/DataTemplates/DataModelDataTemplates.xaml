@@ -32,4 +32,10 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type viewModels:ObjectDataModelPropertyViewModel}">
+        <Expander IsExpanded="False" Header="{Binding Value.FileName}">
+            <ContentControl Content="{Binding Value}" />
+        </Expander>
+    </DataTemplate>
+
 </ResourceDictionary>

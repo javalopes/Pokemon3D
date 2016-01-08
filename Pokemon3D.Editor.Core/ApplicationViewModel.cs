@@ -1,5 +1,6 @@
 ﻿using Pokemon3D.DataModel.Json.GameMode;
 using Pokemon3D.Editor.Core.DataModelViewModels;
+using Pokemon3D.Editor.Core.DetailViewModels;
 using Pokemon3D.Editor.Core.Framework;
 using System;
 using System.Collections.Generic;
@@ -86,7 +87,10 @@ namespace Pokemon3D.Editor.Core
 
             foreach (var file in GetFilesOfDirectory(Path.Combine(selectedPath, "Content", "Textures")))
             {
-                texturesElement.AddChild(new TreeElementViewModel(this, Path.GetFileName(file)));
+                texturesElement.AddChild(new TreeElementViewModel(this, Path.GetFileName(file))
+                {
+                    DetailsViewModel = new TextureDetailViewModel(file)
+                });
             }
         }
 
