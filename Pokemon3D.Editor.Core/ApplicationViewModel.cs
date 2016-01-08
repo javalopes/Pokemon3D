@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Pokemon3D.DataModel.Json.GameMode.Battle;
 
 namespace Pokemon3D.Editor.Core
 {
@@ -97,7 +98,17 @@ namespace Pokemon3D.Editor.Core
         private void LoadDataFolder(string selectedPath)
         {
             var dataElement = Root.AddChild(new TreeElementViewModel(this, "Data", TreeElementType.Folder));
-            dataElement.AddChild(new TreeElementViewModel(this, "Moves", TreeElementType.Folder));
+            var movesElement = dataElement.AddChild(new TreeElementViewModel(this, "Moves", TreeElementType.Folder));
+
+            foreach (var moveFilePath in Directory.GetFiles(Path.Combine(selectedPath, "Data", "Moves")))
+            {
+                var fileName = Path.GetFileName(moveFilePath);
+                movesElement.AddChild(new TreeElementViewModel(this, fileName, TreeElementType.JsonFile)
+                {
+                    DetailsViewModel = new MoveDataViewModel(MoveModel.FromFile(moveFilePath), fileName)
+                });
+            }
+
             dataElement.AddChild(new TreeElementViewModel(this, "Pokemon", TreeElementType.Folder));
         }
 
