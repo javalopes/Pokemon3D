@@ -5,16 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pokemon3D.Editor.Core.DataModelViewModels
+namespace Pokemon3D.Editor.Core.Framework
 {
     public abstract class DataModelPropertyViewModel : ViewModel
     {
         private string _caption;
-
-        protected DataModelPropertyViewModel(DataModelViewModel parent)
-        {
-            parent.AddProperty(this);
-        }
 
         public string Caption
         {
@@ -28,10 +23,11 @@ namespace Pokemon3D.Editor.Core.DataModelViewModels
         private TPropertyType _value;
         private Action<TPropertyType> _updateModelValue;
 
-        public SingleValuedDataModelPropertyViewModel(DataModelViewModel parent, TPropertyType value, Action<TPropertyType> updateModelValue) : base(parent)
+        public SingleValuedDataModelPropertyViewModel(TPropertyType value, Action<TPropertyType> updateModelValue)
         {
             if (updateModelValue == null) throw new ArgumentNullException(nameof(updateModelValue));
             _updateModelValue = updateModelValue;
+            Value = value;
         }
         
         public TPropertyType Value
@@ -43,16 +39,16 @@ namespace Pokemon3D.Editor.Core.DataModelViewModels
 
     public class StringDataModelPropertyViewModel : SingleValuedDataModelPropertyViewModel<string>
     {
-        public StringDataModelPropertyViewModel(DataModelViewModel parent, Action<string> updateModelValue, string value = null) 
-            : base(parent, value, updateModelValue)
+        public StringDataModelPropertyViewModel(Action<string> updateModelValue, string value = null) 
+            : base(value, updateModelValue)
         {
         }
     }
 
     public class FloatDataModelPropertyViewModel : SingleValuedDataModelPropertyViewModel<float>
     {
-        public FloatDataModelPropertyViewModel(DataModelViewModel parent, Action<float> updateModelValue, float value = 0.0f) 
-            : base(parent, value, updateModelValue)
+        public FloatDataModelPropertyViewModel(Action<float> updateModelValue, float value = 0.0f) 
+            : base(value, updateModelValue)
         {
         }
     }

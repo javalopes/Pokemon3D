@@ -5,13 +5,26 @@
 
 
     <HierarchicalDataTemplate DataType="{x:Type viewModels:TreeElementViewModel}" ItemsSource="{Binding Children}">
-        <StackPanel Orientation="Horizontal">
-            <Image Source="../Images/folder.png" Stretch="Uniform" Width="16" Height="16" Margin="2" x:Name="FolderIcon" />
-            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+        <StackPanel Orientation="Horizontal" Background="Transparent">
+            <Grid>
+                <Image Source="../Images/folder.png" Stretch="Uniform" Width="16" Height="16" Margin="2" x:Name="FolderIcon" Visibility="Hidden" />
+                <Image Source="../Images/json.png" Stretch="Uniform" Width="16" Height="16" Margin="2" x:Name="JsonIcon" Visibility="Hidden" />
+                <Image Source="../Images/texture.png" Stretch="Uniform" Width="16" Height="16" Margin="2" x:Name="TextureIcon" Visibility="Hidden" />
+            </Grid>
+            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="0,2,2,2" />
+            <StackPanel.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DefaultActionCommand}" />
+            </StackPanel.InputBindings>
         </StackPanel>
         <HierarchicalDataTemplate.Triggers>
-            <DataTrigger Binding="{Binding IsFolder}" Value="False">
-                <Setter TargetName="FolderIcon" Property="Visibility" Value="Hidden" />
+            <DataTrigger Binding="{Binding Type}" Value="{x:Static viewModels:TreeElementType.Folder}">
+                <Setter TargetName="FolderIcon" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Type}" Value="{x:Static viewModels:TreeElementType.JsonFile}">
+                <Setter TargetName="JsonIcon" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Type}" Value="{x:Static viewModels:TreeElementType.TextureFile}">
+                <Setter TargetName="TextureIcon" Property="Visibility" Value="Visible" />
             </DataTrigger>
         </HierarchicalDataTemplate.Triggers>
     </HierarchicalDataTemplate>

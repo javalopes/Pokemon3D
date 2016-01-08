@@ -24,6 +24,19 @@
             </MenuItem>
         </Menu>
 
-        <TreeView ItemsSource="{Binding Root.Children}" Grid.Column="0" Grid.Row="1" MinWidth="150" />
+        <ScrollViewer Grid.Column="0" 
+                      Grid.Row="1" 
+                      MinWidth="200" 
+                      CanContentScroll="true" 
+                      VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Auto">
+            <TreeView ItemsSource="{Binding Root.Children}" />
+        </ScrollViewer>
+
+        <TabControl Grid.Column="1" Grid.Row="1" Margin="5">
+            <TabItem Header="@Item">
+                <ContentControl Content="{Binding ActiveDetails}" />
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

@@ -41,12 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationViewModel.cs" />
-    <Compile Include="DataModelViewModels\DataModelPropertyViewModel.cs" />
-    <Compile Include="DataModelViewModels\DataModelViewModel.cs" />
+    <Compile Include="Framework\DataModelPropertyViewModel.cs" />
+    <Compile Include="Framework\DataModelViewModel.cs" />
     <Compile Include="Framework\CommandViewModel.cs" />
     <Compile Include="Framework\TreeElementViewModel.cs" />
     <Compile Include="Framework\ViewModel.cs" />
-    <Compile Include="DataModelViewModels\GameModeViewModel.cs" />
+    <Compile Include="DataModelViewModels\GameModeDataViewModel.cs" />
     <Compile Include="PlatformService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

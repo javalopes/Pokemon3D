@@ -1,4 +1,6 @@
-﻿using Pokemon3D.Editor.Core.Framework;
+﻿using Pokemon3D.DataModel.Json.GameMode;
+using Pokemon3D.Editor.Core.DataModelViewModels;
+using Pokemon3D.Editor.Core.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +11,7 @@ namespace Pokemon3D.Editor.Core
     public class ApplicationViewModel : ViewModel
     {
         private TreeElementViewModel _root;
+        private ViewModel _activeDetails;
 
         public CommandViewModel OpenGameModeCommand { get; private set; }
         public PlatformService PlatformService { get; private set; }
@@ -17,6 +20,12 @@ namespace Pokemon3D.Editor.Core
         {
             get { return _root; } 
             set { SetProperty(ref _root, value); }
+        }
+
+        public ViewModel ActiveDetails
+        {
+            get { return _activeDetails; }
+            set { SetProperty(ref _activeDetails, value); }
         }
 
         public ApplicationViewModel(PlatformService platformService)
@@ -39,34 +48,74 @@ namespace Pokemon3D.Editor.Core
             var selectedPath = PlatformService.ShowSelectFolderDialog();
             if (string.IsNullOrEmpty(selectedPath) || !Directory.Exists(selectedPath)) return;
             
-            Root = new TreeElementViewModel("Root", true);
+            Root = new TreeElementViewModel(this, "Root", TreeElementType.Folder);
+
+            LoadRootFolder(selectedPath);
+            LoadContentFolder(selectedPath);
+            LoadDataFolder(selectedPath);
+            LoadFragmentsFolder(selectedPath);
+            LoadMapsFolder(selectedPath);
+            LoadScriptsFolder(selectedPath);
+            
+            Root.SortChildren();
+        }
+
+        internal void ShowDetails(ViewModel detailsViewModel)
+        {
+            ActiveDetails = detailsViewModel;
+        }
+
+        private void LoadRootFolder(string selectedPath)
+        {
             foreach (var file in GetFilesOfDirectory(selectedPath))
             {
-                Root.AddChild(new TreeElementViewModel(Path.GetFileName(file)));
+                var fileName = Path.GetFileName(file) ?? "";
+                ViewModel details = null;
+                if (fileName.Equals("GameMode.json", StringComparison.OrdinalIgnoreCase))
+                {
+                    details = new GameModeDataViewModel(GameModeModel.FromFile(file));
+                }
+                Root.AddChild(new TreeElementViewModel(this, fileName) { DetailsViewModel = details });
             }
+        }
 
-            var contentElement = Root.AddChild(new TreeElementViewModel("Content", true));
-            var texturesElement = contentElement.AddChild(new TreeElementViewModel("Textures", true));
+        private void LoadContentFolder(string selectedPath)
+        {
+            var contentElement = Root.AddChild(new TreeElementViewModel(this, "Content", TreeElementType.Folder));
+            var texturesElement = contentElement.AddChild(new TreeElementViewModel(this, "Textures", TreeElementType.Folder));
 
             foreach (var file in GetFilesOfDirectory(Path.Combine(selectedPath, "Content", "Textures")))
             {
-                texturesElement.AddChild(new TreeElementViewModel(Path.GetFileName(file)));
+                texturesElement.AddChild(new TreeElementViewModel(this, Path.GetFileName(file)));
             }
+        }
 
-            Root.AddChild(new TreeElementViewModel("Data", true));
-            Root.AddChild(new TreeElementViewModel("Fragments", true));
+        private void LoadDataFolder(string selectedPath)
+        {
+            var dataElement = Root.AddChild(new TreeElementViewModel(this, "Data", TreeElementType.Folder));
+            dataElement.AddChild(new TreeElementViewModel(this, "Moves", TreeElementType.Folder));
+            dataElement.AddChild(new TreeElementViewModel(this, "Pokemon", TreeElementType.Folder));
+        }
 
-            var mapsElement = Root.AddChild(new TreeElementViewModel("Maps", true));
+        private void LoadFragmentsFolder(string selectedPath)
+        {
+            Root.AddChild(new TreeElementViewModel(this, "Fragments", TreeElementType.Folder));
+        }
+
+        private void LoadMapsFolder(string selectedPath)
+        {
+            var mapsElement = Root.AddChild(new TreeElementViewModel(this, "Maps", TreeElementType.Folder));
 
             var mapPath = Path.Combine(selectedPath, "Maps");
             foreach (var file in GetFilesOfDirectory(mapPath))
             {
-                mapsElement.AddChild(new TreeElementViewModel(Path.GetFileName(file)));
+                mapsElement.AddChild(new TreeElementViewModel(this, Path.GetFileName(file)));
             }
+        }
 
-            Root.AddChild(new TreeElementViewModel("Scripts", true));
-
-            Root.SortChildren();
+        private void LoadScriptsFolder(string selectedPath)
+        {
+            Root.AddChild(new TreeElementViewModel(this, "Scripts", TreeElementType.Folder));
         }
     }
 }
