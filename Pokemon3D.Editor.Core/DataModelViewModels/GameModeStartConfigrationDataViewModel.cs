@@ -10,8 +10,8 @@ namespace Pokemon3D.Editor.Core.DataModelViewModels
         public GameModeStartConfigrationDataViewModel(GameModeStartConfigurationModel model) : base(model, nameof(GameModeStartConfigurationModel))
         {
             _model = model;
-            AddProperty(new StringDataModelPropertyViewModel(v => _model.Map = v, _model.Map) { Caption = "Map" });
-            AddProperty(new StringDataModelPropertyViewModel(v => _model.Script = v, _model.Script) { Caption = "Script" });
+            AddProperty(new StringDataModelPropertyViewModel(v => _model.Map = v, _model.Map, "Map" ));
+            AddProperty(new StringDataModelPropertyViewModel(v => _model.Script = v, _model.Script, "Script" ));
         }
     }
 }

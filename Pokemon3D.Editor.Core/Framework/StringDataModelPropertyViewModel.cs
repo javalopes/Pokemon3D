@@ -4,8 +4,8 @@ namespace Pokemon3D.Editor.Core.Framework
 {
     public class StringDataModelPropertyViewModel : SingleValuedDataModelPropertyViewModel<string>
     {
-        public StringDataModelPropertyViewModel(Action<string> updateModelValue, string value = null) 
-            : base(value, updateModelValue)
+        public StringDataModelPropertyViewModel(Action<string> updateModelValue, string value, string caption) 
+            : base(updateModelValue, value, caption)
         {
         }
     }

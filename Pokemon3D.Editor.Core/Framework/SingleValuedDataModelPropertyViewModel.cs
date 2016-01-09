@@ -7,11 +7,12 @@ namespace Pokemon3D.Editor.Core.Framework
         private TPropertyType _value;
         private readonly Action<TPropertyType> _updateModelValue;
 
-        public SingleValuedDataModelPropertyViewModel(TPropertyType value, Action<TPropertyType> updateModelValue)
+        public SingleValuedDataModelPropertyViewModel(Action<TPropertyType> updateModelValue, TPropertyType value, string caption)
         {
             if (updateModelValue == null) throw new ArgumentNullException(nameof(updateModelValue));
             _updateModelValue = updateModelValue;
             Value = value;
+            Caption = caption;
         }
         
         public TPropertyType Value
