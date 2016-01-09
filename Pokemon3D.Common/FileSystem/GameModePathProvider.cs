@@ -1,12 +1,11 @@
-﻿using Pokemon3D.Common.FileSystem;
-using System.IO;
+﻿using System.IO;
 
-namespace Pokemon3D.FileSystem
+namespace Pokemon3D.Common.FileSystem
 {
     /// <summary>
     /// Provides access to paths related to GameModes.
     /// </summary>
-    class GameModePathProvider : PathProvider
+    public class GameModePathProvider : PathProvider
     {
         private const string PATH_GAMEMODES = "GameModes";
         private const string FILE_GAMEMODE_MAIN = "GameMode.json";
@@ -18,7 +17,7 @@ namespace Pokemon3D.FileSystem
         {
             get
             {
-                return Path.Combine( StartupPath, PATH_GAMEMODES);
+                return Path.Combine(StartupPath, PATH_GAMEMODES);
             }
         }
 

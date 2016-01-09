@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.Editor.Windows", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.Editor.Core", "Pokemon3D.Editor.Core\Pokemon3D.Editor.Core.csproj", "{4365490B-CC67-45E5-A113-1120E0D2B3EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.GameModes", "Pokemon3D.GameModes\Pokemon3D.GameModes.csproj", "{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -215,6 +217,24 @@ Global
 		{4365490B-CC67-45E5-A113-1120E0D2B3EC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4365490B-CC67-45E5-A113-1120E0D2B3EC}.Release|x86.ActiveCfg = Release|Any CPU
 		{4365490B-CC67-45E5-A113-1120E0D2B3EC}.Release|x86.Build.0 = Release|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Debug|x86.Build.0 = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.DebugRendering|Any CPU.ActiveCfg = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.DebugRendering|Any CPU.Build.0 = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.DebugRendering|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.DebugRendering|Mixed Platforms.Build.0 = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.DebugRendering|x86.ActiveCfg = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.DebugRendering|x86.Build.0 = Debug|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Release|x86.ActiveCfg = Release|Any CPU
+		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,15 +1,20 @@
-using Pokemon3D.Common.Diagnostics;
-using Pokemon3D.DataModel.Json;
-using Pokemon3D.DataModel.Json.GameMode;
-using Pokemon3D.FileSystem;
+﻿using Pokemon3D.DataModel.Json.GameMode;
+using Pokemon3D.Common.FileSystem;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Pokemon3D.DataModel.Json;
+using Pokemon3D.Common.Diagnostics;
 
 namespace Pokemon3D.GameModes
 {
     /// <summary>
     /// Contains global information about the GameMode.
     /// </summary>
-    class GameModeInfo
+    public class GameModeInfo
     {
         private readonly GameModeModel _gameModeModel;
 
@@ -17,10 +22,10 @@ namespace Pokemon3D.GameModes
         {
             DirectioryName = Path.GetFileName(directory);
             DirectoryPath = Path.Combine(GameModePathProvider.GameModeFolder, DirectioryName);
-            
+
             IsValid = false;
             string gameModeFile = GameModePathProvider.GetGameModeFile(directory);
-            
+
             if (File.Exists(gameModeFile))
             {
                 try
@@ -45,7 +50,7 @@ namespace Pokemon3D.GameModes
         /// The name of this GameMode's folder (not full path).
         /// </summary>
         public string DirectioryName { get; private set; }
-        
+
         /// <summary>
         /// Name of the Game Mode.
         /// </summary>

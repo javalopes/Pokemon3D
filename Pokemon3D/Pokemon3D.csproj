@@ -67,7 +67,6 @@
     <Compile Include="FileSystem\Requests\DataRequestException.cs" />
     <Compile Include="FileSystem\Requests\DataRequestModelManager.cs" />
     <Compile Include="FileSystem\Requests\DataRequestStatus.cs" />
-    <Compile Include="FileSystem\GameModePathProvider.cs" />
     <Compile Include="FileSystem\i18nPathProvider.cs" />
     <Compile Include="FileSystem\Requests\PokemonDataRequest.cs" />
     <Compile Include="FileSystem\Requests\InstantDataRequestModelManager.cs" />
@@ -76,7 +75,6 @@
     <Compile Include="GameCore\GameObject.cs" />
     <Compile Include="GameCore\GameController.cs" />
     <Compile Include="GameModes\GameMode.cs" />
-    <Compile Include="GameModes\GameModeInfo.cs" />
     <Compile Include="GameModes\GameModeManager.cs" />
     <Compile Include="GameModes\GameMode_Definitions.cs" />
     <Compile Include="GameModes\IGameModeComponent.cs" />
@@ -230,6 +228,10 @@
     <ProjectReference Include="..\Pokemon3D.DataModel\Pokemon3D.DataModel.csproj">
       <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
       <Name>Pokemon3D.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Pokemon3D.GameModes\Pokemon3D.GameModes.csproj">
+      <Project>{54de5a5d-f265-4359-add6-f5b6e0ca6eaa}</Project>
+      <Name>Pokemon3D.GameModes</Name>
     </ProjectReference>
     <ProjectReference Include="..\Pokemon3D.Rendering\Pokemon3D.Rendering.csproj">
       <Project>{d3c6ea8f-1a82-4885-849e-d83747cd8ebc}</Project>

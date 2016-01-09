@@ -66,6 +66,7 @@
     <Compile Include="Extensions\TextureExtensions.cs" />
     <Compile Include="Extensions\Vector2Extension.cs" />
     <Compile Include="FileSystem\FileObserver.cs" />
+    <Compile Include="FileSystem\GameModePathProvider.cs" />
     <Compile Include="FileSystem\LogPathProvider.cs" />
     <Compile Include="FileSystem\PathProvider.cs" />
     <Compile Include="FileSystem\WatchedDirectory.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Animations\WaitAnimation.cs" />
     <Compile Include="StringParser.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
