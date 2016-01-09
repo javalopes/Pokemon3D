@@ -5,7 +5,7 @@ namespace Pokemon3D.Editor.Core.Framework
     public class SingleValuedDataModelPropertyViewModel<TPropertyType> : DataModelPropertyViewModel
     {
         private TPropertyType _value;
-        private Action<TPropertyType> _updateModelValue;
+        private readonly Action<TPropertyType> _updateModelValue;
 
         public SingleValuedDataModelPropertyViewModel(TPropertyType value, Action<TPropertyType> updateModelValue)
         {

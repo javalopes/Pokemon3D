@@ -7,7 +7,7 @@ namespace Pokemon3D.Editor.Core.DataModelViewModels
     {
         private GameModeStartConfigurationModel _model;
 
-        public GameModeStartConfigrationDataViewModel(GameModeStartConfigurationModel model) : base(model, "GameModeStartConfiguration.json")
+        public GameModeStartConfigrationDataViewModel(GameModeStartConfigurationModel model) : base(model, nameof(GameModeStartConfigurationModel))
         {
             _model = model;
             AddProperty(new StringDataModelPropertyViewModel(v => _model.Map = v, _model.Map) { Caption = "Map" });

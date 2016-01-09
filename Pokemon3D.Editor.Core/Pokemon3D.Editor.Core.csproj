@@ -44,9 +44,11 @@
     <Compile Include="DataModelViewModels\GameModeStartConfigrationDataViewModel.cs" />
     <Compile Include="DataModelViewModels\MoveDataViewModel.cs" />
     <Compile Include="DetailViewModels\TextureDetailViewModel.cs" />
+    <Compile Include="Framework\BoolDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\DataModelPropertyViewModel.cs" />
     <Compile Include="Framework\DataModelViewModel.cs" />
     <Compile Include="Framework\CommandViewModel.cs" />
+    <Compile Include="Framework\EnumDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\FloatDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\IntDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\ObjectDataModelPropertyViewModel.cs" />

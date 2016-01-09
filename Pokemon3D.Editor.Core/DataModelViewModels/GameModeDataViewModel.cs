@@ -7,7 +7,7 @@ namespace Pokemon3D.Editor.Core.DataModelViewModels
     {
         private GameModeModel _model;
 
-        public GameModeDataViewModel(GameModeModel model) : base(model, "GameMode.json")
+        public GameModeDataViewModel(GameModeModel model) : base(model, nameof(GameModeModel))
         {
             _model = model;
             AddProperty(new StringDataModelPropertyViewModel(v => _model.Author = v, _model.Author) { Caption = "Author" });

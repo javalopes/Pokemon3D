@@ -105,7 +105,7 @@ namespace Pokemon3D.Editor.Core
                 var fileName = Path.GetFileName(moveFilePath);
                 movesElement.AddChild(new TreeElementViewModel(this, fileName, TreeElementType.JsonFile)
                 {
-                    DetailsViewModel = new MoveDataViewModel(MoveModel.FromFile(moveFilePath), fileName)
+                    DetailsViewModel = new MoveDataViewModel(MoveModel.FromFile(moveFilePath))
                 });
             }
 
