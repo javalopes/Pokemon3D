@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Pokemon3D.DataModel.Json.GameMode.Battle;
 using Pokemon3D.Editor.Core.Framework;
 
@@ -23,6 +25,30 @@ namespace Pokemon3D.Editor.Core.DataModelViewModels
             AddProperty(EnumDataModelPropertyViewModel.Create(e => _model.Target = e, _model.Target, "Target"));
             AddProperty(new StringDataModelPropertyViewModel(s => _model.ScriptBinding = s, _model.ScriptBinding, "ScriptBinding"));
             AddProperty(new BoolDataModelPropertyViewModel(b => _model.IsHMMove = b, _model.IsHMMove, "IsHMMove" ));
+            AddProperty(new StringListDataModelPropertyViewModel(OnAddType, i => { }, UpdateTypeModelElement, _model.Types, "Types"));
+            AddProperty(new StringListDataModelPropertyViewModel(OnAddTag, i => { }, UpdateTagsModelElement, _model.Tags, "Tags"));
+        }
+
+        private void UpdateTagsModelElement(string tag, int index)
+        {
+            _model.Tags[index] = tag;
+        }
+
+        private void UpdateTypeModelElement(string type, int index)
+        {
+            _model.Types[index] = type;
+        }
+
+        private PrimitiveValueBinder<string> OnAddTag()
+        {
+            _model.Types = _model.Tags.Concat(new[] { "" }).ToArray();
+            return new PrimitiveValueBinder<string>(UpdateTagsModelElement, _model.Tags.Length - 1);
+        }
+
+        private PrimitiveValueBinder<string> OnAddType()
+        {
+            _model.Types = _model.Types.Concat(new[] {""}).ToArray();
+            return new PrimitiveValueBinder<string>(UpdateTypeModelElement, _model.Types.Length - 1);
         }
     }
 }

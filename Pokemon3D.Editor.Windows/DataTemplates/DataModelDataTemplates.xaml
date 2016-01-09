@@ -13,10 +13,11 @@
 
             <TextBlock Text="{Binding Name}" Margin="5" />
 
-            <ItemsControl Grid.IsSharedSizeScope="True"
-                          Grid.Row="1"
-                          Margin="5" 
-                          ItemsSource="{Binding Properties}" />
+            <ScrollViewer Grid.Row="1" CanContentScroll="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl Grid.IsSharedSizeScope="True"
+                              Margin="5" 
+                              ItemsSource="{Binding Properties}" />
+            </ScrollViewer>
         </Grid>
     </DataTemplate>
 
@@ -88,6 +89,40 @@
         <Expander IsExpanded="False" Header="{Binding Caption}">
             <ContentControl Content="{Binding Value}" />
         </Expander>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewModels:StringListDataModelPropertyViewModel}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="DataModelPropertyLabels" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Content="{Binding Caption}" Grid.Column="0" Margin="2"/>
+
+            <StackPanel Grid.Column="1" Orientation="Vertical">
+                <ItemsControl Margin="2" ItemsSource="{Binding Values}" AlternationCount="1000">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" Margin="2" />
+                                <Button Grid.Column="1" 
+                                        Content="-" 
+                                        Padding="10,2" 
+                                        Margin="2"
+                                        Command="{Binding Path=DataContext.RemoveElementAtCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=(ItemsControl.AlternationIndex)}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Content="+" Padding="30,2" Command="{Binding AddElementCommand}" Margin="2" HorizontalAlignment="Left"/>
+            </StackPanel>
+        </Grid>
     </DataTemplate>
 
 </ResourceDictionary>

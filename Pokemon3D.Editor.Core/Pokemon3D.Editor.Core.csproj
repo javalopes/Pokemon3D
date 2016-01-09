@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ApplicationViewModel.cs" />
     <Compile Include="DataModelViewModels\GameModeStartConfigrationDataViewModel.cs" />
+    <Compile Include="DataModelViewModels\MapDataViewModel.cs" />
     <Compile Include="DataModelViewModels\MoveDataViewModel.cs" />
     <Compile Include="DetailViewModels\TextureDetailViewModel.cs" />
     <Compile Include="Framework\BoolDataModelPropertyViewModel.cs" />
@@ -51,9 +52,11 @@
     <Compile Include="Framework\EnumDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\FloatDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\IntDataModelPropertyViewModel.cs" />
+    <Compile Include="Framework\MultipleValuedDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\ObjectDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\SingleValuedDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\StringDataModelPropertyViewModel.cs" />
+    <Compile Include="Framework\StringListDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\TreeElementViewModel.cs" />
     <Compile Include="Framework\ViewModel.cs" />
     <Compile Include="DataModelViewModels\GameModeDataViewModel.cs" />

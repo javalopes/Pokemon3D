@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Pokemon3D.DataModel.Json.GameMode.Battle;
+using Pokemon3D.DataModel.Json.GameMode.Map;
 
 namespace Pokemon3D.Editor.Core
 {
@@ -124,7 +125,10 @@ namespace Pokemon3D.Editor.Core
             var mapPath = Path.Combine(selectedPath, "Maps");
             foreach (var file in GetFilesOfDirectory(mapPath))
             {
-                mapsElement.AddChild(new TreeElementViewModel(this, Path.GetFileName(file)));
+                mapsElement.AddChild(new TreeElementViewModel(this, Path.GetFileName(file))
+                {
+                    DetailsViewModel = new MapDataViewModel(MapModel.FromFile(file))
+                });
             }
         }
 
