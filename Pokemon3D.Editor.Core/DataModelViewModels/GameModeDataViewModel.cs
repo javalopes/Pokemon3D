@@ -10,12 +10,12 @@ namespace Pokemon3D.Editor.Core.DataModelViewModels
         public GameModeDataViewModel(GameModeModel model) : base(model, nameof(GameModeModel))
         {
             _model = model;
-            AddProperty(new StringDataModelPropertyViewModel(v => _model.Author = v, _model.Author, "Author"));
-            AddProperty(new StringDataModelPropertyViewModel(v => _model.Name = v, _model.Name, "Name"));
-            AddProperty(new StringDataModelPropertyViewModel(v => _model.Description = v, _model.Description,"Description"));
-            AddProperty(new StringDataModelPropertyViewModel(v => _model.Version = v, _model.Version, "Version"));
+            AddProperty(new StringDataModelPropertyViewModel(v => _model.Author = v, _model.Author, nameof(_model.Author)));
+            AddProperty(new StringDataModelPropertyViewModel(v => _model.Name = v, _model.Name, nameof(_model.Name)));
+            AddProperty(new StringDataModelPropertyViewModel(v => _model.Description = v, _model.Description, nameof(_model.Description)));
+            AddProperty(new StringDataModelPropertyViewModel(v => _model.Version = v, _model.Version, nameof(_model.Version)));
             AddProperty(new ObjectDataModelPropertyViewModel(d => SetDataViewModelProperty(ref _model.StartConfiguration, d), 
-                                                                  new GameModeStartConfigrationDataViewModel(_model.StartConfiguration),"StartConfiguration"));
+                                                                  new GameModeStartConfigrationDataViewModel(_model.StartConfiguration),nameof(_model.StartConfiguration)));
         }
     }
 }

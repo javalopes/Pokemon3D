@@ -13,20 +13,20 @@ namespace Pokemon3D.Editor.Core.DataModelViewModels
         public MoveDataViewModel(MoveModel model) : base(model, nameof(MoveModel))
         {
             _model = model;
-            AddProperty(new StringDataModelPropertyViewModel(s => _model.Id = s, _model.Id, "Id" ));
-            AddProperty(new StringDataModelPropertyViewModel(s => _model.Name = s, _model.Name, "Name" ));
-            AddProperty(new StringDataModelPropertyViewModel(s => _model.Description = s, _model.Description, "Description" ));
-            AddProperty(EnumDataModelPropertyViewModel.Create(e => _model.MoveCategory = e, _model.MoveCategory, "MoveCategory"));
-            AddProperty(new IntDataModelPropertyViewModel(s => _model.Power = s, _model.Power, "Power"));
-            AddProperty(new IntDataModelPropertyViewModel(s => _model.Accuracy = s, _model.Accuracy, "Accuracy" ));
-            AddProperty(new IntDataModelPropertyViewModel(s => _model.PP = s, _model.PP, "PP" ));
-            AddProperty(new IntDataModelPropertyViewModel(s => _model.Priority = s, _model.Priority, "Priority" ));
-            AddProperty(new IntDataModelPropertyViewModel(s => _model.TimesToAttack = s, _model.TimesToAttack, "TimesToAttack" ));
-            AddProperty(EnumDataModelPropertyViewModel.Create(e => _model.Target = e, _model.Target, "Target"));
-            AddProperty(new StringDataModelPropertyViewModel(s => _model.ScriptBinding = s, _model.ScriptBinding, "ScriptBinding"));
-            AddProperty(new BoolDataModelPropertyViewModel(b => _model.IsHMMove = b, _model.IsHMMove, "IsHMMove" ));
-            AddProperty(new StringListDataModelPropertyViewModel(OnAddType, i => { }, UpdateTypeModelElement, _model.Types, "Types"));
-            AddProperty(new StringListDataModelPropertyViewModel(OnAddTag, i => { }, UpdateTagsModelElement, _model.Tags, "Tags"));
+            AddProperty(new StringDataModelPropertyViewModel(s => _model.Id = s, _model.Id, nameof(_model.Id) ));
+            AddProperty(new StringDataModelPropertyViewModel(s => _model.Name = s, _model.Name, nameof(_model.Name)));
+            AddProperty(new StringListDataModelPropertyViewModel(OnAddType, i => { }, UpdateTypeModelElement, _model.Types, nameof(_model.Types)));
+            AddProperty(new StringDataModelPropertyViewModel(s => _model.Description = s, _model.Description, nameof(_model.Description)));
+            AddProperty(EnumDataModelPropertyViewModel.Create(e => _model.MoveCategory = e, _model.MoveCategory, nameof(_model.MoveCategory)));
+            AddProperty(new IntDataModelPropertyViewModel(s => _model.Power = s, _model.Power, nameof(_model.Power)));
+            AddProperty(new IntDataModelPropertyViewModel(s => _model.Accuracy = s, _model.Accuracy, nameof(_model.Accuracy)));
+            AddProperty(new IntDataModelPropertyViewModel(s => _model.PP = s, _model.PP, nameof(_model.PP)));
+            AddProperty(new IntDataModelPropertyViewModel(s => _model.Priority = s, _model.Priority, nameof(_model.Priority)));
+            AddProperty(new IntDataModelPropertyViewModel(s => _model.TimesToAttack = s, _model.TimesToAttack, nameof(_model.TimesToAttack)));
+            AddProperty(EnumDataModelPropertyViewModel.Create(e => _model.Target = e, _model.Target, nameof(_model.Target)));
+            AddProperty(new StringDataModelPropertyViewModel(s => _model.ScriptBinding = s, _model.ScriptBinding, nameof(_model.ScriptBinding)));
+            AddProperty(new BoolDataModelPropertyViewModel(b => _model.IsHMMove = b, _model.IsHMMove, nameof(_model.IsHMMove)));
+            AddProperty(new StringListDataModelPropertyViewModel(OnAddTag, i => { }, UpdateTagsModelElement, _model.Tags, nameof(_model.Tags)));
         }
 
         private void UpdateTagsModelElement(string tag, int index)

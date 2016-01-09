@@ -43,4 +43,11 @@ namespace Pokemon3D.Editor.Core.Framework
         {
         }
     }
+
+    public class ObjectListDataModelPropertyViewModel : MultipleValuedDataModelPropertyViewModel<DataModelViewModel>
+    {
+        public ObjectListDataModelPropertyViewModel(Func<DataModelViewModel> appendValue, Action<int> elementRemovedAt, IEnumerable<DataModelViewModel> values, string caption) : base(appendValue, elementRemovedAt, values, caption)
+        {
+        }
+    }
 }
