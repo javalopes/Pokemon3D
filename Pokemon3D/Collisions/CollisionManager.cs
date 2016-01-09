@@ -98,9 +98,6 @@ namespace Pokemon3D.Collisions
                     case ColliderType.BoundingBox:
                         DrawBoundingBox(observer, collider);
                         break;
-                    case ColliderType.BoundingSphere:
-                        //todo
-                        break;
                 }
             }
         }
