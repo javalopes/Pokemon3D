@@ -1,4 +1,4 @@
-﻿using Pokemon3D.DataModel.Json;
+﻿using Pokemon3D.DataModel;
 using Pokemon3D.GameModes;
 using System;
 using System.Collections.Generic;

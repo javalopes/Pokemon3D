@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Pokemon3D.DataModel.Json.GameCore;
-using Pokemon3D.DataModel.Json.GameMode.Map;
+using Pokemon3D.DataModel.GameCore;
+using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;

@@ -1,4 +1,4 @@
-﻿using Pokemon3D.DataModel.Json.GameMode;
+﻿using Pokemon3D.DataModel.GameMode;
 using Pokemon3D.Editor.Core.DataModelViewModels;
 using Pokemon3D.Editor.Core.DetailViewModels;
 using Pokemon3D.Editor.Core.Framework;
@@ -6,8 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Pokemon3D.DataModel.Json.GameMode.Battle;
-using Pokemon3D.DataModel.Json.GameMode.Map;
+using Pokemon3D.DataModel.GameMode.Battle;
+using Pokemon3D.DataModel.GameMode.Map;
 
 namespace Pokemon3D.Editor.Core
 {

@@ -1,4 +1,4 @@
-﻿using Pokemon3D.DataModel.Json.GameMode.Pokemon;
+﻿using Pokemon3D.DataModel.GameMode.Pokemon;
 using static System.Math;
 
 namespace Pokemon3D.GameModes.Pokemon

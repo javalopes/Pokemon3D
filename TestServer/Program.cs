@@ -1,4 +1,4 @@
-﻿using Pokemon3D.DataModel.Json.Requests;
+﻿using Pokemon3D.DataModel.Requests;
 using Pokemon3D.Server;
 using System;
 using System.IO;

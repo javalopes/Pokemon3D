@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Common.Extensions;
-using Pokemon3D.DataModel.Json;
-using Pokemon3D.DataModel.Json.GameMode.Map.Entities;
+using Pokemon3D.DataModel;
+using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes.Maps.EntityComponents;
 using Pokemon3D.Rendering;

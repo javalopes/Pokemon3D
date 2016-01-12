@@ -1,5 +1,5 @@
-﻿using Pokemon3D.DataModel.Json;
-using Pokemon3D.DataModel.Json.i18n;
+﻿using Pokemon3D.DataModel;
+using Pokemon3D.DataModel.i18n;
 using Pokemon3D.UI.Localization;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace Pokemon3D.GameModes.Resources
                     {
                         sectionModels.AddRange(DataModel<SectionModel[]>.FromFile(file));
                     }
-                    catch (JsonDataLoadException)
+                    catch (DataLoadException)
                     {
                         // todo: log exception
                     }

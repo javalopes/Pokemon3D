@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.IO;
-using Pokemon3D.DataModel.Json.Requests;
+using Pokemon3D.DataModel;
+using Pokemon3D.DataModel.Requests;
 
 namespace Pokemon3D.Server
 {
@@ -38,7 +39,7 @@ namespace Pokemon3D.Server
                 string returnStr = "[";
                 for (int i = 0; i < dataModels.Length; i++)
                 {
-                    returnStr += dataModels[i];
+                    returnStr += dataModels[i].ToString(DataType.Json);
                     if (i < dataModels.Length - 1)
                     {
                         returnStr += ",";
@@ -56,7 +57,7 @@ namespace Pokemon3D.Server
                     FileName = requestPath,
                     FileContent = fileContent
                 };
-                string returnStr = "[" + dataModel.ToString() + "]";
+                string returnStr = "[" + dataModel.ToString(DataType.Json) + "]";
                 return Encoding.UTF8.GetBytes(returnStr);
             }
 

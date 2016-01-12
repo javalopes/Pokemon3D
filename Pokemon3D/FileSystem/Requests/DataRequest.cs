@@ -1,6 +1,6 @@
 ﻿using Pokemon3D.Common.Diagnostics;
-using Pokemon3D.DataModel.Json;
-using Pokemon3D.DataModel.Json.Requests;
+using Pokemon3D.DataModel;
+using Pokemon3D.DataModel.Requests;
 using Pokemon3D.GameModes;
 using System;
 using System.Collections.Generic;
@@ -143,7 +143,7 @@ namespace Pokemon3D.FileSystem.Requests
                 ResultData = DataModel<FileContentModel[]>.FromString(reader.ReadToEnd());
                 Status = DataRequestStatus.Complete;
             }
-            catch (JsonDataLoadException ex)
+            catch (DataLoadException ex)
             {
                 RequestException = new DataRequestException(this, DataRequestErrorType.JsonDataError, ex);
                 Status = DataRequestStatus.Error;

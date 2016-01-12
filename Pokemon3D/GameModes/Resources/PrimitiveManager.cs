@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.DataModel.Json.GameMode.Definitions;
+using Pokemon3D.DataModel.GameMode.Definitions;
 using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.Rendering.Data;
 using System;

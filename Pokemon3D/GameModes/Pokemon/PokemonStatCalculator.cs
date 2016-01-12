@@ -1,4 +1,4 @@
-﻿using Pokemon3D.DataModel.Json.Pokemon;
+﻿using Pokemon3D.DataModel.Pokemon;
 using System.Linq;
 using static System.Math;
 

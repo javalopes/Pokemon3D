@@ -1,5 +1,5 @@
 ﻿using Pokemon3D.Common.Localization;
-using Pokemon3D.DataModel.Json.i18n;
+using Pokemon3D.DataModel.i18n;
 using System;
 using System.Collections.Generic;
 

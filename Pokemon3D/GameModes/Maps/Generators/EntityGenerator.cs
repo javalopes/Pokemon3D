@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Pokemon3D.DataModel.Json.GameMode.Map.Entities;
+using Pokemon3D.DataModel.GameMode.Map.Entities;
 using System.Collections.Generic;
 
 namespace Pokemon3D.GameModes.Maps.Generators

@@ -1,4 +1,4 @@
-﻿using Pokemon3D.DataModel.Json.GameMode.Battle;
+﻿using Pokemon3D.DataModel.GameMode.Battle;
 using Pokemon3D.FileSystem.Requests;
 using System.Linq;
 

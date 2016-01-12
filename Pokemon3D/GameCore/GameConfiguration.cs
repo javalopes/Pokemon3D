@@ -1,7 +1,7 @@
 ﻿using Pokemon3D.Common.Diagnostics;
 using Pokemon3D.Common.FileSystem;
-using Pokemon3D.DataModel.Json;
-using Pokemon3D.DataModel.Json.GameCore;
+using Pokemon3D.DataModel;
+using Pokemon3D.DataModel.GameCore;
 using Pokemon3D.FileSystem;
 using System;
 using System.IO;
@@ -28,7 +28,7 @@ namespace Pokemon3D.GameCore
                 {
                     _dataModel = DataModel<ConfigurationModel>.FromFile(StaticPathProvider.ConfigFile);
                 }
-                catch (JsonDataLoadException)
+                catch (DataLoadException)
                 {
                     GameLogger.Instance.Log(MessageType.Error, "Error trying to load the configuration file of the game. Resetting file.");
 
@@ -74,7 +74,7 @@ namespace Pokemon3D.GameCore
                 _dataModel = DataModel<ConfigurationModel>.FromFile(StaticPathProvider.ConfigFile);
                 ConfigFileLoaded?.Invoke(this, EventArgs.Empty);
             }
-            catch (JsonDataLoadException)
+            catch (DataLoadException)
             {
                 GameLogger.Instance.Log(MessageType.Error, "Error trying to load the configuration file of the game.");
             }
@@ -92,7 +92,7 @@ namespace Pokemon3D.GameCore
         public void Save()
         {
             GameLogger.Instance.Log(MessageType.Message, "Saving configuration file.");
-            _dataModel.ToFile(StaticPathProvider.ConfigFile);
+            _dataModel.ToFile(StaticPathProvider.ConfigFile, DataType.Json);
         }
     }
 }

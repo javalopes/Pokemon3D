@@ -1,4 +1,4 @@
-﻿using Pokemon3D.DataModel.Json.GameMode.Map.Entities;
+﻿using Pokemon3D.DataModel.GameMode.Map.Entities;
 
 namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 {

@@ -1,5 +1,5 @@
 ﻿using Pokemon3D.Common;
-using Pokemon3D.DataModel.Json.GameMode.Map.Entities;
+using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.GameModes.Maps.EntityComponents.Components;
 
 namespace Pokemon3D.GameModes.Maps.EntityComponents

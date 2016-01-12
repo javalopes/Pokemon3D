@@ -1,6 +1,6 @@
 ﻿using Pokemon3D.Common.Diagnostics;
-using Pokemon3D.DataModel.Json;
-using Pokemon3D.DataModel.Json.i18n;
+using Pokemon3D.DataModel;
+using Pokemon3D.DataModel.i18n;
 using Pokemon3D.FileSystem;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ namespace Pokemon3D.UI.Localization
                     {
                         sectionModels.AddRange(DataModel<SectionModel[]>.FromFile(file));
                     }
-                    catch (JsonDataLoadException)
+                    catch (DataLoadException)
                     {
                         GameLogger.Instance.Log(MessageType.Error, "Error trying to load internationalization file (" + file + ").");
                     }

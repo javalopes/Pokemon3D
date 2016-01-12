@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Pokemon3D.DataModel.Json.GameMode.Battle;
+using Pokemon3D.DataModel.GameMode.Battle;
 using Pokemon3D.Editor.Core.Framework;
 
 namespace Pokemon3D.Editor.Core.DataModelViewModels

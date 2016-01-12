@@ -1,5 +1,5 @@
-﻿using Pokemon3D.DataModel.Json.GameMode.Pokemon;
-using Pokemon3D.DataModel.Json.Savegame.Pokemon;
+﻿using Pokemon3D.DataModel.GameMode.Pokemon;
+using Pokemon3D.DataModel.Savegame.Pokemon;
 using Pokemon3D.GameModes;
 using Pokemon3D.GameModes.Pokemon;
 

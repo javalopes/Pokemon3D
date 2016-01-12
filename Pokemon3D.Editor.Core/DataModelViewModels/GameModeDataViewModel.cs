@@ -1,4 +1,4 @@
-﻿using Pokemon3D.DataModel.Json.GameMode;
+﻿using Pokemon3D.DataModel.GameMode;
 using Pokemon3D.Editor.Core.Framework;
 
 namespace Pokemon3D.Editor.Core.DataModelViewModels

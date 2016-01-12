@@ -1,4 +1,4 @@
-﻿using Pokemon3D.DataModel.Json.GameMode;
+﻿using Pokemon3D.DataModel.GameMode;
 using Pokemon3D.Common.FileSystem;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Pokemon3D.DataModel.Json;
+using Pokemon3D.DataModel;
 using Pokemon3D.Common.Diagnostics;
 
 namespace Pokemon3D.GameModes
@@ -33,7 +33,7 @@ namespace Pokemon3D.GameModes
                     _gameModeModel = DataModel<GameModeModel>.FromFile(gameModeFile);
                     IsValid = true;
                 }
-                catch (JsonDataLoadException)
+                catch (DataLoadException)
                 {
                     // todo: somehow log the exception, so that the information of the inner exception is preserved.
                     GameLogger.Instance.Log(MessageType.Error, "An error occurred trying to load the GameMode config file \"" + gameModeFile + "\".");
