@@ -6,7 +6,7 @@
 namespace Pokemon3D.DataModel.Json.GameJolt
 {
     [DataContract]
-    public abstract class CallResponseModel : DataModel<CallResponseModel>
+    public class CallResponseModel : DataModel<CallResponseModel>
     {
         /// <summary>
         /// Used by all API endpoints.
@@ -157,5 +157,15 @@ namespace Pokemon3D.DataModel.Json.GameJolt
         /// </summary>
         [DataMember(Name = "users")]
         public UserModel[] Users;
+
+        public override object Clone()
+        {
+            var clone = (CallResponseModel)MemberwiseClone();
+            clone.Keys = (KeyModel[])Keys.Clone();
+            clone.Tables = (ScoreTableModel[])Tables.Clone();
+            clone.Trophies = (TrophyModel[])Trophies.Clone();
+            clone.Users = (UserModel[])Users.Clone();
+            return clone;
+        }
     }
 }
