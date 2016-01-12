@@ -47,7 +47,14 @@
     <Compile Include="API Calls\Storage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseFormat.cs" />
+    <Compile Include="ResponseManager.cs" />
     <Compile Include="UrlEncoder.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pokemon3D.DataModel\Pokemon3D.DataModel.csproj">
+      <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
+      <Name>Pokemon3D.DataModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

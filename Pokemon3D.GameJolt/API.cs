@@ -61,7 +61,7 @@ namespace Pokemon3D.GameJolt
 
             foreach (APICall call in calls)
             {
-                string callUrl = call.GetUrl(this);
+                string callUrl = call.CreateUrl(this);
                 string callSignature = CreateSignature(callUrl);
                 callUrl += "&signature=" + callSignature;
 

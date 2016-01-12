@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Pokemon3D.GameJolt
 {
@@ -32,7 +30,10 @@ namespace Pokemon3D.GameJolt
         private const string FORMAT_URL = "/{0}/?game_id={1}";
         private const string FORMAT_PARAMETER = "&{0}={1}";
 
-        internal string GetUrl(API api)
+        /// <summary>
+        /// Produces the url that corresponds to this API call.
+        /// </summary>
+        internal string CreateUrl(API api)
         {
             EndpointUrl = EndpointUrl.Trim('/');
 
