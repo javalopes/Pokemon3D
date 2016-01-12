@@ -53,6 +53,14 @@
     <Compile Include="Json\ColorModel.cs" />
     <Compile Include="Json\GameCore\ConfigurationModel.cs" />
     <Compile Include="Json\GameCore\ShadowQuality.cs" />
+    <Compile Include="Json\GameJolt\BatchResponseModel.cs" />
+    <Compile Include="Json\GameJolt\CallResponseModel.cs" />
+    <Compile Include="Json\GameJolt\KeyModel.cs" />
+    <Compile Include="Json\GameJolt\ResponseModel.cs" />
+    <Compile Include="Json\GameJolt\ScoreTableModel.cs" />
+    <Compile Include="Json\GameJolt\TrophyDifficulty.cs" />
+    <Compile Include="Json\GameJolt\TrophyModel.cs" />
+    <Compile Include="Json\GameJolt\UserModel.cs" />
     <Compile Include="Json\GameMode\Battle\MoveCategory.cs" />
     <Compile Include="Json\GameMode\Battle\MoveModel.cs" />
     <Compile Include="Json\GameMode\Battle\TargetType.cs" />
