@@ -1,4 +1,4 @@
-using Pokemon3D.DataModel.Json;
+using Pokemon3D.DataModel;
 using System;
 
 namespace Pokemon3D.Editor.Core.Framework
