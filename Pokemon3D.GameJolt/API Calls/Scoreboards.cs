@@ -26,7 +26,7 @@ namespace Pokemon3D.GameJolt
                 /// <param name="scoreCount">The amount of scores to return from the table. Maximum is 100.</param>
                 public static APICall Fetch(string tableId, int scoreCount)
                 {
-                    // Game Jolt API specification: max amount of score to be returned is 100.
+                    // Game Jolt API specification: max amount of scores to be returned is 100.
                     if (scoreCount > 100)
                         scoreCount = 100;
 
