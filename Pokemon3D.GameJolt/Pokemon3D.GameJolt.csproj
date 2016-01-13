@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API Calls\Sessions.cs" />
     <Compile Include="API Calls\Trophies.cs" />
     <Compile Include="API Calls\Users.cs" />
     <Compile Include="API.cs" />
