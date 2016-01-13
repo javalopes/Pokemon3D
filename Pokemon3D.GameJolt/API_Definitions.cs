@@ -17,5 +17,10 @@ namespace Pokemon3D.GameJolt
         {
             return format.ToString().ToLowerInvariant();
         }
+
+        private static string StorageUpdateOperationToString(StorageUpdateOperation operation)
+        {
+            return operation.ToString().ToLowerInvariant();
+        }
     }
 }
