@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ApplicationViewModel.cs" />
     <Compile Include="DataModelViewModels\BattlemapDataViewModel.cs" />
+    <Compile Include="DataModelViewModels\EntityFieldPositionDataViewModel.cs" />
     <Compile Include="DataModelViewModels\GameModeStartConfigrationDataViewModel.cs" />
     <Compile Include="DataModelViewModels\MapDataViewModel.cs" />
     <Compile Include="DataModelViewModels\MoveDataViewModel.cs" />

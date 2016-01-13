@@ -1,3 +1,4 @@
+using Pokemon3D.DataModel.Json;
 using System;
 
 namespace Pokemon3D.Editor.Core.Framework
@@ -19,6 +20,33 @@ namespace Pokemon3D.Editor.Core.Framework
         {
             get { return _value; }
             set { SetProperty(ref _value, value, o => _updateModelValue(value)); }
+        }
+    }
+
+    public class Vector3DataModelPropertyViewModel: SingleValuedDataModelPropertyViewModel<Vector3Model>
+    {
+        public Vector3DataModelPropertyViewModel(Vector3Model value, string caption) : 
+            base(u => { }, value, caption)
+        {
+
+        }
+
+        public float X
+        {
+            get { return Value.X; }
+            set { SetProperty(ref Value.X, value); }
+        }
+
+        public float Y
+        {
+            get { return Value.Y; }
+            set { SetProperty(ref Value.Y, value); }
+        }
+
+        public float Z
+        {
+            get { return Value.Z; }
+            set { SetProperty(ref Value.Z, value); }
         }
     }
 }
