@@ -158,13 +158,31 @@ namespace Pokemon3D.DataModel.GameJolt
         [DataMember(Name = "users")]
         public UserModel[] Users;
 
+        #region Friends
+
+        /// <summary>
+        /// The friend list for vairous friend calls.
+        /// </summary>
+        [DataMember(Name = "friends")]
+        public FriendModel[] Friends;
+
+        /// <summary>
+        /// The friend request list for various friend calls.
+        /// </summary>
+        [DataMember(Name = "requests")]
+        public FriendRequestModel[] FriendRequests;
+
+        #endregion
+
         public override object Clone()
         {
             var clone = (CallResponseModel)MemberwiseClone();
-            clone.Keys = (KeyModel[])Keys.Clone();
-            clone.Tables = (ScoreTableModel[])Tables.Clone();
-            clone.Trophies = (TrophyModel[])Trophies.Clone();
-            clone.Users = (UserModel[])Users.Clone();
+            clone.Keys = (KeyModel[])Keys?.Clone();
+            clone.Tables = (ScoreTableModel[])Tables?.Clone();
+            clone.Trophies = (TrophyModel[])Trophies?.Clone();
+            clone.Users = (UserModel[])Users?.Clone();
+            clone.Friends = (FriendModel[])Friends?.Clone();
+            clone.FriendRequests = (FriendRequestModel[])FriendRequests?.Clone();
             return clone;
         }
     }
