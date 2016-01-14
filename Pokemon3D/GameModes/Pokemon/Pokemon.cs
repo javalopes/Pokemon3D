@@ -142,9 +142,40 @@ namespace Pokemon3D.GameModes.Pokemon
             }
         }
 
+        public LevelUpMoveModel[] LevelMoves
+        {
+            get
+            {
+                return GetMovePoolModel(ActiveFormModel).LevelMoves;
+            }
+        }
+
+        public string[] LearnableMoves
+        {
+            get
+            {
+                return GetMovePoolModel(ActiveFormModel).LearnableMoves;
+            }
+        }
+        
         private PokemonFormModel ActiveFormModel
         {
             get { return _dataModel.Forms.Single(x => x.Id == _activeForm); }
+        }
+
+        /// <summary>
+        /// Returns the model that is responsible for the move pools for a form model.
+        /// </summary>
+        private PokemonFormModel GetMovePoolModel(PokemonFormModel formModel)
+        {
+            if (!string.IsNullOrWhiteSpace(formModel.ShareMovesWithForm) && _dataModel.Forms.Any(f => f.Id == formModel.ShareMovesWithForm))
+            {
+                return _dataModel.Forms.Single(f => f.Id == formModel.ShareMovesWithForm);
+            }
+            else
+            {
+                return formModel;
+            }
         }
 
         #endregion
@@ -208,7 +239,7 @@ namespace Pokemon3D.GameModes.Pokemon
         /// <returns>Returns true if the Pokémon learned a move.</returns>
         private bool LearnMove(int level)
         {
-            var levelMoves = ActiveFormModel.LevelMoves.Where(x => x.Level == level);
+            var levelMoves = LevelMoves.Where(x => x.Level == level);
             foreach (var levelMove in levelMoves)
             {
                 if (levelMove != null)

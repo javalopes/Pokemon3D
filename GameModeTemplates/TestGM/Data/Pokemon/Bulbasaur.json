@@ -107,7 +107,7 @@
                     "Id" : "Seed Bomb"
                 }
             ],
-            "MachineMoves" : [
+            "LearnableMoves" : [
                 "Toxic",
                 "Venoshock",
                 "Hidden Power",
@@ -132,15 +132,12 @@
                 "Swagger",
                 "Sleep Talk",
                 "Substitute",
-                "Rock SmashXY",
-                "Secret PowerORAS",
+                "Rock Smash",
+                "Secret Power",
                 "Nature Power",
                 "Confide",
                 "Cut",
                 "Strength",
-                "Rock Smash"
-            ],
-            "EggMoves" : [
                 "Amnesia",
                 "Charm",
                 "Curse",
@@ -155,9 +152,7 @@
                 "Petal Dance",
                 "Power Whip",
                 "Skull Bash",
-                "Sludge"
-            ],
-            "TutorMoves" : [
+                "Sludge",
                 "Bind",
                 "Giga Drain",
                 "Grass Pledge",

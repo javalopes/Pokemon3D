@@ -39,18 +39,18 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
         [DataMember(Order = 9)]
         public string[] Abilities;
 
+        /// <summary>
+        /// If this member is set, the move pools are taken from the referenced form instead of this one.
+        /// </summary>
         [DataMember(Order = 10)]
-        public LevelUpMoveModel[] LevelMoves;
+        public string ShareMovesWithForm;
 
         [DataMember(Order = 11)]
-        public string[] MachineMoves;
+        public LevelUpMoveModel[] LevelMoves;
 
         [DataMember(Order = 12)]
-        public string[] EggMoves;
-
-        [DataMember(Order = 13)]
-        public string[] TutorMoves;
-
+        public string[] LearnableMoves;
+        
         public override object Clone()
         {
             var clone = (PokemonFormModel)MemberwiseClone();
@@ -61,9 +61,7 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
             clone.OverworldTexture = OverworldTexture.CloneModel();
             clone.Abilities = (string[])Abilities.Clone();
             clone.LevelMoves = (LevelUpMoveModel[])LevelMoves.Clone();
-            clone.MachineMoves = (string[])MachineMoves.Clone();
-            clone.EggMoves = (string[])EggMoves.Clone();
-            clone.TutorMoves = (string[])TutorMoves.Clone();
+            clone.LearnableMoves = (string[])LearnableMoves.Clone();
             return clone;
         }
     }
