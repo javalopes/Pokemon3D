@@ -22,33 +22,36 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
         public TextureSourceModel MenuTexture;
 
         [DataMember(Order = 4)]
-        public TextureSourceModel SpriteTexture;
+        public TextureSourceModel SpriteFrontTexture;
 
         [DataMember(Order = 5)]
-        public TextureSourceModel OverworldTexture;
+        public TextureSourceModel SpriteBackTexture;
 
         [DataMember(Order = 6)]
-        public string Type1;
+        public TextureSourceModel OverworldTexture;
 
         [DataMember(Order = 7)]
-        public string Type2;
+        public string Type1;
 
         [DataMember(Order = 8)]
-        public int CatchRate;
+        public string Type2;
 
         [DataMember(Order = 9)]
+        public int CatchRate;
+
+        [DataMember(Order = 10)]
         public string[] Abilities;
 
         /// <summary>
         /// If this member is set, the move pools are taken from the referenced form instead of this one.
         /// </summary>
-        [DataMember(Order = 10)]
+        [DataMember(Order = 11)]
         public string ShareMovesWithForm;
 
-        [DataMember(Order = 11)]
+        [DataMember(Order = 12)]
         public LevelUpMoveModel[] LevelMoves;
 
-        [DataMember(Order = 12)]
+        [DataMember(Order = 13)]
         public string[] LearnableMoves;
         
         public override object Clone()
@@ -57,7 +60,8 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
             clone.Activation = Activation.CloneModel();
             clone.BaseStats = BaseStats.CloneModel();
             clone.MenuTexture = MenuTexture.CloneModel();
-            clone.SpriteTexture = SpriteTexture.CloneModel();
+            clone.SpriteFrontTexture = SpriteFrontTexture.CloneModel();
+            clone.SpriteBackTexture = SpriteBackTexture.CloneModel();
             clone.OverworldTexture = OverworldTexture.CloneModel();
             clone.Abilities = (string[])Abilities.Clone();
             clone.LevelMoves = (LevelUpMoveModel[])LevelMoves.Clone();

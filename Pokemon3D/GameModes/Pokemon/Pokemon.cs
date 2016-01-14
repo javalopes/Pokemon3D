@@ -170,7 +170,7 @@ namespace Pokemon3D.GameModes.Pokemon
         {
             if (!string.IsNullOrWhiteSpace(formModel.ShareMovesWithForm) && _dataModel.Forms.Any(f => f.Id == formModel.ShareMovesWithForm))
             {
-                return _dataModel.Forms.Single(f => f.Id == formModel.ShareMovesWithForm);
+                return GetMovePoolModel(_dataModel.Forms.Single(f => f.Id == formModel.ShareMovesWithForm));
             }
             else
             {
