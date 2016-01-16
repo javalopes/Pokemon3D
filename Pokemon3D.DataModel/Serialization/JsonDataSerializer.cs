@@ -41,6 +41,30 @@ namespace Pokemon3D.DataModel.Serialization
             }
         }
 
+        /// <summary>
+        /// deserializes byte array to json.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public T FromByteArray(byte[] data)
+        {
+            // We create a new Json serializer of the given type and a corresponding memory stream here.
+            var serializer = new DataContractJsonSerializer(typeof(T), new DataContractJsonSerializerSettings() { SerializeReadOnlyTypes = true });
+            var memStream = new MemoryStream(data);
+            memStream.Seek(0, SeekOrigin.Begin);
+
+            try
+            {
+                return (T)serializer.ReadObject(memStream);
+            }
+            catch (Exception ex)
+            {
+                // Exception occurs while loading the object due to malformed Json.
+                // Throw exception and move up to handler class.
+                throw new DataLoadException(ex, "", typeof(T), DataType.Json);
+            }
+        }
+
         public string ToString(DataModel<T> dataModel)
         {
             // We create a new Json serializer of the given type and a corresponding memory stream here.

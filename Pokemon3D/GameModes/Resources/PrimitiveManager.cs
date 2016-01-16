@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common.DataHandling;
+using Pokemon3D.DataModel;
 using Pokemon3D.DataModel.GameMode.Definitions;
 using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.Rendering.Data;
@@ -7,14 +9,30 @@ using System.Linq;
 
 namespace Pokemon3D.GameModes.Resources
 {
-    class PrimitiveManager : InstantDataRequestModelManager<PrimitiveModel>
+    class PrimitiveManager : AsyncLoadingComponent
     {
-        public PrimitiveManager(GameMode gameMode) : base(gameMode, gameMode.PrimitivesFilePath)
-        { }
-        
+        private PrimitiveModel[] _primitives;
+        private GameMode _gameMode;
+
+        public PrimitiveManager(GameMode gameMode)
+        {
+            _gameMode = gameMode;
+        }
+
+        public override void InitialLoadData()
+        {
+            _gameMode.FileLoader.GetFileAsync(_gameMode.PrimitivesFilePath, OnPrimitiveDataReceived);
+        }
+
+        private void OnPrimitiveDataReceived(byte[] data)
+        {
+            _primitives = DataModel<PrimitiveModel[]>.FromByteArray(data);
+            LoadingCompleted = true;
+        }
+
         public GeometryData GetPrimitiveData(string id)
         {
-            PrimitiveModel primitiveModel = _modelBuffer.SingleOrDefault(x => x.Id == id);
+            PrimitiveModel primitiveModel = _primitives.SingleOrDefault(x => x.Id == id);
             if (primitiveModel != null)
             {
                 return new GeometryData

@@ -61,15 +61,13 @@
     <Compile Include="Collisions\Collider.cs" />
     <Compile Include="Collisions\ColliderType.cs" />
     <Compile Include="Collisions\CollisionManager.cs" />
+    <Compile Include="FileSystem\FileAsyncLoader.cs" />
     <Compile Include="FileSystem\Requests\DataModelRequest.cs" />
     <Compile Include="FileSystem\Requests\DataRequest.cs" />
     <Compile Include="FileSystem\Requests\DataRequestErrorType.cs" />
     <Compile Include="FileSystem\Requests\DataRequestException.cs" />
-    <Compile Include="FileSystem\Requests\DataRequestModelManager.cs" />
-    <Compile Include="FileSystem\Requests\DataRequestStatus.cs" />
     <Compile Include="FileSystem\i18nPathProvider.cs" />
     <Compile Include="FileSystem\Requests\PokemonDataRequest.cs" />
-    <Compile Include="FileSystem\Requests\InstantDataRequestModelManager.cs" />
     <Compile Include="FileSystem\StaticPathProvider.cs" />
     <Compile Include="GameCore\GameConfiguration.cs" />
     <Compile Include="GameCore\GameObject.cs" />

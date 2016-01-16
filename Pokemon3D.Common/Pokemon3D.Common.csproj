@@ -57,6 +57,7 @@
     <Compile Include="Animations\DeltaAnimation.cs" />
     <Compile Include="Animations\DiscreteAnimation.cs" />
     <Compile Include="CollisionResult.cs" />
+    <Compile Include="DataHandling\AsyncDataLoader.cs" />
     <Compile Include="Diagnostics\GameLogger.cs" />
     <Compile Include="Diagnostics\MessageType.cs" />
     <Compile Include="Extensions\BoundingBoxExtensions.cs" />

@@ -1,4 +1,5 @@
-﻿using Pokemon3D.DataModel.GameMode.Battle;
+﻿using Pokemon3D.Common.DataHandling;
+using Pokemon3D.DataModel.GameMode.Battle;
 using Pokemon3D.FileSystem.Requests;
 using System.Linq;
 
@@ -7,11 +8,19 @@ namespace Pokemon3D.GameModes.Pokemon
     /// <summary>
     /// Manages Pokémon move models.
     /// </summary>
-    class MoveManager : InstantDataRequestModelManager<MoveModel>
+    class MoveManager : AsyncLoadingComponent
     {
+        private GameMode _gameMode;
+
         public MoveManager(GameMode gameMode)
-            : base(gameMode, gameMode.MoveFilesPath, singleModelPerFile: true)
-        { }
+        {
+            _gameMode = gameMode;
+        }
+
+        public override void InitialLoadData()
+        {
+
+        }
 
         /// <summary>
         /// Returns a <see cref="MoveModel"/> by id.

@@ -1,86 +1,76 @@
-﻿using Pokemon3D.DataModel;
+﻿using Pokemon3D.Common.DataHandling;
+using Pokemon3D.DataModel;
+using Pokemon3D.DataModel.GameMode.Battle;
+using Pokemon3D.DataModel.GameMode.Definitions;
+using Pokemon3D.FileSystem;
 using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.GameModes.Maps;
 using Pokemon3D.GameModes.Pokemon;
 using Pokemon3D.GameModes.Resources;
 using Pokemon3D.Rendering.Data;
 using System;
+using System.Linq;
 
 namespace Pokemon3D.GameModes
 {
     /// <summary>
     /// Contains methods and members that control a GameMode, a collection of maps, scripts and assets.
     /// </summary>
-    partial class GameMode : IDataModelContainer, IDisposable, GameModeDataProvider
+    partial class GameMode :  IDataModelContainer, IDisposable, GameModeDataProvider
     {
+        private PrimitiveModel[] _primitiveModels;
+        private NatureModel[] _natureModels;
+        private TypeModel[] _typeModels;
+        private MoveModel[] _moveModels;
+
+        public FileLoader FileLoader { get; }
         public GameModeInfo GameModeInfo { get; }
-
         public MapManager MapManager { get; private set; }
-
         public MapFragmentManager MapFragmentManager { get; private set; }
 
-        public PrimitiveManager PrimitiveManager { get; private set; }
-        
-        public NatureManager NatureManager { get; private set; }
-
-        public TypeManager TypeManager { get; private set; }
-
         public PokemonFactory PokemonFactory { get; private set; }
-
-        public MoveManager MoveManager { get; private set; }
 
         public bool IsValid { get; private set; }
 
         /// <summary>
         /// Creates an instance of the <see cref="GameMode"/> class and loads the data model.
         /// </summary>
-        public GameMode(GameModeInfo gameModeInfo)
+        public GameMode(GameModeInfo gameModeInfo, FileLoader fileLoader)
         {
             GameModeInfo = gameModeInfo;
+            FileLoader = fileLoader;
 
             // only continue if the game mode config file loaded correctly.
             if (GameModeInfo.IsValid)
             {
-                PrimitiveManager = new PrimitiveManager(this);
                 MapManager = new MapManager(this);
                 MapFragmentManager = new MapFragmentManager(this);
-                NatureManager = new NatureManager(this);
                 PokemonFactory = new PokemonFactory(this);
-                TypeManager = new TypeManager(this);
-                MoveManager = new MoveManager(this);
             }
 
             IsValid = true;
         }
-        
-        /// <summary>
-        /// Starts to load the initial data from files like Pokémon Natures/Types etc.
-        /// </summary>
-        public void LoadInitialData()
+
+        public void PreloadAsync(Action finished)
         {
-            PrimitiveManager.Start();
-            NatureManager.Start();
-            TypeManager.Start();
-            MoveManager.Start();
+            FileLoader.GetFilesAsync(new[]
+            {
+                PrimitivesFilePath,
+                NaturesFilePath,
+                TypesFilePath,
+                MoveFilesPath
+            }, OnLoadFinished);
         }
 
-        /// <summary>
-        /// Returns if all components of this GameMode have finished loading their data.
-        /// </summary>
-        public bool FinishedLoading
+        private void OnLoadFinished(byte[][] data)
         {
-            get
-            {
-                return PrimitiveManager.Status == DataRequestStatus.Complete &&
-                    NatureManager.Status == DataRequestStatus.Complete &&
-                    TypeManager.Status == DataRequestStatus.Complete && 
-                    MoveManager.Status == DataRequestStatus.Complete;
-            }
+            
         }
 
         public GeometryData GetPrimitiveData(string primitiveName)
         {
-            return PrimitiveManager.GetPrimitiveData(primitiveName);
+            throw new NotImplementedException();
+            //return _primitiveModels.SingleOrDefault(p => p.Id == primitiveName);
         }
 
         #region Dispose

@@ -15,6 +15,11 @@ namespace Pokemon3D.DataModel.Serialization
     {
         private const string XML_SCHEMA_INSTANCE = " xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"";
 
+        public T FromByteArray(byte[] data)
+        {
+            throw new NotImplementedException();
+        }
+
         public T FromString(string data)
         {
             // We create a new Xml serializer of the given type and a corresponding memory stream here.

@@ -59,6 +59,11 @@ namespace Pokemon3D.DataModel
             return SerializerFactory.GetSerializer<T>(dataType).FromString(data);
         }
 
+        public static T FromByteArray(byte[] data)
+        {
+            return SerializerFactory.GetJsonSerializer<T>().FromByteArray(data);
+        }
+
         /// <summary>
         /// Saves the content of this data model to a file.
         /// </summary>

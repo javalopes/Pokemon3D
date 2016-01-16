@@ -29,6 +29,14 @@ namespace Pokemon3D.DataModel.Serialization
         }
 
         /// <summary>
+        /// Returns the json serializer
+        /// </summary>
+        public static DataSerializer<T> GetJsonSerializer<T>()
+        {
+            return new JsonDataSerializer<T>();
+        }
+
+        /// <summary>
         /// Returns the appropriate data serializer.
         /// </summary>
         public static DataSerializer<T> GetSerializer<T>(DataType dataType)
