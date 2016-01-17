@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.DataModel.GameCore;
 using Pokemon3D.DataModel.GameMode.Map;
-using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
 using Pokemon3D.GameModes.Maps;
@@ -11,7 +10,6 @@ using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Threading;
 
 namespace Pokemon3D.UI.Screens
@@ -65,32 +63,15 @@ namespace Pokemon3D.UI.Screens
 
             _debugSpriteFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
 
-            LoadMap();
+            _gameMode.MapManager.LoadMapAsync(_gameMode.GameModeInfo.StartMap, FinishedLoadingMapModel);
         }
 
-        private void LoadMap()
+        private void FinishedLoadingMapModel(MapModel mapModel)
         {
-            var request = _gameMode.MapManager.CreateDataRequest(_gameMode.GameModeInfo.StartMap);
-            request.Finished += FinishedLoadingMapModel;
-            request.StartThreaded();
-        }
-
-        private void FinishedLoadingMapModel(object sender, EventArgs e)
-        {
-            var request = (DataModelRequest<MapModel>)sender;
-
-            if (request.Status == DataRequestStatus.Complete)
+            _dispatcher.Invoke(() =>
             {
-                _dispatcher.Invoke(() =>
-                {
-                    _currentMap = new Map(_gameMode, request.ResultModel, _scene, Game.Resources);
-                });
-            }
-            else
-            {
-                Common.Diagnostics.GameLogger.Instance.Log(Common.Diagnostics.MessageType.Error, "Map (" + request.DataPath + ") loading failed! See next message for exception details.");
-                Common.Diagnostics.GameLogger.Instance.Log(request.RequestException);
-            }
+                _currentMap = new Map(_gameMode, mapModel, _scene, Game.Resources);
+            });
         }
 
         public void OnUpdate(float elapsedTime)

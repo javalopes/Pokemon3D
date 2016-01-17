@@ -1,21 +1,25 @@
-﻿using Pokemon3D.DataModel.GameMode.Map;
-using Pokemon3D.FileSystem.Requests;
+﻿using System;
+using Pokemon3D.DataModel.GameMode.Map;
 
 namespace Pokemon3D.GameModes.Maps
 {
-    class MapManager : DataRequestModelManager<MapModel>
+    class MapManager
     {
-        public MapManager(GameMode gameMode) : base(gameMode)
-        { }
+        private readonly GameMode _gameMode;
 
-        private string CreateKey(string dataPath)
+        public MapManager(GameMode gameMode)
         {
-            return _gameMode.GetMapFilePath(dataPath);
+            _gameMode = gameMode;
         }
 
-        public override DataModelRequest<MapModel> CreateDataRequest(string dataPath)
+        public void LoadMapAsync(string dataPath, Action<MapModel> mapModelLoaded)
         {
-            return base.CreateDataRequest(CreateKey(dataPath));
+            _gameMode.FileLoader.GetFileAsync(_gameMode.GetMapFilePath(dataPath), a => OnMapLoaded(a, mapModelLoaded));
+        }
+
+        private void OnMapLoaded(byte[] bytes, Action<MapModel> mapModelLoaded)
+        {
+            mapModelLoaded(DataModel.DataModel<MapModel>.FromByteArray(bytes));
         }
     }
 }

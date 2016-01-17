@@ -17,6 +17,7 @@ namespace Pokemon3D.UI.Screens
     {
         private GameMode _gameMode;
         private Stopwatch _sw;
+        private bool _loadingFinished;
 
         public void OnDraw(GameTime gameTime)
         {
@@ -27,7 +28,7 @@ namespace Pokemon3D.UI.Screens
 
         public void OnUpdate(float elapsedTime)
         {
-            if (_gameMode.FinishedLoading)
+            if (_loadingFinished)
             {
                 _sw.Stop();
                 Common.Diagnostics.GameLogger.Instance.Log(Common.Diagnostics.MessageType.Debug, "Loading time: " + _sw.ElapsedMilliseconds);
@@ -38,12 +39,12 @@ namespace Pokemon3D.UI.Screens
         public void OnOpening(object enterInformation)
         {
             var gameModes = Game.GameModeManager.GetGameModeInfos();
-            _gameMode = Game.GameModeManager.LoadGameMode(gameModes.First());
+            _gameMode = Game.GameModeManager.CreateGameMode(gameModes.First());
             Game.Resources.SetPrimitiveProvider(_gameMode);
             Game.ActiveGameMode = _gameMode;
-            _sw = new Stopwatch();
-            _sw.Start();
-            _gameMode.LoadInitialData();
+            _loadingFinished = false;
+            _sw = Stopwatch.StartNew();
+            _gameMode.PreloadAsync(() => _loadingFinished = true);
         }
 
         public void OnClosing()

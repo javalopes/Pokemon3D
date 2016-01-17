@@ -4,41 +4,6 @@ using System.Threading;
 
 namespace Pokemon3D.Common.DataHandling
 {
-    public enum RequestState
-    {
-        Success,
-        Failed
-    }
-
-    public class DataRequestResult
-    {
-        public byte[] Data { get; }
-        public RequestState State { get; }
-
-        public DataRequestResult(byte[] data, RequestState state)
-        {
-            Data = data;
-            State = state;
-        }
-    }
-
-    internal class DataRequest
-    {
-        public string[] ResourcePath { get; }
-        public Action<DataRequestResult[]> OnEnded { get; set; }
-
-        public DataRequest(string[] resourcePath, Action<DataRequestResult[]> onEnded)
-        {
-            ResourcePath = resourcePath;
-            OnEnded = onEnded;
-        }
-
-        public void NotifyEnded(DataRequestResult[] result)
-        {
-            OnEnded(result);
-        }
-    }
-
     public abstract class AsyncDataLoader
     {
         private bool _isWorkerThreadRunning;
@@ -67,7 +32,7 @@ namespace Pokemon3D.Common.DataHandling
                     foreach(var resourcePath in request.ResourcePath)
                     {
                         var data = OnRequestData(resourcePath);
-                        list.Add(new DataRequestResult(data, RequestState.Success);
+                        list.Add(new DataRequestResult(data, RequestState.Success));
                     }
                     request.NotifyEnded(list.ToArray());
                 }

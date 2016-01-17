@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Pokemon3D.FileSystem
 {
-    public class FileLoader : AsyncDataLoader
+    public class FileLoader : AsyncDataLoader, FileProvider
     {
-        private Dictionary<string, byte[]> _fileCache;
+        private readonly Dictionary<string, byte[]> _fileCache;
 
         public FileLoader()
         {
@@ -34,12 +34,12 @@ namespace Pokemon3D.FileSystem
 
         public void GetFilesAsync(string[] filePaths, Action<byte[][]> onDataReceived)
         {
-            LoadAsync(filePaths, r => onDataReceived(r.Select(d => d.Data).ToArray());
+            LoadAsync(filePaths, r => onDataReceived(r.Select(d => d.Data).ToArray()));
         }
 
         public byte[] GetFile(string filePath)
         {
-            byte[] data;
+            byte[] data = null;
             var waitForEnded = new AutoResetEvent(false);
             LoadAsync(filePath, r =>
             {

@@ -1,21 +1,35 @@
-﻿using Pokemon3D.DataModel.GameMode.Map;
-using Pokemon3D.FileSystem.Requests;
+﻿using System;
+using System.Collections.Generic;
+using Pokemon3D.DataModel.GameMode.Map;
 
 namespace Pokemon3D.GameModes.Maps
 {
-    class MapFragmentManager : DataRequestModelManager<MapFragmentModel>
+    class MapFragmentManager
     {
-        public MapFragmentManager(GameMode gameMode) : base(gameMode)
-        { }
+        private readonly Dictionary<string, MapFragmentModel> _fragmentModelCache;
+        private readonly GameMode _gameMode;
 
-        private string CreateKey(string dataPath)
+        public MapFragmentManager(GameMode gameMode)
         {
-            return _gameMode.GetMapFragmentFilePath(dataPath);
+            _gameMode = gameMode;
+            _fragmentModelCache = new Dictionary<string, MapFragmentModel>();
         }
 
-        public override DataModelRequest<MapFragmentModel> CreateDataRequest(string dataPath)
+        public void LoadFragmentAsync(string dataPath, Action<MapFragmentModel> fragmentLoaded)
         {
-            return base.CreateDataRequest(CreateKey(dataPath));
+            MapFragmentModel fragment;
+            if (_fragmentModelCache.TryGetValue(dataPath, out fragment))
+            {
+                fragmentLoaded(fragment);
+            }
+            _gameMode.FileLoader.GetFileAsync(_gameMode.GetMapFragmentFilePath(dataPath), a => OnFragmentLoaded(dataPath, a, fragmentLoaded));
+        }
+
+        private void OnFragmentLoaded(string dataPath, byte[] data, Action<MapFragmentModel> fragmentLoaded)
+        {
+            var fragment = DataModel.DataModel<MapFragmentModel>.FromByteArray(data); 
+            _fragmentModelCache.Add(dataPath, fragment);
+            fragmentLoaded(fragment);
         }
     }
 }

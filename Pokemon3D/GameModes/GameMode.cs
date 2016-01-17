@@ -1,15 +1,14 @@
-﻿using Pokemon3D.Common.DataHandling;
-using Pokemon3D.DataModel;
+﻿using Pokemon3D.DataModel;
 using Pokemon3D.DataModel.GameMode.Battle;
 using Pokemon3D.DataModel.GameMode.Definitions;
 using Pokemon3D.FileSystem;
-using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.GameModes.Maps;
 using Pokemon3D.GameModes.Pokemon;
-using Pokemon3D.GameModes.Resources;
 using Pokemon3D.Rendering.Data;
 using System;
+using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.GameModes
 {
@@ -23,19 +22,19 @@ namespace Pokemon3D.GameModes
         private TypeModel[] _typeModels;
         private MoveModel[] _moveModels;
 
-        public FileLoader FileLoader { get; }
+        public FileProvider FileLoader { get; }
         public GameModeInfo GameModeInfo { get; }
         public MapManager MapManager { get; private set; }
         public MapFragmentManager MapFragmentManager { get; private set; }
 
         public PokemonFactory PokemonFactory { get; private set; }
 
-        public bool IsValid { get; private set; }
+        public bool IsValid { get; }
 
         /// <summary>
         /// Creates an instance of the <see cref="GameMode"/> class and loads the data model.
         /// </summary>
-        public GameMode(GameModeInfo gameModeInfo, FileLoader fileLoader)
+        public GameMode(GameModeInfo gameModeInfo, FileProvider fileLoader)
         {
             GameModeInfo = gameModeInfo;
             FileLoader = fileLoader;
@@ -55,22 +54,39 @@ namespace Pokemon3D.GameModes
         {
             FileLoader.GetFilesAsync(new[]
             {
-                PrimitivesFilePath,
-                NaturesFilePath,
-                TypesFilePath,
-                MoveFilesPath
+                Path.Combine(GameModeInfo.DirectoryPath, PrimitivesFilePath),
+                Path.Combine(GameModeInfo.DirectoryPath, NaturesFilePath),
+                Path.Combine(GameModeInfo.DirectoryPath, TypesFilePath),
+                Path.Combine(GameModeInfo.DirectoryPath, MoveFilesPath)
             }, OnLoadFinished);
         }
 
         private void OnLoadFinished(byte[][] data)
         {
-            
+            _primitiveModels = DataModel<PrimitiveModel[]>.FromByteArray(data[0]);
+            _natureModels = DataModel<NatureModel[]>.FromByteArray(data[1]);
+            _typeModels = DataModel<TypeModel[]>.FromByteArray(data[2]);
+            _moveModels = DataModel<MoveModel[]>.FromByteArray(data[3]);
         }
 
         public GeometryData GetPrimitiveData(string primitiveName)
         {
-            throw new NotImplementedException();
-            //return _primitiveModels.SingleOrDefault(p => p.Id == primitiveName);
+            PrimitiveModel primitiveModel = _primitiveModels.SingleOrDefault(x => x.Id == primitiveName);
+            if (primitiveModel != null)
+            {
+                return new GeometryData
+                {
+                    Vertices = primitiveModel.Vertices.Select(v => new VertexPositionNormalTexture
+                    {
+                        Position = v.Position.GetVector3(),
+                        TextureCoordinate = v.TexCoord.GetVector2(),
+                        Normal = v.Normal.GetVector3()
+                    }).ToArray(),
+                    Indices = primitiveModel.Indices.Select(i => (ushort)i).ToArray()
+                };
+            }
+
+            return null;
         }
 
         #region Dispose
@@ -103,5 +119,25 @@ namespace Pokemon3D.GameModes
         //}
 
         #endregion
+
+        public NatureModel GetNatureModel(string natureId)
+        {
+            return _natureModels.Single(n => n.Id == natureId);
+        }
+
+        public TypeModel GetTypeModel(string typeId)
+        {
+            return _typeModels.Single(n => n.Id == typeId);
+        }
+
+        public MoveModel GetMoveModel(string id)
+        {
+            return _moveModels.Single(m => m.Id == id);
+        }
+
+        public NatureModel[] GetNatures()
+        {
+            return _natureModels;
+        }
     }
 }

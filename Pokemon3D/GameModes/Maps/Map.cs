@@ -2,7 +2,6 @@
 using Pokemon3D.DataModel;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
-using Pokemon3D.FileSystem.Requests;
 using Pokemon3D.GameModes.Maps.Generators;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
@@ -41,23 +40,18 @@ namespace Pokemon3D.GameModes.Maps
             {
                 foreach (var fragmentImport in _mapModel.Fragments)
                 {
-                    var request = _gameMode.MapFragmentManager.CreateDataRequest(fragmentImport.Id);
-                    request.DataContext.Add("Positions", fragmentImport.Positions);
-                    request.Finished += FinishLoadingMapFragment;
-                    request.Start();
+                    _gameMode.MapFragmentManager.LoadFragmentAsync(fragmentImport.Id, l => FinishLoadingMapFragment(fragmentImport, l));
                 }
             }
         }
         
-        private void FinishLoadingMapFragment(object sender, EventArgs e)
+        private void FinishLoadingMapFragment(MapFragmentImportModel importModel, MapFragmentModel fragmentModel)
         {
-            var request = (DataModelRequest<MapFragmentModel>)sender;
-            var fragmentModel = request.ResultModel;
-            var positions = (Vector3Model[])request.DataContext["Positions"];
+            var positions = importModel.Positions;
 
             foreach (var position in positions)
             {
-                Vector3 fragmentOffset = position.GetVector3();
+                var fragmentOffset = position.GetVector3();
 
                 foreach (var entityDefinition in fragmentModel.Entities)
                 {

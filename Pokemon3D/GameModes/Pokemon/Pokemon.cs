@@ -116,31 +116,13 @@ namespace Pokemon3D.GameModes.Pokemon
             }
         }
 
-        public NatureModel Nature
-        {
-            get { return _gameMode.NatureManager.GetNatureModel(_saveModel.NatureId); }
-        }
+        public NatureModel Nature => _gameMode.GetNatureModel(_saveModel.NatureId);
 
-        public TypeModel Type1
-        {
-            get { return _gameMode.TypeManager.GetTypeModel(ActiveFormModel.Type1); }
-        }
+        public TypeModel Type1 => _gameMode.GetTypeModel(ActiveFormModel.Type1);
 
-        public TypeModel Type2
-        {
-            get { return _gameMode.TypeManager.GetTypeModel(ActiveFormModel.Type2); }
-        }
+        public TypeModel Type2 => _gameMode.GetTypeModel(ActiveFormModel.Type2);
 
-        public string DisplayName
-        {
-            get
-            {
-                if (!string.IsNullOrWhiteSpace(_saveModel.Nickname))
-                    return _saveModel.Nickname;
-                else
-                    return _dataModel.Name;
-            }
-        }
+        public string DisplayName => !string.IsNullOrWhiteSpace(_saveModel.Nickname) ? _saveModel.Nickname : _dataModel.Name;
 
         private PokemonFormModel ActiveFormModel
         {
@@ -225,8 +207,8 @@ namespace Pokemon3D.GameModes.Pokemon
                         }
 
                         // get the move model to grab the PP from that:
-                        var moveModel = _gameMode.MoveManager.GetMoveModel(levelMove.Id);
-                        moveList.Add(new PokemonMoveModel()
+                        var moveModel = _gameMode.GetMoveModel(levelMove.Id);
+                        moveList.Add(new PokemonMoveModel
                         {
                             Id = moveModel.Id,
                             CurrentPP = moveModel.PP,

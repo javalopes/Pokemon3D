@@ -61,13 +61,9 @@
     <Compile Include="Collisions\Collider.cs" />
     <Compile Include="Collisions\ColliderType.cs" />
     <Compile Include="Collisions\CollisionManager.cs" />
-    <Compile Include="FileSystem\FileAsyncLoader.cs" />
-    <Compile Include="FileSystem\Requests\DataModelRequest.cs" />
-    <Compile Include="FileSystem\Requests\DataRequest.cs" />
-    <Compile Include="FileSystem\Requests\DataRequestErrorType.cs" />
-    <Compile Include="FileSystem\Requests\DataRequestException.cs" />
+    <Compile Include="FileSystem\FileLoader.cs" />
+    <Compile Include="FileSystem\FileProvider.cs" />
     <Compile Include="FileSystem\i18nPathProvider.cs" />
-    <Compile Include="FileSystem\Requests\PokemonDataRequest.cs" />
     <Compile Include="FileSystem\StaticPathProvider.cs" />
     <Compile Include="GameCore\GameConfiguration.cs" />
     <Compile Include="GameCore\GameObject.cs" />
@@ -100,14 +96,10 @@
     <Compile Include="GameModes\Maps\MapManager.cs" />
     <Compile Include="GameModes\Maps\Player.cs" />
     <Compile Include="GameModes\Maps\PlayerMovementMode.cs" />
-    <Compile Include="GameModes\Pokemon\MoveManager.cs" />
-    <Compile Include="GameModes\Pokemon\NatureManager.cs" />
     <Compile Include="GameModes\Pokemon\Pokemon.cs" />
     <Compile Include="GameModes\Pokemon\PokemonExperienceCalculator.cs" />
     <Compile Include="GameModes\Pokemon\PokemonFactory.cs" />
     <Compile Include="GameModes\Pokemon\PokemonStatCalculator.cs" />
-    <Compile Include="GameModes\Pokemon\TypeManager.cs" />
-    <Compile Include="GameModes\Resources\PrimitiveManager.cs" />
     <Compile Include="ResourceNames.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
