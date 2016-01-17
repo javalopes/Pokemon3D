@@ -9,6 +9,8 @@ namespace Pokemon3D.FileSystem
 
         void GetFilesAsync(string[] filePaths, Action<DataLoadResult[]> onDataReceived);
 
+        void GetFilesOfFolderAsync(string folderPath, Action<DataLoadResult[]> onDataReceived);
+
         byte[] GetFile(string filePath);
     }
 }

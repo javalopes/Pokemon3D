@@ -57,9 +57,15 @@ namespace Pokemon3D.GameModes
             {
                 Path.Combine(GameModeInfo.DirectoryPath, PrimitivesFilePath),
                 Path.Combine(GameModeInfo.DirectoryPath, NaturesFilePath),
-                Path.Combine(GameModeInfo.DirectoryPath, TypesFilePath),
-                Path.Combine(GameModeInfo.DirectoryPath, MoveFilesPath)
+                Path.Combine(GameModeInfo.DirectoryPath, TypesFilePath)
             }, OnLoadFinished);
+            FileLoader.GetFilesOfFolderAsync(Path.Combine(GameModeInfo.DirectoryPath, MoveFilesPath), d => OnMovesLoaded(d, finished));
+        }
+
+        private void OnMovesLoaded(DataLoadResult[] data, Action finished)
+        {
+            _moveModels = data.Select(d => DataModel<MoveModel>.FromByteArray(d.Data)).ToArray();
+            finished();
         }
 
         private void OnLoadFinished(DataLoadResult[] data)
@@ -67,12 +73,11 @@ namespace Pokemon3D.GameModes
             _primitiveModels = DataModel<PrimitiveModel[]>.FromByteArray(data[0].Data);
             _natureModels = DataModel<NatureModel[]>.FromByteArray(data[1].Data);
             _typeModels = DataModel<TypeModel[]>.FromByteArray(data[2].Data);
-            _moveModels = DataModel<MoveModel[]>.FromByteArray(data[3].Data);
         }
 
         public GeometryData GetPrimitiveData(string primitiveName)
         {
-            PrimitiveModel primitiveModel = _primitiveModels.SingleOrDefault(x => x.Id == primitiveName);
+            var primitiveModel = _primitiveModels.SingleOrDefault(x => x.Id == primitiveName);
             if (primitiveModel != null)
             {
                 return new GeometryData

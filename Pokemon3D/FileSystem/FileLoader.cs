@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using System.Linq;
 
 namespace Pokemon3D.FileSystem
 {
@@ -34,6 +33,19 @@ namespace Pokemon3D.FileSystem
             return DataLoadResult.Succeeded(existing);
         }
 
+        protected override DataLoadResult[] OnMultiCastRequestData(string resourcePath)
+        {
+            var requestResults = new List<DataLoadResult>();
+            if (Directory.Exists(resourcePath))
+            {
+                foreach (var filePath in Directory.GetFiles(resourcePath))
+                {
+                    requestResults.Add(OnRequestData(filePath));
+                }
+            }
+            return requestResults.ToArray();
+        }
+
         public void GetFileAsync(string filePath, Action<DataLoadResult> onDataReceived)
         {
             LoadAsync(filePath, onDataReceived);
@@ -42,6 +54,11 @@ namespace Pokemon3D.FileSystem
         public void GetFilesAsync(string[] filePaths, Action<DataLoadResult[]> onDataReceived)
         {
             LoadAsync(filePaths, onDataReceived);
+        }
+
+        public void GetFilesOfFolderAsync(string folderPath, Action<DataLoadResult[]> onDataReceived)
+        {
+            LoadMulticastAsync(folderPath, onDataReceived);
         }
 
         public byte[] GetFile(string filePath)

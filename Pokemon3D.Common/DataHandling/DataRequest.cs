@@ -6,6 +6,7 @@ namespace Pokemon3D.Common.DataHandling
     {
         public string[] ResourcePath { get; }
         public Action<DataLoadResult[]> OnEnded { get; set; }
+        public bool MultiCast { get; set; }
 
         public DataRequest(string[] resourcePath, Action<DataLoadResult[]> onEnded)
         {
