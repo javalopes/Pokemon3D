@@ -1,4 +1,5 @@
 ﻿using System;
+using Pokemon3D.Common.DataHandling;
 using Pokemon3D.DataModel.GameMode.Map;
 
 namespace Pokemon3D.GameModes.Maps
@@ -17,9 +18,9 @@ namespace Pokemon3D.GameModes.Maps
             _gameMode.FileLoader.GetFileAsync(_gameMode.GetMapFilePath(dataPath), a => OnMapLoaded(a, mapModelLoaded));
         }
 
-        private void OnMapLoaded(byte[] bytes, Action<MapModel> mapModelLoaded)
+        private void OnMapLoaded(DataLoadResult result, Action<MapModel> mapModelLoaded)
         {
-            mapModelLoaded(DataModel.DataModel<MapModel>.FromByteArray(bytes));
+            mapModelLoaded(DataModel.DataModel<MapModel>.FromByteArray(result.Data));
         }
     }
 }

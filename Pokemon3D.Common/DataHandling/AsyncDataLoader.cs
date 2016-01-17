@@ -28,11 +28,10 @@ namespace Pokemon3D.Common.DataHandling
                     if (_dataRequests.Count == 0) break;
                     request = _dataRequests.Dequeue();
 
-                    var list = new List<DataRequestResult>();
+                    var list = new List<DataLoadResult>();
                     foreach(var resourcePath in request.ResourcePath)
                     {
-                        var data = OnRequestData(resourcePath);
-                        list.Add(new DataRequestResult(data, RequestState.Success));
+                        list.Add(OnRequestData(resourcePath));
                     }
                     request.NotifyEnded(list.ToArray());
                 }
@@ -40,9 +39,9 @@ namespace Pokemon3D.Common.DataHandling
             _isWorkerThreadRunning = false;
         }
 
-        protected abstract byte[] OnRequestData(string resourcePath);
+        protected abstract DataLoadResult OnRequestData(string resourcePath);
 
-        protected void LoadAsync(string[] resourcePaths, Action<DataRequestResult[]> onEnded)
+        protected void LoadAsync(string[] resourcePaths, Action<DataLoadResult[]> onEnded)
         {
             EnsureWorkerThreadIsRunning();
             lock (_lockObject)
@@ -51,12 +50,12 @@ namespace Pokemon3D.Common.DataHandling
             }
         }
 
-        protected void LoadAsync(string resourcePath, Action<DataRequestResult> onEnded)
+        protected void LoadAsync(string resourcePath, Action<DataLoadResult> onEnded)
         {
             LoadAsync(new[] { resourcePath }, a => OnDelegateMultiToSingleCast(a, onEnded));
         }
 
-        private void OnDelegateMultiToSingleCast(DataRequestResult[] requests, Action<DataRequestResult> onEnded)
+        private void OnDelegateMultiToSingleCast(DataLoadResult[] requests, Action<DataLoadResult> onEnded)
         {
             onEnded(requests[0]);
         }

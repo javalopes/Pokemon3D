@@ -58,9 +58,8 @@
     <Compile Include="Animations\DiscreteAnimation.cs" />
     <Compile Include="CollisionResult.cs" />
     <Compile Include="DataHandling\AsyncDataLoader.cs" />
+    <Compile Include="DataHandling\DataLoadResult.cs" />
     <Compile Include="DataHandling\DataRequest.cs" />
-    <Compile Include="DataHandling\DataRequestResult.cs" />
-    <Compile Include="DataHandling\RequestState.cs" />
     <Compile Include="Diagnostics\GameLogger.cs" />
     <Compile Include="Diagnostics\MessageType.cs" />
     <Compile Include="Extensions\BoundingBoxExtensions.cs" />

@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common.DataHandling;
 
 namespace Pokemon3D.GameModes
 {
@@ -61,12 +62,12 @@ namespace Pokemon3D.GameModes
             }, OnLoadFinished);
         }
 
-        private void OnLoadFinished(byte[][] data)
+        private void OnLoadFinished(DataLoadResult[] data)
         {
-            _primitiveModels = DataModel<PrimitiveModel[]>.FromByteArray(data[0]);
-            _natureModels = DataModel<NatureModel[]>.FromByteArray(data[1]);
-            _typeModels = DataModel<TypeModel[]>.FromByteArray(data[2]);
-            _moveModels = DataModel<MoveModel[]>.FromByteArray(data[3]);
+            _primitiveModels = DataModel<PrimitiveModel[]>.FromByteArray(data[0].Data);
+            _natureModels = DataModel<NatureModel[]>.FromByteArray(data[1].Data);
+            _typeModels = DataModel<TypeModel[]>.FromByteArray(data[2].Data);
+            _moveModels = DataModel<MoveModel[]>.FromByteArray(data[3].Data);
         }
 
         public GeometryData GetPrimitiveData(string primitiveName)

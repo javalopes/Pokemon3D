@@ -16,25 +16,32 @@ namespace Pokemon3D.FileSystem
             _fileCache = new Dictionary<string, byte[]>();
         }
 
-        protected override byte[] OnRequestData(string resourcePath)
+        protected override DataLoadResult OnRequestData(string resourcePath)
         {
             byte[] existing;
-            if (_fileCache.TryGetValue(resourcePath, out existing)) return existing;
+            if (_fileCache.TryGetValue(resourcePath, out existing)) return DataLoadResult.Succeeded(existing);
 
-            existing = File.ReadAllBytes(resourcePath);
+            try
+            {
+                existing = File.ReadAllBytes(resourcePath);
+            }
+            catch (Exception ex)
+            {
+                return DataLoadResult.Failed(ex.Message);
+            }
             _fileCache.Add(resourcePath, existing);
 
-            return existing;
+            return DataLoadResult.Succeeded(existing);
         }
 
-        public void GetFileAsync(string filePath, Action<byte[]> onDataReceived)
+        public void GetFileAsync(string filePath, Action<DataLoadResult> onDataReceived)
         {
-            LoadAsync(filePath, r => onDataReceived(r.Data));
+            LoadAsync(filePath, onDataReceived);
         }
 
-        public void GetFilesAsync(string[] filePaths, Action<byte[][]> onDataReceived)
+        public void GetFilesAsync(string[] filePaths, Action<DataLoadResult[]> onDataReceived)
         {
-            LoadAsync(filePaths, r => onDataReceived(r.Select(d => d.Data).ToArray()));
+            LoadAsync(filePaths, onDataReceived);
         }
 
         public byte[] GetFile(string filePath)

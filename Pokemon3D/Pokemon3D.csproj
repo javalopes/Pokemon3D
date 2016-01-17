@@ -62,6 +62,7 @@
     <Compile Include="Collisions\ColliderType.cs" />
     <Compile Include="Collisions\CollisionManager.cs" />
     <Compile Include="FileSystem\FileLoader.cs" />
+    <Compile Include="FileSystem\FilePr.cs" />
     <Compile Include="FileSystem\FileProvider.cs" />
     <Compile Include="FileSystem\i18nPathProvider.cs" />
     <Compile Include="FileSystem\StaticPathProvider.cs" />

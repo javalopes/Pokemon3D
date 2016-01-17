@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Pokemon3D.Common.DataHandling;
 using Pokemon3D.DataModel.GameMode.Map;
 
 namespace Pokemon3D.GameModes.Maps
@@ -25,9 +26,9 @@ namespace Pokemon3D.GameModes.Maps
             _gameMode.FileLoader.GetFileAsync(_gameMode.GetMapFragmentFilePath(dataPath), a => OnFragmentLoaded(dataPath, a, fragmentLoaded));
         }
 
-        private void OnFragmentLoaded(string dataPath, byte[] data, Action<MapFragmentModel> fragmentLoaded)
+        private void OnFragmentLoaded(string dataPath, DataLoadResult data, Action<MapFragmentModel> fragmentLoaded)
         {
-            var fragment = DataModel.DataModel<MapFragmentModel>.FromByteArray(data); 
+            var fragment = DataModel.DataModel<MapFragmentModel>.FromByteArray(data.Data); 
             _fragmentModelCache.Add(dataPath, fragment);
             fragmentLoaded(fragment);
         }
