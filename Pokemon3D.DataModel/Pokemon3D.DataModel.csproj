@@ -141,6 +141,10 @@
     <Compile Include="Savegame\Pokemon\PokedexEntrySaveModel.cs" />
     <Compile Include="Savegame\Pokemon\PokedexEntryType.cs" />
     <Compile Include="Savegame\Pokemon\PokedexSaveModel.cs" />
+    <Compile Include="Savegame\StorageSystem\StorageBoxEntryModel.cs" />
+    <Compile Include="Savegame\StorageSystem\StorageBoxModel.cs" />
+    <Compile Include="Savegame\StorageSystem\StorageBoxStyleModel.cs" />
+    <Compile Include="Savegame\StorageSystem\StorageSystemModel.cs" />
     <Compile Include="Savegame\SaveFileModel.cs" />
     <Compile Include="Savegame\Pokemon\CatchInfoModel.cs" />
     <Compile Include="Savegame\Pokemon\HeldItemModel.cs" />
