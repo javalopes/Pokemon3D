@@ -52,6 +52,8 @@
     <Compile Include="DataType.cs" />
     <Compile Include="GameJolt\FriendModel.cs" />
     <Compile Include="GameJolt\FriendRequestModel.cs" />
+    <Compile Include="GameMode\Map\NPCs\RandomNPCBehaviour.cs" />
+    <Compile Include="GameMode\Map\NPCs\RandomNPCModel.cs" />
     <Compile Include="IDataModelContainer.cs" />
     <Compile Include="General\ColorModel.cs" />
     <Compile Include="GameCore\ConfigurationModel.cs" />
