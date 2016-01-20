@@ -23,9 +23,9 @@ namespace Pokemon3D.DataModel.GameMode.Map.NPCs
         [DataMember(Order = 4, Name = "Behaviour")]
         private string _behaviour;
         
-        public RandomNPCBehaviour Behaviour
+        public NPCBehaviour Behaviour
         {
-            get { return ConvertStringToEnum<RandomNPCBehaviour>(_behaviour); }
+            get { return ConvertStringToEnum<NPCBehaviour>(_behaviour); }
             set { _behaviour = value.ToString(); }
         }
 

@@ -84,6 +84,19 @@ namespace Pokemon3D.UI.Screens
                 _dispatcher.Invoke(() =>
                 {
                     _currentMap = new Map(_gameMode, request.ResultModel, _scene, Game.Resources);
+
+                    _currentMap.AddEntity(new NPC(_scene, new DataModel.GameMode.Map.NPCs.RandomNPCModel()
+                    {
+                        Name = "Testificate",
+                        Behaviour = DataModel.GameMode.Map.NPCs.NPCBehaviour.Roaming,
+                        Texture = new DataModel.TextureSourceModel()
+                        {
+                            Source = "test",
+                            Rectangle = null
+                        },
+                        Chance = 100,
+                        ScriptBinding = "somescript"
+                    }));
                 });
             }
             else
