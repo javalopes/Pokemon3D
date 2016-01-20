@@ -5,7 +5,7 @@
 
 namespace Pokemon3D.DataModel.Savegame.StorageSystem
 {
-    class StorageBoxModel : DataModel<StorageBoxModel>
+    public class StorageBoxModel : DataModel<StorageBoxModel>
     {
         [DataMember(Order = 0)]
         public StorageBoxStyleModel Style;

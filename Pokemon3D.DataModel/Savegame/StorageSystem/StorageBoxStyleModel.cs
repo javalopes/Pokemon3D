@@ -6,7 +6,7 @@
 namespace Pokemon3D.DataModel.Savegame.StorageSystem
 {
     [DataContract(Namespace = "")]
-    class StorageBoxStyleModel : DataModel<StorageBoxStyleModel>
+    public class StorageBoxStyleModel : DataModel<StorageBoxStyleModel>
     {
         [DataMember(Order = 0)]
         public TextureSourceModel Background;

@@ -12,7 +12,7 @@ namespace Pokemon3D.DataModel.Savegame
     /// Contains the saved information about a game file.
     /// </summary>
     [DataContract(Namespace = "")]
-    class SaveFileModel : DataModel<SaveFileModel>
+    public class SaveFileModel : DataModel<SaveFileModel>
     {
         [DataMember(Order = 0)]
         public string GameMode;

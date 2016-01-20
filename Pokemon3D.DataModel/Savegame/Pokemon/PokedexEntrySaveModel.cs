@@ -9,7 +9,7 @@ namespace Pokemon3D.DataModel.Savegame.Pokemon
     /// An entry for the Pokédex in the save file.
     /// </summary>
     [DataContract(Namespace = "")]
-    class PokedexEntrySaveModel : DataModel<PokedexEntrySaveModel>
+    public class PokedexEntrySaveModel : DataModel<PokedexEntrySaveModel>
     {
         /// <summary>
         /// The Id of the Pokémon.

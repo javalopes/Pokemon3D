@@ -7,7 +7,7 @@ using Pokemon3D.DataModel.Savegame.Pokemon;
 namespace Pokemon3D.DataModel.Savegame.StorageSystem
 {
     [DataContract(Namespace = "")]
-    class StorageBoxEntryModel : DataModel<StorageBoxEntryModel>
+    public class StorageBoxEntryModel : DataModel<StorageBoxEntryModel>
     {
         [DataMember(Order = 0)]
         public Vector2Model Position;

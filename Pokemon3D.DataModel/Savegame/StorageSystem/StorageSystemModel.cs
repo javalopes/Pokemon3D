@@ -6,7 +6,7 @@
 namespace Pokemon3D.DataModel.Savegame.StorageSystem
 {
     [DataContract(Namespace = "")]
-    class StorageSystemModel : DataModel<StorageSystemModel>
+    public class StorageSystemModel : DataModel<StorageSystemModel>
     {
         [DataMember(Order = 0)]
         public StorageBoxModel[] Boxes;

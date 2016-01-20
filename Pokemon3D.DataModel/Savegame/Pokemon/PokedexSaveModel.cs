@@ -9,7 +9,7 @@ namespace Pokemon3D.DataModel.Savegame.Pokemon
     /// Contains the save information about the Pokédex.
     /// </summary>
     [DataContract(Namespace = "")]
-    class PokedexSaveModel : DataModel<PokedexSaveModel>
+    public class PokedexSaveModel : DataModel<PokedexSaveModel>
     {
         /// <summary>
         /// The Id of the Pokédex.

@@ -6,7 +6,7 @@
 namespace Pokemon3D.DataModel.Savegame
 {
     [DataContract(Namespace = "")]
-    class PlayerModel : DataModel<PlayerModel>
+    public class PlayerModel : DataModel<PlayerModel>
     {
         [DataMember(Order = 0)]
         public string Name;

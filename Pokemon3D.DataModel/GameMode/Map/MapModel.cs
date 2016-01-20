@@ -38,16 +38,22 @@ namespace Pokemon3D.DataModel.GameMode.Map
         [DataMember(Order = 6)]
         public string Environment;
 
+        /// <summary>
+        /// Link to the source files for the random NPCs spawning on this map.
+        /// </summary>
         [DataMember(Order = 7)]
-        public BattleMapDataModel BattleMapData;
+        public string[] RandomNPCSources;
 
         [DataMember(Order = 8)]
-        public Entities.EntityFieldModel[] Entities;
+        public BattleMapDataModel BattleMapData;
 
         [DataMember(Order = 9)]
-        public MapFragmentImportModel[] Fragments;
+        public Entities.EntityFieldModel[] Entities;
 
         [DataMember(Order = 10)]
+        public MapFragmentImportModel[] Fragments;
+
+        [DataMember(Order = 11)]
         public OffsetMapModel[] OffsetMaps;
 
         public override object Clone()
@@ -57,6 +63,7 @@ namespace Pokemon3D.DataModel.GameMode.Map
             clone.Entities = (Entities.EntityFieldModel[])Entities.Clone();
             clone.Fragments = (MapFragmentImportModel[])Fragments.Clone();
             clone.OffsetMaps = (OffsetMapModel[])OffsetMaps.Clone();
+            clone.RandomNPCSources = (string[])RandomNPCSources.Clone();
             return clone;
         }
     }
