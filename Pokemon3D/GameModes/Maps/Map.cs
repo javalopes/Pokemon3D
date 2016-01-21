@@ -84,5 +84,10 @@ namespace Pokemon3D.GameModes.Maps
         {
             _allEntities.ForEach(e => e.Update(elapsedTime));
         }
+
+        public void AddEntity(Entity entity)
+        {
+            _allEntities.Add(entity);
+        }
     }
 }

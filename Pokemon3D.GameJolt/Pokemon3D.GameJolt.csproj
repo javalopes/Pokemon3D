@@ -40,10 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API Calls\Friends.cs" />
+    <Compile Include="API Calls\Scoreboards.cs" />
+    <Compile Include="API Calls\Sessions.cs" />
+    <Compile Include="API Calls\Time.cs" />
+    <Compile Include="API Calls\Trophies.cs" />
     <Compile Include="API Calls\Users.cs" />
     <Compile Include="API.cs" />
     <Compile Include="APICall.cs" />
-    <Compile Include="API_Definitions.cs" />
     <Compile Include="API Calls\Storage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseFormat.cs" />

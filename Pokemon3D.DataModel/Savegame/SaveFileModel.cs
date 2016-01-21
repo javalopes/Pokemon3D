@@ -1,5 +1,6 @@
 ﻿using Pokemon3D.DataModel.Savegame.Inventory;
 using Pokemon3D.DataModel.Savegame.Pokemon;
+using Pokemon3D.DataModel.Savegame.StorageSystem;
 using System.Runtime.Serialization;
 
 // Disable Code Analysis for warning CS0649: Field is never assigned to, and will always have its default value.
@@ -11,7 +12,7 @@ namespace Pokemon3D.DataModel.Savegame
     /// Contains the saved information about a game file.
     /// </summary>
     [DataContract(Namespace = "")]
-    class SaveFileModel : DataModel<SaveFileModel>
+    public class SaveFileModel : DataModel<SaveFileModel>
     {
         [DataMember(Order = 0)]
         public string GameMode;
@@ -26,6 +27,9 @@ namespace Pokemon3D.DataModel.Savegame
         public InventoryItemModel[] Items;
 
         [DataMember(Order = 4)]
+        public StorageSystemModel StorageSystem;
+
+        [DataMember(Order = 5)]
         public PokedexSaveModel Pokedex;
 
         public override object Clone()
@@ -35,6 +39,7 @@ namespace Pokemon3D.DataModel.Savegame
             clone.Pokemon = (PokemonSaveModel[])Pokemon.Clone();
             clone.Items = (InventoryItemModel[])Items.Clone();
             clone.Pokedex = Pokedex.CloneModel();
+            clone.StorageSystem = StorageSystem.CloneModel();
             return clone;
         }
     }

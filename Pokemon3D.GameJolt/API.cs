@@ -12,6 +12,11 @@ namespace Pokemon3D.GameJolt
     /// </summary>
     public partial class API
     {
+        private const string HOST = "api.gamejolt.com/api/game";
+        private const string VERSION = "v1_1";
+
+        private const string FORMAT_CALL_URL = "http://{0}/{1}/batch/?game_id={2}&format={3}";
+
         /// <summary>
         /// The Id of the game.
         /// </summary>
@@ -130,6 +135,16 @@ namespace Pokemon3D.GameJolt
                 byteBuilder.Append(bytes[i].ToString("x2"));
 
             return byteBuilder.ToString();
+        }
+
+        private static string ResponseFormatToString(ResponseFormat format)
+        {
+            return format.ToString().ToLowerInvariant();
+        }
+
+        private static string StorageUpdateOperationToString(StorageUpdateOperation operation)
+        {
+            return operation.ToString().ToLowerInvariant();
         }
     }
 }

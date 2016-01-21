@@ -1,6 +1,6 @@
 ﻿namespace Pokemon3D.DataModel.Savegame.Pokemon
 {
-    enum PokedexEntryType
+    public enum PokedexEntryType
     {
         Seen,
         Caught

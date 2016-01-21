@@ -50,6 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataType.cs" />
+    <Compile Include="GameJolt\FriendModel.cs" />
+    <Compile Include="GameJolt\FriendRequestModel.cs" />
+    <Compile Include="GameMode\Map\NPCs\RandomNPCBehaviour.cs" />
+    <Compile Include="GameMode\Map\NPCs\RandomNPCModel.cs" />
     <Compile Include="IDataModelContainer.cs" />
     <Compile Include="General\ColorModel.cs" />
     <Compile Include="GameCore\ConfigurationModel.cs" />
@@ -139,6 +143,10 @@
     <Compile Include="Savegame\Pokemon\PokedexEntrySaveModel.cs" />
     <Compile Include="Savegame\Pokemon\PokedexEntryType.cs" />
     <Compile Include="Savegame\Pokemon\PokedexSaveModel.cs" />
+    <Compile Include="Savegame\StorageSystem\StorageBoxEntryModel.cs" />
+    <Compile Include="Savegame\StorageSystem\StorageBoxModel.cs" />
+    <Compile Include="Savegame\StorageSystem\StorageBoxStyleModel.cs" />
+    <Compile Include="Savegame\StorageSystem\StorageSystemModel.cs" />
     <Compile Include="Savegame\SaveFileModel.cs" />
     <Compile Include="Savegame\Pokemon\CatchInfoModel.cs" />
     <Compile Include="Savegame\Pokemon\HeldItemModel.cs" />
@@ -165,10 +173,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.XML" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Json\" />
-    <Folder Include="Xml\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

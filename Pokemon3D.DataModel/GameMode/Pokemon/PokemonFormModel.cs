@@ -22,48 +22,50 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
         public TextureSourceModel MenuTexture;
 
         [DataMember(Order = 4)]
-        public TextureSourceModel SpriteTexture;
+        public TextureSourceModel SpriteFrontTexture;
 
         [DataMember(Order = 5)]
-        public TextureSourceModel OverworldTexture;
+        public TextureSourceModel SpriteBackTexture;
 
         [DataMember(Order = 6)]
-        public string Type1;
+        public TextureSourceModel OverworldTexture;
 
         [DataMember(Order = 7)]
-        public string Type2;
+        public string Type1;
 
         [DataMember(Order = 8)]
-        public int CatchRate;
+        public string Type2;
 
         [DataMember(Order = 9)]
-        public string[] Abilities;
+        public int CatchRate;
 
         [DataMember(Order = 10)]
-        public LevelUpMoveModel[] LevelMoves;
+        public string[] Abilities;
 
+        /// <summary>
+        /// If this member is set, the move pools are taken from the referenced form instead of this one.
+        /// </summary>
         [DataMember(Order = 11)]
-        public string[] MachineMoves;
+        public string ShareMovesWithForm;
 
         [DataMember(Order = 12)]
-        public string[] EggMoves;
+        public LevelUpMoveModel[] LevelMoves;
 
         [DataMember(Order = 13)]
-        public string[] TutorMoves;
-
+        public string[] LearnableMoves;
+        
         public override object Clone()
         {
             var clone = (PokemonFormModel)MemberwiseClone();
             clone.Activation = Activation.CloneModel();
             clone.BaseStats = BaseStats.CloneModel();
             clone.MenuTexture = MenuTexture.CloneModel();
-            clone.SpriteTexture = SpriteTexture.CloneModel();
+            clone.SpriteFrontTexture = SpriteFrontTexture.CloneModel();
+            clone.SpriteBackTexture = SpriteBackTexture.CloneModel();
             clone.OverworldTexture = OverworldTexture.CloneModel();
             clone.Abilities = (string[])Abilities.Clone();
             clone.LevelMoves = (LevelUpMoveModel[])LevelMoves.Clone();
-            clone.MachineMoves = (string[])MachineMoves.Clone();
-            clone.EggMoves = (string[])EggMoves.Clone();
-            clone.TutorMoves = (string[])TutorMoves.Clone();
+            clone.LearnableMoves = (string[])LearnableMoves.Clone();
             return clone;
         }
     }
