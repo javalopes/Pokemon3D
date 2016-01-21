@@ -16,7 +16,7 @@ namespace Pokemon3D.GameModes.Maps
 
         public void LoadMapAsync(string dataPath, Action<MapModel> mapModelLoaded)
         {
-            _gameMode.FileLoader.GetFileAsync(Path.Combine(_gameMode.GameModeInfo.DirectoryPath, _gameMode.GetMapFilePath(dataPath)), a => OnMapLoaded(a, mapModelLoaded));
+            _gameMode.FileLoader.GetFileAsync(_gameMode.GetMapFilePath(dataPath), a => OnMapLoaded(a, mapModelLoaded));
         }
 
         private void OnMapLoaded(DataLoadResult result, Action<MapModel> mapModelLoaded)

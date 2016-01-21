@@ -55,11 +55,11 @@ namespace Pokemon3D.GameModes
         {
             FileLoader.GetFilesAsync(new[]
             {
-                Path.Combine(GameModeInfo.DirectoryPath, PrimitivesFilePath),
-                Path.Combine(GameModeInfo.DirectoryPath, NaturesFilePath),
-                Path.Combine(GameModeInfo.DirectoryPath, TypesFilePath)
+                PrimitivesFilePath,
+                NaturesFilePath,
+                TypesFilePath
             }, OnLoadFinished);
-            FileLoader.GetFilesOfFolderAsync(Path.Combine(GameModeInfo.DirectoryPath, MoveFilesPath), d => OnMovesLoaded(d, finished));
+            FileLoader.GetFilesOfFolderAsync(MoveFilesPath, d => OnMovesLoaded(d, finished));
         }
 
         private void OnMovesLoaded(DataLoadResult[] data, Action finished)

@@ -25,8 +25,7 @@ namespace Pokemon3D.GameModes.Maps
                 fragmentLoaded(fragment);
             }
 
-            var filePath = Path.Combine(_gameMode.GameModeInfo.DirectoryPath, _gameMode.GetMapFragmentFilePath(dataPath));
-            _gameMode.FileLoader.GetFileAsync(filePath, a => OnFragmentLoaded(dataPath, a, fragmentLoaded));
+            _gameMode.FileLoader.GetFileAsync(_gameMode.GetMapFragmentFilePath(dataPath), a => OnFragmentLoaded(dataPath, a, fragmentLoaded));
         }
 
         private void OnFragmentLoaded(string dataPath, DataLoadResult data, Action<MapFragmentModel> fragmentLoaded)
