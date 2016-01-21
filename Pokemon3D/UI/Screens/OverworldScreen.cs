@@ -16,14 +16,6 @@ namespace Pokemon3D.UI.Screens
 {
     class OverworldScreen : GameObject, Screen
     {
-        // todo: move this somewhere else...
-        private static readonly Dictionary<ShadowQuality, int> ShadowMapSizeForQuality = new Dictionary<ShadowQuality, int>
-        {
-            { ShadowQuality.Small, 512 },
-            { ShadowQuality.Medium, 1024 },
-            { ShadowQuality.Large, 2048 }
-        }; 
-
         private GameMode _gameMode;
         private Map _currentMap;
         private SceneRenderer _renderer;
@@ -40,38 +32,14 @@ namespace Pokemon3D.UI.Screens
             _gameMode = Game.ActiveGameMode;
             _dispatcher = Dispatcher.CurrentDispatcher;
 
-            var settings = new RenderSettings
-            {
-                EnableShadows = Game.GameConfig.ShadowsEnabled,
-                ShadowMapSize = ShadowMapSizeForQuality[Game.GameConfig.ShadowQuality],
-                EnableSoftShadows = Game.GameConfig.SoftShadows
-            };
-            _renderer = SceneRendererFactory.Create(Game, new WindowsSceneEffect(Game.Content), settings);
+            var loadingResult = enterInformation as GameModeLoadingResult;
+            if (loadingResult == null) throw new InvalidOperationException("Did not receive loaded data.");
 
-            _scene = new Scene(Game)
-            {
-                Light =
-                {
-                    Direction = new Vector3(-1.5f, -1.0f, -0.5f),
-                    AmbientIntensity = 0.5f,
-                    DiffuseIntensity = 0.8f
-                },
-                AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f)
-            };
-
-            _player = new Player(_scene);
+            _renderer = loadingResult.SceneRenderer;
+            _scene = loadingResult.Scene;
+            _player = loadingResult.Player;
 
             _debugSpriteFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
-
-            _gameMode.MapManager.LoadMapAsync(_gameMode.GameModeInfo.StartMap, FinishedLoadingMapModel);
-        }
-
-        private void FinishedLoadingMapModel(MapModel mapModel)
-        {
-            _dispatcher.Invoke(() =>
-            {
-                _currentMap = new Map(_gameMode, mapModel, _scene, Game.Resources);
-            });
         }
 
         public void OnUpdate(float elapsedTime)
