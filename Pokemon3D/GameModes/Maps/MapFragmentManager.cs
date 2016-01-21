@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Pokemon3D.Common.DataHandling;
 using Pokemon3D.DataModel.GameMode.Map;
+using System.IO;
 
 namespace Pokemon3D.GameModes.Maps
 {
@@ -23,7 +24,9 @@ namespace Pokemon3D.GameModes.Maps
             {
                 fragmentLoaded(fragment);
             }
-            _gameMode.FileLoader.GetFileAsync(_gameMode.GetMapFragmentFilePath(dataPath), a => OnFragmentLoaded(dataPath, a, fragmentLoaded));
+
+            var filePath = Path.Combine(_gameMode.GameModeInfo.DirectoryPath, _gameMode.GetMapFragmentFilePath(dataPath));
+            _gameMode.FileLoader.GetFileAsync(filePath, a => OnFragmentLoaded(dataPath, a, fragmentLoaded));
         }
 
         private void OnFragmentLoaded(string dataPath, DataLoadResult data, Action<MapFragmentModel> fragmentLoaded)
