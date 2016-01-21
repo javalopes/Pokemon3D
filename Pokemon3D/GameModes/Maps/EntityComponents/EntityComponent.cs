@@ -1,4 +1,6 @@
-﻿namespace Pokemon3D.GameModes.Maps.EntityComponents
+﻿using Pokemon3D.Rendering;
+
+namespace Pokemon3D.GameModes.Maps.EntityComponents
 {
     /// <summary>
     /// A component of an <see cref="Entity"/>, responsible for the Entity's functionality.
@@ -33,9 +35,9 @@
         public virtual void Update(float elapsedTime) { }
 
         /// <summary>
-        /// Renders this component, if this component has special render settings for the entity.
+        /// Prepares this entity component for the render.
         /// </summary>
-        public virtual RenderResultType Render() { return RenderResultType.Passed; }
+        public virtual void RenderPreparations(Camera observer) { }
 
         /// <summary>
         /// Converts the data string that came with the component data into the desired data type.

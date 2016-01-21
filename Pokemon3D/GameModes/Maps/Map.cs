@@ -89,5 +89,10 @@ namespace Pokemon3D.GameModes.Maps
         {
             _allEntities.Add(entity);
         }
+
+        public void RenderPreparations(Camera observer)
+        {
+            _allEntities.ForEach(e => e.RenderPreparations(observer));
+        }
     }
 }

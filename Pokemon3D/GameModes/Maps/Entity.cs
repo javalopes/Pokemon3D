@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Pokemon3D.Collisions;
 using Pokemon3D.GameModes.Maps.EntityComponents.Components;
+using System;
 
 namespace Pokemon3D.GameModes.Maps
 {
@@ -186,6 +187,12 @@ namespace Pokemon3D.GameModes.Maps
         {
             for (int i = 0; i < _components.Count; i++)
                 _components.Values.ElementAt(i).Update(elapsedTime);
+        }
+
+        public void RenderPreparations(Camera observer)
+        {
+            for (int i = 0; i < _components.Count; i++)
+                _components.Values.ElementAt(i).RenderPreparations(observer);
         }
 
         #region Components
