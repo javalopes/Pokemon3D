@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-namespace Pokemon3D.FileSystem
+namespace Pokemon3D.Common.DataHandling
 {
     public class FileLoader : AsyncDataLoader, FileProvider
     {

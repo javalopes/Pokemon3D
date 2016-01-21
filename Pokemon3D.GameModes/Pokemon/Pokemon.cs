@@ -3,7 +3,7 @@ using Pokemon3D.DataModel.GameMode.Definitions;
 using Pokemon3D.DataModel.GameMode.Pokemon;
 using Pokemon3D.DataModel.Pokemon;
 using Pokemon3D.DataModel.Savegame.Pokemon;
-using Pokemon3D.GameCore;
+using Pokemon3D.Common;
 using System.Linq;
 
 namespace Pokemon3D.GameModes.Pokemon
@@ -234,7 +234,7 @@ namespace Pokemon3D.GameModes.Pokemon
                         // delete random move when this Pokémon already has 4 moves:
                         if (moveList.Count == POKEMON_MAX_MOVE_COUNT)
                         {
-                            moveList.RemoveAt(GameController.Instance.Random.Next(0, moveList.Count));
+                            moveList.RemoveAt(GlobalRandomProvider.Instance.Rnd.Next(0, moveList.Count));
                         }
 
                         // get the move model to grab the PP from that:

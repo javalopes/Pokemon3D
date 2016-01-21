@@ -66,10 +66,6 @@
     <Compile Include="GameCore\GameConfiguration.cs" />
     <Compile Include="GameCore\GameObject.cs" />
     <Compile Include="GameCore\GameController.cs" />
-    <Compile Include="GameModes\GameMode.cs" />
-    <Compile Include="GameModes\GameModeManager.cs" />
-    <Compile Include="GameModes\GameMode_Definitions.cs" />
-    <Compile Include="GameModes\IGameModeComponent.cs" />
     <Compile Include="GameModes\Maps\Entity.cs" />
     <Compile Include="GameModes\Maps\EntityComponents\Components\AnimateTexturesEntityComponent.cs" />
     <Compile Include="GameModes\Maps\EntityComponents\Components\CollisionEntityComponent.cs" />
@@ -90,15 +86,9 @@
     <Compile Include="GameModes\Maps\Generators\SimpleEntityGenerator.cs" />
     <Compile Include="GameModes\Maps\Generators\TexturedCubeEntityGenerator.cs" />
     <Compile Include="GameModes\Maps\Map.cs" />
-    <Compile Include="GameModes\Maps\MapFragmentManager.cs" />
-    <Compile Include="GameModes\Maps\MapManager.cs" />
     <Compile Include="GameModes\Maps\NPC.cs" />
     <Compile Include="GameModes\Maps\Player.cs" />
     <Compile Include="GameModes\Maps\PlayerMovementMode.cs" />
-    <Compile Include="GameModes\Pokemon\Pokemon.cs" />
-    <Compile Include="GameModes\Pokemon\PokemonExperienceCalculator.cs" />
-    <Compile Include="GameModes\Pokemon\PokemonFactory.cs" />
-    <Compile Include="GameModes\Pokemon\PokemonStatCalculator.cs" />
     <Compile Include="ResourceNames.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -106,9 +96,9 @@
     </Compile>
     <Compile Include="UI\Localization\CoreTranslationManager.cs" />
     <Compile Include="GameModes\Resources\GameModei18nManager.cs" />
-    <Compile Include="UI\Localization\TranslationManager.cs" />
     <Compile Include="GameCore\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Localization\TranslationManager.cs" />
     <Compile Include="UI\NotificationBar.cs" />
     <Compile Include="UI\NotificationItem.cs" />
     <Compile Include="UI\NotificationKind.cs" />

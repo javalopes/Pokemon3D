@@ -1,7 +1,7 @@
 using System;
 using Pokemon3D.Common.DataHandling;
 
-namespace Pokemon3D.FileSystem
+namespace Pokemon3D.Common.DataHandling
 {
     public interface FileProvider
     {

@@ -5,7 +5,7 @@ using Pokemon3D.DataModel.GameMode.Map;
 
 namespace Pokemon3D.GameModes.Maps
 {
-    class MapManager
+    public class MapManager
     {
         private readonly GameMode _gameMode;
 

@@ -1,7 +1,6 @@
 ﻿using Pokemon3D.DataModel;
 using Pokemon3D.DataModel.GameMode.Battle;
 using Pokemon3D.DataModel.GameMode.Definitions;
-using Pokemon3D.FileSystem;
 using Pokemon3D.GameModes.Maps;
 using Pokemon3D.GameModes.Pokemon;
 using Pokemon3D.Rendering.Data;
@@ -16,7 +15,7 @@ namespace Pokemon3D.GameModes
     /// <summary>
     /// Contains methods and members that control a GameMode, a collection of maps, scripts and assets.
     /// </summary>
-    partial class GameMode :  IDataModelContainer, IDisposable, GameModeDataProvider
+    public partial class GameMode :  IDataModelContainer, IDisposable, GameModeDataProvider
     {
         private PrimitiveModel[] _primitiveModels;
         private NatureModel[] _natureModels;

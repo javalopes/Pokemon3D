@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Pokemon3D.GameModes.Maps
 {
-    class MapFragmentManager
+    public class MapFragmentManager
     {
         private readonly Dictionary<string, MapFragmentModel> _fragmentModelCache;
         private readonly GameMode _gameMode;

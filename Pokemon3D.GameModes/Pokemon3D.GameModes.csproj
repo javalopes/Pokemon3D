@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.4.0.456, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,8 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameMode.cs" />
     <Compile Include="GameModeInfo.cs" />
     <Compile Include="GameModeManager.cs" />
+    <Compile Include="GameMode_Definitions.cs" />
+    <Compile Include="IGameModeComponent.cs" />
+    <Compile Include="Maps\MapFragmentManager.cs" />
+    <Compile Include="Maps\MapManager.cs" />
+    <Compile Include="Pokemon\Pokemon.cs" />
+    <Compile Include="Pokemon\PokemonExperienceCalculator.cs" />
+    <Compile Include="Pokemon\PokemonFactory.cs" />
+    <Compile Include="Pokemon\PokemonStatCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +63,10 @@
     <ProjectReference Include="..\Pokemon3D.DataModel\Pokemon3D.DataModel.csproj">
       <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
       <Name>Pokemon3D.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Pokemon3D.Rendering\Pokemon3D.Rendering.csproj">
+      <Project>{d3c6ea8f-1a82-4885-849e-d83747cd8ebc}</Project>
+      <Name>Pokemon3D.Rendering</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

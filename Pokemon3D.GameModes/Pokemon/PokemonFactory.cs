@@ -1,7 +1,7 @@
 ﻿using Pokemon3D.DataModel.GameMode.Pokemon;
 using Pokemon3D.DataModel.Pokemon;
 using Pokemon3D.DataModel.Savegame.Pokemon;
-using Pokemon3D.GameCore;
+using Pokemon3D.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace Pokemon3D.GameModes.Pokemon
     /// <summary>
     /// Used to create <see cref="Pokemon"/> instances.
     /// </summary>
-    class PokemonFactory
+    public class PokemonFactory
     {
         private readonly Random _random = new Random();
         private readonly Dictionary<string, PokemonModel> _pokemonCache = new Dictionary<string, PokemonModel>();
@@ -128,7 +128,7 @@ namespace Pokemon3D.GameModes.Pokemon
             var personalityValue = string.Empty;
 
             while (personalityValue.Length < PERSONALITY_VALUE_LENGTH)
-                personalityValue += ((char)_charCodes[GameController.Instance.Random.Next(0, _charCodes.Length)]).ToString();
+                personalityValue += ((char)_charCodes[GlobalRandomProvider.Instance.Rnd.Next(0, _charCodes.Length)]).ToString();
 
             return personalityValue;
         }
@@ -150,7 +150,7 @@ namespace Pokemon3D.GameModes.Pokemon
             }
             else
             {
-                var r = GameController.Instance.Random.NextDouble();
+                var r = GlobalRandomProvider.Instance.Rnd.NextDouble();
                 if (r <= (dataModel.IsMale / 100))
                 {
                     saveModel.Gender = PokemonGender.Male;
@@ -188,12 +188,12 @@ namespace Pokemon3D.GameModes.Pokemon
             // randomize IVs:
             saveModel.IVs = new PokemonStatSetModel()
             {
-                Atk = GameController.Instance.Random.Next(0, 32),
-                Def = GameController.Instance.Random.Next(0, 32),
-                SpAtk = GameController.Instance.Random.Next(0, 32),
-                SpDef = GameController.Instance.Random.Next(0, 32),
-                HP = GameController.Instance.Random.Next(0, 32),
-                Speed = GameController.Instance.Random.Next(0, 32)
+                Atk = GlobalRandomProvider.Instance.Rnd.Next(0, 32),
+                Def = GlobalRandomProvider.Instance.Rnd.Next(0, 32),
+                SpAtk = GlobalRandomProvider.Instance.Rnd.Next(0, 32),
+                SpDef = GlobalRandomProvider.Instance.Rnd.Next(0, 32),
+                HP = GlobalRandomProvider.Instance.Rnd.Next(0, 32),
+                Speed = GlobalRandomProvider.Instance.Rnd.Next(0, 32)
             };
 
             // set to random nature:
@@ -204,7 +204,7 @@ namespace Pokemon3D.GameModes.Pokemon
             saveModel.Friendship = dataModel.BaseFriendship;
 
             // chance of 1/4096 to be shiny:
-            saveModel.IsShiny = (GameController.Instance.Random.Next(0, 4096) == 0);
+            saveModel.IsShiny = (GlobalRandomProvider.Instance.Rnd.Next(0, 4096) == 0);
 
             saveModel.Nickname = "";
 
