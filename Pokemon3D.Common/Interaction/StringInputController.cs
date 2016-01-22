@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using Pokemon3D.Common.Input;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,12 +43,12 @@ namespace Pokemon3D.Common.Interaction
             }
         }
 
-        private static bool IsAnyShiftKeyDown(KeyboardEx keyboard)
+        private static bool IsAnyShiftKeyDown(KeyboardHandler keyboard)
         {
             return keyboard.IsKeyDownOnce(Keys.RightShift) || keyboard.IsKeyDown(Keys.LeftShift);
         }
 
-        public void Update(KeyboardEx keyboard, float elapsedTime)
+        public void Update(KeyboardHandler keyboard, float elapsedTime)
         {
             if (keyboard.IsKeyDownOnce(Keys.Back) && CurrentText.Length > 0)
             {

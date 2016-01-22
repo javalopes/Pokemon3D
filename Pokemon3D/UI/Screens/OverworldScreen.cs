@@ -48,16 +48,16 @@ namespace Pokemon3D.UI.Screens
             _currentMap?.Update(elapsedTime);
             _scene.Update(elapsedTime);
 
-            if (Game.Keyboard.IsKeyDown(Keys.Escape))
+            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Escape))
             {
                 Game.ScreenManager.SetScreen(typeof(MainMenuScreen));
             }
 
-            if (Game.Keyboard.IsKeyDownOnce(Keys.F12))
+            if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F12))
             {
                 _showRenderStatistics = !_showRenderStatistics;
             }
-            if (Game.Keyboard.IsKeyDownOnce(Keys.F11))
+            if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F11))
             {
                 _renderer.RenderSettings.EnableShadows = !_renderer.RenderSettings.EnableShadows;
                 if (_renderer.RenderSettings.EnableShadows)
@@ -70,7 +70,7 @@ namespace Pokemon3D.UI.Screens
                 }
             }
 
-            if (Game.Keyboard.IsKeyDownOnce(Keys.V))
+            if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.V))
             {
                 if (_player.MovementMode == PlayerMovementMode.GodMode)
                 {
@@ -86,7 +86,7 @@ namespace Pokemon3D.UI.Screens
                 }
             }
 
-            if (Game.Keyboard.IsKeyDownOnce(Keys.F10))
+            if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F10))
             {
                 _player.MovementMode = PlayerMovementMode.GodMode;
                 Game.NotificationBar.PushNotification(NotificationKind.Information, "Enabled God Mode");

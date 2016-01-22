@@ -97,9 +97,7 @@ namespace Pokemon3D.UI.Screens
 
             public override void Update()
             {
-                MouseState mState = Mouse.GetState();
-
-                if (GetRectangle().Contains(mState.Position))
+                if (GetRectangle().Contains(Game.InputSystem.Mouse.Position))
                     Select();
 
                 UpdateOffset();

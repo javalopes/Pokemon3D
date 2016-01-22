@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common;
 using Pokemon3D.Common.Diagnostics;
 using Pokemon3D.Common.Localization;
-using Pokemon3D.FileSystem;
 using Pokemon3D.GameModes;
 using Pokemon3D.Rendering.Data;
 using Pokemon3D.Rendering.GUI;
@@ -12,8 +11,8 @@ using Pokemon3D.UI.Localization;
 using Pokemon3D.UI.Screens;
 using System;
 using Pokemon3D.Collisions;
-using Pokemon3D.Common.FileSystem;
 using Pokemon3D.Common.Resources;
+using Pokemon3D.Common.Input;
 
 namespace Pokemon3D.GameCore
 {
@@ -56,7 +55,7 @@ namespace Pokemon3D.GameCore
         public ScreenManager ScreenManager { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
         public GuiSystem GuiSystem { get; private set; }
-        public KeyboardEx Keyboard { get; private set; }
+        public InputSystem InputSystem { get; private set; }
         public GameConfiguration GameConfig { get; private set; }
         public TranslationProvider TranslationProvider { get; private set; }
         public NotificationBar NotificationBar { get; private set; }
@@ -92,7 +91,7 @@ namespace Pokemon3D.GameCore
             Exiting += OnGameExit;
 
             Instance = this;
-
+         
             Content.RootDirectory = "Content";
             GameConfig = new GameConfiguration();
             GraphicsDeviceManager = new GraphicsDeviceManager(this)
@@ -112,7 +111,7 @@ namespace Pokemon3D.GameCore
             GameModeManager = new GameModeManager();
             Resources = new ResourceManager(GraphicsDevice);
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-            Keyboard = new KeyboardEx();
+            InputSystem = new InputSystem();
             GuiSystem = new GuiSystem(this);
             ShapeRenderer = new ShapeRenderer(SpriteBatch, GraphicsDevice);
             ScreenManager = new ScreenManager();
@@ -147,7 +146,7 @@ namespace Pokemon3D.GameCore
             var elapsedSeconds = gameTime.ElapsedGameTime.Milliseconds * 0.001f;
 
             base.Update(gameTime);
-            Keyboard.Update();
+            InputSystem.Update();
             if (!ScreenManager.Update(elapsedSeconds)) Exit();
             NotificationBar.Update(elapsedSeconds);
         }

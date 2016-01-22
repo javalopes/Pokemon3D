@@ -100,7 +100,7 @@ namespace Pokemon3D.Rendering.GUI
 
             if (_hasFocus)
             {
-                _inputController.Update(GuiSystem.GameContext.Keyboard, elapsedTime);
+                _inputController.Update(GuiSystem.GameContext.InputSystem.Keyboard, elapsedTime);
                 _spriteText.Text = _inputController.CurrentText;
             }
         }

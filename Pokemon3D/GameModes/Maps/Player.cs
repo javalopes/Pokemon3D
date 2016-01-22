@@ -107,20 +107,20 @@ namespace Pokemon3D.GameModes.Maps
             var currentMouseState = Mouse.GetState();
 
             var movementDirection = Vector3.Zero;
-            if (Game.Keyboard.IsKeyDown(Keys.A))
+            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.A))
             {
                 movementDirection.X = -1.0f;
             }
-            else if (Game.Keyboard.IsKeyDown(Keys.D))
+            else if (Game.InputSystem.Keyboard.IsKeyDown(Keys.D))
             {
                 movementDirection.X = 1.0f;
             }
 
-            if (Game.Keyboard.IsKeyDown(Keys.W))
+            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.W))
             {
                 movementDirection.Z = 1.0f;
             }
-            else if (Game.Keyboard.IsKeyDown(Keys.S))
+            else if (Game.InputSystem.Keyboard.IsKeyDown(Keys.S))
             {
                 movementDirection.Z = -1.0f;
             }
@@ -176,7 +176,7 @@ namespace Pokemon3D.GameModes.Maps
 
         private void HandleGodModeMovement(float elapsedTime, MouseState mouseState, Vector3 movementDirection)
         {
-            var speedFactor = Game.Keyboard.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
+            var speedFactor = Game.InputSystem.Keyboard.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
             var step = Speed * elapsedTime * speedFactor;
 
             if (_mouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Pressed)
@@ -192,7 +192,7 @@ namespace Pokemon3D.GameModes.Maps
             {
                 Camera.Translate(Vector3.Normalize(movementDirection) * step);
             }
-            if (Game.Keyboard.IsKeyDown(Keys.Space))
+            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Space))
             {
                 Camera.Position += Vector3.UnitY * step;
             }
@@ -202,11 +202,11 @@ namespace Pokemon3D.GameModes.Maps
         {
             AnimateFigure(elapsedTime, movementDirection);
 
-            if (Game.Keyboard.IsKeyDown(Keys.Left))
+            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Left))
             {
                 SceneNode.RotateY(RotationSpeed * elapsedTime);
             }
-            else if (Game.Keyboard.IsKeyDown(Keys.Right))
+            else if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Right))
             {
                 SceneNode.RotateY(-RotationSpeed * elapsedTime);
             }
@@ -221,19 +221,19 @@ namespace Pokemon3D.GameModes.Maps
                 SceneNode.Translate(Vector3.Normalize(movementDirection) * Speed * elapsedTime);
             }
 
-            if (Game.Keyboard.IsKeyDown(Keys.Left))
+            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Left))
             {
                 SceneNode.RotateY(RotationSpeed * elapsedTime);
             }
-            else if (Game.Keyboard.IsKeyDown(Keys.Right))
+            else if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Right))
             {
                 SceneNode.RotateY(-RotationSpeed * elapsedTime);
             }
-            if (Game.Keyboard.IsKeyDown(Keys.Up))
+            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Up))
             {
                 Camera.RotateX(RotationSpeed * elapsedTime);
             }
-            else if (Game.Keyboard.IsKeyDown(Keys.Down))
+            else if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Down))
             {
                 Camera.RotateX(-RotationSpeed * elapsedTime);
             }

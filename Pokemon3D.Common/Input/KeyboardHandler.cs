@@ -1,15 +1,14 @@
-﻿
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
 
-namespace Pokemon3D.Common
+namespace Pokemon3D.Common.Input
 {
-    public class KeyboardEx
+    public class KeyboardHandler
     {
         private KeyboardState _lastState;
         private KeyboardState _currentState;
         private Keys[] _pressedKeys;
 
-        public KeyboardEx()
+        public KeyboardHandler()
         {
             _currentState = Keyboard.GetState();
         }

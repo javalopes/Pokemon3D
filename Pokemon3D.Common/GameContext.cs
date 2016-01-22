@@ -1,13 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Resources;
 
 namespace Pokemon3D.Common
 {
     public interface GameContext
     {
-        KeyboardEx Keyboard { get; }
+        InputSystem InputSystem { get; }
         ContentManager Content { get; }
         Rectangle ScreenBounds { get; }
         SpriteBatch SpriteBatch { get; }
