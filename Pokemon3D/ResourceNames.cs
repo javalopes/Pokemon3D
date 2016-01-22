@@ -29,6 +29,15 @@ namespace Pokemon3D
             public const string Pokeball = "Textures/Pokeball";
             public const string skybox_texture = "Textures/skybox_texture";
             public const string SquareLogo_256px = "Textures/SquareLogo_256px";
+            
+            public static class UI
+            {
+                
+                public static class Common
+                {
+                    public const string Button_Blank = "Textures/UI/Common/Button_Blank";
+                }
+            }
         }
     }
 }

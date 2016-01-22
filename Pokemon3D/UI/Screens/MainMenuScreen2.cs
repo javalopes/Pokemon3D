@@ -82,7 +82,7 @@ namespace Pokemon3D.UI.Screens
 
             public LeftSideButton(List<Control> group, string text, Vector2 position, Action onClick) : base(group)
             {
-                _texture = Game.Content.Load<Texture2D>(@"Textures\UI\Common\Button_Blank");
+                _texture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
 
                 _text = text;
                 _initialPosition = position;
