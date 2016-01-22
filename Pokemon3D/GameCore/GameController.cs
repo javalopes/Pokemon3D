@@ -135,7 +135,8 @@ namespace Pokemon3D.GameCore
             });
 
 #if DEBUG
-            ScreenManager.SetScreen(typeof(MainMenuScreen));
+            ScreenManager.SetScreen(typeof(MainMenuScreen2));
+            //ScreenManager.SetScreen(typeof(MainMenuScreen));
 #else
             ScreenManager.SetScreen(typeof(IntroScreen));
 #endif
