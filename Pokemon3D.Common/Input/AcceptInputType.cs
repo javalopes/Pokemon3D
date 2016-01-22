@@ -20,6 +20,8 @@ namespace Pokemon3D.Common.Input
         /// <summary>
         /// The A button on the <see cref="Microsoft.Xna.Framework.Input.GamePad"/>.
         /// </summary>
-        AButton = 8
+        AButton = 8,
+        All = EnterKey | SpacebarKey | LeftClick | AButton,
+        Buttons = EnterKey | SpacebarKey | AButton
     }
 }

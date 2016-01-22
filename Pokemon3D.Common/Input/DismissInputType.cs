@@ -20,6 +20,8 @@ namespace Pokemon3D.Common.Input
         /// <summary>
         /// The B button on the <see cref="Microsoft.Xna.Framework.Input.GamePad"/>.
         /// </summary>
-        BButton = 8
+        BButton = 8,
+        All = EKey | EscapeKey | RightClick | BButton,
+        Buttons = EKey | EscapeKey | BButton
     }
 }
