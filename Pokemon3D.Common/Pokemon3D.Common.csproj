@@ -90,6 +90,7 @@
     <Compile Include="KeyboardEx.cs" />
     <Compile Include="LookupDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Texture2DProvider.cs" />
     <Compile Include="ShapeRenderer.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Animations\WaitAnimation.cs" />

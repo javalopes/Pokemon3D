@@ -13,6 +13,7 @@ using Pokemon3D.UI.Screens;
 using System;
 using Pokemon3D.Collisions;
 using Pokemon3D.Common.FileSystem;
+using Pokemon3D.Common.Resources;
 
 namespace Pokemon3D.GameCore
 {
@@ -75,6 +76,8 @@ namespace Pokemon3D.GameCore
         public Rectangle ScreenBounds => Window.ClientBounds;
 
         public ShapeRenderer ShapeRenderer { get; private set; }
+
+        public Texture2DProvider Texture2DProvider { get { return Resources; } }
 
         /// <summary>
         /// A global randomizer instance.

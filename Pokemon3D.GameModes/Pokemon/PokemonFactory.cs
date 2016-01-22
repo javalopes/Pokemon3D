@@ -5,7 +5,7 @@ using Pokemon3D.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Pokemon3D.DataModel.GameMode.Definitions;
+using Pokemon3D.DataModel;
 
 namespace Pokemon3D.GameModes.Pokemon
 {
@@ -26,87 +26,59 @@ namespace Pokemon3D.GameModes.Pokemon
         {
             _gameMode = gameMode;
         }
-
-        private string CreateKey(string pokemonId)
+        
+        public void GetPokemon(string pokemonId, int level, Action<Pokemon> finished)
         {
-            return _gameMode.GetPokemonFilePath(pokemonId);
+            PokemonModel dataModel;
+
+            if (!_pokemonModelCache.TryGetValue(pokemonId, out dataModel))
+            {
+                _gameMode.FileLoader.GetFileAsync(_gameMode.GetPokemonFilePath(pokemonId), (d) =>
+                {
+                    dataModel = DataModel<PokemonModel>.FromByteArray(d.Data);
+                    _pokemonModelCache.Add(pokemonId, dataModel);
+
+                    finished(CreatePokemon(dataModel, level));
+                });
+            }
+            else
+            {
+                finished(CreatePokemon(dataModel, level));
+            }
         }
+        
+        public void GetPokemon(PokemonSaveModel saveModel, Action<Pokemon> finished)
+        {
+            PokemonModel dataModel;
 
-        //public object GetRequestOrPokemon(PokemonSaveModel saveModel)
-        //{
-        //    string key = CreateKey(saveModel.Id);
-        //    if (_pokemonCache.ContainsKey(key))
-        //    {
-        //        var dataModel = _pokemonCache[key];
-        //        return new Pokemon(_gameMode, dataModel, saveModel);
-        //    }
-        //    else
-        //    {
-        //        return CreateDataRequest(saveModel);
-        //    }
-        //}
+            if (!_pokemonModelCache.TryGetValue(saveModel.Id, out dataModel))
+            {
+                _gameMode.FileLoader.GetFileAsync(_gameMode.GetPokemonFilePath(saveModel.Id), (d) =>
+                {
+                    dataModel = DataModel<PokemonModel>.FromByteArray(d.Data);
+                    _pokemonModelCache.Add(saveModel.Id, dataModel);
 
-        ///// <summary>
-        ///// Creates a data request from an already existing save model.
-        ///// </summary>
-        //public PokemonDataRequest CreateDataRequest(PokemonSaveModel saveModel)
-        //{
-        //    var request = new PokemonDataRequest(_gameMode, saveModel);
-        //    request.Finished += FinishedRequest;
-        //    return request;
-        //}
+                    finished(new Pokemon(_gameMode, dataModel, saveModel));
+                });
+            }
+            else
+            {
+                finished(new Pokemon(_gameMode, dataModel, saveModel));
+            }
+        }
+        
+        private Pokemon CreatePokemon(PokemonModel dataModel, int level)
+        {
+            var saveModel = new PokemonSaveModel();
+            PopulateSaveModel(dataModel, saveModel, level);
+            var pokemon = new Pokemon(_gameMode, dataModel, saveModel);
 
-        //public object GetRequestOrPokemon(string pokemonId, int level)
-        //{
-        //    string key = CreateKey(pokemonId);
-        //    if (_pokemonCache.ContainsKey(key))
-        //    {
-        //        var dataModel = _pokemonCache[key];
-        //        var saveModel = new PokemonSaveModel();
-        //        PopulateSaveModel(dataModel, saveModel, level);
-        //        return new Pokemon(_gameMode, dataModel, saveModel);
-        //    }
-        //    else
-        //    {
-        //        return CreateDataRequest(pokemonId, level);
-        //    }
-        //}
+            pokemon.LearnStartupMoves();
+            if (level > 1)
+                pokemon.LevelUp(true, level);
 
-        ///// <summary>
-        ///// Creates a data request from a path to a data model and the starting level of the Pokémon.
-        ///// </summary>
-        //public PokemonDataRequest CreateDataRequest(string pokemonId, int level)
-        //{
-        //    var request = new PokemonDataRequest(_gameMode, CreateKey(pokemonId), level);
-        //    request.Finished += FinishedRequest;
-        //    return request;
-        //}
-
-        //private void FinishedRequest(object sender, EventArgs e)
-        //{
-        //    var request = (PokemonDataRequest)sender;
-
-        //    if (_pokemonCache.ContainsKey(request.DataPath))
-        //        _pokemonCache[request.DataPath] = request.ResultModel;
-        //    else
-        //        _pokemonCache.Add(request.DataPath, request.ResultModel);
-
-        //    if (request.SaveModel == null)
-        //    {
-        //        request.SaveModel = new PokemonSaveModel();
-        //        PopulateSaveModel(request.ResultModel, request.SaveModel, request.StartLevel);
-        //    }
-
-        //    var pokemon = new Pokemon(_gameMode, request.ResultModel, request.SaveModel);
-
-        //    pokemon.LearnStartupMoves();
-        //    if (request.StartLevel > 1)
-        //    {
-        //        pokemon.LevelUp(true, request.StartLevel - 1);
-        //    }
-
-        //    request.ResultPokemon = pokemon;
-        //}
+            return pokemon;
+        }
         
         /// <summary>
         /// Generates a personality value for a Pokémon from 10 random numbers and letters.

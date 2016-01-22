@@ -31,19 +31,19 @@
             },
             "MenuTexture" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Shiny\\Menu"
+                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Menu"
             },
             "FrontSpriteSheet" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Shiny\\Front"
+                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Front"
             },
             "BackSpriteSheet" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Shiny\\Back"
+                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Back"
             },
             "OverworldTexture" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Shiny\\Overworld"
+                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Overworld"
             },
             "Type1" : "Grass",
             "Type2" : null,
@@ -67,19 +67,19 @@
             },
             "MenuTexture" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Default\\Menu"
+                "Source" : "Pokemon\\Bulbasaur\\Default\\Menu"
             },
             "FrontSpriteSheet" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Default\\Front"
+                "Source" : "Pokemon\\Bulbasaur\\Default\\Front"
             },
             "BackSpriteSheet" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Default\\Back"
+                "Source" : "Pokemon\\Bulbasaur\\Default\\Back"
             },
             "OverworldTexture" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Default\\Overworld"
+                "Source" : "Pokemon\\Bulbasaur\\Default\\Overworld"
             },
             "Type1" : "Grass",
             "Type2" : null,

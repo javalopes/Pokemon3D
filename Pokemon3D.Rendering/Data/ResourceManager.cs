@@ -1,6 +1,7 @@
 ﻿using Assimp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common.Resources;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,13 +9,13 @@ using System.Linq;
 
 namespace Pokemon3D.Rendering.Data
 {
-    public class ResourceManager
+    public class ResourceManager : Texture2DProvider
     {
         private readonly Dictionary<string, Texture2D> _texturesByFilePath;
         private readonly Dictionary<string, ModelMesh> _meshCache;
         private readonly Dictionary<string, Mesh> _primitiveMeshCache;
         private readonly GraphicsDevice _device;
-        private GameModeDataProvider _gameModeDataprovider;
+        private GameModeDataProvider _gameModeDataProvider;
 
         public ResourceManager(GraphicsDevice device)
         {
@@ -46,13 +47,17 @@ namespace Pokemon3D.Rendering.Data
 
         public Texture2D GetTexture2D(string filePathContent)
         {
-            var pathWithoutExtension = Path.Combine(_gameModeDataprovider.TexturePath, filePathContent);
+            var pathWithoutExtension = Path.Combine(_gameModeDataProvider.TexturePath, filePathContent);
             Texture2D texture;
             if (!_texturesByFilePath.TryGetValue(pathWithoutExtension, out texture))
             {
-                var pathWithExtension =
-                    Directory.GetFiles(_gameModeDataprovider.TexturePath)
-                             .Single(f => (Path.GetFileNameWithoutExtension(f) ?? "").Equals(filePathContent, StringComparison.OrdinalIgnoreCase));
+                // TODO: refactor this to grab actual extension, not just .png
+                // the code below did not work for files in subfolders, because the call GetFileNameWithoutExtension cuts the directory away.
+                var pathWithExtension = pathWithoutExtension + ".png";
+
+                //var pathWithExtension =
+                //    Directory.GetFiles(_gameModeDataProvider.TexturePath, "*.png", SearchOption.AllDirectories)
+                //             .Single(f => (Path.GetFileNameWithoutExtension(f) ?? "").Equals(filePathContent, StringComparison.OrdinalIgnoreCase));
 
                 //Nasty workaround because of same namespaces in MonoGame and mscorlib related to FileMode:
                 using (var memoryStream = new MemoryStream(File.ReadAllBytes(pathWithExtension)))
@@ -72,7 +77,7 @@ namespace Pokemon3D.Rendering.Data
             Mesh mesh;
             if (!_primitiveMeshCache.TryGetValue(primitiveName, out mesh))
             {
-                mesh = new Mesh(_device, _gameModeDataprovider.GetPrimitiveData(primitiveName));
+                mesh = new Mesh(_device, _gameModeDataProvider.GetPrimitiveData(primitiveName));
                 _primitiveMeshCache.Add(primitiveName, mesh);
             }
             return mesh;
@@ -122,10 +127,10 @@ namespace Pokemon3D.Rendering.Data
 
         public void SetPrimitiveProvider(GameModeDataProvider gameModeDataProvider)
         {
-            if (gameModeDataProvider != _gameModeDataprovider)
+            if (gameModeDataProvider != _gameModeDataProvider)
             {
                 _primitiveMeshCache.Clear();
-                _gameModeDataprovider = gameModeDataProvider;
+                _gameModeDataProvider = gameModeDataProvider;
             }
         }
     }

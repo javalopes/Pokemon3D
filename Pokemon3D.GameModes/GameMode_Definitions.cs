@@ -81,11 +81,11 @@ namespace Pokemon3D.GameModes
         }
 
         /// <summary>
-        /// Returns the path to a pokemon data file, relative to the GameMode's root folder.
+        /// Returns the absolute path to a pokemon data file.
         /// </summary>
         public string GetPokemonFilePath(string pokemonId)
         {
-            return Path.Combine(PATH_DATA, PATH_DATA_POKEMON, pokemonId + JSON_FILE_EXTENSION);
+            return Path.Combine(GameModeInfo.DirectoryPath, PATH_DATA, PATH_DATA_POKEMON, pokemonId + JSON_FILE_EXTENSION);
         }
 
         public string GetPokemonTexturesContentPath()

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Pokemon3D.Common.FileSystem;
 using System.IO;
+using Pokemon3D.DataModel.GameMode.Pokemon;
 
 namespace Pokemon3D.GameModes.Pokemon
 {
@@ -23,22 +24,23 @@ namespace Pokemon3D.GameModes.Pokemon
             _gameMode = gameMode;
         }
 
-        const string KEY_FORMAT = "{0}\\{1}";
+        const string KEY_FORMAT = "{0}\\{1}\\{2}";
 
-        private string CreateKey(string pokemonId, string formId)
+        private string CreateKey(string pokemonId, string formId, string textureSource)
         {
-            return string.Format(KEY_FORMAT, pokemonId, formId);
+            return string.Format(KEY_FORMAT, pokemonId, formId, textureSource);
         }
 
-        public Texture2D GetMenuTexture(string pokemonId, string formId)
+        public Texture2D GetMenuTexture(string pokemonId, string formId, string textureSource)
         {
-            string key = CreateKey(pokemonId, formId);
+            string key = CreateKey(pokemonId, formId, textureSource);
             Texture2D texture;
 
             if (!_menuTextureCache.TryGetValue(key, out texture))
             {
                 // load texture and assign to texture variable.
-                texture = _gameMode.GameContext.Content.Load<Texture2D>(Path.Combine(_gameMode.GetPokemonTexturesContentPath(), pokemonId, formId, "Menu"));
+
+                texture = _gameMode.GameContext.Texture2DProvider.GetTexture2D(textureSource);
                 _menuTextureCache.Add(key, texture);
             }
 

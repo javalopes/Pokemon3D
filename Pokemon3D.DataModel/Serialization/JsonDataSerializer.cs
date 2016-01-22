@@ -42,10 +42,8 @@ namespace Pokemon3D.DataModel.Serialization
         }
 
         /// <summary>
-        /// deserializes byte array to json.
+        /// Deserializes byte array to a data model.
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
         public T FromByteArray(byte[] data)
         {
             // We create a new Json serializer of the given type and a corresponding memory stream here.

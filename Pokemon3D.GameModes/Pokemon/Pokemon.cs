@@ -12,7 +12,7 @@ namespace Pokemon3D.GameModes.Pokemon
     /// <summary>
     /// A Pokémon instance that holds the definition and save data of a Pokémon instance.
     /// </summary>
-    class Pokemon
+    public class Pokemon
     {
         private const string DEFAULT_FORM_VALUE = "Default";
         private const int POKEMON_MAX_LEVEL = 100;
@@ -141,7 +141,7 @@ namespace Pokemon3D.GameModes.Pokemon
             }
         }
         
-        private PokemonFormModel ActiveFormModel
+        internal PokemonFormModel ActiveFormModel
         {
             get { return _dataModel.Forms.Single(x => x.Id == _activeForm); }
         }
@@ -167,7 +167,7 @@ namespace Pokemon3D.GameModes.Pokemon
 
         public Texture2D GetMenuTexture()
         {
-            return _gameMode.PokemonSpriteManager.GetMenuTexture(_dataModel.Id, ActiveFormModel.Id);
+            return _gameMode.PokemonSpriteManager.GetMenuTexture(_dataModel.Id, ActiveFormModel.Id, ActiveFormModel.MenuTexture.Source);
         }
 
         #endregion
