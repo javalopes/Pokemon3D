@@ -33,13 +33,13 @@
             {
                 "Source" : "Textures\\Pokemon\\Bulbasaur\\Shiny\\Menu"
             },
-            "SpriteFrontTexture" : 
+            "FrontSpriteSheet" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Shiny\\SpriteFront"
+                "Source" : "Textures\\Pokemon\\Bulbasaur\\Shiny\\Front"
             },
-            "SpriteBackexture" : 
+            "BackSpriteSheet" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Shiny\\SpriteBack"
+                "Source" : "Textures\\Pokemon\\Bulbasaur\\Shiny\\Back"
             },
             "OverworldTexture" : 
             {
@@ -69,13 +69,13 @@
             {
                 "Source" : "Textures\\Pokemon\\Bulbasaur\\Default\\Menu"
             },
-            "SpriteFrontTexture" : 
+            "FrontSpriteSheet" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Default\\SpriteFront"
+                "Source" : "Textures\\Pokemon\\Bulbasaur\\Default\\Front"
             },
-            "SpriteBackexture" : 
+            "BackSpriteSheet" : 
             {
-                "Source" : "Textures\\Pokemon\\Bulbasaur\\Default\\SpriteBack"
+                "Source" : "Textures\\Pokemon\\Bulbasaur\\Default\\Back"
             },
             "OverworldTexture" : 
             {

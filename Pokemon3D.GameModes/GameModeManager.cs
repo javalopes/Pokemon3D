@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Pokemon3D.Common.DataHandling;
+using Pokemon3D.Common;
 
 namespace Pokemon3D.GameModes
 {
@@ -23,9 +24,9 @@ namespace Pokemon3D.GameModes
             return gameModes.ToArray();
         }
 
-        public GameMode CreateGameMode(GameModeInfo gameModeInfo)
+        public GameMode CreateGameMode(GameModeInfo gameModeInfo, GameContext gameContext)
         {
-            return new GameMode(gameModeInfo, new FileLoader());
+            return new GameMode(gameModeInfo, gameContext, new FileLoader());
         }
     }
 }

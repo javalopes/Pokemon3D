@@ -15,7 +15,7 @@ namespace Pokemon3D.GameModes.Pokemon
     public class PokemonFactory
     {
         private readonly Random _random = new Random();
-        private readonly Dictionary<string, PokemonModel> _pokemonCache = new Dictionary<string, PokemonModel>();
+        private readonly Dictionary<string, PokemonModel> _pokemonModelCache = new Dictionary<string, PokemonModel>();
         private readonly GameMode _gameMode;
 
         private int[] _charCodes;

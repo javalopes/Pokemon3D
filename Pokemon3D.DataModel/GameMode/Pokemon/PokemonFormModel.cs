@@ -22,10 +22,10 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
         public TextureSourceModel MenuTexture;
 
         [DataMember(Order = 4)]
-        public TextureSourceModel SpriteFrontTexture;
+        public PokemonSpriteSheetModel FrontSpriteSheet;
 
         [DataMember(Order = 5)]
-        public TextureSourceModel SpriteBackTexture;
+        public PokemonSpriteSheetModel BackSpriteSheet;
 
         [DataMember(Order = 6)]
         public TextureSourceModel OverworldTexture;
@@ -60,8 +60,8 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
             clone.Activation = Activation.CloneModel();
             clone.BaseStats = BaseStats.CloneModel();
             clone.MenuTexture = MenuTexture.CloneModel();
-            clone.SpriteFrontTexture = SpriteFrontTexture.CloneModel();
-            clone.SpriteBackTexture = SpriteBackTexture.CloneModel();
+            clone.FrontSpriteSheet = FrontSpriteSheet.CloneModel();
+            clone.BackSpriteSheet = BackSpriteSheet.CloneModel();
             clone.OverworldTexture = OverworldTexture.CloneModel();
             clone.Abilities = (string[])Abilities.Clone();
             clone.LevelMoves = (LevelUpMoveModel[])LevelMoves.Clone();

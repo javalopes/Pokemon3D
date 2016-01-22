@@ -9,13 +9,14 @@ using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.DataHandling;
+using Pokemon3D.Common;
 
 namespace Pokemon3D.GameModes
 {
     /// <summary>
     /// Contains methods and members that control a GameMode, a collection of maps, scripts and assets.
     /// </summary>
-    public partial class GameMode :  IDataModelContainer, IDisposable, GameModeDataProvider
+    public partial class GameMode : IDataModelContainer, IDisposable, GameModeDataProvider
     {
         private PrimitiveModel[] _primitiveModels;
         private NatureModel[] _natureModels;
@@ -29,15 +30,20 @@ namespace Pokemon3D.GameModes
 
         public PokemonFactory PokemonFactory { get; private set; }
 
+        internal PokemonSpriteManager PokemonSpriteManager { get; private set; }
+
+        internal GameContext GameContext { get; private set; }
+
         public bool IsValid { get; }
 
         /// <summary>
         /// Creates an instance of the <see cref="GameMode"/> class and loads the data model.
         /// </summary>
-        public GameMode(GameModeInfo gameModeInfo, FileProvider fileLoader)
+        internal GameMode(GameModeInfo gameModeInfo, GameContext gameContext, FileProvider fileLoader)
         {
             GameModeInfo = gameModeInfo;
             FileLoader = fileLoader;
+            GameContext = gameContext;
 
             // only continue if the game mode config file loaded correctly.
             if (GameModeInfo.IsValid)
@@ -45,6 +51,7 @@ namespace Pokemon3D.GameModes
                 MapManager = new MapManager(this);
                 MapFragmentManager = new MapFragmentManager(this);
                 PokemonFactory = new PokemonFactory(this);
+                PokemonSpriteManager = new PokemonSpriteManager(this);
             }
 
             IsValid = true;

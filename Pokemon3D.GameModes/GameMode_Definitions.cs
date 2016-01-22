@@ -87,5 +87,10 @@ namespace Pokemon3D.GameModes
         {
             return Path.Combine(PATH_DATA, PATH_DATA_POKEMON, pokemonId + JSON_FILE_EXTENSION);
         }
+
+        public string GetPokemonTexturesContentPath()
+        {
+            return Path.Combine(GameModeInfo.DirectioryName, PATH_CONTENT, PATH_CONTENT_TEXTURES, "Pokemon");
+        }
     }
 }

@@ -5,6 +5,7 @@ using Pokemon3D.DataModel.Pokemon;
 using Pokemon3D.DataModel.Savegame.Pokemon;
 using Pokemon3D.Common;
 using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.GameModes.Pokemon
 {
@@ -158,6 +159,15 @@ namespace Pokemon3D.GameModes.Pokemon
             {
                 return formModel;
             }
+        }
+
+        #endregion
+
+        #region Textures
+
+        public Texture2D GetMenuTexture()
+        {
+            return _gameMode.PokemonSpriteManager.GetMenuTexture(_dataModel.Id, ActiveFormModel.Id);
         }
 
         #endregion

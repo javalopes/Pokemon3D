@@ -49,7 +49,7 @@ namespace Pokemon3D.UI.Screens
             _loadingText.VerticalAlignment = VerticalAlignment.Top;
 
             var gameModes = Game.GameModeManager.GetGameModeInfos();
-            Game.ActiveGameMode = Game.GameModeManager.CreateGameMode(gameModes.First());
+            Game.ActiveGameMode = Game.GameModeManager.CreateGameMode(gameModes.First(), Game);
             Game.Resources.SetPrimitiveProvider(Game.ActiveGameMode);
             _loadingFinished = false;
             _sw = Stopwatch.StartNew();
