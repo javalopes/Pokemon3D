@@ -149,8 +149,11 @@ namespace Pokemon3D.UI.Screens
 
             public override void Update()
             {
-                if (GetRectangle().Contains(Game.InputSystem.Mouse.Position))
-                    Select();
+                if (Game.InputSystem.Mouse.HasMoved)
+                {
+                    if (GetRectangle().Contains(Game.InputSystem.Mouse.Position))
+                        Select();
+                }
 
                 UpdateOffset();
                 UpdateColor();

@@ -53,6 +53,14 @@ namespace Pokemon3D.Common.Input
             return _currentState.ScrollWheelValue - _lastState.ScrollWheelValue;
         }
 
+        public bool HasMoved
+        {
+            get
+            {
+                return _currentState.Position != _lastState.Position;
+            }
+        }
+
         public void Update()
         {
             _lastState = _currentState;
