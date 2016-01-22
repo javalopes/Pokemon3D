@@ -29,8 +29,8 @@ namespace Pokemon3D.Common.Input
             Mouse.Update();
         }
 
-        private const float FULL_PRESSED_DIRECTION_DELAY = 0.4f;
-        private const float RESET_PRESSED_DIRECTION_DELAY = 0.3f;
+        private const float FULL_PRESSED_DIRECTION_DELAY = 4.0f;
+        private const float RESET_PRESSED_DIRECTION_DELAY = 0.4f;
 
         private float _pressedDirectionDelay;
         private InputDirection _lastPressedDirection = InputDirection.None;
@@ -255,6 +255,72 @@ namespace Pokemon3D.Common.Input
             else if (inputTypes != DirectionalInputTypes.ScrollWheel) // when it's only scroll wheel, do not check the rest.
             {
                 return CheckDirectional(once, InputDirection.Down, inputTypes, Keys.Down, Keys.S, Buttons.LeftThumbstickDown, Buttons.RightThumbstickDown, Buttons.DPadDown);
+            }
+            return false;
+        }
+
+        public bool Accept(AcceptInputTypes inputTypes)
+        {
+            if (inputTypes.HasFlag(AcceptInputTypes.EnterKey))
+            {
+                if (Keyboard.IsKeyDownOnce(Keys.Enter))
+                {
+                    return true;
+                }
+            }
+            if (inputTypes.HasFlag(AcceptInputTypes.SpacebarKey))
+            {
+                if (Keyboard.IsKeyDownOnce(Keys.Space))
+                {
+                    return true;
+                }
+            }
+            if (inputTypes.HasFlag(AcceptInputTypes.LeftClick))
+            {
+                if (Mouse.IsButtonDownOnce(MouseButton.Left))
+                {
+                    return true;
+                }
+            }
+            if (inputTypes.HasFlag(AcceptInputTypes.AButton))
+            {
+                if (GamePad.IsButtonDownOnce(Buttons.A))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool Dismiss(DismissInputTypes inputTypes)
+        {
+            if (inputTypes.HasFlag(DismissInputTypes.EscapeKey))
+            {
+                if (Keyboard.IsKeyDownOnce(Keys.Escape))
+                {
+                    return true;
+                }
+            }
+            if (inputTypes.HasFlag(DismissInputTypes.EKey))
+            {
+                if (Keyboard.IsKeyDownOnce(Keys.E))
+                {
+                    return true;
+                }
+            }
+            if (inputTypes.HasFlag(DismissInputTypes.RightClick))
+            {
+                if (Mouse.IsButtonDownOnce(MouseButton.Right))
+                {
+                    return true;
+                }
+            }
+            if (inputTypes.HasFlag(DismissInputTypes.BButton))
+            {
+                if (GamePad.IsButtonDownOnce(Buttons.B))
+                {
+                    return true;
+                }
             }
             return false;
         }

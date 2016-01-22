@@ -7,19 +7,21 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
 using Microsoft.Xna.Framework.Input;
+using Pokemon3D.Common.Input;
 
 namespace Pokemon3D.UI.Screens
 {
     class MainMenuScreen2 : GameObject, Screen
     {
-        private List<Control> _buttons = new List<Control>();
+        private ControlGroup _buttons = new ControlGroup();
 
         public void OnOpening(object enterInformation)
         {
             _buttons.Add(new LeftSideButton(_buttons, "Start new game", new Vector2(50, 50), null));
-            _buttons.Add(new LeftSideButton(_buttons, "Continue", new Vector2(50, 110), null));
-            _buttons.Add(new LeftSideButton(_buttons, "Continue", new Vector2(50, 170), null));
-            _buttons.Add(new LeftSideButton(_buttons, "Continue", new Vector2(50, 230), null));
+            _buttons.Add(new LeftSideButton(_buttons, "Load game", new Vector2(50, 110), null));
+            _buttons.Add(new LeftSideButton(_buttons, "GameJolt", new Vector2(50, 170), null));
+            _buttons.Add(new LeftSideButton(_buttons, "Options", new Vector2(50, 230), null));
+            _buttons.Add(new LeftSideButton(_buttons, "Exit game", new Vector2(50, 290), null));
         }
 
         public void OnClosing()
@@ -29,23 +31,66 @@ namespace Pokemon3D.UI.Screens
 
         public void OnDraw(GameTime gameTime)
         {
-            Game.GraphicsDevice.Clear(Color.Black);
-            Game.SpriteBatch.Begin();
-            _buttons.ForEach(b => b.Draw());
-            Game.SpriteBatch.End();
+            GameController.Instance.GraphicsDevice.Clear(Color.LightGray);
+            GameController.Instance.SpriteBatch.Begin();
+            _buttons.Draw();
+
+            Game.ShapeRenderer.DrawFilledRectangle(0, Game.ScreenBounds.Height - 50, Game.ScreenBounds.Width, 50, new Color(255, 255, 255, 100));
+            GameController.Instance.SpriteBatch.End();
         }
 
         public void OnUpdate(float elapsedTime)
         {
-            _buttons.ForEach(b => b.Update());
+            _buttons.Update();
+        }
+
+        private class ControlGroup : List<Control>
+        {
+            public void FocusChange(int change)
+            {
+                if (!this.Any(x => x.Selected))
+                {
+                    this[0].Select();
+                }
+                else
+                {
+                    int currentIndex = IndexOf(this.Single(x => x.Selected));
+                    currentIndex += change;
+                    while (currentIndex < 0)
+                        currentIndex += Count;
+                    while (currentIndex >= Count)
+                        currentIndex -= Count;
+
+                    this[currentIndex].Select();
+                }
+            }
+
+            public void Update()
+            {
+                if (GameController.Instance.InputSystem.Up(true, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.WASD | DirectionalInputTypes.ScrollWheel))
+                {
+                    FocusChange(-1);
+                }
+                if (GameController.Instance.InputSystem.Down(true, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.WASD | DirectionalInputTypes.ScrollWheel))
+                {
+                    FocusChange(1);
+                }
+
+                ForEach(b => b.Update());
+            }
+
+            public void Draw()
+            {
+                ForEach(b => b.Draw());
+            }
         }
 
         abstract private class Control : GameObject
         {
-            protected List<Control> Group { get; private set; }
+            protected ControlGroup Group { get; private set; }
             public bool Selected { get; protected set; }
 
-            public Control(List<Control> group)
+            public Control(ControlGroup group)
             {
                 Group = group;
                 Selected = false;
@@ -55,10 +100,14 @@ namespace Pokemon3D.UI.Screens
 
             public abstract void Draw();
 
-            public abstract void Deselect();
+            public virtual void Deselect()
+            {
+                Selected = false;
+            }
 
             public virtual void Select()
             {
+                Selected = true;
                 Group.ForEach(x =>
                 {
                     if (x != this)
@@ -70,6 +119,8 @@ namespace Pokemon3D.UI.Screens
         private class LeftSideButton : Control
         {
             private Texture2D _texture;
+            private SpriteFont _font;
+
             private string _text;
             private Vector2 _initialPosition;
             private Action _onClick;
@@ -80,9 +131,10 @@ namespace Pokemon3D.UI.Screens
             private Color _color = new Color(255, 255, 255);
             private Color _targetColor = new Color(255, 255, 255);
 
-            public LeftSideButton(List<Control> group, string text, Vector2 position, Action onClick) : base(group)
+            public LeftSideButton(ControlGroup group, string text, Vector2 position, Action onClick) : base(group)
             {
                 _texture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
+                _font = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
 
                 _text = text;
                 _initialPosition = position;
@@ -123,12 +175,14 @@ namespace Pokemon3D.UI.Screens
             {
                 base.Select();
 
-                _targetOffset = 50;
+                _targetOffset = 25;
                 _targetColor = new Color(255, 217, 102);
             }
 
             public override void Deselect()
             {
+                base.Deselect();
+
                 _targetOffset = 0;
                 _targetColor = new Color(255, 255, 255);
             }
@@ -136,6 +190,7 @@ namespace Pokemon3D.UI.Screens
             public override void Draw()
             {
                 Game.SpriteBatch.Draw(_texture, GetRectangle(), _color);
+                Game.SpriteBatch.DrawString(_font, _text, new Vector2(_initialPosition.X + _offset + 14, _initialPosition.Y + 8), Color.Black);
             }
         }
     }
