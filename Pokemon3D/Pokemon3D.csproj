@@ -96,7 +96,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourceNames.tt</DependentUpon>
     </Compile>
+    <Compile Include="UI\Framework\ColorTransition.cs" />
+    <Compile Include="UI\Framework\Control.cs" />
+    <Compile Include="UI\Framework\ControlGroup.cs" />
+    <Compile Include="UI\Framework\Dialogs\SelectionDialog.cs" />
     <Compile Include="UI\Framework\HexagonBackground.cs" />
+    <Compile Include="UI\Framework\LeftSideButton.cs" />
+    <Compile Include="UI\Framework\LeftSideCheckbox.cs" />
+    <Compile Include="UI\Framework\OffsetTransition.cs" />
     <Compile Include="UI\Localization\CoreTranslationManager.cs" />
     <Compile Include="GameModes\Resources\GameModei18nManager.cs" />
     <Compile Include="GameCore\Program.cs" />
