@@ -44,8 +44,6 @@ namespace Pokemon3D.GameModes
             GameModeInfo = gameModeInfo;
             FileLoader = fileLoader;
 
-            _textureCache = new Dictionary<string, Texture2D>();
-
             // only continue if the game mode config file loaded correctly.
             if (GameModeInfo.IsValid)
             {
@@ -132,7 +130,7 @@ namespace Pokemon3D.GameModes
                 }).ToArray(),
                 Indices = primitiveModel.Indices.Select(i => (ushort)i).ToArray()
             };
-            mesh = new Mesh(this.GameContext.GraphicsDevice, data);
+            mesh = new Mesh(GameContext.GraphicsDevice, data);
             _meshPrimitivesByName.Add(primitiveName, mesh);
             return mesh;
         }
