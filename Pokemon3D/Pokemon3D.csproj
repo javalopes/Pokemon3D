@@ -94,6 +94,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourceNames.tt</DependentUpon>
     </Compile>
+    <Compile Include="UI\Framework\HexagonBackground.cs" />
     <Compile Include="UI\Localization\CoreTranslationManager.cs" />
     <Compile Include="GameModes\Resources\GameModei18nManager.cs" />
     <Compile Include="GameCore\Program.cs" />

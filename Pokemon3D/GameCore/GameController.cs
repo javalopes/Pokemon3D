@@ -61,6 +61,9 @@ namespace Pokemon3D.GameCore
         public NotificationBar NotificationBar { get; private set; }
         public CollisionManager CollisionManager { get; private set; }
 
+        public event System.EventHandler WindowSizeChanged;
+        private Rectangle _lastScreenBounds;
+
         public string VersionInformation => string.Format("{0} {1}", VERSION, DEVELOPMENT_STAGE);
 
         /// <summary>
@@ -139,14 +142,20 @@ namespace Pokemon3D.GameCore
 #else
             ScreenManager.SetScreen(typeof(IntroScreen));
 #endif
+
+            _lastScreenBounds = ScreenBounds;
         }
 
         protected override void Update(GameTime gameTime)
         {
             var elapsedSeconds = gameTime.ElapsedGameTime.Milliseconds * 0.001f;
-
+            
             base.Update(gameTime);
             InputSystem.Update();
+
+            if (WindowSizeChanged != null && _lastScreenBounds != ScreenBounds)
+                WindowSizeChanged(this, EventArgs.Empty);
+
             if (!ScreenManager.Update(elapsedSeconds)) Exit();
             NotificationBar.Update(elapsedSeconds);
         }
