@@ -12,8 +12,18 @@ namespace Pokemon3D.UI.Framework
     /// </summary>
     class HexagonBackground : GameObject
     {
+        private const int HEXAGON_WIDTH = 26;
+        private const int HEXAGON_HEIGHT = 31;
+        private const int HEXAGON_HEIGHT_HALF = 15;
+
         private class Hexagon
         {
+            private const int MIN_ALPHA = 100;
+            private const int MAX_ALPHA = 200;
+            private const float DELAY_VERTICAL_OFFSET_MULTIPLIER = 0.2f;
+            private const float ALPHA_FADE_EDGE_VALUE = 10f;
+            private const int BLINKING_CHANCE = 40000;
+
             private int _x, _y;
             private float _delay = 0f;
             private float _originalAlpha;
@@ -28,11 +38,11 @@ namespace Pokemon3D.UI.Framework
             {
                 _x = x;
                 _y = y;
-                _targetAlpha = Common.GlobalRandomProvider.Instance.Rnd.Next(100, 200);
-
+                _targetAlpha = Common.GlobalRandomProvider.Instance.Rnd.Next(MIN_ALPHA, MAX_ALPHA);
+                
                 if (hasAnimation)
                 {
-                    _delay = y * 0.2f;
+                    _delay = y * DELAY_VERTICAL_OFFSET_MULTIPLIER;
                     Alpha = 0f;
                 }
                 else
@@ -57,7 +67,7 @@ namespace Pokemon3D.UI.Framework
                     if (Alpha != _targetAlpha)
                     {
                         Alpha = MathHelper.SmoothStep(_targetAlpha, Alpha, 0.7f);
-                        if (Math.Abs(Alpha - _targetAlpha) < 10f)
+                        if (Math.Abs(Alpha - _targetAlpha) < ALPHA_FADE_EDGE_VALUE)
                         {
                             Alpha = _targetAlpha;
                         }
@@ -71,7 +81,7 @@ namespace Pokemon3D.UI.Framework
                         }
                         else
                         {
-                            if (Common.GlobalRandomProvider.Instance.Rnd.Next(0, 40000) == 0)
+                            if (Common.GlobalRandomProvider.Instance.Rnd.Next(0, BLINKING_CHANCE) == 0)
                             {
                                 if (Common.GlobalRandomProvider.Instance.Rnd.Next(0, 2) == 0)
                                     _targetAlpha = 255;
@@ -86,7 +96,7 @@ namespace Pokemon3D.UI.Framework
 
             public Vector2 GetOffset()
             {
-                return new Vector2(_x * 26, _y * 31 - ((_x % 2) * 15));
+                return new Vector2(_x * HEXAGON_WIDTH, _y * HEXAGON_HEIGHT - ((_x % 2) * HEXAGON_HEIGHT_HALF));
             }
         }
 
@@ -109,8 +119,8 @@ namespace Pokemon3D.UI.Framework
         {
             _hexagons.Clear();
 
-            for (int x = -1; x < Game.ScreenBounds.Width / 26 + 1; x++)
-                for (int y = -1; y < Game.ScreenBounds.Height / 15 + 1; y++)
+            for (int x = -1; x < Game.ScreenBounds.Width / HEXAGON_WIDTH + 1; x++)
+                for (int y = -1; y < Game.ScreenBounds.Height / HEXAGON_HEIGHT_HALF + 1; y++)
                     _hexagons.Add(new Hexagon(x, y, hasAnimation));
         }
 
