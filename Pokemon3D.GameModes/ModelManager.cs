@@ -1,21 +1,24 @@
-﻿using Assimp;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using Assimp;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common;
+using Pokemon3D.Rendering.Data;
+using Material = Pokemon3D.Rendering.Data.Material;
+using Mesh = Pokemon3D.Rendering.Data.Mesh;
 
-namespace Pokemon3D.Rendering.Data
+namespace Pokemon3D.GameModes
 {
-    public class ResourceManager
+    public class ModelManager
     {
         private readonly Dictionary<string, ModelMesh> _meshCache;
         private readonly GraphicsDevice _device;
-        public ResourceManager(GraphicsDevice device)
+        public ModelManager(GameContext gameContext)
         {
             _meshCache = new Dictionary<string, ModelMesh>();
-            _device = device;
+            _device = gameContext.GraphicsDevice;
         }
 
         public ModelMesh GetMeshByFilePath(string filePath)

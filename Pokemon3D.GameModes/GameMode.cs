@@ -11,13 +11,14 @@ using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.DataHandling;
 using Pokemon3D.Common;
+using Mesh = Pokemon3D.Rendering.Data.Mesh;
 
 namespace Pokemon3D.GameModes
 {
     /// <summary>
     /// Contains methods and members that control a GameMode, a collection of maps, scripts and assets.
     /// </summary>
-    public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable, GameModeDataProvider
+    public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable
     {
         private readonly Dictionary<string, Mesh> _meshPrimitivesByName = new Dictionary<string, Mesh>(); 
         private readonly Dictionary<string, Texture2D> _textureCache = new Dictionary<string, Texture2D>();
@@ -31,8 +32,8 @@ namespace Pokemon3D.GameModes
         public GameModeInfo GameModeInfo { get; }
         public MapManager MapManager { get; private set; }
         public MapFragmentManager MapFragmentManager { get; private set; }
-
         public PokemonFactory PokemonFactory { get; private set; }
+        public ModelManager ModelManager { get; private set; }
 
         public bool IsValid { get; }
 
@@ -53,6 +54,8 @@ namespace Pokemon3D.GameModes
             }
 
             IsValid = true;
+
+            ModelManager = new ModelManager(GameContext);
         }
 
         public void PreloadAsync(Action finished)

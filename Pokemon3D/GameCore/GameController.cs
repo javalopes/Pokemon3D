@@ -74,8 +74,6 @@ namespace Pokemon3D.GameCore
 
         public GameMode ActiveGameMode { get; set; }
 
-        public ResourceManager Resources { get; private set; }
-
         public Rectangle ScreenBounds => Window.ClientBounds;
 
         public ShapeRenderer ShapeRenderer { get; private set; }
@@ -114,7 +112,6 @@ namespace Pokemon3D.GameCore
             IsMouseVisible = true;
 
             GameModeManager = new GameModeManager();
-            Resources = new ResourceManager(GraphicsDevice);
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             InputSystem = new InputSystem();
             GuiSystem = new GuiSystem(this);
