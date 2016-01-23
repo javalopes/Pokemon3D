@@ -15,7 +15,7 @@ namespace Pokemon3D.Common.Input
 
         public bool IsButtonDownOnce(Buttons button)
         {
-            return _currentState.IsButtonDown(button) && _currentState.IsButtonUp(button);
+            return _currentState.IsButtonDown(button) && _lastState.IsButtonUp(button);
         }
 
         public bool IsButtonDown(Buttons button)

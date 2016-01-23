@@ -15,20 +15,63 @@ namespace Pokemon3D.UI.Screens
     class MainMenuScreen2 : GameObject, Screen
     {
         private ControlGroup _buttons = new ControlGroup();
+        private Texture2D _hexagonTexture;
+        private List<Hexagon> _hexagons = new List<Hexagon>();
+        private Texture2D _testBackTexture;
+
+        class Hexagon
+        {
+            private int _x, _y;
+            private byte _targetAlpha;
+
+            public byte Alpha { get; private set; }
+
+            public Hexagon(int x, int y)
+            {
+                _x = x;
+                _y = y;
+                _targetAlpha = (byte)Common.GlobalRandomProvider.Instance.Rnd.Next(100, 220);
+                Alpha = 0;
+            }
+
+            public Point GetOffset()
+            {
+                if (Alpha < _targetAlpha)
+                    Alpha = (byte)MathHelper.Clamp(MathHelper.SmoothStep(_targetAlpha, Alpha, 0.92f), 0, 255);
+
+                return new Point(_x * 26, _y * 31 - ((_x % 2) * 15));
+            }
+        }
 
         public void OnOpening(object enterInformation)
         {
-            _buttons.Add(new LeftSideButton(_buttons, "Start new game", new Vector2(50, 50), b =>
+            _buttons.Add(new LeftSideButton(_buttons, "Start new game", new Vector2(26, 45), b =>
             {
                 Game.ScreenManager.SetScreen(typeof(GameModeLoadingScreen), typeof(BlendTransition));
             }));
-            _buttons.Add(new LeftSideButton(_buttons, "Load game", new Vector2(50, 110), null));
-            _buttons.Add(new LeftSideButton(_buttons, "GameJolt", new Vector2(50, 170), null));
-            _buttons.Add(new LeftSideButton(_buttons, "Options", new Vector2(50, 230), null));
-            _buttons.Add(new LeftSideButton(_buttons, "Exit game", new Vector2(50, 290), (b) =>
+            _buttons.Add(new LeftSideButton(_buttons, "Load game", new Vector2(26, 107), null));
+            _buttons.Add(new LeftSideButton(_buttons, "GameJolt", new Vector2(26, 169), null));
+            _buttons.Add(new LeftSideButton(_buttons, "Options", new Vector2(26, 231), null));
+            _buttons.Add(new LeftSideButton(_buttons, "Exit game", new Vector2(26, 293), (b) =>
             {
                 Game.ScreenManager.NotifyQuitGame();
             }));
+            _buttons.Add(new LeftSideCheckbox(_buttons, "Checkbox test", new Vector2(26, 355), null));
+
+            _hexagonTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Hexagon);
+            _testBackTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.test_background);
+            GenerateHexagons();
+        }
+
+        private void GenerateHexagons()
+        {
+            for (int x = -1; x < Game.ScreenBounds.Width / 26 + 1; x++)
+            {
+                for (int y = -1; y < Game.ScreenBounds.Height / 15 + 1; y++)
+                {
+                    _hexagons.Add(new Hexagon(x, y));
+                }
+            }
         }
 
         public void OnClosing()
@@ -38,13 +81,29 @@ namespace Pokemon3D.UI.Screens
 
         public void OnDraw(GameTime gameTime)
         {
-            GameController.Instance.GraphicsDevice.Clear(Color.LightGray);
-            GameController.Instance.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
+            Game.GraphicsDevice.Clear(Color.LightGray);
+            Game.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
+
+            //Game.SpriteBatch.Draw(_testBackTexture, Game.ScreenBounds, Color.White);
+
+            foreach (var hexagon in _hexagons)
+            {
+                var offset = hexagon.GetOffset();
+                Game.SpriteBatch.Draw(_hexagonTexture, new Vector2(offset.X, offset.Y), new Color(255, 255, 255, hexagon.Alpha));
+            }
+
+            Game.SpriteBatch.End();
+
+            Game.SpriteBatch.Begin(samplerState: SamplerState.PointWrap,  blendState: BlendState.AlphaBlend);
 
             _buttons.Draw();
 
-            Game.ShapeRenderer.DrawFilledRectangle(0, Game.ScreenBounds.Height - 50, Game.ScreenBounds.Width, 50, new Color(255, 255, 255, 100));
-            GameController.Instance.SpriteBatch.End();
+            Game.ShapeRenderer.DrawFilledRectangle(0, Game.ScreenBounds.Height - 64, Game.ScreenBounds.Width, 64, Color.White);
+
+            Game.SpriteBatch.Draw(Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A), new Rectangle(11, Game.ScreenBounds.Height - 48, 32, 32), new Color(100, 193, 238));
+            Game.SpriteBatch.DrawString(Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont), "Select", new Vector2(56, Game.ScreenBounds.Height - 48), new Color(100, 193, 238));
+
+            Game.SpriteBatch.End();
         }
 
         public void OnUpdate(float elapsedTime)
@@ -75,11 +134,11 @@ namespace Pokemon3D.UI.Screens
 
             public void Update()
             {
-                if (GameController.Instance.InputSystem.Up(true, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.WASD | DirectionalInputTypes.ScrollWheel))
+                if (GameController.Instance.InputSystem.Up(true, DirectionalInputTypes.All))
                 {
                     FocusChange(-1);
                 }
-                if (GameController.Instance.InputSystem.Down(true, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.WASD | DirectionalInputTypes.ScrollWheel))
+                if (GameController.Instance.InputSystem.Down(true, DirectionalInputTypes.All))
                 {
                     FocusChange(1);
                 }
@@ -90,6 +149,59 @@ namespace Pokemon3D.UI.Screens
             public void Draw()
             {
                 ForEach(b => b.Draw());
+            }
+        }
+
+        private class ColorStepper
+        {
+            private Color _color;
+            private float _speedValue;
+
+            public Color Color
+            {
+                get { return _color; }
+            }
+
+            public Color TargetColor { get; set; }
+
+            public ColorStepper(Color startColor, float speedValue)
+            {
+                _color = startColor;
+                TargetColor = startColor;
+                _speedValue = speedValue;
+            }
+
+            public void Update()
+            {
+                if (_color.R != TargetColor.R)
+                    _color.R = (byte)MathHelper.Clamp(MathHelper.SmoothStep(TargetColor.R, _color.R, _speedValue), 0, 255);
+                if (_color.G != TargetColor.G)
+                    _color.G = (byte)MathHelper.Clamp(MathHelper.SmoothStep(TargetColor.G, _color.G, _speedValue), 0, 255);
+                if (_color.B != TargetColor.B)
+                    _color.B = (byte)MathHelper.Clamp(MathHelper.SmoothStep(TargetColor.B, _color.B, _speedValue), 0, 255);
+            }
+        }
+
+        private class OffsetStepper
+        {
+            public float Offset { get; private set; }
+
+            public float TargetOffset { get; set; }
+
+            private float _speedValue;
+
+            public OffsetStepper(float offset, float speedValue)
+            {
+                Offset = offset;
+                TargetOffset = offset;
+                _speedValue = speedValue;
+            }
+
+            public void Update()
+            {
+                Offset = MathHelper.SmoothStep(TargetOffset, Offset, _speedValue);
+                if (Math.Abs(Offset - TargetOffset) < 0.1f)
+                    Offset = TargetOffset;
             }
         }
 
@@ -104,9 +216,16 @@ namespace Pokemon3D.UI.Screens
                 Selected = false;
             }
 
-            public abstract void Update();
+            public virtual void Update()
+            {
+                if (Game.InputSystem.Mouse.HasMoved)
+                    if (GetBounds().Contains(Game.InputSystem.Mouse.Position))
+                        Select();
+            }
 
             public abstract void Draw();
+
+            public abstract Rectangle GetBounds();
 
             public virtual void Deselect()
             {
@@ -130,17 +249,14 @@ namespace Pokemon3D.UI.Screens
             private SpriteFont _font;
 
             private Vector2 _initialPosition;
-            private Action<LeftSideButton> _onClick;
-
-            private float _offset = 0;
-            private float _targetOffset = 0;
-
-            private Color _color = new Color(255, 255, 255);
-            private Color _targetColor = new Color(255, 255, 255);
+            private Action<Control> _onClick;
 
             public string Text { get; set; }
 
-            public LeftSideButton(ControlGroup group, string text, Vector2 position, Action<LeftSideButton> onClick) : base(group)
+            private ColorStepper _colorStepper;
+            private OffsetStepper _offsetStepper;
+
+            public LeftSideButton(ControlGroup group, string text, Vector2 position, Action<Control> onClick) : base(group)
             {
                 _texture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
                 _font = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
@@ -149,75 +265,154 @@ namespace Pokemon3D.UI.Screens
                 _initialPosition = position;
                 _onClick = onClick;
 
+                _colorStepper = new ColorStepper(new Color(255, 255, 255), 0.5f);
+                _offsetStepper = new OffsetStepper(0f, 0.5f);
             }
 
-            private Rectangle GetRectangle()
+            public override Rectangle GetBounds()
             {
-                return new Rectangle((int)(_initialPosition.X + _offset), (int)_initialPosition.Y, 200, 36);
+                return new Rectangle((int)(_initialPosition.X + _offsetStepper.Offset), (int)_initialPosition.Y, 200, 38);
             }
 
             public override void Update()
             {
-                if (Game.InputSystem.Mouse.HasMoved)
-                    if (GetRectangle().Contains(Game.InputSystem.Mouse.Position))
-                        Select();
+                base.Update();
 
                 if (_onClick != null && Selected)
                 {
                     if (Game.InputSystem.Accept(AcceptInputTypes.Buttons) ||
-                        GetRectangle().Contains(Game.InputSystem.Mouse.Position) && Game.InputSystem.Accept(AcceptInputTypes.LeftClick))
+                        GetBounds().Contains(Game.InputSystem.Mouse.Position) && Game.InputSystem.Accept(AcceptInputTypes.LeftClick))
                     {
                         _onClick(this);
                     }
                 }
 
-                UpdateOffset();
-                UpdateColor();
-            }
-
-            private void UpdateOffset()
-            {
-                _offset = MathHelper.SmoothStep(_targetOffset, _offset, 0.5f);
-                if (Math.Abs(_offset - _targetOffset) < 0.1f)
-                {
-                    _offset = _targetOffset;
-                }
-            }
-
-            private void UpdateColor()
-            {
-                if (_color.R != _targetColor.R)
-                    _color.R = (byte)MathHelper.Clamp(MathHelper.SmoothStep(_targetColor.R, _color.R, 0.5f), 0, 255);
-                if (_color.G != _targetColor.G)
-                    _color.G = (byte)MathHelper.Clamp(MathHelper.SmoothStep(_targetColor.G, _color.G, 0.5f), 0, 255);
-                if (_color.B != _targetColor.B)
-                    _color.B = (byte)MathHelper.Clamp(MathHelper.SmoothStep(_targetColor.B, _color.B, 0.5f), 0, 255);
+                _offsetStepper.Update();
+                _colorStepper.Update();
             }
 
             public override void Select()
             {
                 base.Select();
 
-                _targetOffset = 26;
-                _targetColor = new Color(255, 217, 102);
+                _offsetStepper.TargetOffset = 26;
+                _colorStepper.TargetColor = new Color(100, 193, 238);
             }
 
             public override void Deselect()
             {
                 base.Deselect();
 
-                _targetOffset = 0;
-                _targetColor = new Color(255, 255, 255);
+                _offsetStepper.TargetOffset = 0;
+                _colorStepper.TargetColor = new Color(255, 255, 255);
             }
 
             public override void Draw()
             {
-                Game.SpriteBatch.Draw(_texture, GetRectangle(), _color);
-                Game.SpriteBatch.DrawString(_font, Text, new Vector2(_initialPosition.X + _offset + 32, _initialPosition.Y + 9), Color.Black);
+                Game.SpriteBatch.Draw(_texture, GetBounds(), _colorStepper.Color);
+                Game.SpriteBatch.DrawString(_font, Text, new Vector2(_initialPosition.X + _offsetStepper.Offset + 24, _initialPosition.Y + 5), Color.Black);
+            }
+        }
 
-                Game.ShapeRenderer.DrawCircle((int)(_initialPosition.X + _offset + 18), (int)_initialPosition.Y + 16, 10, 6, Color.Black);
+        private class LeftSideCheckbox : Control
+        {
+            public string Text { get; set; }
+
+            private Texture2D _texture;
+            private Texture2D _backTexture;
+            private Texture2D _markTexture;
+            private SpriteFont _font;
+
+            private Action<Control> _onClick;
+            private Vector2 _position;
+
+            private ColorStepper _colorStepper;
+            private OffsetStepper _offsetStepper;
+            private ColorStepper _markColorStepper;
+
+            public bool Checked { get; set; }
+
+            public LeftSideCheckbox(ControlGroup group, string text, Vector2 position, Action<Control> onClick) : base(group)
+            {
+                _texture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
+                _backTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Checkbox_Back);
+                _markTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Checkbox_Mark);
+                _font = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+                _position = position;
+
+                Text = text;
+                _onClick = onClick;
+
+                _colorStepper = new ColorStepper(Color.White, 0.5f);
+                _markColorStepper = new ColorStepper(Color.Black, 0.5f);
+                _offsetStepper = new OffsetStepper(0f, 0.5f);
+            }
+
+            public override Rectangle GetBounds()
+            {
+                if (Text.Length > 0)
+                {
+                    return new Rectangle((int)(_position.X + _offsetStepper.Offset), (int)_position.Y, 200, 36);
+                }
+                else
+                {
+                    return new Rectangle((int)(_position.X + _offsetStepper.Offset), (int)_position.Y, 42, 36);
+                }
+            }
+
+            public override void Update()
+            {
+                base.Update();
+
                 if (Selected)
-                    Game.ShapeRenderer.DrawCircle((int)(_initialPosition.X + _offset + 18), (int)_initialPosition.Y + 16, 3, 3, Color.Black);
+                {
+                    if (Game.InputSystem.Accept(AcceptInputTypes.Buttons) ||
+                        GetBounds().Contains(Game.InputSystem.Mouse.Position) && Game.InputSystem.Accept(AcceptInputTypes.LeftClick))
+                    {
+                        Checked = !Checked;
+
+                        if (_onClick != null)
+                        {
+                            _onClick(this);
+                        }
+                    }
+                }
+
+                _offsetStepper.Update();
+                _colorStepper.Update();
+                _markColorStepper.Update();
+            }
+
+            public override void Select()
+            {
+                base.Select();
+
+                _offsetStepper.TargetOffset = 26;
+                _colorStepper.TargetColor = new Color(100, 193, 238);
+                _markColorStepper.TargetColor = Color.White;
+            }
+
+            public override void Deselect()
+            {
+                base.Deselect();
+
+                _offsetStepper.TargetOffset = 0;
+                _colorStepper.TargetColor = new Color(255, 255, 255);
+                _markColorStepper.TargetColor = Color.Black;
+            }
+
+            public override void Draw()
+            {
+                if (Text.Length > 0)
+                {
+                    Game.SpriteBatch.Draw(_texture, GetBounds(), _colorStepper.Color);
+                    Game.SpriteBatch.DrawString(_font, Text, new Vector2(_position.X + _offsetStepper.Offset + 42, _position.Y + 5), Color.Black);
+                }
+
+                Game.SpriteBatch.Draw(_backTexture, new Rectangle((int)(_position.X + _offsetStepper.Offset), (int)_position.Y, 42, 36), _colorStepper.Color);
+
+                if (Checked)
+                    Game.SpriteBatch.Draw(_markTexture, new Rectangle((int)(_position.X + _offsetStepper.Offset + 11), (int)(_position.Y + 9), 15, 15), _markColorStepper.Color);
             }
         }
     }

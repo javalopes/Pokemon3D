@@ -28,6 +28,7 @@ namespace Pokemon3D.Common.Input
         /// <summary>
         /// The arrow keys of the <see cref="Microsoft.Xna.Framework.Input.Keyboard"/>.
         /// </summary>
-        ArrowKeys = 32
+        ArrowKeys = 32,
+        All = ScrollWheel | DPad | LeftThumbstick | RightThumbstick | WASD | ArrowKeys
     }
 }
