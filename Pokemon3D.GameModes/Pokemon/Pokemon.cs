@@ -165,9 +165,18 @@ namespace Pokemon3D.GameModes.Pokemon
 
         #region Textures
 
-        public Texture2D GetMenuTexture()
+        private const string KEY_FORMAT = "{0}\\{1}\\{2}";
+
+        private AsyncTexture2D GetMenuTexture(string pokemonId, string formId, string textureSource)
         {
-            return _gameMode.PokemonSpriteManager.GetMenuTexture(_dataModel.Id, ActiveFormModel.Id, ActiveFormModel.MenuTexture.Source);
+            var key = string.Format(KEY_FORMAT, pokemonId, formId, textureSource);
+
+            return _gameMode.GetTexture(key);
+        }
+
+        public AsyncTexture2D GetMenuTexture()
+        {
+            return GetMenuTexture(_dataModel.Id, ActiveFormModel.Id, ActiveFormModel.MenuTexture.Source);
         }
 
         #endregion

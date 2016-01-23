@@ -1,7 +1,6 @@
 ﻿using Assimp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common.Resources;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +8,7 @@ using System.Linq;
 
 namespace Pokemon3D.Rendering.Data
 {
-    public class ResourceManager : Texture2DProvider
+    public class ResourceManager
     {
         private readonly Dictionary<string, Texture2D> _texturesByFilePath;
         private readonly Dictionary<string, ModelMesh> _meshCache;

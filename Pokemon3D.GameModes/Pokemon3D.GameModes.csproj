@@ -53,7 +53,6 @@
     <Compile Include="Pokemon\Pokemon.cs" />
     <Compile Include="Pokemon\PokemonExperienceCalculator.cs" />
     <Compile Include="Pokemon\PokemonFactory.cs" />
-    <Compile Include="Pokemon\PokemonSpriteManager.cs" />
     <Compile Include="Pokemon\PokemonStatCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

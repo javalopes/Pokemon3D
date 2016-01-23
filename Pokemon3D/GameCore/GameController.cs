@@ -80,7 +80,6 @@ namespace Pokemon3D.GameCore
 
         public ShapeRenderer ShapeRenderer { get; private set; }
 
-        public Texture2DProvider Texture2DProvider { get { return Resources; } }
         public Dispatcher MainThreadDispatcher { get; }
 
         /// <summary>

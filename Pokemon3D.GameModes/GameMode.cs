@@ -17,7 +17,7 @@ namespace Pokemon3D.GameModes
     /// <summary>
     /// Contains methods and members that control a GameMode, a collection of maps, scripts and assets.
     /// </summary>
-    public partial class GameMode : IDataModelContainer, IDisposable, GameModeDataProvider
+    public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable, GameModeDataProvider
     {
         private readonly Dictionary<string, AsyncTexture2D> _textureCache = new Dictionary<string, AsyncTexture2D>();
         private PrimitiveModel[] _primitiveModels;
@@ -32,20 +32,15 @@ namespace Pokemon3D.GameModes
 
         public PokemonFactory PokemonFactory { get; private set; }
 
-        internal PokemonSpriteManager PokemonSpriteManager { get; private set; }
-
-        internal GameContext GameContext { get; private set; }
-
         public bool IsValid { get; }
 
         /// <summary>
         /// Creates an instance of the <see cref="GameMode"/> class and loads the data model.
         /// </summary>
-        internal GameMode(GameModeInfo gameModeInfo, GameContext gameContext, FileProvider fileLoader)
+        internal GameMode(GameModeInfo gameModeInfo, GameContext gameContext, FileProvider fileLoader) : base(gameContext)
         {
             GameModeInfo = gameModeInfo;
             FileLoader = fileLoader;
-            GameContext = gameContext;
 
             _textureCache = new Dictionary<string, AsyncTexture2D>();
 
@@ -55,7 +50,6 @@ namespace Pokemon3D.GameModes
                 MapManager = new MapManager(this);
                 MapFragmentManager = new MapFragmentManager(this);
                 PokemonFactory = new PokemonFactory(this);
-                PokemonSpriteManager = new PokemonSpriteManager(this);
             }
 
             IsValid = true;
