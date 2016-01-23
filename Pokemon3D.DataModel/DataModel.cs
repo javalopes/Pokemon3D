@@ -70,7 +70,7 @@ namespace Pokemon3D.DataModel
         /// <param name="filename">The file to save the content to.</param>
         public void ToFile(string filename, DataType dataType)
         {
-            string content = ToString();
+            string content = ToString(dataType);
             File.WriteAllText(filename, content);
         }
 
