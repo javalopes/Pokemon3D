@@ -69,6 +69,9 @@ namespace Pokemon3D.UI.Screens
             _dispatcher.Invoke(() => { effect = new WindowsSceneEffect(Game.Content); });
 
             _result.SceneRenderer = SceneRendererFactory.Create(Game, effect, settings);
+            _result.SceneRenderer.AddPostProcessingStep(new HorizontalBlurPostProcessingStep());
+            _result.SceneRenderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
+            _result.SceneRenderer.EnablePostProcessing = false;
 
             _result.Scene = new Scene(Game)
             {

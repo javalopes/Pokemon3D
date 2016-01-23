@@ -11,6 +11,7 @@ using Pokemon3D.Rendering.Compositor;
 using System;
 using System.Collections.Generic;
 using System.Windows.Threading;
+using Pokemon3D.UI.Transitions;
 
 namespace Pokemon3D.UI.Screens
 {
@@ -50,24 +51,17 @@ namespace Pokemon3D.UI.Screens
 
             if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Escape))
             {
-                Game.ScreenManager.SetScreen(typeof(MainMenuScreen));
+                Game.ScreenManager.SetScreen(typeof(MainMenuScreen), typeof(BlendTransition));
+            }
+
+            if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.L))
+            {
+                _renderer.EnablePostProcessing = !_renderer.EnablePostProcessing;
             }
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F12))
             {
                 _showRenderStatistics = !_showRenderStatistics;
-            }
-            if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F11))
-            {
-                _renderer.RenderSettings.EnableShadows = !_renderer.RenderSettings.EnableShadows;
-                if (_renderer.RenderSettings.EnableShadows)
-                {
-                    Game.NotificationBar.PushNotification(NotificationKind.Information, "Enabled Shadows");
-                }
-                else
-                {
-                    Game.NotificationBar.PushNotification(NotificationKind.Information, "Disabled Shadows");
-                }
             }
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.V))
