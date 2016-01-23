@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Windows.Threading;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Input;
@@ -17,5 +18,6 @@ namespace Pokemon3D.Common
         Localization.TranslationProvider TranslationProvider { get; }
         string VersionInformation { get; }
         Texture2DProvider Texture2DProvider { get; }
+        Dispatcher MainThreadDispatcher { get; }
     }
 }

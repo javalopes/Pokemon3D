@@ -201,18 +201,30 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Content\Textures\test_background.xnb" />
-    <None Include="Content\Textures\UI\Common\Checkbox_Back.xnb">
+    <Content Include="Content\Textures\UI\Common\Checkbox_Back.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Common\Checkbox_Mark.xnb">
+    </Content>
+    <Content Include="Content\Textures\UI\Common\Checkbox_Mark.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Common\Hexagon.xnb" />
-    <None Include="Content\Textures\UI\GamePadButtons\Button_A.xnb" />
-    <None Include="Content\Textures\UI\GamePadButtons\Button_B.xnb" />
-    <None Include="Content\Textures\UI\GamePadButtons\Button_Menu.xnb" />
-    <None Include="Content\Textures\UI\GamePadButtons\Button_X.xnb" />
-    <None Include="Content\Textures\UI\GamePadButtons\Button_Y.xnb" />
+    </Content>
+    <Content Include="Content\Textures\UI\Common\Hexagon.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\UI\GamePadButtons\Button_A.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\UI\GamePadButtons\Button_B.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\UI\GamePadButtons\Button_Menu.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\UI\GamePadButtons\Button_X.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\UI\GamePadButtons\Button_Y.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="ResourceNames.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ResourceNames.cs</LastGenOutput>

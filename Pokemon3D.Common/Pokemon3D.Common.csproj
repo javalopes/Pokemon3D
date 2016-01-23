@@ -49,6 +49,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animations\ActionTimer.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Animations\Animator.cs" />
     <Compile Include="Animations\DeltaAnimation.cs" />
     <Compile Include="Animations\DiscreteAnimation.cs" />
+    <Compile Include="AsyncTexture2D.cs" />
     <Compile Include="CollisionResult.cs" />
     <Compile Include="DataHandling\AsyncDataLoader.cs" />
     <Compile Include="DataHandling\DataLoadResult.cs" />

@@ -5,6 +5,7 @@ using Pokemon3D.GameModes.Maps;
 using Pokemon3D.GameModes.Pokemon;
 using Pokemon3D.Rendering.Data;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +19,7 @@ namespace Pokemon3D.GameModes
     /// </summary>
     public partial class GameMode : IDataModelContainer, IDisposable, GameModeDataProvider
     {
+        private readonly Dictionary<string, AsyncTexture2D> _textureCache = new Dictionary<string, AsyncTexture2D>();
         private PrimitiveModel[] _primitiveModels;
         private NatureModel[] _natureModels;
         private TypeModel[] _typeModels;
@@ -45,6 +47,8 @@ namespace Pokemon3D.GameModes
             FileLoader = fileLoader;
             GameContext = gameContext;
 
+            _textureCache = new Dictionary<string, AsyncTexture2D>();
+
             // only continue if the game mode config file loaded correctly.
             if (GameModeInfo.IsValid)
             {
@@ -68,6 +72,25 @@ namespace Pokemon3D.GameModes
             FileLoader.GetFilesOfFolderAsync(MoveFilesPath, d => OnMovesLoaded(d, finished));
         }
 
+        public AsyncTexture2D GetTexture(string filePath)
+        {
+            AsyncTexture2D existing;
+            if (_textureCache.TryGetValue(filePath, out existing)) return existing;
+
+            existing = new AsyncTexture2D();
+            FileLoader.GetFileAsync(Path.Combine(TexturePath, filePath), d =>
+            {
+                GameContext.MainThreadDispatcher.Invoke(() =>
+                {
+                    using (var memoryStream = new MemoryStream(d.Data))
+                    {
+                        existing.SetTexture(Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream));
+                    }
+                });
+            });
+            return existing;
+        }
+        
         private void OnMovesLoaded(DataLoadResult[] data, Action finished)
         {
             _moveModels = data.Select(d => DataModel<MoveModel>.FromByteArray(d.Data)).ToArray();
