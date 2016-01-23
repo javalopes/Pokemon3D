@@ -50,7 +50,6 @@ namespace Pokemon3D.UI.Screens
 
             var gameModes = Game.GameModeManager.GetGameModeInfos();
             Game.ActiveGameMode = Game.GameModeManager.CreateGameMode(gameModes.First(), Game);
-            Game.Resources.SetPrimitiveProvider(Game.ActiveGameMode);
             _loadingFinished = false;
             _sw = Stopwatch.StartNew();
             Game.ActiveGameMode.PreloadAsync(ContinueLoadMap);
@@ -87,24 +86,21 @@ namespace Pokemon3D.UI.Screens
 
         private void FinishedLoadingMapModel(MapModel mapModel)
         {
-            _dispatcher.Invoke(() =>
-            {
-                _result.Map = new Map(Game.ActiveGameMode, mapModel, _result.Scene, Game.Resources);
-                _result.Player = new Player(_result.Scene);
+            _result.Map = new Map(Game.ActiveGameMode, mapModel, _result.Scene);
+            _result.Player = new Player(_result.Scene);
 
-                _result.Map.AddEntity(new NPC(_result.Scene, new DataModel.GameMode.Map.NPCs.RandomNPCModel()
+            _result.Map.AddEntity(new NPC(_result.Scene, new DataModel.GameMode.Map.NPCs.RandomNPCModel()
+            {
+                Name = "Testificate",
+                Behaviour = DataModel.GameMode.Map.NPCs.NPCBehaviour.Roaming,
+                Texture = new DataModel.TextureSourceModel()
                 {
-                    Name = "Testificate",
-                    Behaviour = DataModel.GameMode.Map.NPCs.NPCBehaviour.Roaming,
-                    Texture = new DataModel.TextureSourceModel()
-                    {
-                        Source = "test",
-                        Rectangle = null
-                    },
-                    Chance = 100,
-                    ScriptBinding = "somescript"
-                }));
-            });
+                    Source = "test",
+                    Rectangle = null
+                },
+                Chance = 100,
+                ScriptBinding = "somescript"
+            }));
             _loadingFinished = true;
         }
 

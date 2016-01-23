@@ -10,17 +10,11 @@ namespace Pokemon3D.Rendering.Data
 {
     public class ResourceManager
     {
-        private readonly Dictionary<string, Texture2D> _texturesByFilePath;
         private readonly Dictionary<string, ModelMesh> _meshCache;
-        private readonly Dictionary<string, Mesh> _primitiveMeshCache;
         private readonly GraphicsDevice _device;
-        private GameModeDataProvider _gameModeDataProvider;
-
         public ResourceManager(GraphicsDevice device)
         {
-            _texturesByFilePath = new Dictionary<string, Texture2D>();
             _meshCache = new Dictionary<string, ModelMesh>();
-            _primitiveMeshCache = new Dictionary<string, Mesh>();
             _device = device;
         }
 
@@ -44,51 +38,15 @@ namespace Pokemon3D.Rendering.Data
             return modelMesh;
         }
 
-        public Texture2D GetTexture2D(string filePathContent)
-        {
-            var pathWithoutExtension = Path.Combine(_gameModeDataProvider.TexturePath, filePathContent);
-            Texture2D texture;
-            if (!_texturesByFilePath.TryGetValue(pathWithoutExtension, out texture))
-            {
-                // TODO: refactor this to grab actual extension, not just .png
-                // the code below did not work for files in subfolders, because the call GetFileNameWithoutExtension cuts the directory away.
-                var pathWithExtension = pathWithoutExtension + ".png";
-
-                //var pathWithExtension =
-                //    Directory.GetFiles(_gameModeDataProvider.TexturePath, "*.png", SearchOption.AllDirectories)
-                //             .Single(f => (Path.GetFileNameWithoutExtension(f) ?? "").Equals(filePathContent, StringComparison.OrdinalIgnoreCase));
-
-                //Nasty workaround because of same namespaces in MonoGame and mscorlib related to FileMode:
-                using (var memoryStream = new MemoryStream(File.ReadAllBytes(pathWithExtension)))
-                {
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    texture = Texture2D.FromStream(_device, memoryStream);
-                    texture.Name = pathWithExtension;
-                    _texturesByFilePath.Add(pathWithoutExtension, texture);
-                }
-            }
-
-            return texture;
-        }
-
-        public Mesh GetMeshFromPrimitiveName(string primitiveName)
-        {
-            Mesh mesh;
-            if (!_primitiveMeshCache.TryGetValue(primitiveName, out mesh))
-            {
-                mesh = new Mesh(_device, _gameModeDataProvider.GetPrimitiveData(primitiveName));
-                _primitiveMeshCache.Add(primitiveName, mesh);
-            }
-            return mesh;
-        }
-
         private Material GenerateMaterialFromMesh(int materialIndex, Assimp.Scene assimpScene)
         {
             var assimpMaterial = assimpScene.Materials[materialIndex];
             return new Material
             {
-                DiffuseTexture = string.IsNullOrEmpty(assimpMaterial.TextureDiffuse.FilePath)
-                                        ? null : GetTexture2D(assimpMaterial.TextureDiffuse.FilePath)
+                //TODO: Refactor
+                DiffuseTexture = null
+                //DiffuseTexture = string.IsNullOrEmpty(assimpMaterial.TextureDiffuse.FilePath)
+                //                        ? null : GetTexture2D(assimpMaterial.TextureDiffuse.FilePath)
             };
         }
 
@@ -122,15 +80,6 @@ namespace Pokemon3D.Rendering.Data
             }
 
             return geometryData;
-        }
-
-        public void SetPrimitiveProvider(GameModeDataProvider gameModeDataProvider)
-        {
-            if (gameModeDataProvider != _gameModeDataProvider)
-            {
-                _primitiveMeshCache.Clear();
-                _gameModeDataProvider = gameModeDataProvider;
-            }
         }
     }
 }

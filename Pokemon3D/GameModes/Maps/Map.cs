@@ -1,29 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
-using Pokemon3D.DataModel;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.GameModes.Maps.Generators;
 using Pokemon3D.Rendering;
-using Pokemon3D.Rendering.Data;
-using System;
 using System.Collections.Generic;
 
 namespace Pokemon3D.GameModes.Maps
 {
     class Map
     {
-        private readonly GameMode _gameMode;
         private readonly List<Entity> _allEntities = new List<Entity>();
         private readonly MapModel _mapModel;
 
+        public GameMode GameMode { get; }
         public Scene Scene { get; private set; }
-        public ResourceManager ResourceManager { get; private set; }
 
-        public Map(GameMode gameMode, MapModel mapModel, Scene scene, ResourceManager resourceManager)
+        public Map(GameMode gameMode, MapModel mapModel, Scene scene)
         {
             Scene = scene;
-            ResourceManager = resourceManager;
-            _gameMode = gameMode;
+            GameMode = gameMode;
             _mapModel = mapModel;
 
             if (_mapModel.Entities != null)
@@ -40,7 +35,7 @@ namespace Pokemon3D.GameModes.Maps
             {
                 foreach (var fragmentImport in _mapModel.Fragments)
                 {
-                    _gameMode.MapFragmentManager.LoadFragmentAsync(fragmentImport.Id, l => FinishLoadingMapFragment(fragmentImport, l));
+                    GameMode.MapFragmentManager.LoadFragmentAsync(fragmentImport.Id, l => FinishLoadingMapFragment(fragmentImport, l));
                 }
             }
         }

@@ -171,7 +171,7 @@ namespace Pokemon3D.GameModes.Pokemon
         {
             var key = string.Format(KEY_FORMAT, pokemonId, formId, textureSource);
 
-            return _gameMode.GetTexture(key);
+            return _gameMode.GetTextureAsync(key);
         }
 
         public AsyncTexture2D GetMenuTexture()

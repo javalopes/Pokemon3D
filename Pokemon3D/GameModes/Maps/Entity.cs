@@ -19,7 +19,7 @@ namespace Pokemon3D.GameModes.Maps
     /// </summary>
     class Entity : GameObject
     {
-        public Scene Scene { get; private set; }
+        public Scene Scene { get; }
         public SceneNode SceneNode { get; }
         public RenderMethod RenderMethod => _dataModel.RenderMode.RenderMethod;
 
@@ -30,8 +30,6 @@ namespace Pokemon3D.GameModes.Maps
         private readonly Dictionary<string, EntityComponent> _components = new Dictionary<string, EntityComponent>();
         private readonly Map _map;
         private Collider _collider;
-
-        private ResourceManager Resources => _map.ResourceManager;
 
         public Entity(Map map, EntityModel dataModel, EntityFieldPositionModel fieldSourceModel, Vector3 position) :
             this(map.Scene)
@@ -79,7 +77,7 @@ namespace Pokemon3D.GameModes.Maps
             {
                 if (renderMode.RenderMethod == RenderMethod.Primitive)
                 {
-                    SceneNode.Mesh = map.ResourceManager.GetMeshFromPrimitiveName(renderMode.PrimitiveModelId);
+                    SceneNode.Mesh = map.GameMode.GetPrimitiveMesh(renderMode.PrimitiveModelId);
                     SceneNode.Material.Color = new Color(_dataModel.RenderMode.Shading.GetVector3());
                     SceneNode.Material.CastShadow = true;
                     SceneNode.Material.ReceiveShadow = !_dataModel.RenderMode.UseTransparency;
@@ -165,7 +163,7 @@ namespace Pokemon3D.GameModes.Maps
         {
             var texture = _dataModel.RenderMode.Textures[index];
 
-            var diffuseTexture = Resources.GetTexture2D(texture.Source);
+            var diffuseTexture = _map.GameMode.GetTexture(texture.Source);
             SceneNode.Material.DiffuseTexture = diffuseTexture;
 
             if (texture.Rectangle != null)

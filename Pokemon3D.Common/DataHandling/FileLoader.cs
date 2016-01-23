@@ -63,17 +63,9 @@ namespace Pokemon3D.Common.DataHandling
 
         public byte[] GetFile(string filePath)
         {
-            byte[] data = null;
-            var waitForEnded = new AutoResetEvent(false);
-            LoadAsync(filePath, r =>
-            {
-                data = r.Data;
-                waitForEnded.Set();
-            });
+            var data = OnRequestData(filePath);
 
-            waitForEnded.WaitOne();
-
-            return data;
+            return data.Data;
         }
     }
 }

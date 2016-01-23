@@ -19,7 +19,9 @@ namespace Pokemon3D.GameModes
     /// </summary>
     public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable, GameModeDataProvider
     {
-        private readonly Dictionary<string, AsyncTexture2D> _textureCache = new Dictionary<string, AsyncTexture2D>();
+        private readonly Dictionary<string, Mesh> _meshPrimitivesByName = new Dictionary<string, Mesh>(); 
+        private readonly Dictionary<string, Texture2D> _textureCache = new Dictionary<string, Texture2D>();
+
         private PrimitiveModel[] _primitiveModels;
         private NatureModel[] _natureModels;
         private TypeModel[] _typeModels;
@@ -42,7 +44,7 @@ namespace Pokemon3D.GameModes
             GameModeInfo = gameModeInfo;
             FileLoader = fileLoader;
 
-            _textureCache = new Dictionary<string, AsyncTexture2D>();
+            _textureCache = new Dictionary<string, Texture2D>();
 
             // only continue if the game mode config file loaded correctly.
             if (GameModeInfo.IsValid)
@@ -66,22 +68,36 @@ namespace Pokemon3D.GameModes
             FileLoader.GetFilesOfFolderAsync(MoveFilesPath, d => OnMovesLoaded(d, finished));
         }
 
-        public AsyncTexture2D GetTexture(string filePath)
+        public AsyncTexture2D GetTextureAsync(string filePath)
         {
-            AsyncTexture2D existing;
-            if (_textureCache.TryGetValue(filePath, out existing)) return existing;
+            Texture2D existing;
+            if (_textureCache.TryGetValue(filePath, out existing)) return new AsyncTexture2D(existing);
 
-            existing = new AsyncTexture2D();
-            FileLoader.GetFileAsync(Path.Combine(TexturePath, filePath), d =>
+            var newTextureLoadRequest = new AsyncTexture2D();
+            FileLoader.GetFileAsync(Path.Combine(TexturePath, filePath + ".png"), d =>
             {
                 GameContext.MainThreadDispatcher.Invoke(() =>
                 {
                     using (var memoryStream = new MemoryStream(d.Data))
                     {
-                        existing.SetTexture(Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream));
+                        newTextureLoadRequest.SetTexture(Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream));
                     }
                 });
             });
+            return newTextureLoadRequest;
+        }
+
+        public Texture2D GetTexture(string filePath)
+        {
+            Texture2D existing;
+            if (_textureCache.TryGetValue(filePath, out existing)) return existing;
+
+            using (var memoryStream = new MemoryStream(FileLoader.GetFile(Path.Combine(TexturePath, filePath + ".png"))))
+            {
+                existing = Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream);
+            }
+
+            _textureCache.Add(filePath, existing);
             return existing;
         }
         
@@ -98,24 +114,27 @@ namespace Pokemon3D.GameModes
             _typeModels = DataModel<TypeModel[]>.FromByteArray(data[2].Data);
         }
 
-        public GeometryData GetPrimitiveData(string primitiveName)
+        public Mesh GetPrimitiveMesh(string primitiveName)
         {
-            var primitiveModel = _primitiveModels.SingleOrDefault(x => x.Id == primitiveName);
-            if (primitiveModel != null)
-            {
-                return new GeometryData
-                {
-                    Vertices = primitiveModel.Vertices.Select(v => new VertexPositionNormalTexture
-                    {
-                        Position = v.Position.GetVector3(),
-                        TextureCoordinate = v.TexCoord.GetVector2(),
-                        Normal = v.Normal.GetVector3()
-                    }).ToArray(),
-                    Indices = primitiveModel.Indices.Select(i => (ushort)i).ToArray()
-                };
-            }
+            Mesh mesh;
+            if (_meshPrimitivesByName.TryGetValue(primitiveName, out mesh)) return mesh;
 
-            return null;
+            var primitiveModel = _primitiveModels.SingleOrDefault(x => x.Id == primitiveName);
+            if (primitiveModel == null) return null;
+
+            var data = new GeometryData
+            {
+                Vertices = primitiveModel.Vertices.Select(v => new VertexPositionNormalTexture
+                {
+                    Position = v.Position.GetVector3(),
+                    TextureCoordinate = v.TexCoord.GetVector2(),
+                    Normal = v.Normal.GetVector3()
+                }).ToArray(),
+                Indices = primitiveModel.Indices.Select(i => (ushort)i).ToArray()
+            };
+            mesh = new Mesh(this.GameContext.GraphicsDevice, data);
+            _meshPrimitivesByName.Add(primitiveName, mesh);
+            return mesh;
         }
 
         #region Dispose
