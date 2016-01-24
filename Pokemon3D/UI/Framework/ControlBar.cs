@@ -99,7 +99,7 @@ namespace Pokemon3D.UI.Framework
                     offset += boxWidth;
                 }
 
-                _batch.DrawString(_font, entry.Text, new Vector2(offset + 13, Game.ScreenBounds.Height - 48), _highlightColor);
+                _batch.DrawString(_font, entry.Text, new Vector2(offset + 10, Game.ScreenBounds.Height - 48), _highlightColor);
                 offset += 26 + (int)_font.MeasureString(entry.Text).X;
             }
 

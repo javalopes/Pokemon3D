@@ -1,15 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Pokemon3D.DataModel.GameCore;
-using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
 using Pokemon3D.GameModes.Maps;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
 using System;
-using System.Collections.Generic;
 using System.Windows.Threading;
 using Pokemon3D.UI.Transitions;
 using Pokemon3D.DataModel.Savegame;
@@ -28,22 +25,29 @@ namespace Pokemon3D.UI.Screens
 
         private SpriteFont _debugSpriteFont;
         private bool _showRenderStatistics;
-        
+
+        private bool _isLoaded = false;
+
         public void OnOpening(object enterInformation)
         {
-            _gameMode = Game.ActiveGameMode;
-            _dispatcher = Dispatcher.CurrentDispatcher;
+            if (!_isLoaded)
+            {
+                _gameMode = Game.ActiveGameMode;
+                _dispatcher = Dispatcher.CurrentDispatcher;
 
-            var loadingResult = enterInformation as GameModeLoadingResult;
-            if (loadingResult == null) throw new InvalidOperationException("Did not receive loaded data.");
+                var loadingResult = enterInformation as GameModeLoadingResult;
+                if (loadingResult == null) throw new InvalidOperationException("Did not receive loaded data.");
 
-            _renderer = loadingResult.SceneRenderer;
-            _scene = loadingResult.Scene;
-            _player = loadingResult.Player;
+                _renderer = loadingResult.SceneRenderer;
+                _scene = loadingResult.Scene;
+                _player = loadingResult.Player;
 
-            _debugSpriteFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
+                _debugSpriteFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
 
-            CreateTempSave();
+                CreateTempSave();
+
+                _isLoaded = true;
+            }
         }
 
         private void CreateTempSave()

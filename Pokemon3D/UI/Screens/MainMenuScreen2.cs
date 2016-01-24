@@ -77,11 +77,7 @@ namespace Pokemon3D.UI.Screens
         {
             Game.GraphicsDevice.Clear(Color.LightGray);
             
-            Game.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
-
-            _hexagons.Draw(Game.SpriteBatch);
-
-            Game.SpriteBatch.End();
+            _hexagons.Draw();
             
             _bar.Draw();
 

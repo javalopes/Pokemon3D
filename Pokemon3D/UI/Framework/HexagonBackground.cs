@@ -15,7 +15,7 @@ namespace Pokemon3D.UI.Framework
         private const int HEXAGON_WIDTH = 26;
         private const int HEXAGON_HEIGHT = 31;
         private const int HEXAGON_HEIGHT_HALF = 15;
-
+        
         private class Hexagon
         {
             private const int MIN_ALPHA = 100;
@@ -30,10 +30,12 @@ namespace Pokemon3D.UI.Framework
             private float _targetAlpha;
             private bool _isAnimating = false;
 
+            public bool FinishedIntro { get; private set; }
+
             public float Alpha { get; private set; }
 
             public bool Visible { get { return _delay == 0f; } }
-
+            
             public Hexagon(int x, int y, bool hasAnimation)
             {
                 _x = x;
@@ -70,6 +72,7 @@ namespace Pokemon3D.UI.Framework
                         if (Math.Abs(Alpha - _targetAlpha) < ALPHA_FADE_EDGE_VALUE)
                         {
                             Alpha = _targetAlpha;
+                            FinishedIntro = true;
                         }
                     }
                     else
@@ -102,11 +105,13 @@ namespace Pokemon3D.UI.Framework
 
         private List<Hexagon> _hexagons = new List<Hexagon>();
         private Texture2D _hexagonTexture;
+        private SpriteBatch _batch;
 
         public HexagonBackground()
         {
             Game.WindowSizeChanged += HandleWindowSizeChanged;
             _hexagonTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Hexagon);
+            _batch = new SpriteBatch(Game.GraphicsDevice);
             Generate(true);
         }
 
@@ -127,15 +132,24 @@ namespace Pokemon3D.UI.Framework
         /// <summary>
         /// Draws the hexagon background. SpriteBatch has to be begun.
         /// </summary>
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
+            _batch.Begin(blendState: BlendState.NonPremultiplied);
+
             foreach (Hexagon hexagon in _hexagons.Where(x => x.Visible))
-                spriteBatch.Draw(_hexagonTexture, hexagon.GetOffset(), new Color(255, 255, 255, (byte)hexagon.Alpha));
+                _batch.Draw(_hexagonTexture, hexagon.GetOffset(), new Color(255, 255, 255, (byte)hexagon.Alpha));
+
+            _batch.End();
         }
 
         public void Update()
         {
             _hexagons.ForEach(x => x.Update());
+        }
+
+        public bool FinishedIntroAnimation
+        {
+            get { return _hexagons.All(h => h.FinishedIntro); } 
         }
     }
 }
