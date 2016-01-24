@@ -98,6 +98,7 @@
     </Compile>
     <Compile Include="UI\Framework\ColorTransition.cs" />
     <Compile Include="UI\Framework\Control.cs" />
+    <Compile Include="UI\Framework\ControlBar.cs" />
     <Compile Include="UI\Framework\ControlGroup.cs" />
     <Compile Include="UI\Framework\DefaultControlGroup.cs" />
     <Compile Include="UI\Framework\Dialogs\ModalDialog.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="UI\Screens\InitializeableScreen.cs" />
     <Compile Include="UI\Screens\LoadGameScreen.cs" />
     <Compile Include="UI\Screens\MainMenuScreen2.cs" />
+    <Compile Include="UI\Screens\OverlayScreen.cs" />
     <Compile Include="UI\Screens\OverworldScreen.cs" />
     <Compile Include="UI\Transitions\BlendTransition.cs" />
     <Compile Include="UI\Screens\IntroScreen.cs" />

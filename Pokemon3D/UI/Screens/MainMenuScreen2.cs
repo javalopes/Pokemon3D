@@ -8,6 +8,7 @@ using Pokemon3D.Common.Input;
 using Pokemon3D.UI.Transitions;
 using Pokemon3D.UI.Framework;
 using Pokemon3D.UI.Framework.Dialogs;
+using Microsoft.Xna.Framework.Input;
 
 namespace Pokemon3D.UI.Screens
 {
@@ -17,6 +18,7 @@ namespace Pokemon3D.UI.Screens
         private SelectionDialog _closeDialog;
 
         private HexagonBackground _hexagons = new HexagonBackground();
+        private ControlBar _bar = new ControlBar();
         
         public void OnOpening(object enterInformation)
         {
@@ -57,6 +59,8 @@ namespace Pokemon3D.UI.Screens
 
             _buttons.Active = true;
             _buttons.Visible = true;
+
+            _bar.AddEntry("Select", Buttons.A, Keys.Enter);
         }
         
         private void HandleCloseDialogShown(ControlGroup sender)
@@ -78,15 +82,8 @@ namespace Pokemon3D.UI.Screens
             _hexagons.Draw(Game.SpriteBatch);
 
             Game.SpriteBatch.End();
-
-            Game.SpriteBatch.Begin(samplerState: SamplerState.PointWrap, blendState: BlendState.AlphaBlend);
-
-            Game.ShapeRenderer.DrawFilledRectangle(0, Game.ScreenBounds.Height - 64, Game.ScreenBounds.Width, 64, Color.White);
-
-            Game.SpriteBatch.Draw(Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A), new Rectangle(11, Game.ScreenBounds.Height - 48, 32, 32), new Color(100, 193, 238));
-            Game.SpriteBatch.DrawString(Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont), "Select", new Vector2(56, Game.ScreenBounds.Height - 48), new Color(100, 193, 238));
-
-            Game.SpriteBatch.End();
+            
+            _bar.Draw();
 
             _buttons.Draw();
 

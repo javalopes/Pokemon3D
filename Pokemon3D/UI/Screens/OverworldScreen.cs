@@ -98,6 +98,11 @@ namespace Pokemon3D.UI.Screens
                 }
             }
 
+            if (Game.InputSystem.GamePad.IsButtonDownOnce(Buttons.X))
+            {
+                Game.ScreenManager.SetScreen(typeof(OverlayScreen), enterInformation: this);
+            }
+
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F10))
             {
                 _player.MovementMode = PlayerMovementMode.GodMode;
