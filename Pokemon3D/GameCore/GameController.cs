@@ -143,6 +143,7 @@ namespace Pokemon3D.GameCore
 #endif
 
             _lastScreenBounds = ScreenBounds;
+            GraphicsDevice.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
         }
 
         protected override void Update(GameTime gameTime)

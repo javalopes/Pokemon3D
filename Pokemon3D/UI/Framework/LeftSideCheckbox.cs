@@ -108,20 +108,25 @@ namespace Pokemon3D.UI.Framework
             _markColorStepper.TargetColor = Color.Black;
         }
 
-        public override void Draw()
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (Text.Length > 0)
             {
-                Game.SpriteBatch.Draw(_texture, GetBounds(), _colorStepper.Color);
-                Game.SpriteBatch.DrawString(_font, Text, new Vector2(_position.X + _offsetStepper.Offset + 42, _position.Y + 5), Color.Black);
+                spriteBatch.Draw(_texture, GetBounds(), _colorStepper.Color);
+                spriteBatch.DrawString(_font, Text, new Vector2(_position.X + _offsetStepper.Offset + 42, _position.Y + 5), Color.Black);
             }
 
-            Game.SpriteBatch.Draw(_backTexture, new Rectangle((int)(_position.X + _offsetStepper.Offset), (int)_position.Y, 42, 38), _colorStepper.Color);
+            spriteBatch.Draw(_backTexture, new Rectangle((int)(_position.X + _offsetStepper.Offset), (int)_position.Y, 42, 38), _colorStepper.Color);
 
             if (Checked || _checkSize > 0)
-                Game.SpriteBatch.Draw(_markTexture,
+                spriteBatch.Draw(_markTexture,
                     new Rectangle((int)(_position.X + _offsetStepper.Offset + 19 - _checkSize / 2), (int)(_position.Y + 17 - _checkSize / 2), _checkSize, _checkSize),
                     _markColorStepper.Color);
+        }
+
+        public override void SetPosition(Vector2 position)
+        {
+            _position = position;
         }
     }
 }

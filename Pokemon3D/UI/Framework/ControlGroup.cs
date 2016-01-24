@@ -1,4 +1,5 @@
-﻿using Pokemon3D.Common.Input;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common.Input;
 using Pokemon3D.GameCore;
 using System;
 using System.Collections.Generic;
@@ -8,16 +9,32 @@ using System.Threading.Tasks;
 
 namespace Pokemon3D.UI.Framework
 {
-    class ControlGroup
+    /// <summary>
+    /// Groups together controls and manages them.
+    /// </summary>
+    abstract class ControlGroup : GameObject
     {
-        private List<Control> _controls;
+        protected List<Control> _controls;
 
-        public ControlGroup()
+        /// <summary>
+        /// If this control group gets drawn.
+        /// </summary>
+        public bool Visible { get; set; } = false;
+
+        /// <summary>
+        /// If this control group gets updated.
+        /// </summary>
+        public bool Active { get; set; } = false;
+
+        protected ControlGroup()
         {
             _controls = new List<Control>();
         }
 
-        public void SelectionChange(int change)
+        /// <summary>
+        /// Moves the selection index by a certain amount (negative to move up).
+        /// </summary>
+        public void MoveSelection(int change)
         {
             if (!_controls.Any(x => x.Selected))
             {
@@ -36,30 +53,34 @@ namespace Pokemon3D.UI.Framework
             }
         }
 
+        /// <summary>
+        /// Sets the selection index to a given index.
+        /// </summary>
         public void SetSelection(int index)
         {
             _controls[index].Select();
         }
 
-        public void Update()
+        public virtual void Update()
         {
-            if (GameController.Instance.InputSystem.Up(true, DirectionalInputTypes.All))
-            {
-                SelectionChange(-1);
-            }
-            if (GameController.Instance.InputSystem.Down(true, DirectionalInputTypes.All))
-            {
-                SelectionChange(1);
-            }
-
-            _controls.ForEach(b => b.Update());
+            if (Active)
+                _controls.ForEach(b => b.Update());
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
-            _controls.ForEach(b => b.Draw());
+            InternalDraw(Game.SpriteBatch);
+        }
+        
+        protected void InternalDraw(SpriteBatch spriteBatch)
+        {
+            if (Visible)
+                _controls.ForEach(b => b.Draw(spriteBatch));
         }
 
+        /// <summary>
+        /// Performs an action on each control in the group.
+        /// </summary>
         public void ForEach(Action<Control> action)
         {
             _controls.ForEach(action);

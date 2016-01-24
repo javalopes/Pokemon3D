@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Pokemon3D.UI.Framework
 {
+    /// <summary>
+    /// Performs a transition between two float values.
+    /// </summary>
     class OffsetTransition
     {
+        /// <summary>
+        /// The current value.
+        /// </summary>
         public float Offset { get; private set; }
 
         public float TargetOffset { get; set; }

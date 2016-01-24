@@ -99,6 +99,8 @@
     <Compile Include="UI\Framework\ColorTransition.cs" />
     <Compile Include="UI\Framework\Control.cs" />
     <Compile Include="UI\Framework\ControlGroup.cs" />
+    <Compile Include="UI\Framework\DefaultControlGroup.cs" />
+    <Compile Include="UI\Framework\Dialogs\ModalDialog.cs" />
     <Compile Include="UI\Framework\Dialogs\SelectionDialog.cs" />
     <Compile Include="UI\Framework\HexagonBackground.cs" />
     <Compile Include="UI\Framework\LeftSideButton.cs" />

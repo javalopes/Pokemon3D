@@ -1,16 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pokemon3D.UI.Framework
 {
+    /// <summary>
+    /// Represents a control that the user can interact with on a screen.
+    /// </summary>
     abstract class Control : GameObject
     {
+        /// <summary>
+        /// The <see cref="ControlGroup"/> this control belongs to.
+        /// </summary>
         public ControlGroup Group { get; set; }
+        /// <summary>
+        /// If this control is selected inside its control group.
+        /// </summary>
         public bool Selected { get; protected set; }
 
         public Control(ControlGroup group)
@@ -26,9 +31,11 @@ namespace Pokemon3D.UI.Framework
                     Select();
         }
 
-        public abstract void Draw();
+        public abstract void Draw(SpriteBatch spriteBatch);
 
         public abstract Rectangle GetBounds();
+
+        public abstract void SetPosition(Vector2 position);
 
         public virtual void Deselect()
         {
