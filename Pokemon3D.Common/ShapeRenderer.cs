@@ -40,6 +40,11 @@ namespace Pokemon3D.Common
             _spriteBatch.Draw(_blank, new Rectangle(x, y, width, height), color);
         }
 
+        public void DrawFilledRectangle(Rectangle rectangle, Color color)
+        {
+            _spriteBatch.Draw(_blank, rectangle, color);
+        }
+
         public void DrawRectangle(Rectangle target, Color color)
         {
             DrawRectangle(target.X, target.Y, target.Width, target.Height, color);

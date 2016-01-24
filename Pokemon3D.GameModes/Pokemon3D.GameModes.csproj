@@ -63,6 +63,7 @@
     <Compile Include="Pokemon\PokemonFactory.cs" />
     <Compile Include="Pokemon\PokemonStatCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Pokemon3D.Common\Pokemon3D.Common.csproj">

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Threading;
 using Pokemon3D.UI.Transitions;
+using Pokemon3D.DataModel.Savegame;
 
 namespace Pokemon3D.UI.Screens
 {
@@ -41,6 +42,23 @@ namespace Pokemon3D.UI.Screens
             _player = loadingResult.Player;
 
             _debugSpriteFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
+
+            CreateTempSave();
+        }
+
+        private void CreateTempSave()
+        {
+            var dataModel = new SaveFileModel();
+            dataModel.PlayerData = new PlayerModel();
+            dataModel.GameMode = "TestGM";
+            dataModel.Items = new DataModel.Savegame.Inventory.InventoryItemModel[] { };
+            dataModel.Pokedex = new DataModel.Savegame.Pokemon.PokedexSaveModel();
+            dataModel.Pokemon = new DataModel.Savegame.Pokemon.PokemonSaveModel[] { new DataModel.Savegame.Pokemon.PokemonSaveModel()
+            {
+                Id = "Bulbasaur"
+            } } ;
+
+            Game.LoadedSave = new SaveGame(dataModel);
         }
 
         public void OnUpdate(float elapsedTime)

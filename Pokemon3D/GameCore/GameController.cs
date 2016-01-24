@@ -4,7 +4,6 @@ using Pokemon3D.Common;
 using Pokemon3D.Common.Diagnostics;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.GameModes;
-using Pokemon3D.Rendering.Data;
 using Pokemon3D.Rendering.GUI;
 using Pokemon3D.UI;
 using Pokemon3D.UI.Localization;
@@ -12,7 +11,6 @@ using Pokemon3D.UI.Screens;
 using System;
 using System.Windows.Threading;
 using Pokemon3D.Collisions;
-using Pokemon3D.Common.Resources;
 using Pokemon3D.Common.Input;
 
 namespace Pokemon3D.GameCore
@@ -79,11 +77,8 @@ namespace Pokemon3D.GameCore
         public ShapeRenderer ShapeRenderer { get; private set; }
 
         public Dispatcher MainThreadDispatcher { get; }
-
-        /// <summary>
-        /// A global randomizer instance.
-        /// </summary>
-        public Random Random { get; private set; }
+        
+        public SaveGame LoadedSave { get; set; }
 
         public GameController()
         {
@@ -101,7 +96,6 @@ namespace Pokemon3D.GameCore
                 PreferredBackBufferWidth = GameConfig.WindowSize.Width,
                 PreferredBackBufferHeight = GameConfig.WindowSize.Height
             };
-            Random = new Random();
             MainThreadDispatcher = Dispatcher.CurrentDispatcher;
         }
 

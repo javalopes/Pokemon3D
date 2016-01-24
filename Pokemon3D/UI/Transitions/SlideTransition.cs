@@ -39,7 +39,7 @@ namespace Pokemon3D.UI.Transitions
         {
             var offset = (_elapsedTime/_transitionTime)*Game.ScreenBounds.Width;
 
-            Game.SpriteBatch.Begin();
+            Game.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
 
             Game.SpriteBatch.Draw(_source, new Vector2(-offset, 0.0f), Color.White);
             Game.SpriteBatch.Draw(_target, new Vector2(Game.ScreenBounds.Width-offset, 0.0f), Color.White);

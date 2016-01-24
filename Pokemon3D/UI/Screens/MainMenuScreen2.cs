@@ -28,10 +28,10 @@ namespace Pokemon3D.UI.Screens
             {
                 Game.ScreenManager.SetScreen(typeof(GameModeLoadingScreen), typeof(BlendTransition));
             }));
-            _buttons.Add(new LeftSideButton("Load game", new Vector2(26, 107), null)
+            _buttons.Add(new LeftSideButton("Load game", new Vector2(26, 107), b =>
             {
-                Enabled = false
-            });
+                Game.ScreenManager.SetScreen(typeof(LoadGameScreen), enterInformation: this);
+            }));
             _buttons.Add(new LeftSideButton("GameJolt", new Vector2(26, 169), null));
             _buttons.Add(new LeftSideButton("Options", new Vector2(26, 231), null));
             _buttons.Add(new LeftSideButton("Exit game", new Vector2(26, 293), (b) =>

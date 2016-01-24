@@ -1,47 +1,49 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Pokemon3D.GameCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.GameCore;
+using Microsoft.Xna.Framework;
 
 namespace Pokemon3D.UI.Transitions
 {
-    class BlendTransition : GameObject, ScreenTransition
+    class FadeTransition : GameObject, ScreenTransition
     {
         private Texture2D _source;
         private Texture2D _target;
-        private float _elapsedTime;
-        private float _transitionTime;
+
+        private int _alpha = 0;
+
+        public bool IsFinished { get; private set; }
 
         public void StartTransition(Texture2D source, Texture2D target)
         {
             _source = source;
             _target = target;
             IsFinished = false;
-            _elapsedTime = 0.0f;
-            _transitionTime = 1.0f;
         }
-
-        public bool IsFinished { get; private set; }
 
         public void Update(float elapsedTimeSeconds)
         {
             if (IsFinished) return;
-            _elapsedTime += elapsedTimeSeconds;
-
-            if (_elapsedTime >= _transitionTime)
+            if (_alpha >= 255)
             {
                 IsFinished = true;
-                _elapsedTime = _transitionTime;
+            }
+            else
+            {
+                _alpha += 10;
             }
         }
 
         public void Draw()
         {
-            var alpha = _elapsedTime/_transitionTime;
-
             Game.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
 
-            Game.SpriteBatch.Draw(_target, Vector2.Zero, Color.White * alpha);
-            Game.SpriteBatch.Draw(_source, Vector2.Zero, Color.White * (1.0f-alpha));
+            Game.SpriteBatch.Draw(_source, Vector2.Zero, Color.White);
+            Game.SpriteBatch.Draw(_target, Vector2.Zero, new Color(255, 255, 255, _alpha));
 
             Game.SpriteBatch.End();
         }

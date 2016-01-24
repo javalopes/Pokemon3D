@@ -10,9 +10,8 @@ namespace Pokemon3D.FileSystem
     /// </summary>
     class StaticPathProvider : PathProvider
     {
-        #region Configuration
-
         private const string CONFIG_FILE_NAME = "configuration.json";
+        private const string SAVE_PATH = "Saves";
 
         /// <summary>
         /// The path to the main configuration file of the game.
@@ -25,6 +24,15 @@ namespace Pokemon3D.FileSystem
             }
         }
 
-        #endregion
+        /// <summary>
+        /// The path to the save files.
+        /// </summary>
+        public static string SavePath
+        {
+            get
+            {
+                return Path.Combine(StartupPath, SAVE_PATH);
+            }
+        }
     }
 }

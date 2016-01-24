@@ -118,6 +118,7 @@
     <Compile Include="UI\Screens\GameModeLoadingResult.cs" />
     <Compile Include="UI\Screens\GameModeLoadingScreen.cs" />
     <Compile Include="UI\Screens\InitializeableScreen.cs" />
+    <Compile Include="UI\Screens\LoadGameScreen.cs" />
     <Compile Include="UI\Screens\MainMenuScreen2.cs" />
     <Compile Include="UI\Screens\OverworldScreen.cs" />
     <Compile Include="UI\Transitions\BlendTransition.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="UI\Screens\MainMenuScreen.cs" />
     <Compile Include="UI\Screens\Screen.cs" />
     <Compile Include="UI\Screens\ScreenManager.cs" />
+    <Compile Include="UI\Transitions\FadeTransition.cs" />
     <Compile Include="UI\Transitions\ScreenTransition.cs" />
     <Compile Include="UI\Transitions\SlideTransition.cs" />
     <Compile Include="UI\WindowsSceneEffect.cs" />
