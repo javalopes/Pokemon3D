@@ -68,7 +68,7 @@ namespace Pokemon3D.Common.Input
             }
             return false;
         }
-        
+
         private bool CheckDirectional(bool once, InputDirection direction, DirectionalInputTypes inputTypes,
                                              Keys arrowKey, Keys WASDKey, Buttons leftThumbstick, Buttons rightThumbstick, Buttons dPadDirection)
         {
@@ -189,15 +189,15 @@ namespace Pokemon3D.Common.Input
                                           Keys arrowKey, Keys WASDKey, Buttons leftThumbstick, Buttons rightThumbstick, Buttons dPadDirection)
         {
             if (inputTypes.HasFlag(DirectionalInputTypes.ArrowKeys))
-                return Keyboard.IsKeyDown(arrowKey);
+                if (Keyboard.IsKeyDown(arrowKey)) return true;
             if (inputTypes.HasFlag(DirectionalInputTypes.WASD))
-                return Keyboard.IsKeyDown(WASDKey);
+                if (Keyboard.IsKeyDown(WASDKey)) return true;
             if (inputTypes.HasFlag(DirectionalInputTypes.LeftThumbstick))
-                return GamePad.IsButtonDown(leftThumbstick);
+                if (GamePad.IsButtonDown(leftThumbstick)) return true;
             if (inputTypes.HasFlag(DirectionalInputTypes.RightThumbstick))
-                return GamePad.IsButtonDown(rightThumbstick);
+                if (GamePad.IsButtonDown(rightThumbstick)) return true;
             if (inputTypes.HasFlag(DirectionalInputTypes.DPad))
-                return GamePad.IsButtonDown(dPadDirection);
+                if (GamePad.IsButtonDown(dPadDirection)) return true;
 
             return false;
         }

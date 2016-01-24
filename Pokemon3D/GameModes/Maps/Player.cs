@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Animations;
 using Pokemon3D.Common.Extensions;
+using Pokemon3D.Common.Input;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 using System;
@@ -107,20 +108,20 @@ namespace Pokemon3D.GameModes.Maps
             var currentMouseState = Mouse.GetState();
 
             var movementDirection = Vector3.Zero;
-            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.A))
+            if (Game.InputSystem.Left(false, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.X = -1.0f;
             }
-            else if (Game.InputSystem.Keyboard.IsKeyDown(Keys.D))
+            else if (Game.InputSystem.Right(false, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.X = 1.0f;
             }
 
-            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.W))
+            if (Game.InputSystem.Up(false, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.Z = 1.0f;
             }
-            else if (Game.InputSystem.Keyboard.IsKeyDown(Keys.S))
+            else if (Game.InputSystem.Down(false, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.Z = -1.0f;
             }
@@ -202,11 +203,11 @@ namespace Pokemon3D.GameModes.Maps
         {
             AnimateFigure(elapsedTime, movementDirection);
 
-            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Left))
+            if (Game.InputSystem.Left(false, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
             {
                 SceneNode.RotateY(RotationSpeed * elapsedTime);
             }
-            else if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Right))
+            else if (Game.InputSystem.Right(false, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
             {
                 SceneNode.RotateY(-RotationSpeed * elapsedTime);
             }
