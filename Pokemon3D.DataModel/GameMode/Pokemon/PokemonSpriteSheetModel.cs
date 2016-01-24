@@ -13,10 +13,7 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
 
         [DataMember(Order = 1)]
         public SizeModel FrameSize;
-
-        [DataMember(Order = 2)]
-        public int FrameCount;
-
+        
         public override object Clone()
         {
             var clone = (PokemonSpriteSheetModel)MemberwiseClone();
