@@ -98,7 +98,6 @@
     <Compile Include="GUI\VerticalAlignment.cs" />
     <Compile Include="Data\Material.cs" />
     <Compile Include="Data\Mesh.cs" />
-    <Compile Include="Data\ModelMesh.cs" />
     <Compile Include="Compositor\PostProcessingStep.cs" />
     <Compile Include="Light.cs" />
     <Compile Include="LightType.cs" />

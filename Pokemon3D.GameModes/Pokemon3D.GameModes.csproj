@@ -56,7 +56,6 @@
     <Compile Include="IGameModeComponent.cs" />
     <Compile Include="Maps\MapFragmentManager.cs" />
     <Compile Include="Maps\MapManager.cs" />
-    <Compile Include="ModelManager.cs" />
     <Compile Include="ModelMesh.cs" />
     <Compile Include="Pokemon\Pokemon.cs" />
     <Compile Include="Pokemon\PokemonExperienceCalculator.cs" />

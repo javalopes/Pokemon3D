@@ -20,6 +20,7 @@ namespace Pokemon3D.GameModes
     /// </summary>
     public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable
     {
+        private readonly Dictionary<string, ModelMesh> _meshCache;
         private readonly Dictionary<string, Mesh> _meshPrimitivesByName = new Dictionary<string, Mesh>(); 
         private readonly Dictionary<string, Texture2D> _textureCache = new Dictionary<string, Texture2D>();
 
@@ -33,7 +34,6 @@ namespace Pokemon3D.GameModes
         public MapManager MapManager { get; private set; }
         public MapFragmentManager MapFragmentManager { get; private set; }
         public PokemonFactory PokemonFactory { get; private set; }
-        public ModelManager ModelManager { get; private set; }
 
         public bool IsValid { get; }
 
@@ -54,8 +54,6 @@ namespace Pokemon3D.GameModes
             }
 
             IsValid = true;
-
-            ModelManager = new ModelManager(GameContext);
         }
 
         public void PreloadAsync(Action finished)
@@ -113,31 +111,29 @@ namespace Pokemon3D.GameModes
         private void OnLoadFinished(DataLoadResult[] data)
         {
             _primitiveModels = DataModel<PrimitiveModel[]>.FromByteArray(data[0].Data);
+            foreach(var primitiveModel in _primitiveModels)
+            {
+                var geometryData = new GeometryData
+                {
+                    Vertices = primitiveModel.Vertices.Select(v => new VertexPositionNormalTexture
+                    {
+                        Position = v.Position.GetVector3(),
+                        TextureCoordinate = v.TexCoord.GetVector2(),
+                        Normal = v.Normal.GetVector3()
+                    }).ToArray(),
+                    Indices = primitiveModel.Indices.Select(i => (ushort)i).ToArray()
+                };
+                var mesh = new Mesh(GameContext.GraphicsDevice, geometryData);
+                _meshPrimitivesByName.Add(primitiveModel.Id, mesh);
+            }
+
             _natureModels = DataModel<NatureModel[]>.FromByteArray(data[1].Data);
             _typeModels = DataModel<TypeModel[]>.FromByteArray(data[2].Data);
         }
 
         public Mesh GetPrimitiveMesh(string primitiveName)
         {
-            Mesh mesh;
-            if (_meshPrimitivesByName.TryGetValue(primitiveName, out mesh)) return mesh;
-
-            var primitiveModel = _primitiveModels.SingleOrDefault(x => x.Id == primitiveName);
-            if (primitiveModel == null) return null;
-
-            var data = new GeometryData
-            {
-                Vertices = primitiveModel.Vertices.Select(v => new VertexPositionNormalTexture
-                {
-                    Position = v.Position.GetVector3(),
-                    TextureCoordinate = v.TexCoord.GetVector2(),
-                    Normal = v.Normal.GetVector3()
-                }).ToArray(),
-                Indices = primitiveModel.Indices.Select(i => (ushort)i).ToArray()
-            };
-            mesh = new Mesh(GameContext.GraphicsDevice, data);
-            _meshPrimitivesByName.Add(primitiveName, mesh);
-            return mesh;
+            return _meshPrimitivesByName[primitiveName];
         }
 
         #region Dispose
