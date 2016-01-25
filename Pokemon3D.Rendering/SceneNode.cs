@@ -2,6 +2,7 @@
 using Pokemon3D.Common;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering.Data;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 // ReSharper disable ForCanBeConvertedToForeach
@@ -15,7 +16,8 @@ namespace Pokemon3D.Rendering
     public class SceneNode : IdObject, DrawableElement
     {
         private readonly List<SceneNode> _childNodes;
-        
+        private Action<SceneNode> _onInitializationFinished;
+
         public SceneNode Parent { get; private set; }
         public ReadOnlyCollection<SceneNode> Children { get; private set; }
         public Mesh Mesh { get; set; }
@@ -33,8 +35,9 @@ namespace Pokemon3D.Rendering
         private Vector3 _forward;
         private bool _isActive;
 
-        internal SceneNode()
+        internal SceneNode(bool isInitializing, Action<SceneNode> onInitializationFinished)
         {
+            _onInitializationFinished = onInitializationFinished;
             _isActive = true;
             _childNodes = new List<SceneNode>();
             Children = _childNodes.AsReadOnly();
@@ -42,7 +45,17 @@ namespace Pokemon3D.Rendering
             Right = Vector3.Right;
             Up = Vector3.Up;
             Forward = Vector3.Forward;
+            IsInitializing = isInitializing;
             SetDirty();
+        }
+
+        public bool IsInitializing { get; private set; }
+
+        public void EndInitializing()
+        {
+            if (!IsInitializing) throw new InvalidOperationException("Scene Node is already initialized");
+            IsInitializing = false;
+            _onInitializationFinished(this);
         }
         
         public bool IsActive
@@ -279,7 +292,7 @@ namespace Pokemon3D.Rendering
 
         internal SceneNode Clone(bool cloneMesh)
         {
-            var sceneNode = new SceneNode
+            var sceneNode = new SceneNode(false, null)
             {
                 Mesh = cloneMesh ? Mesh?.Clone() : Mesh,
                 Material = Material.Clone(),

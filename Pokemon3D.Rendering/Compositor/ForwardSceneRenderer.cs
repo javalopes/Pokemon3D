@@ -114,14 +114,17 @@ namespace Pokemon3D.Rendering.Compositor
             RenderStatistics.Instance.StartFrame();
             PreparePostProcessing();
 
-            UpdateStaticNodes(scene.StaticNodes);
-            UpdateNodeLists(scene.AllSceneNodes);
-
-            _sceneEffect.AmbientLight = scene.AmbientLight;
-
-            for (var i = 0; i < scene.AllCameras.Count; i++)
+            lock (scene.LockObject)
             {
-                DrawSceneForCamera(scene, scene.AllCameras[i], scene.HasSceneNodesChanged);
+                UpdateStaticNodes(scene.StaticNodes);
+                UpdateNodeLists(scene.AllSceneNodes);
+
+                _sceneEffect.AmbientLight = scene.AmbientLight;
+
+                for (var i = 0; i < scene.AllCameras.Count; i++)
+                {
+                    DrawSceneForCamera(scene, scene.AllCameras[i], scene.HasSceneNodesChanged);
+                }
             }
 
             DoPostProcessing();

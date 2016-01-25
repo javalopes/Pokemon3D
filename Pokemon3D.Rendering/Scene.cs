@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Common;
+using Pokemon3D.Rendering.Data;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Pokemon3D.Rendering
 {
@@ -10,6 +12,10 @@ namespace Pokemon3D.Rendering
     /// </summary>
     public class Scene : GameContextObject
     {
+        private List<SceneNode> _initializingNodes = new List<SceneNode>();
+
+        internal readonly object LockObject = new object();
+
         /// <summary>
         /// Ambient Light for all Objects. Default is white.
         /// </summary>
@@ -41,13 +47,33 @@ namespace Pokemon3D.Rendering
         /// <summary>
         /// Creates a new sceneNode instance.
         /// </summary>
+        /// <param name="markAsInitializing">Set this to true to edit your sceneNode preventing it from processing during initialization in multithreaded environments.</param>
         /// <returns></returns>
-        public SceneNode CreateSceneNode()
+        public SceneNode CreateSceneNode(bool markAsInitializing = false)
         {
+            var sceneNode = new SceneNode(markAsInitializing, OnInitializationFinished);
             HasSceneNodesChanged = true;
-            var sceneNode = new SceneNode();
-            AllSceneNodes.Add(sceneNode);
+            lock (LockObject)
+            {
+                if (markAsInitializing)
+                {
+                    _initializingNodes.Add(sceneNode);
+                }
+                else
+                {
+                    AllSceneNodes.Add(sceneNode);
+                }
+            }
             return sceneNode;
+        }
+
+        private void OnInitializationFinished(SceneNode sceneNode)
+        {
+            lock (LockObject)
+            {
+                _initializingNodes.Remove(sceneNode);
+                AllSceneNodes.Add(sceneNode);
+            }
         }
 
         /// <summary>
@@ -57,9 +83,12 @@ namespace Pokemon3D.Rendering
         {
             var staticNode = node.Clone(false);
             RemoveSceneNode(node);
-
             staticNode.Update();
-            StaticNodes.Add(staticNode);
+
+            lock (LockObject)
+            {
+                StaticNodes.Add(staticNode);
+            }
         }
 
         /// <summary>
@@ -67,10 +96,14 @@ namespace Pokemon3D.Rendering
         /// </summary>
         /// <param name="node">scene node</param>
         public void RemoveSceneNode(SceneNode node)
-        { 
+        {
             HasSceneNodesChanged = true;
-            AllSceneNodes.Remove(node);
-            AllCameras.Remove(node as Camera);
+
+            lock (LockObject)
+            {
+                AllSceneNodes.Remove(node);
+                AllCameras.Remove(node as Camera);
+            }
         }
 
         /// <summary>
@@ -81,8 +114,13 @@ namespace Pokemon3D.Rendering
         {
             HasSceneNodesChanged = true;
             var camera = new Camera(GameContext.GraphicsDevice.Viewport);
-            AllCameras.Add(camera);
-            AllSceneNodes.Add(camera);
+
+            lock (LockObject)
+            {
+                AllCameras.Add(camera);
+                AllSceneNodes.Add(camera);
+            }
+            
             return camera;
         }
 
@@ -109,8 +147,14 @@ namespace Pokemon3D.Rendering
         {
             HasSceneNodesChanged = true;
             var cloned = nodeToClone.Clone(cloneMeshs);
-            AllSceneNodes.Add(cloned);
+
+            lock (LockObject)
+            {
+                AllSceneNodes.Add(cloned);
+            }
+
             CloneChildren(cloned, nodeToClone, cloneMeshs);
+
             return cloned;
         }
 
@@ -119,9 +163,12 @@ namespace Pokemon3D.Rendering
             foreach (var childNode in parentOriginal.Children)
             {
                 var clonedChild = childNode.Clone(cloneMeshs);
-                AllSceneNodes.Add(clonedChild);
-                parentCloned.AddChild(clonedChild);
 
+                lock (LockObject)
+                {
+                    AllSceneNodes.Add(clonedChild);
+                    parentCloned.AddChild(clonedChild);
+                }
                 CloneChildren(clonedChild, childNode, cloneMeshs);
             }
         }

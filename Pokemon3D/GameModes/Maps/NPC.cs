@@ -32,7 +32,9 @@ namespace Pokemon3D.GameModes.Maps
             };
             SceneNode.Position = new Vector3(1, 1, 8);
             SceneNode.IsBillboard = true;
-            
+
+            SceneNode.EndInitializing();
+
             _figureAnimator = new Animator();
             _figureAnimator.AddAnimation("WalkForward", Animation.CreateDiscrete(0.65f, new[]
             {

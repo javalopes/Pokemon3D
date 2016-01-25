@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Pokemon3D.Collisions;
 using Pokemon3D.GameModes.Maps.EntityComponents.Components;
-using System;
 
 namespace Pokemon3D.GameModes.Maps
 {
@@ -97,6 +96,8 @@ namespace Pokemon3D.GameModes.Maps
                 Scene.ConvertToStaticSceneNode(SceneNode);
             }
 
+            SceneNode.EndInitializing();
+
             var colliderComponent = GetComponent<CollisionEntityComponent>(EntityComponent.IDs.Collision);
             if (colliderComponent != null)
             {
@@ -108,7 +109,7 @@ namespace Pokemon3D.GameModes.Maps
         public Entity(Scene scene)
         {
             Scene = scene;
-            SceneNode = scene.CreateSceneNode();
+            SceneNode = scene.CreateSceneNode(true);
         }
 
         /// <summary>

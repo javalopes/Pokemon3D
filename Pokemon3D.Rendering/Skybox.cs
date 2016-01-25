@@ -25,7 +25,7 @@ namespace Pokemon3D.Rendering
 
         public Skybox(GameContext gameContext) : base(gameContext)
         {
-            SceneNode = new SceneNode();
+            SceneNode = new SceneNode(false, null);
 
             var height = 1.0f / 3.0f;
             var width = 0.25f;

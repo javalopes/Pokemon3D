@@ -81,7 +81,9 @@ namespace Pokemon3D.GameModes
                 {
                     using (var memoryStream = new MemoryStream(d.Data))
                     {
-                        newTextureLoadRequest.SetTexture(Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream));
+                        var texture = Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream);
+                        _textureCache.Add(filePath, texture);
+                        newTextureLoadRequest.SetTexture(texture);
                     }
                 });
             });

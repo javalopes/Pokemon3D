@@ -20,7 +20,7 @@ namespace Pokemon3D.Rendering
         public Color? ClearColor { get; set; }
         public Skybox Skybox { get; set; }
         
-        internal Camera(Viewport viewport)
+        internal Camera(Viewport viewport): base(false, null)
         {
             Viewport = viewport;
             NearClipDistance = 0.1f;
