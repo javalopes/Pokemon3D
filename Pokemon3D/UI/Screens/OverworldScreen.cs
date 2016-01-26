@@ -66,7 +66,7 @@ namespace Pokemon3D.UI.Screens
             {
                 new PokemonSaveModel()
                 {
-                    Id = "Bulbasaur",
+                    Id = "Charizard",
                     HP = 1,
                     IVs = new PokemonStatSetModel()
                     {
@@ -92,7 +92,7 @@ namespace Pokemon3D.UI.Screens
                 },
                 new PokemonSaveModel()
                 {
-                    Id = "Bulbasaur",
+                    Id = "Charizard",
                     HP = 12,
                     IVs = new PokemonStatSetModel()
                     {
@@ -101,7 +101,8 @@ namespace Pokemon3D.UI.Screens
                     EVs = new PokemonStatSetModel()
                     {
                         HP = 0
-                    }
+                    },
+                    IsShiny = true
                 },new PokemonSaveModel()
                 {
                     Id = "Bulbasaur",
@@ -126,7 +127,8 @@ namespace Pokemon3D.UI.Screens
                     EVs = new PokemonStatSetModel()
                     {
                         HP = 0
-                    }
+                    },
+                    IsShiny = true
                 },
                 new PokemonSaveModel()
                 {

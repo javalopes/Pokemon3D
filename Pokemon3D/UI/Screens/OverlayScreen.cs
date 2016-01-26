@@ -64,6 +64,8 @@ namespace Pokemon3D.UI.Screens
 
             _masterGroup.AddGroup(_buttons);
             _masterGroup.AddGroup(_pokemonProfiles);
+
+            _buttons.SetSelection(0);
         }
 
         public void OnDraw(GameTime gameTime)

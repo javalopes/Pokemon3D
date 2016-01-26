@@ -1,0 +1,247 @@
+{
+    "Id" : "Charizard",
+    "Number" : 1,
+    "Name" : "Charizard",
+    "PokedexEntry" : {
+        "Text" : "When expelling a blast of superhot fire, the red flame at the tip of its tail burns more intensely.",
+        "Species" : "Flame",
+        "Height" : 1.7,
+        "Weight" : 90.5,
+        "Color" : {
+            "Red" : 240,
+            "Green" : 88,
+            "Blue" : 104
+        },
+        "BodyStyle" : "BipedalTail"
+    },
+    "InitScript" : "",
+    "Forms" : [
+        {
+            "Id" : "Shiny",
+            "Activation" : {
+                "Type" : "Shiny"
+            },
+            "BaseStats" : {
+                "HP" : 78,
+                "Atk" : 84,
+                "Def" : 78,
+                "SpAtk" : 109,
+                "SpDef" : 85,
+                "Speed" : 100
+            },
+            "MenuTexture" : 
+            {
+                "Source" : "Pokemon\\Charizard\\Shiny\\Menu"
+            },
+            "FrontSpriteSheet" : 
+            {
+                "Source" : "Pokemon\\Charizard\\Shiny\\Front",
+                "FrameSize" : {
+                    "Width" : 140,
+                    "Height" : 140
+                }
+            },
+            "BackSpriteSheet" : 
+            {
+                "Source" : "Pokemon\\Charizard\\Shiny\\Back",
+                "FrameSize" : {
+                    "Width" : 172,
+                    "Height" : 172
+                }
+            },
+            "OverworldTexture" : 
+            {
+                "Source" : "Pokemon\\Charizard\\Shiny\\Overworld"
+            },
+            "Type1" : "Fire",
+            "Type2" : "Flying",
+            "CatchRate" : 45,
+            "Abilities" : [
+                "Blaze",
+                "SolarPower"
+            ],
+            "ShareMovesWithForm" : "Default"
+        },
+        {
+            "Id" : "Default",
+            "Activation" : null,
+            "BaseStats" : {
+                "HP" : 78,
+                "Atk" : 84,
+                "Def" : 78,
+                "SpAtk" : 109,
+                "SpDef" : 85,
+                "Speed" : 100
+            },
+            "MenuTexture" : 
+            {
+                "Source" : "Pokemon\\Charizard\\Default\\Menu"
+            },
+            "FrontSpriteSheet" : 
+            {
+                "Source" : "Pokemon\\Charizard\\Default\\Front",
+                "FrameSize" : 
+                {
+                    "Width" : 140,
+                    "Height" : 140
+                }
+            },
+            "BackSpriteSheet" : 
+            {
+                "Source" : "Pokemon\\Charizard\\Default\\Back",
+                "FrameSize" : 
+                {
+                    "Width" : 172,
+                    "Height" : 172
+                }
+            },
+            "OverworldTexture" : 
+            {
+                "Source" : "Pokemon\\Charizard\\Default\\Overworld"
+            },
+            "Type1" : "Fire",
+            "Type2" : "Flying",
+            "CatchRate" : 45,
+            "Abilities" : [
+                "Blaze",
+                "SolarPower"
+            ],
+            "LevelMoves" : [
+                {
+                    "Level" : 1,
+                    "Id" : "Tackle"
+                },
+                {
+                    "Level" : 3,
+                    "Id" : "Growl"
+                },
+                {
+                    "Level" : 7,
+                    "Id" : "Leech Seed"
+                },
+                {
+                    "Level" : 9,
+                    "Id" : "Vine Whip"
+                },
+                {
+                    "Level" : 13,
+                    "Id" : "Poison Powder"
+                },
+                {
+                    "Level" : 13,
+                    "Id" : "Sleep Powder"
+                },
+                {
+                    "Level" : 15,
+                    "Id" : "Take Down"
+                },
+                {
+                    "Level" : 19,
+                    "Id" : "Razor Leaf"
+                },
+                {
+                    "Level" : 21,
+                    "Id" : "Sweet Scent"
+                },
+                {
+                    "Level" : 25,
+                    "Id" : "Growth"
+                },
+                {
+                    "Level" : 27,
+                    "Id" : "Double-Edge"
+                },
+                {
+                    "Level" : 31,
+                    "Id" : "Worry Seed"
+                },
+                {
+                    "Level" : 33,
+                    "Id" : "Synthesis"
+                },
+                {
+                    "Level" : 37,
+                    "Id" : "Seed Bomb"
+                }
+            ],
+            "LearnableMoves" : [
+                "Toxic",
+                "Venoshock",
+                "Hidden Power",
+                "Sunny Day",
+                "Light Screen",
+                "Protect",
+                "Safeguard",
+                "Frustration",
+                "Solar Beam",
+                "Return",
+                "Double Team",
+                "Sludge Bomb",
+                "Facade",
+                "Rest",
+                "Attract",
+                "Round",
+                "Echoed Voice",
+                "Energy Ball",
+                "Flash",
+                "Swords Dance",
+                "Grass Knot",
+                "Swagger",
+                "Sleep Talk",
+                "Substitute",
+                "Rock Smash",
+                "Secret Power",
+                "Nature Power",
+                "Confide",
+                "Cut",
+                "Strength",
+                "Amnesia",
+                "Charm",
+                "Curse",
+                "Endure",
+                "Giga Drain",
+                "Grass Whistle",
+                "Grassy Terrain",
+                "Ingrain",
+                "Leaf Storm",
+                "Magical Leaf",
+                "Nature Power",
+                "Petal Dance",
+                "Power Whip",
+                "Skull Bash",
+                "Sludge",
+                "Bind",
+                "Giga Drain",
+                "Grass Pledge",
+                "Knock Off",
+                "Seed Bomb",
+                "Snore",
+                "Synthesis",
+                "Worry Seed"
+            ]
+        }
+    ],
+    "HeldItems" : [],
+    "ExperienceType" : "MediumSlow",
+    "EvolutionConditions" : [],
+    "IsLegendary" : false,
+    "BaseFriendship" : 70,
+    "RewardEV" : {
+        "HP" : 0,
+        "Atk" : 0,
+        "Def" : 0,
+        "SpAtk" : 3,
+        "SpDef" : 0,
+        "Speed" : 0
+    },
+    "IsMale" : 87.5,
+    "IsGenderless" : false,
+    "CanBreed" : true,
+    "BaseEggSteps" : 5355,
+    "EggPokemon" : "Charmander",
+    "Devolution" : "Charmeleon",
+    "EggGroups" : [
+        "Monster",
+        "Dragon"
+    ]
+}

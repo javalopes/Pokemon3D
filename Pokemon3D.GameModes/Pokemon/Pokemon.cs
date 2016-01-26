@@ -14,7 +14,8 @@ namespace Pokemon3D.GameModes.Pokemon
     /// </summary>
     public class Pokemon
     {
-        private const string DEFAULT_FORM_VALUE = "Default";
+        private const string DEFAULT_FORM_ID = "Default";
+        private const string SHINY_FORM_ID = "Shiny";
         private const int POKEMON_MAX_LEVEL = 100;
         private const int POKEMON_MAX_MOVE_COUNT = 4;
 
@@ -196,7 +197,14 @@ namespace Pokemon3D.GameModes.Pokemon
             // determine the current form of the Pokémon here.
             // if no special form applies, set to "Default".
 
-            _activeForm = DEFAULT_FORM_VALUE;
+            if (_saveModel.IsShiny && _dataModel.Forms.Any(f => f.Id == SHINY_FORM_ID))
+            {
+                _activeForm = SHINY_FORM_ID;
+            }
+            else
+            {
+                _activeForm = DEFAULT_FORM_ID;
+            }
         }
 
         /// <summary>
