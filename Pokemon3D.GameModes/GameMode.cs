@@ -20,7 +20,7 @@ namespace Pokemon3D.GameModes
     /// </summary>
     public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable
     {
-        private readonly Dictionary<string, ModelMesh> _meshCache;
+        private readonly Dictionary<string, ModelMesh[]> _meshCache;
         private readonly Dictionary<string, Mesh> _meshPrimitivesByName = new Dictionary<string, Mesh>(); 
         private readonly Dictionary<string, Texture2D> _textureCache = new Dictionary<string, Texture2D>();
 
@@ -101,7 +101,18 @@ namespace Pokemon3D.GameModes
             _textureCache.Add(filePath, existing);
             return existing;
         }
-        
+
+        public void GetModelAsync(string filePath, Action<ModelMesh[]> modelLoaded)
+        {
+            //todo: define model paths.
+            FileLoader.GetFileAsync(filePath, d =>
+            {
+                var meshsArray = ModelMesh.LoadFromMemory(GameContext.MainThreadDispatcher, GameContext.GraphicsDevice, d.Data);
+                _meshCache.Add(filePath, meshsArray);
+                modelLoaded(meshsArray);
+            });
+        }
+
         private void OnMovesLoaded(DataLoadResult[] data, Action finished)
         {
             _moveModels = data.Select(d => DataModel<MoveModel>.FromByteArray(d.Data)).ToArray();
