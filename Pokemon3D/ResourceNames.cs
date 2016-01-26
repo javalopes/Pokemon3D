@@ -40,6 +40,8 @@ namespace Pokemon3D
                     public const string Checkbox_Back = "Textures/UI/Common/Checkbox_Back";
                     public const string Checkbox_Mark = "Textures/UI/Common/Checkbox_Mark";
                     public const string Hexagon = "Textures/UI/Common/Hexagon";
+                    public const string Profile = "Textures/UI/Common/Profile";
+                    public const string Profile_Shadow = "Textures/UI/Common/Profile_Shadow";
                 }
                 
                 public static class GamePadButtons

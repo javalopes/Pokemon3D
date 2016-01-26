@@ -10,6 +10,9 @@ using System;
 using System.Windows.Threading;
 using Pokemon3D.UI.Transitions;
 using Pokemon3D.DataModel.Savegame;
+using Pokemon3D.DataModel.Savegame.Pokemon;
+using Pokemon3D.DataModel.Savegame.Inventory;
+using Pokemon3D.DataModel.Pokemon;
 
 namespace Pokemon3D.UI.Screens
 {
@@ -52,15 +55,93 @@ namespace Pokemon3D.UI.Screens
 
         private void CreateTempSave()
         {
+            // creates a temporary save until we get full load/save management done.
+
             var dataModel = new SaveFileModel();
             dataModel.PlayerData = new PlayerModel();
             dataModel.GameMode = "TestGM";
-            dataModel.Items = new DataModel.Savegame.Inventory.InventoryItemModel[] { };
-            dataModel.Pokedex = new DataModel.Savegame.Pokemon.PokedexSaveModel();
-            dataModel.Pokemon = new DataModel.Savegame.Pokemon.PokemonSaveModel[] { new DataModel.Savegame.Pokemon.PokemonSaveModel()
+            dataModel.Items = new InventoryItemModel[] { };
+            dataModel.Pokedex = new PokedexSaveModel();
+            dataModel.Pokemon = new PokemonSaveModel[] 
             {
-                Id = "Bulbasaur"
-            } };
+                new PokemonSaveModel()
+                {
+                    Id = "Bulbasaur",
+                    HP = 1,
+                    IVs = new PokemonStatSetModel()
+                    {
+                        HP = 10
+                    },
+                    EVs = new PokemonStatSetModel()
+                    {
+                        HP = 0
+                    }
+                },
+                new PokemonSaveModel()
+                {
+                    Id = "Bulbasaur",
+                    HP = 5,
+                    IVs = new PokemonStatSetModel()
+                    {
+                        HP = 10
+                    },
+                    EVs = new PokemonStatSetModel()
+                    {
+                        HP = 0
+                    }
+                },
+                new PokemonSaveModel()
+                {
+                    Id = "Bulbasaur",
+                    HP = 12,
+                    IVs = new PokemonStatSetModel()
+                    {
+                        HP = 10
+                    },
+                    EVs = new PokemonStatSetModel()
+                    {
+                        HP = 0
+                    }
+                },new PokemonSaveModel()
+                {
+                    Id = "Bulbasaur",
+                    HP = 2,
+                    IVs = new PokemonStatSetModel()
+                    {
+                        HP = 10
+                    },
+                    EVs = new PokemonStatSetModel()
+                    {
+                        HP = 0
+                    }
+                },
+                new PokemonSaveModel()
+                {
+                    Id = "Bulbasaur",
+                    HP = 11,
+                    IVs = new PokemonStatSetModel()
+                    {
+                        HP = 10
+                    },
+                    EVs = new PokemonStatSetModel()
+                    {
+                        HP = 0
+                    }
+                },
+                new PokemonSaveModel()
+                {
+                    Id = "Bulbasaur",
+                    HP = 8,
+                    IVs = new PokemonStatSetModel()
+                    {
+                        HP = 10
+                    },
+                    EVs = new PokemonStatSetModel()
+                    {
+                        HP = 0
+                    }
+                }
+            };
 
             Game.LoadedSave = new SaveGame(dataModel);
             Game.LoadedSave.Load(_gameMode);

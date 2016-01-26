@@ -14,11 +14,11 @@ namespace Pokemon3D.UI.Screens
 {
     class OverlayScreen : GameObject, Screen
     {
-        Screen _preScreen;
-        HexagonBackground _hexagons;
-        ControlBar _bar;
-
-        private PokemonSpriteSheet _sheet;
+        private Screen _preScreen;
+        private HexagonBackground _hexagons;
+        private ControlBar _bar;
+        
+        private DefaultControlGroup _pokemonProfiles;
 
         public void OnOpening(object enterInformation)
         {
@@ -28,11 +28,18 @@ namespace Pokemon3D.UI.Screens
 
             _bar.AddEntry("Select", Buttons.A, Keys.Enter);
             _bar.AddEntry("Back", Buttons.B, Keys.Escape);
-
-            var sheetModel = Game.LoadedSave.PartyPokemon[0].ActiveFormModel.FrontSpriteSheet;
-            _sheet = new PokemonSpriteSheet(Game.ActiveGameMode.GetTexture(sheetModel.Source),
-                sheetModel.FrameSize.Width,
-                sheetModel.FrameSize.Height);
+            
+            _pokemonProfiles = new DefaultControlGroup();
+            
+            for (int i = 0; i < Game.LoadedSave.PartyPokemon.Count; i++)
+            {
+                var pokemon = Game.LoadedSave.PartyPokemon[i];
+                _pokemonProfiles.Add(new PokemonProfile(Game.ActiveGameMode, pokemon, new Vector2(110 * i + 280, 80 + ((i % 2) * 52))));
+            }
+            
+            _pokemonProfiles.Active = true;
+            _pokemonProfiles.Visible = true;
+            _pokemonProfiles.VerticalOrientation = false;
         }
 
         public void OnDraw(GameTime gameTime)
@@ -43,23 +50,19 @@ namespace Pokemon3D.UI.Screens
 
             _bar.Draw();
 
-            Game.SpriteBatch.Begin();
-
-            Game.SpriteBatch.Draw(_sheet.CurrentFrame, new Rectangle(100, 100, 98, 98), Color.White);
-
-            Game.SpriteBatch.End();
+            _pokemonProfiles.Draw();
         }
         
         public void OnUpdate(float elapsedTime)
         {
             _hexagons.Update();
-
-            _sheet.Update();
-
+            
             if (Game.InputSystem.Dismiss(DismissInputTypes.BButton | DismissInputTypes.EscapeKey))
             {
                 Game.ScreenManager.SetScreen(_preScreen.GetType());
             }
+
+            _pokemonProfiles.Update();
         }
 
         public void OnClosing()

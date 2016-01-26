@@ -24,7 +24,7 @@ namespace Pokemon3D.UI.Framework
 
         public bool Enabled { get; set; } = true;
 
-        public LeftSideButton(ControlGroup group, string text, Vector2 position, Action<Control> onClick) : base(group)
+        public LeftSideButton(string text, Vector2 position, Action<Control> onClick)
         {
             _texture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
             _font = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
@@ -36,10 +36,7 @@ namespace Pokemon3D.UI.Framework
             _colorStepper = new ColorTransition(new Color(255, 255, 255), 0.5f);
             _offsetStepper = new OffsetTransition(0f, 0.5f);
         }
-
-        public LeftSideButton(string text, Vector2 position, Action<Control> onClick) : this(null, text, position, onClick)
-        { }
-
+        
         public override Rectangle GetBounds()
         {
             return new Rectangle((int)(_initialPosition.X + _offsetStepper.Offset), (int)_initialPosition.Y, 200, 38);

@@ -28,7 +28,7 @@ namespace Pokemon3D.UI.Framework
         public bool Checked { get; set; }
         private int _checkSize = 0;
 
-        public LeftSideCheckbox(string text, Vector2 position, Action<Control> onClick) : base(null)
+        public LeftSideCheckbox(string text, Vector2 position, Action<Control> onClick)
         {
             _texture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
             _backTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Checkbox_Back);

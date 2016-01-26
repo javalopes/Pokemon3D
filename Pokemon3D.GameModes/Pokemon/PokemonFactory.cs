@@ -55,9 +55,15 @@ namespace Pokemon3D.GameModes.Pokemon
             {
                 _gameMode.FileLoader.GetFileAsync(_gameMode.GetPokemonFilePath(saveModel.Id), (d) =>
                 {
-                    dataModel = DataModel<PokemonModel>.FromByteArray(d.Data);
-                    _pokemonModelCache.Add(saveModel.Id, dataModel);
-
+                    if (!_pokemonModelCache.ContainsKey(saveModel.Id))
+                    {
+                        dataModel = DataModel<PokemonModel>.FromByteArray(d.Data);
+                        _pokemonModelCache.Add(saveModel.Id, dataModel);
+                    }
+                    else
+                    {
+                        dataModel = _pokemonModelCache[saveModel.Id];
+                    }
                     finished(new Pokemon(_gameMode, dataModel, saveModel));
                 });
             }

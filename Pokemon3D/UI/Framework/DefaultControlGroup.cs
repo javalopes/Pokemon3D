@@ -15,6 +15,8 @@ namespace Pokemon3D.UI.Framework
     {
         private SpriteBatch _batch;
 
+        public bool VerticalOrientation { get; set; } = true;
+
         public DefaultControlGroup()
         {
             _batch = new SpriteBatch(Game.GraphicsDevice);
@@ -24,10 +26,20 @@ namespace Pokemon3D.UI.Framework
         {
             if (Active)
             {
-                if (Game.InputSystem.Up(true, DirectionalInputTypes.All))
-                    MoveSelection(-1);
-                if (Game.InputSystem.Down(true, DirectionalInputTypes.All))
-                    MoveSelection(1);
+                if (VerticalOrientation)
+                {
+                    if (Game.InputSystem.Up(true, DirectionalInputTypes.All))
+                        MoveSelection(-1);
+                    if (Game.InputSystem.Down(true, DirectionalInputTypes.All))
+                        MoveSelection(1);
+                }
+                else
+                {
+                    if (Game.InputSystem.Left(true, DirectionalInputTypes.All))
+                        MoveSelection(-1);
+                    if (Game.InputSystem.Right(true, DirectionalInputTypes.All))
+                        MoveSelection(1);
+                }
             }
 
             base.Update();

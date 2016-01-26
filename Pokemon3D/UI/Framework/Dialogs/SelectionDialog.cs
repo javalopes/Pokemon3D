@@ -20,7 +20,9 @@ namespace Pokemon3D.UI.Framework.Dialogs
         ColorTransition _colorStepper;
         ShapeRenderer _renderer;
 
-        private int _calculatedHeight; // starting with 75, which is the height with only a header.
+        private int _calculatedHeight; 
+
+        private RenderTarget2D _target;
 
         public SelectionDialog(string title, string text, LeftSideButton[] buttons, int selectedIndex)
         {
@@ -73,18 +75,19 @@ namespace Pokemon3D.UI.Framework.Dialogs
             int startY = Game.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
             foreach (var control in _controls)
             {
-                control.SetPosition(new Vector2(120, controlY  + startY));
+                control.SetPosition(new Vector2(120, controlY + startY));
                 controlY += control.GetBounds().Height + 20;
             }
+
+            _target = new RenderTarget2D(Game.GraphicsDevice, Game.ScreenBounds.Width, Game.ScreenBounds.Height);
         }
 
         public override void Draw()
         {
             if (Visible)
             {
-                var target = new RenderTarget2D(Game.GraphicsDevice, Game.ScreenBounds.Width, Game.ScreenBounds.Height);
-                Game.GraphicsDevice.SetRenderTarget(target);
-                 Game.GraphicsDevice.Clear(Color.Transparent);
+                Game.GraphicsDevice.SetRenderTarget(_target);
+                Game.GraphicsDevice.Clear(Color.Transparent);
 
                 _batch.Begin();
 
@@ -95,7 +98,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
                 Game.GraphicsDevice.SetRenderTarget(null);
 
                 _batch.Begin(blendState: BlendState.NonPremultiplied);
-                _batch.Draw(target, Vector2.Zero, _colorStepper.Color);
+                _batch.Draw(_target, Vector2.Zero, _colorStepper.Color);
                 _batch.End();
             }
         }
@@ -140,7 +143,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
                     MoveSelection(1);
                 base.Update();
             }
-            
+
             _colorStepper.Update();
 
             if (_closing && _colorStepper.Finished)

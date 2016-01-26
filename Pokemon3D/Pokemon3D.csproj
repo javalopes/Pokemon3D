@@ -107,6 +107,7 @@
     <Compile Include="UI\Framework\LeftSideButton.cs" />
     <Compile Include="UI\Framework\LeftSideCheckbox.cs" />
     <Compile Include="UI\Framework\OffsetTransition.cs" />
+    <Compile Include="UI\Framework\PokemonProfile.cs" />
     <Compile Include="UI\Framework\PokemonSpriteSheet.cs" />
     <Compile Include="UI\Localization\CoreTranslationManager.cs" />
     <Compile Include="GameModes\Resources\GameModei18nManager.cs" />
@@ -241,6 +242,12 @@
     <Content Include="Content\Textures\UI\GamePadButtons\Button_Y.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\Textures\UI\Common\Profile.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\UI\Common\Profile_Shadow.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="ResourceNames.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
