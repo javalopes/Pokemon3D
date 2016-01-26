@@ -101,7 +101,7 @@ namespace Pokemon3D.UI.Framework
 
         public override Rectangle GetBounds()
         {
-            return new Rectangle((int)_position.X, (int)_position.Y, 120, 105);
+            return new Rectangle((int)_position.X + 4, (int)_position.Y + 4, PROFILE_WIDTH, PROFILE_HEIGHT);
         }
 
         public override void SetPosition(Vector2 position)

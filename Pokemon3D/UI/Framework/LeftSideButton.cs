@@ -14,7 +14,7 @@ namespace Pokemon3D.UI.Framework
         private Texture2D _texture;
         private SpriteFont _font;
 
-        private Vector2 _initialPosition;
+        private Vector2 _position;
         private Action<Control> _onClick;
 
         public string Text { get; set; }
@@ -30,7 +30,7 @@ namespace Pokemon3D.UI.Framework
             _font = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
 
             Text = text;
-            _initialPosition = position;
+            _position = position;
             _onClick = onClick;
 
             _colorStepper = new ColorTransition(new Color(255, 255, 255), 0.5f);
@@ -39,7 +39,7 @@ namespace Pokemon3D.UI.Framework
         
         public override Rectangle GetBounds()
         {
-            return new Rectangle((int)(_initialPosition.X + _offsetStepper.Offset), (int)_initialPosition.Y, 200, 38);
+            return new Rectangle((int)(_position.X + _offsetStepper.Offset), (int)_position.Y, 200, 38);
         }
 
         public override void Update()
@@ -104,12 +104,12 @@ namespace Pokemon3D.UI.Framework
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, GetBounds(), _colorStepper.Color);
-            spriteBatch.DrawString(_font, Text, new Vector2(_initialPosition.X + _offsetStepper.Offset + 24, _initialPosition.Y + 5), Color.Black);
+            spriteBatch.DrawString(_font, Text, new Vector2(_position.X + _offsetStepper.Offset + 24, _position.Y + 5), Color.Black);
         }
 
         public override void SetPosition(Vector2 position)
         {
-            _initialPosition = position;
+            _position = position;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Pokemon3D.UI.Framework
     {
         private SpriteBatch _batch;
 
-        public bool VerticalOrientation { get; set; } = true;
+        public ControlGroupOrientation Orientation { get; set; } = ControlGroupOrientation.Vertical;
 
         /// <summary>
         /// The action that occurs when the cursor is moved right.
@@ -46,22 +46,22 @@ namespace Pokemon3D.UI.Framework
                 if (Game.InputSystem.Up(true, DirectionalInputTypes.All))
                     if (MoveUp != null)
                         MoveUp();
-                    else if (VerticalOrientation)
+                    else if (Orientation.HasFlag(ControlGroupOrientation.Vertical))
                         MoveSelection(-1);
                 if (Game.InputSystem.Down(true, DirectionalInputTypes.All))
                     if (MoveDown != null)
                         MoveDown();
-                    else if (VerticalOrientation)
+                    else if (Orientation.HasFlag(ControlGroupOrientation.Vertical))
                         MoveSelection(1);
                 if (Game.InputSystem.Left(true, DirectionalInputTypes.All))
                     if (MoveLeft != null)
                         MoveLeft();
-                    else if (!VerticalOrientation)
+                    else if (Orientation.HasFlag(ControlGroupOrientation.Horizontal))
                         MoveSelection(-1);
                 if (Game.InputSystem.Right(true, DirectionalInputTypes.All))
                     if (MoveRight != null)
                         MoveRight();
-                    else if (!VerticalOrientation)
+                    else if (Orientation.HasFlag(ControlGroupOrientation.Horizontal))
                         MoveSelection(1);
             }
 

@@ -39,11 +39,12 @@ namespace Pokemon3D.UI.Screens
             {
                 var pokemon = Game.LoadedSave.PartyPokemon[i];
                 _pokemonProfiles.Add(new PokemonProfile(Game.ActiveGameMode, pokemon, new Vector2(110 * i + 280, 80 + ((i % 2) * 52))));
+                //_pokemonProfiles.Add(new PokemonProfile(Game.ActiveGameMode, pokemon, new Vector2(280 + ((i % 2) * 110), 60 + i * 65)));
             }
             
             _pokemonProfiles.Active = false;
             _pokemonProfiles.Visible = true;
-            _pokemonProfiles.VerticalOrientation = false;
+            _pokemonProfiles.Orientation = ControlGroupOrientation.Horizontal;
             _pokemonProfiles.RunOverLowerBound = () =>
             {
                 _buttons.Active = true;

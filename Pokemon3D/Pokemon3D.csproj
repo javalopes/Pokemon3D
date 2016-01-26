@@ -100,6 +100,7 @@
     <Compile Include="UI\Framework\Control.cs" />
     <Compile Include="UI\Framework\ControlBar.cs" />
     <Compile Include="UI\Framework\ControlGroup.cs" />
+    <Compile Include="UI\Framework\ControlGroupOrientation.cs" />
     <Compile Include="UI\Framework\DefaultControlGroup.cs" />
     <Compile Include="UI\Framework\Dialogs\ModalDialog.cs" />
     <Compile Include="UI\Framework\Dialogs\SelectionDialog.cs" />
