@@ -60,9 +60,10 @@ namespace Pokemon3D.UI.Screens
             dataModel.Pokemon = new DataModel.Savegame.Pokemon.PokemonSaveModel[] { new DataModel.Savegame.Pokemon.PokemonSaveModel()
             {
                 Id = "Bulbasaur"
-            } } ;
+            } };
 
             Game.LoadedSave = new SaveGame(dataModel);
+            Game.LoadedSave.Load(_gameMode);
         }
 
         public void OnUpdate(float elapsedTime)

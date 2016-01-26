@@ -36,12 +36,18 @@
             "FrontSpriteSheet" : 
             {
                 "Source" : "Pokemon\\Bulbasaur\\Shiny\\Front",
-                "FrameSize" : 49
+                "FrameSize" : {
+                    "Width" : 49,
+                    "Height" : 49
+                }
             },
             "BackSpriteSheet" : 
             {
                 "Source" : "Pokemon\\Bulbasaur\\Shiny\\Back",
-                "FrameSize" : 52
+                "FrameSize" : {
+                    "Width" : 52,
+                    "Height" : 52
+                }
             },
             "OverworldTexture" : 
             {
@@ -74,12 +80,20 @@
             "FrontSpriteSheet" : 
             {
                 "Source" : "Pokemon\\Bulbasaur\\Default\\Front",
-                "FrameSize" : 49
+                "FrameSize" : 
+                {
+                    "Width" : 49,
+                    "Height" : 49
+                }
             },
             "BackSpriteSheet" : 
             {
                 "Source" : "Pokemon\\Bulbasaur\\Default\\Back",
-                "FrameSize" : 50
+                "FrameSize" : 
+                {
+                    "Width" : 52,
+                    "Height" : 52
+                }
             },
             "OverworldTexture" : 
             {

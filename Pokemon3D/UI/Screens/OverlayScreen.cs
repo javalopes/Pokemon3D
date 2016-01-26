@@ -29,7 +29,10 @@ namespace Pokemon3D.UI.Screens
             _bar.AddEntry("Select", Buttons.A, Keys.Enter);
             _bar.AddEntry("Back", Buttons.B, Keys.Escape);
 
-            _sheet = new PokemonSpriteSheet(Game.ActiveGameMode.GetTexture("Pokemon\\Bulbasaur\\Default\\Front"), 49);
+            var sheetModel = Game.LoadedSave.PartyPokemon[0].ActiveFormModel.FrontSpriteSheet;
+            _sheet = new PokemonSpriteSheet(Game.ActiveGameMode.GetTexture(sheetModel.Source),
+                sheetModel.FrameSize.Width,
+                sheetModel.FrameSize.Height);
         }
 
         public void OnDraw(GameTime gameTime)

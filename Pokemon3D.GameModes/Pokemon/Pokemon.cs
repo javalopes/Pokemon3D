@@ -141,7 +141,7 @@ namespace Pokemon3D.GameModes.Pokemon
             }
         }
         
-        internal PokemonFormModel ActiveFormModel
+        public PokemonFormModel ActiveFormModel
         {
             get { return _dataModel.Forms.Single(x => x.Id == _activeForm); }
         }

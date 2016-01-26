@@ -17,29 +17,29 @@ namespace Pokemon3D.UI.Framework
         private int _currentFrame = 0;
         private int _frameDelay = FRAME_LENGTH;
 
-        public PokemonSpriteSheet(Texture2D spriteSheet, int frameSize)
+        public PokemonSpriteSheet(Texture2D spriteSheet, int frameWidth, int frameHeight)
         {
-            ExtractFrames(spriteSheet, frameSize);
+            ExtractFrames(spriteSheet, frameWidth, frameHeight);
         }
 
-        private void ExtractFrames(Texture2D spriteSheet, int frameSize)
+        private void ExtractFrames(Texture2D spriteSheet, int frameWidth, int frameHeight)
         {
             List<Texture2D> frames = new List<Texture2D>();
 
-            int pixelCountPerFrame = frameSize * frameSize;
+            int pixelCountPerFrame = frameWidth * frameHeight;
             Color[] frameData;
             bool foundEmptyFrame = false;
 
-            for (int y = 0; y < spriteSheet.Height; y += frameSize)
+            for (int y = 0; y < spriteSheet.Height; y += frameHeight)
             {
-                if (y + frameSize <= spriteSheet.Height && !foundEmptyFrame)
+                if (y + frameHeight <= spriteSheet.Height && !foundEmptyFrame)
                 {
-                    for (int x = 0; x < spriteSheet.Width; x += frameSize)
+                    for (int x = 0; x < spriteSheet.Width; x += frameWidth)
                     {
-                        if (x + frameSize <= spriteSheet.Width && !foundEmptyFrame)
+                        if (x + frameWidth <= spriteSheet.Width && !foundEmptyFrame)
                         {
                             frameData = new Color[pixelCountPerFrame];
-                            spriteSheet.GetData(0, new Rectangle(x, y, frameSize, frameSize), frameData, 0, pixelCountPerFrame);
+                            spriteSheet.GetData(0, new Rectangle(x, y, frameWidth, frameHeight), frameData, 0, pixelCountPerFrame);
 
                             if (frameData.All(c => c.A == 0))
                             {
@@ -47,7 +47,7 @@ namespace Pokemon3D.UI.Framework
                             }
                             else
                             {
-                                Texture2D frame = new Texture2D(Game.GraphicsDevice, frameSize, frameSize);
+                                Texture2D frame = new Texture2D(Game.GraphicsDevice, frameWidth, frameHeight);
                                 frame.SetData(frameData);
                                 frames.Add(frame);
                             }
