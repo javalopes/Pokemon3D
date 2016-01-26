@@ -106,6 +106,7 @@
     <Compile Include="UI\Framework\HexagonBackground.cs" />
     <Compile Include="UI\Framework\LeftSideButton.cs" />
     <Compile Include="UI\Framework\LeftSideCheckbox.cs" />
+    <Compile Include="UI\Framework\MasterControlGroup.cs" />
     <Compile Include="UI\Framework\OffsetTransition.cs" />
     <Compile Include="UI\Framework\PokemonProfile.cs" />
     <Compile Include="UI\Framework\PokemonSpriteSheet.cs" />

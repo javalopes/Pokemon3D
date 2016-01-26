@@ -18,8 +18,8 @@ namespace Pokemon3D.UI.Framework
         
         private class Hexagon
         {
-            private const int MIN_ALPHA = 100;
-            private const int MAX_ALPHA = 200;
+            private const int MIN_ALPHA = 150;
+            private const int MAX_ALPHA = 220;
             private const float DELAY_VERTICAL_OFFSET_MULTIPLIER = 0.2f;
             private const float ALPHA_FADE_EDGE_VALUE = 10f;
             private const int BLINKING_CHANCE = 40000;

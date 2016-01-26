@@ -19,6 +19,9 @@ namespace Pokemon3D.UI.Screens
         private ControlBar _bar;
         
         private DefaultControlGroup _pokemonProfiles;
+        private DefaultControlGroup _buttons;
+
+        private MasterControlGroup _masterGroup = new MasterControlGroup();
 
         public void OnOpening(object enterInformation)
         {
@@ -29,6 +32,7 @@ namespace Pokemon3D.UI.Screens
             _bar.AddEntry("Select", Buttons.A, Keys.Enter);
             _bar.AddEntry("Back", Buttons.B, Keys.Escape);
             
+            // profiles initialization:
             _pokemonProfiles = new DefaultControlGroup();
             
             for (int i = 0; i < Game.LoadedSave.PartyPokemon.Count; i++)
@@ -37,9 +41,29 @@ namespace Pokemon3D.UI.Screens
                 _pokemonProfiles.Add(new PokemonProfile(Game.ActiveGameMode, pokemon, new Vector2(110 * i + 280, 80 + ((i % 2) * 52))));
             }
             
-            _pokemonProfiles.Active = true;
+            _pokemonProfiles.Active = false;
             _pokemonProfiles.Visible = true;
             _pokemonProfiles.VerticalOrientation = false;
+            _pokemonProfiles.RunOverLowerBound = () =>
+            {
+                _buttons.Active = true;
+            };
+
+            // buttons initialization:
+            _buttons = new DefaultControlGroup();
+
+            _buttons.Add(new LeftSideButton("Pokedex", new Vector2(26, 45), null));
+            _buttons.Add(new LeftSideButton("Inventory", new Vector2(26, 107), null));
+
+            _buttons.Active = true;
+            _buttons.Visible = true;
+            _buttons.MoveRight = () =>
+            {
+                _pokemonProfiles.SetSelection(0);
+            };
+
+            _masterGroup.AddGroup(_buttons);
+            _masterGroup.AddGroup(_pokemonProfiles);
         }
 
         public void OnDraw(GameTime gameTime)
@@ -51,6 +75,7 @@ namespace Pokemon3D.UI.Screens
             _bar.Draw();
 
             _pokemonProfiles.Draw();
+            _buttons.Draw();
         }
         
         public void OnUpdate(float elapsedTime)
@@ -63,6 +88,7 @@ namespace Pokemon3D.UI.Screens
             }
 
             _pokemonProfiles.Update();
+            _buttons.Update();
         }
 
         public void OnClosing()

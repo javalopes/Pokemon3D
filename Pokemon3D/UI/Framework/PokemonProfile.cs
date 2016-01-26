@@ -52,9 +52,9 @@ namespace Pokemon3D.UI.Framework
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_profileBackTexture, 
-                new Rectangle((int)(_position.X - _expandStepper.Offset / 2), 
-                              (int)(_position.Y - _expandStepper.Offset / 2), 
+            spriteBatch.Draw(_profileBackTexture,
+                new Rectangle((int)(_position.X - _expandStepper.Offset / 2),
+                              (int)(_position.Y - _expandStepper.Offset / 2),
                               (int)(_profileBackTexture.Width + _expandStepper.Offset),
                               (int)(_profileBackTexture.Height + _expandStepper.Offset)),
                 _colorStepper.Color);
@@ -113,14 +113,35 @@ namespace Pokemon3D.UI.Framework
         {
             base.Select();
 
-            _colorStepper.TargetColor = new Color(100, 193, 238);
-            _expandStepper.TargetOffset = 30f;
+            TriggerSelected();
         }
 
         public override void Deselect()
         {
             base.Deselect();
 
+            TriggerDeselected();
+        }
+
+        public override void GroupActivated()
+        {
+            if (Selected)
+                TriggerSelected();
+        }
+
+        public override void GroupDeactivated()
+        {
+            TriggerDeselected();
+        }
+
+        private void TriggerSelected()
+        {
+            _colorStepper.TargetColor = new Color(100, 193, 238);
+            _expandStepper.TargetOffset = 30f;
+        }
+
+        private void TriggerDeselected()
+        {
             _colorStepper.TargetColor = new Color(255, 255, 255);
             _expandStepper.TargetOffset = 0f;
         }

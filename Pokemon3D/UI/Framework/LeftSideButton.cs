@@ -46,7 +46,7 @@ namespace Pokemon3D.UI.Framework
         {
             base.Update();
 
-            if (_onClick != null && Selected)
+            if (_onClick != null && Selected && Group != null && Group.Active)
             {
                 if (Game.InputSystem.Accept(AcceptInputTypes.Buttons) ||
                     GetBounds().Contains(Game.InputSystem.Mouse.Position) && Game.InputSystem.Accept(AcceptInputTypes.LeftClick))
@@ -63,21 +63,40 @@ namespace Pokemon3D.UI.Framework
         {
             base.Select();
 
-            _offsetStepper.TargetOffset = 26;
-            if (Enabled)
-            {
-                _colorStepper.TargetColor = new Color(100, 193, 238);
-            }
-            else
-            {
-                _colorStepper.TargetColor = new Color(210, 210, 210);
-            }
+            TriggerSelected();
         }
 
         public override void Deselect()
         {
             base.Deselect();
 
+            TriggerDeselected();
+        }
+
+        public override void GroupActivated()
+        {
+            base.GroupActivated();
+
+            if (Selected)
+                TriggerSelected();
+        }
+
+        public override void GroupDeactivated()
+        {
+            TriggerDeselected();
+        }
+
+        private void TriggerSelected()
+        {
+            _offsetStepper.TargetOffset = 26;
+            if (Enabled)
+                _colorStepper.TargetColor = new Color(100, 193, 238);
+            else
+                _colorStepper.TargetColor = new Color(210, 210, 210);
+        }
+
+        private void TriggerDeselected()
+        {
             _offsetStepper.TargetOffset = 0;
             _colorStepper.TargetColor = new Color(255, 255, 255);
         }

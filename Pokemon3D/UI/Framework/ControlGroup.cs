@@ -21,10 +21,47 @@ namespace Pokemon3D.UI.Framework
         /// </summary>
         public bool Visible { get; set; } = false;
 
+        private bool _isActive = false;
+
         /// <summary>
         /// If this control group gets updated.
         /// </summary>
-        public bool Active { get; set; } = false;
+        public bool Active
+        {
+            get
+            {
+                return _isActive;
+            }
+            set
+            {
+                _isActive = value;
+                if (_isActive)
+                {
+                    _controls.ForEach(c => c.GroupActivated());
+                    if (Activated != null)
+                        Activated(this);
+                }
+                else
+                {
+                    _controls.ForEach(c => c.GroupDeactivated());
+                    if (Deactivated != null)
+                        Deactivated(this);
+                }
+            }
+        }
+
+        public event Action<ControlGroup> Activated;
+
+        public event Action<ControlGroup> Deactivated;
+
+        /// <summary>
+        /// The action that occurs when the selection goes over the lower control limit.
+        /// </summary>
+        public Action RunOverLowerBound { get; set; } = null;
+        /// <summary>
+        /// The action that occurs when the selection goes over the upper control limit.
+        /// </summary>
+        public Action RunOverUpperBound { get; set; } = null;
 
         protected ControlGroup()
         {
@@ -43,13 +80,33 @@ namespace Pokemon3D.UI.Framework
             else
             {
                 int currentIndex = _controls.IndexOf(_controls.Single(x => x.Selected));
+                int previousIndex = currentIndex;
+
                 currentIndex += change;
                 while (currentIndex < 0)
-                    currentIndex += _controls.Count;
+                {
+                    if (RunOverLowerBound == null)
+                        currentIndex += _controls.Count;
+                    else
+                    {
+                        RunOverLowerBound();
+                        currentIndex = _controls.IndexOf(_controls.Single(x => x.Selected));
+                    }
+                }
                 while (currentIndex >= _controls.Count)
-                    currentIndex -= _controls.Count;
+                {
+                    if (RunOverUpperBound == null)
+                        currentIndex -= _controls.Count;
+                    else
+                    {
+                        RunOverUpperBound();
+                        currentIndex = _controls.IndexOf(_controls.Single(x => x.Selected));
+                    }
+                }
 
-                _controls[currentIndex].Select();
+                if (previousIndex != currentIndex)
+                    _controls[currentIndex].Select();
+
             }
         }
 
@@ -63,15 +120,14 @@ namespace Pokemon3D.UI.Framework
 
         public virtual void Update()
         {
-            if (Active)
-                _controls.ForEach(b => b.Update());
+            _controls.ForEach(b => b.Update());
         }
 
         public virtual void Draw()
         {
             InternalDraw(Game.SpriteBatch);
         }
-        
+
         protected void InternalDraw(SpriteBatch spriteBatch)
         {
             if (Visible)

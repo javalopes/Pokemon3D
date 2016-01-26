@@ -52,7 +52,7 @@ namespace Pokemon3D.UI.Screens
                 {
                     Game.ScreenManager.NotifyQuitGame();
                 })
-            }, 0);
+            });
 
             _closeDialog.Closed += HandleCloseDialogClosed;
             _closeDialog.Shown += HandleCloseDialogShown;

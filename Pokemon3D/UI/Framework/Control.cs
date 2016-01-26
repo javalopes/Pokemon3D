@@ -49,6 +49,10 @@ namespace Pokemon3D.UI.Framework
                 if (x != this)
                     x.Deselect();
             });
+            Group.Active = true;
         }
+
+        public virtual void GroupActivated() { }
+        public virtual void GroupDeactivated() { }
     }
 }

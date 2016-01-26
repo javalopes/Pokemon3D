@@ -60,7 +60,7 @@ namespace Pokemon3D.UI.Framework
         {
             base.Update();
 
-            if (Selected)
+            if (Selected && Group != null && Group.Active)
             {
                 if (Game.InputSystem.Accept(AcceptInputTypes.Buttons) ||
                     GetBounds().Contains(Game.InputSystem.Mouse.Position) && Game.InputSystem.Accept(AcceptInputTypes.LeftClick))

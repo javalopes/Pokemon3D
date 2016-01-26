@@ -24,10 +24,9 @@ namespace Pokemon3D.UI.Framework.Dialogs
 
         private RenderTarget2D _target;
 
-        public SelectionDialog(string title, string text, LeftSideButton[] buttons, int selectedIndex)
+        public SelectionDialog(string title, string text, LeftSideButton[] buttons)
         {
             AddRange(buttons);
-            SetSelection(selectedIndex);
 
             _batch = new SpriteBatch(Game.GraphicsDevice);
             _renderer = new ShapeRenderer(_batch, Game.GraphicsDevice);
@@ -123,6 +122,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
         public override void Show()
         {
             base.Show();
+            SetSelection(0);
             _colorStepper.TargetColor = Color.White;
         }
 
