@@ -137,9 +137,9 @@ namespace Pokemon3D.UI.Framework.Dialogs
         {
             if (Active)
             {
-                if (Game.InputSystem.Up(true, DirectionalInputTypes.All))
+                if (Game.InputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     MoveSelection(-1);
-                if (Game.InputSystem.Down(true, DirectionalInputTypes.All))
+                if (Game.InputSystem.Down(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     MoveSelection(1);
                 base.Update();
             }

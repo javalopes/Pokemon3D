@@ -43,22 +43,22 @@ namespace Pokemon3D.UI.Framework
         {
             if (Active)
             {
-                if (Game.InputSystem.Up(true, DirectionalInputTypes.All))
+                if (Game.InputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     if (MoveUp != null)
                         MoveUp();
                     else if (Orientation.HasFlag(ControlGroupOrientation.Vertical))
                         MoveSelection(-1);
-                if (Game.InputSystem.Down(true, DirectionalInputTypes.All))
+                if (Game.InputSystem.Down(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     if (MoveDown != null)
                         MoveDown();
                     else if (Orientation.HasFlag(ControlGroupOrientation.Vertical))
                         MoveSelection(1);
-                if (Game.InputSystem.Left(true, DirectionalInputTypes.All))
+                if (Game.InputSystem.Left(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     if (MoveLeft != null)
                         MoveLeft();
                     else if (Orientation.HasFlag(ControlGroupOrientation.Horizontal))
                         MoveSelection(-1);
-                if (Game.InputSystem.Right(true, DirectionalInputTypes.All))
+                if (Game.InputSystem.Right(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     if (MoveRight != null)
                         MoveRight();
                     else if (Orientation.HasFlag(ControlGroupOrientation.Horizontal))

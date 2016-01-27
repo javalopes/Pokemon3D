@@ -110,20 +110,20 @@ namespace Pokemon3D.GameModes.Maps
             var currentMouseState = Mouse.GetState();
 
             var movementDirection = Vector3.Zero;
-            if (Game.InputSystem.Left(false, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
+            if (Game.InputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.X = -1.0f;
             }
-            else if (Game.InputSystem.Right(false, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
+            else if (Game.InputSystem.Right(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.X = 1.0f;
             }
 
-            if (Game.InputSystem.Up(false, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
+            if (Game.InputSystem.Up(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.Z = 1.0f;
             }
-            else if (Game.InputSystem.Down(false, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
+            else if (Game.InputSystem.Down(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.Z = -1.0f;
             }
@@ -205,11 +205,11 @@ namespace Pokemon3D.GameModes.Maps
         {
             AnimateFigure(elapsedTime, movementDirection);
 
-            if (Game.InputSystem.Left(false, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
+            if (Game.InputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
             {
                 SceneNode.RotateY(RotationSpeed * elapsedTime);
             }
-            else if (Game.InputSystem.Right(false, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
+            else if (Game.InputSystem.Right(InputDetectionType.HeldDown, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
             {
                 SceneNode.RotateY(-RotationSpeed * elapsedTime);
             }

@@ -69,13 +69,19 @@ namespace Pokemon3D.Common.Input
             return false;
         }
 
-        private bool CheckDirectional(bool once, InputDirection direction, DirectionalInputTypes inputTypes,
+        private bool CheckDirectional(InputDetectionType detectionType, InputDirection direction, DirectionalInputTypes inputTypes,
                                              Keys arrowKey, Keys WASDKey, Buttons leftThumbstick, Buttons rightThumbstick, Buttons dPadDirection)
         {
-            if (once)
-                return CheckDirectionalPressedOnce(direction, inputTypes, arrowKey, WASDKey, leftThumbstick, rightThumbstick, dPadDirection);
-            else
-                return CheckDirectionalHold(inputTypes, arrowKey, WASDKey, leftThumbstick, rightThumbstick, dPadDirection);
+            switch (detectionType)
+            {
+                case InputDetectionType.PressedOnce:
+                    return CheckDirectionalPressedOnce(direction, inputTypes, arrowKey, WASDKey, leftThumbstick, rightThumbstick, dPadDirection);
+                case InputDetectionType.HeldDown:
+                    return CheckDirectionalHeldDown(inputTypes, arrowKey, WASDKey, leftThumbstick, rightThumbstick, dPadDirection);
+                case InputDetectionType.Released:
+                    return CheckDirectionalReleased(inputTypes, arrowKey, WASDKey, leftThumbstick, rightThumbstick, dPadDirection);
+            }
+            return false;
         }
 
         private bool CheckDirectionalPressedOnce(InputDirection direction, DirectionalInputTypes inputTypes,
@@ -185,7 +191,7 @@ namespace Pokemon3D.Common.Input
             return false;
         }
 
-        private bool CheckDirectionalHold(DirectionalInputTypes inputTypes,
+        private bool CheckDirectionalHeldDown(DirectionalInputTypes inputTypes,
                                           Keys arrowKey, Keys WASDKey, Buttons leftThumbstick, Buttons rightThumbstick, Buttons dPadDirection)
         {
             if (inputTypes.HasFlag(DirectionalInputTypes.ArrowKeys))
@@ -202,7 +208,24 @@ namespace Pokemon3D.Common.Input
             return false;
         }
 
-        public bool Left(bool once, DirectionalInputTypes inputTypes)
+        private bool CheckDirectionalReleased(DirectionalInputTypes inputTypes,
+                                          Keys arrowKey, Keys WASDKey, Buttons leftThumbstick, Buttons rightThumbstick, Buttons dPadDirection)
+        {
+            if (inputTypes.HasFlag(DirectionalInputTypes.ArrowKeys))
+                if (Keyboard.IsKeyUp(arrowKey)) return true;
+            if (inputTypes.HasFlag(DirectionalInputTypes.WASD))
+                if (Keyboard.IsKeyUp(WASDKey)) return true;
+            if (inputTypes.HasFlag(DirectionalInputTypes.LeftThumbstick))
+                if (GamePad.IsButtonUp(leftThumbstick)) return true;
+            if (inputTypes.HasFlag(DirectionalInputTypes.RightThumbstick))
+                if (GamePad.IsButtonUp(rightThumbstick)) return true;
+            if (inputTypes.HasFlag(DirectionalInputTypes.DPad))
+                if (GamePad.IsButtonUp(dPadDirection)) return true;
+
+            return false;
+        }
+
+        public bool Left(InputDetectionType detectionType, DirectionalInputTypes inputTypes)
         {
             // todo: for all directions: check if game is active!
 
@@ -212,11 +235,11 @@ namespace Pokemon3D.Common.Input
             }
             else if (inputTypes != DirectionalInputTypes.ScrollWheel) // when it's only scroll wheel, do not check the rest.
             {
-                return CheckDirectional(once, InputDirection.Left, inputTypes, Keys.Left, Keys.A, Buttons.LeftThumbstickLeft, Buttons.RightThumbstickLeft, Buttons.DPadLeft);
+                return CheckDirectional(detectionType, InputDirection.Left, inputTypes, Keys.Left, Keys.A, Buttons.LeftThumbstickLeft, Buttons.RightThumbstickLeft, Buttons.DPadLeft);
             }
             return false;
         }
-        public bool Right(bool once, DirectionalInputTypes inputTypes)
+        public bool Right(InputDetectionType detectionType, DirectionalInputTypes inputTypes)
         {
             // todo: for all directions: check if game is active!
 
@@ -226,11 +249,11 @@ namespace Pokemon3D.Common.Input
             }
             else if (inputTypes != DirectionalInputTypes.ScrollWheel) // when it's only scroll wheel, do not check the rest.
             {
-                return CheckDirectional(once, InputDirection.Right, inputTypes, Keys.Right, Keys.D, Buttons.LeftThumbstickRight, Buttons.RightThumbstickRight, Buttons.DPadRight);
+                return CheckDirectional(detectionType, InputDirection.Right, inputTypes, Keys.Right, Keys.D, Buttons.LeftThumbstickRight, Buttons.RightThumbstickRight, Buttons.DPadRight);
             }
             return false;
         }
-        public bool Up(bool once, DirectionalInputTypes inputTypes)
+        public bool Up(InputDetectionType detectionType, DirectionalInputTypes inputTypes)
         {
             // todo: for all directions: check if game is active!
 
@@ -240,11 +263,11 @@ namespace Pokemon3D.Common.Input
             }
             else if (inputTypes != DirectionalInputTypes.ScrollWheel) // when it's only scroll wheel, do not check the rest.
             {
-                return CheckDirectional(once, InputDirection.Up, inputTypes, Keys.Up, Keys.W, Buttons.LeftThumbstickUp, Buttons.RightThumbstickUp, Buttons.DPadUp);
+                return CheckDirectional(detectionType, InputDirection.Up, inputTypes, Keys.Up, Keys.W, Buttons.LeftThumbstickUp, Buttons.RightThumbstickUp, Buttons.DPadUp);
             }
             return false;
         }
-        public bool Down(bool once, DirectionalInputTypes inputTypes)
+        public bool Down(InputDetectionType detectionType, DirectionalInputTypes inputTypes)
         {
             // todo: for all directions: check if game is active!
 
@@ -254,7 +277,7 @@ namespace Pokemon3D.Common.Input
             }
             else if (inputTypes != DirectionalInputTypes.ScrollWheel) // when it's only scroll wheel, do not check the rest.
             {
-                return CheckDirectional(once, InputDirection.Down, inputTypes, Keys.Down, Keys.S, Buttons.LeftThumbstickDown, Buttons.RightThumbstickDown, Buttons.DPadDown);
+                return CheckDirectional(detectionType, InputDirection.Down, inputTypes, Keys.Down, Keys.S, Buttons.LeftThumbstickDown, Buttons.RightThumbstickDown, Buttons.DPadDown);
             }
             return false;
         }

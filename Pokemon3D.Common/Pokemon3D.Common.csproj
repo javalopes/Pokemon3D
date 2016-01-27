@@ -87,6 +87,7 @@
     <Compile Include="IdObject.cs" />
     <Compile Include="Input\DismissInputType.cs" />
     <Compile Include="Input\GamePadHandler.cs" />
+    <Compile Include="Input\InputDetectionType.cs" />
     <Compile Include="Input\InputDirections.cs" />
     <Compile Include="Input\InputSystem.cs" />
     <Compile Include="Input\DirectionalInputType.cs" />
