@@ -21,6 +21,7 @@ namespace Pokemon3D.UI.Screens
         private bool _executingScreenTransition;
         private bool _quitGame;
         private ScreenTransition _currentTransition;
+        private List<Screen> _activeOverlays;
 
         public Screen CurrentScreen { get; private set; }
 
@@ -34,6 +35,7 @@ namespace Pokemon3D.UI.Screens
 
             _screensByType = GetImplementationsOf<Screen>().ToDictionary(s => s, s => (Screen) Activator.CreateInstance(s));
             _screenTransitionsByType = GetImplementationsOf<ScreenTransition>().ToDictionary(s => s, s => (ScreenTransition)Activator.CreateInstance(s));
+            _activeOverlays = new List<Screen>();
         }
 
         private static IEnumerable<Type> GetImplementationsOf<T>()
@@ -48,7 +50,13 @@ namespace Pokemon3D.UI.Screens
         {
             var oldScreen = CurrentScreen;
 
-            CurrentScreen?.OnClosing();
+            if (CurrentScreen != null)
+            {
+                CurrentScreen.OnClosing();
+                foreach(var overlays in _activeOverlays) overlays.OnClosing();
+            }
+
+            _activeOverlays.Clear();
             CurrentScreen = _screensByType[screenType];
             CurrentScreen.OnOpening(enterInformation);
 
@@ -56,6 +64,27 @@ namespace Pokemon3D.UI.Screens
             {
                 PrerenderSourceAndTargetAndMakeTransition(oldScreen, CurrentScreen, transition);
             }
+        }
+
+        /// <summary>
+        /// Adds a screen on top of current screen.
+        /// </summary>
+        /// <param name="screenType">Screen type to add</param>
+        /// <param name="enterInformation">context information</param>
+        public void PushScreen(Type screenType, object enterInformation = null)
+        {
+            var overlay = _screensByType[screenType];
+            overlay.OnOpening(enterInformation);
+            _activeOverlays.Add(overlay);
+        } 
+
+        /// <summary>
+        /// Removes current topmost popup screen.
+        /// </summary>
+        public void PopScreen()
+        {
+            if (_activeOverlays.Count == 0) throw new InvalidOperationException("There is no popup screen to remove.");
+            _activeOverlays.Remove(_activeOverlays.Last());
         }
 
         public void NotifyQuitGame()
@@ -92,8 +121,8 @@ namespace Pokemon3D.UI.Screens
             else
             {
                 CurrentScreen?.OnDraw(gameTime);
+                foreach (var overlay in _activeOverlays) overlay.OnDraw(gameTime);
             }
-            
         }
 
         /// <summary>
@@ -111,7 +140,14 @@ namespace Pokemon3D.UI.Screens
             }
             else
             {
-                CurrentScreen?.OnUpdate(elapsedTime);
+                if (_activeOverlays.Any())
+                {
+                    _activeOverlays.Last().OnUpdate(elapsedTime);
+                }
+                else
+                {
+                    CurrentScreen?.OnUpdate(elapsedTime);
+                }
             }
 
             return !_quitGame;

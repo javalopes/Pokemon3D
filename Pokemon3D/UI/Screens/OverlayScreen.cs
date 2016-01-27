@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Pokemon3D.UI.Framework;
 using Pokemon3D.GameCore;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Input;
 
@@ -14,7 +8,6 @@ namespace Pokemon3D.UI.Screens
 {
     class OverlayScreen : GameObject, Screen
     {
-        private Screen _preScreen;
         private HexagonBackground _hexagons;
         private ControlBar _bar;
         
@@ -25,7 +18,6 @@ namespace Pokemon3D.UI.Screens
 
         public void OnOpening(object enterInformation)
         {
-            _preScreen = (Screen)enterInformation;
             _hexagons = new HexagonBackground();
             _bar = new ControlBar();
 
@@ -71,8 +63,6 @@ namespace Pokemon3D.UI.Screens
 
         public void OnDraw(GameTime gameTime)
         {
-            _preScreen.OnDraw(gameTime);
-
             _hexagons.Draw();
 
             _bar.Draw();
@@ -84,14 +74,13 @@ namespace Pokemon3D.UI.Screens
         public void OnUpdate(float elapsedTime)
         {
             _hexagons.Update();
-            
-            if (Game.InputSystem.Dismiss(DismissInputTypes.BButton | DismissInputTypes.EscapeKey))
-            {
-                Game.ScreenManager.SetScreen(_preScreen.GetType());
-            }
-
             _pokemonProfiles.Update();
             _buttons.Update();
+
+            if (Game.InputSystem.Dismiss(DismissInputTypes.BButton | DismissInputTypes.EscapeKey))
+            {
+                Game.ScreenManager.PopScreen();
+            }
         }
 
         public void OnClosing()
