@@ -7,7 +7,6 @@ using Pokemon3D.GameModes.Maps;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
 using System;
-using System.Windows.Threading;
 using Pokemon3D.UI.Transitions;
 using Pokemon3D.DataModel.Savegame;
 using Pokemon3D.DataModel.Savegame.Pokemon;
@@ -24,8 +23,6 @@ namespace Pokemon3D.UI.Screens
         private Scene _scene;
         private Player _player;
 
-        private Dispatcher _dispatcher;
-
         private SpriteFont _debugSpriteFont;
         private bool _showRenderStatistics;
 
@@ -36,7 +33,6 @@ namespace Pokemon3D.UI.Screens
             if (!_isLoaded)
             {
                 _gameMode = Game.ActiveGameMode;
-                _dispatcher = Dispatcher.CurrentDispatcher;
 
                 var loadingResult = enterInformation as GameModeLoadingResult;
                 if (loadingResult == null) throw new InvalidOperationException("Did not receive loaded data.");
@@ -44,6 +40,7 @@ namespace Pokemon3D.UI.Screens
                 _renderer = loadingResult.SceneRenderer;
                 _scene = loadingResult.Scene;
                 _player = loadingResult.Player;
+                _currentMap = loadingResult.Map;
 
                 _debugSpriteFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
 
@@ -152,7 +149,7 @@ namespace Pokemon3D.UI.Screens
         public void OnUpdate(float elapsedTime)
         {
             _player.Update(elapsedTime);
-            _currentMap?.Update(elapsedTime);
+            _currentMap.Update(elapsedTime);
             _scene.Update(elapsedTime);
 
             if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Escape))
@@ -200,7 +197,7 @@ namespace Pokemon3D.UI.Screens
 
         public void OnDraw(GameTime gameTime)
         {
-            _currentMap?.RenderPreparations(_player.Camera);
+            _currentMap.RenderPreparations(_player.Camera);
             _renderer.Draw(_scene);
             Game.CollisionManager.Draw(_player.Camera);
 
