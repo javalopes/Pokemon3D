@@ -87,7 +87,16 @@ namespace Pokemon3D.GameModes.Maps
                 }
                 else
                 {
-                    //todo: model not yet supported.
+                    var models = _map.GameMode.GetModel(renderMode.ModelPath);
+                    var firstModel = models[0];
+
+                    SceneNode.Mesh = firstModel.Mesh;
+                    SceneNode.Material = firstModel.Material;
+                    SceneNode.Material.Color = new Color(_dataModel.RenderMode.Shading.GetVector3());
+                    SceneNode.Material.CastShadow = true;
+                    SceneNode.Material.ReceiveShadow = !_dataModel.RenderMode.UseTransparency;
+                    SceneNode.Material.UseTransparency = _dataModel.RenderMode.UseTransparency;
+                    SceneNode.Material.IsUnlit = true;
                 }
             }
             

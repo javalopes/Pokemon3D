@@ -19,7 +19,7 @@ namespace Pokemon3D.GameModes
             using (var memoryStream = new MemoryStream(data))
             {
                 var flags = PostProcessSteps.GenerateNormals | PostProcessSteps.GenerateUVCoords | Assimp.PostProcessSteps.Triangulate;
-                var scene = context.ImportFileFromStream(memoryStream, flags, string.Empty);
+                var scene = context.ImportFileFromStream(memoryStream, flags, ".obj");
 
                 var meshs = new List<ModelMesh>();
                 foreach (var assimpMesh in scene.Meshes)
@@ -62,10 +62,10 @@ namespace Pokemon3D.GameModes
                 var vertex = mesh.Vertices[i];
                 geometryData.Vertices[i].Position = new Vector3(vertex.X, vertex.Y, vertex.Z);
 
-                var normal = mesh.Normals[i];
+                var normal = mesh.HasNormals ? mesh.Normals[i] : new Vector3D();
                 geometryData.Vertices[i].Normal = new Vector3(normal.X, normal.Y, normal.Z);
 
-                var texcoord = mesh.TextureCoordinateChannels[0][i];
+                var texcoord = mesh.HasTextureCoords(0) ? mesh.TextureCoordinateChannels[0][i] : new Vector3D();
                 geometryData.Vertices[i].TextureCoordinate = new Vector2(texcoord.X, texcoord.Y);
             }
 

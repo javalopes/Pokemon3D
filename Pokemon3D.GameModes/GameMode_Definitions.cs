@@ -30,6 +30,11 @@ namespace Pokemon3D.GameModes
         public string TexturePath => Path.Combine(GameModeInfo.DirectoryPath, PATH_CONTENT, PATH_CONTENT_TEXTURES);
 
         /// <summary>
+        /// The path to the 3d models folder of this GameMode.
+        /// </summary>
+        public string ModelPath => Path.Combine(GameModeInfo.DirectoryPath, PATH_CONTENT, PATH_CONTENT_MODELS);
+
+        /// <summary>
         /// The absolute path to the texture base folder of this GameMode.
         /// </summary>
         public string DataPath => Path.Combine(GameModeInfo.DirectoryPath, PATH_DATA);
