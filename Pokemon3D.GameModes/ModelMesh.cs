@@ -13,18 +13,21 @@ namespace Pokemon3D.GameModes
         public Rendering.Data.Mesh Mesh { get; private set; }
         public Rendering.Data.Material Material { get; private set; }
 
-        public static ModelMesh[] LoadFromMemory(Dispatcher mainThreadDispatcher, GraphicsDevice device, byte[] data)
+        public static ModelMesh[] LoadFromMemory(Dispatcher mainThreadDispatcher, GameMode gameMode, string filePath, byte[] data)
         {
+            var modelDirectory = Path.GetDirectoryName(filePath);
+            var formatHint = Path.GetExtension(filePath);
+
             AssimpContext context = new AssimpContext();
             using (var memoryStream = new MemoryStream(data))
             {
-                var flags = PostProcessSteps.GenerateNormals | PostProcessSteps.GenerateUVCoords | Assimp.PostProcessSteps.Triangulate;
-                var scene = context.ImportFileFromStream(memoryStream, flags, ".obj");
+                var flags = PostProcessSteps.GenerateNormals | PostProcessSteps.GenerateUVCoords | PostProcessSteps.Triangulate;
+                var scene = context.ImportFileFromStream(memoryStream, flags, formatHint);
 
                 var meshs = new List<ModelMesh>();
                 foreach (var assimpMesh in scene.Meshes)
                 {
-                    var modelMesh = new ModelMesh(mainThreadDispatcher, device, scene, assimpMesh);
+                    var modelMesh = new ModelMesh(mainThreadDispatcher, gameMode, scene, assimpMesh, modelDirectory);
                     meshs.Add(modelMesh);
                 }
 
@@ -32,19 +35,19 @@ namespace Pokemon3D.GameModes
             }
         }
 
-        public ModelMesh(Dispatcher mainThreadDispatcher, GraphicsDevice device, Scene assimpScene, Assimp.Mesh assimpMesh)
+        public ModelMesh(Dispatcher mainThreadDispatcher, GameMode gameMode, Scene assimpScene, Assimp.Mesh assimpMesh, string modelDirectory)
         {
             var geometryData = GenerateGeometryDataFromAssimpMesh(assimpMesh);
 
             if (mainThreadDispatcher != null)
             {
-                mainThreadDispatcher.Invoke(() => Mesh = new Rendering.Data.Mesh(device, geometryData));
+                mainThreadDispatcher.Invoke(() => Mesh = new Rendering.Data.Mesh(gameMode.GameContext.GraphicsDevice, geometryData));
             }
             else
             {
-                Mesh = new Rendering.Data.Mesh(device, geometryData);
+                Mesh = new Rendering.Data.Mesh(gameMode.GameContext.GraphicsDevice, geometryData);
             }
-            Material = GenerateMaterialFromMesh(assimpMesh.MaterialIndex, assimpScene);
+            Material = GenerateMaterialFromMesh(assimpMesh.MaterialIndex, gameMode, assimpScene, modelDirectory);
         }
 
         private static GeometryData GenerateGeometryDataFromAssimpMesh(Assimp.Mesh mesh)
@@ -79,16 +82,30 @@ namespace Pokemon3D.GameModes
             return geometryData;
         }
 
-        private Rendering.Data.Material GenerateMaterialFromMesh(int materialIndex, Scene assimpScene)
+        private Rendering.Data.Material GenerateMaterialFromMesh(int materialIndex, GameMode gameMode, Scene assimpScene, string modelDirectory)
         {
             var assimpMaterial = assimpScene.Materials[materialIndex];
+
+            Texture2D texture = null;
+            if (assimpMaterial.HasTextureDiffuse)
+            {
+                texture = GetTextureFromSlot(gameMode, modelDirectory, assimpMaterial.TextureDiffuse);
+            }
+
             return new Rendering.Data.Material
             {
-                //TODO: Refactor
-                DiffuseTexture = null
-                //DiffuseTexture = string.IsNullOrEmpty(assimpMaterial.TextureDiffuse.FilePath)
-                //                        ? null : GetTexture2D(assimpMaterial.TextureDiffuse.FilePath)
+                DiffuseTexture = texture,
             };
+        }
+
+        private Texture2D GetTextureFromSlot(GameMode gameMode, string modelDirectory, TextureSlot textureSlot)
+        {
+            if (string.IsNullOrEmpty(textureSlot.FilePath)) return null;
+
+            var fileName = Path.GetFileName(textureSlot.FilePath) ?? "";
+            var textureFilePath = Path.Combine(modelDirectory, fileName);
+
+            return gameMode.GetTexture(textureFilePath);
         }
     }
 }

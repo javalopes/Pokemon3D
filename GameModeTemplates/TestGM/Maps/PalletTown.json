@@ -22,7 +22,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 16,
                 "Y": 0,
@@ -410,7 +410,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 80,
                 "Y": 16,
@@ -479,7 +479,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 0,
                 "Y": 0,
@@ -780,7 +780,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 48,
                 "Y": 0,
@@ -1023,7 +1023,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 16,
                 "Y": 16,
@@ -1092,7 +1092,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 32,
                 "Y": 0,
@@ -1335,7 +1335,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 0,
                 "Y": 16,
@@ -1674,7 +1674,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 64,
                 "Y": 32,
@@ -1683,7 +1683,7 @@
               }
             },
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 64,
                 "Y": 40,
@@ -1842,7 +1842,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 72,
                 "Y": 32,

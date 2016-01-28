@@ -8,7 +8,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 48,
                 "Y": 32,
@@ -90,7 +90,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 32,
                 "Y": 32,
@@ -136,7 +136,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 0,
                 "Y": 32,
@@ -182,7 +182,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 16,
                 "Y": 48,
@@ -264,7 +264,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 64,
                 "Y": 48,
@@ -310,7 +310,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 0,
                 "Y": 48,
@@ -356,7 +356,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "PalletTown",
+              "Source": "PalletTown.png",
               "Rectangle": {
                 "X": 32,
                 "Y": 48,

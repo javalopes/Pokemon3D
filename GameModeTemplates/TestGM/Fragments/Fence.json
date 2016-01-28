@@ -8,7 +8,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "Sign",
+              "Source": "Sign.png",
               "Rectangle": {
                 "X": 20,
                 "Y": 0,
@@ -161,7 +161,7 @@
           "RenderMethod": "Primitive",
           "Textures": [
             {
-              "Source": "Sign",
+              "Source": "Sign.png",
               "Rectangle": {
                 "X": 16,
                 "Y": 10,

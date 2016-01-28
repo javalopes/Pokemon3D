@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.DataHandling;
 using Pokemon3D.Common;
 using Mesh = Pokemon3D.Rendering.Data.Mesh;
+using System.Windows.Threading;
 
 namespace Pokemon3D.GameModes
 {
@@ -75,15 +76,9 @@ namespace Pokemon3D.GameModes
             var newTextureLoadRequest = new AsyncTexture2D();
             FileLoader.GetFileAsync(Path.Combine(TexturePath, filePath + ".png"), d =>
             {
-                GameContext.MainThreadDispatcher.Invoke(() =>
-                {
-                    using (var memoryStream = new MemoryStream(d.Data))
-                    {
-                        var texture = Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream);
-                        _textureCache.Add(filePath, texture);
-                        newTextureLoadRequest.SetTexture(texture);
-                    }
-                });
+                var texture = GetTextureFromByteArrayDispatched(d.Data);
+                _textureCache.Add(filePath, texture);
+                newTextureLoadRequest.SetTexture(texture);
             });
             return newTextureLoadRequest;
         }
@@ -93,30 +88,46 @@ namespace Pokemon3D.GameModes
             Texture2D existing;
             if (_textureCache.TryGetValue(filePath, out existing)) return existing;
 
-            using (var memoryStream = new MemoryStream(FileLoader.GetFile(Path.Combine(TexturePath, filePath + ".png"))))
-            {
-                existing = Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream);
-            }
-
+            existing = GetTextureFromByteArrayDispatched(FileLoader.GetFile(Path.Combine(TexturePath, filePath)));
             _textureCache.Add(filePath, existing);
             return existing;
         }
 
+        private Texture2D GetTextureFromByteArrayDispatched(byte[] data)
+        {
+            Texture2D texture = null;
+            using (var memoryStream = new MemoryStream(data))
+            {
+                if (GameContext.MainThreadDispatcher.CheckAccess())
+                {
+                    texture = Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream);
+                }
+                else
+                {
+                    GameContext.MainThreadDispatcher.Invoke(() =>
+                    {
+                        texture = Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream);
+                    });
+                }
+            }
+            return texture;
+        }
+
         public void GetModelAsync(string filePath, Action<ModelMesh[]> modelLoaded)
         {
-            //todo: define model paths.
             FileLoader.GetFileAsync(Path.Combine(ModelPath, filePath), d =>
             {
-                var meshsArray = ModelMesh.LoadFromMemory(GameContext.MainThreadDispatcher, GameContext.GraphicsDevice, d.Data);
+                var meshsArray = ModelMesh.LoadFromMemory(GameContext.MainThreadDispatcher, this, filePath, d.Data);
                 _meshCache.Add(filePath, meshsArray);
                 modelLoaded(meshsArray);
             });
         }
 
-        public ModelMesh[] GetModel(string filePath)
+        public ModelMesh[] GetModel(string filePath, Dispatcher mainThreadDispatcher = null)
         {
-            var data = File.ReadAllBytes(Path.Combine(ModelPath, filePath));
-            var meshsArray = ModelMesh.LoadFromMemory(null, GameContext.GraphicsDevice, data);
+            var absolutePath = Path.Combine(ModelPath, filePath);
+            var data = File.ReadAllBytes(absolutePath);
+            var meshsArray = ModelMesh.LoadFromMemory(mainThreadDispatcher, this, absolutePath, data);
             _meshCache.Add(filePath, meshsArray);
             return meshsArray;
         }
