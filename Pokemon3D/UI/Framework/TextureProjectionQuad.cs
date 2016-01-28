@@ -18,13 +18,11 @@ namespace Pokemon3D.UI.Framework
         private BasicEffect _quadEffect;
         private Matrix _projection, _view;
         private Texture2D _texture;
+        private VertexPositionNormalTexture[] _vertices;
+        private short[] _indices;
 
         private bool _projectionSet, _viewSet, _textureSet;
-
-        public VertexPositionNormalTexture[] Vertices { get; private set; }
-
-        public short[] Indices { get; private set; }
-
+        
         public Texture2D Texture
         {
             get { return _texture; }
@@ -60,8 +58,8 @@ namespace Pokemon3D.UI.Framework
         
         public TextureProjectionQuad()
         {
-            Vertices = new VertexPositionNormalTexture[4];
-            Indices = new short[6];
+            _vertices = new VertexPositionNormalTexture[4];
+            _indices = new short[6];
 
             _origin = Vector3.Zero;
             _normal = Vector3.Backward;
@@ -94,30 +92,30 @@ namespace Pokemon3D.UI.Framework
             Vector2 textureLowerRight = new Vector2(1.0f, 1.0f);
 
             // Provide a normal for each vertex
-            for (int i = 0; i < Vertices.Length; i++)
+            for (int i = 0; i < _vertices.Length; i++)
             {
-                Vertices[i].Normal = _normal;
+                _vertices[i].Normal = _normal;
             }
 
             // Set the position and texture coordinate for each
             // vertex
-            Vertices[0].Position = _lowerLeft;
-            Vertices[0].TextureCoordinate = textureLowerLeft;
-            Vertices[1].Position = _upperLeft;
-            Vertices[1].TextureCoordinate = textureUpperLeft;
-            Vertices[2].Position = _lowerRight;
-            Vertices[2].TextureCoordinate = textureLowerRight;
-            Vertices[3].Position = _upperRight;
-            Vertices[3].TextureCoordinate = textureUpperRight;
+            _vertices[0].Position = _lowerLeft;
+            _vertices[0].TextureCoordinate = textureLowerLeft;
+            _vertices[1].Position = _upperLeft;
+            _vertices[1].TextureCoordinate = textureUpperLeft;
+            _vertices[2].Position = _lowerRight;
+            _vertices[2].TextureCoordinate = textureLowerRight;
+            _vertices[3].Position = _upperRight;
+            _vertices[3].TextureCoordinate = textureUpperRight;
 
             // Set the index buffer for each vertex, using
             // clockwise winding
-            Indices[0] = 0;
-            Indices[1] = 1;
-            Indices[2] = 2;
-            Indices[3] = 2;
-            Indices[4] = 1;
-            Indices[5] = 3;
+            _indices[0] = 0;
+            _indices[1] = 1;
+            _indices[2] = 2;
+            _indices[3] = 2;
+            _indices[4] = 1;
+            _indices[5] = 3;
         }
 
         private void SetupEffect()
@@ -138,8 +136,8 @@ namespace Pokemon3D.UI.Framework
 
                     Game.GraphicsDevice.DrawUserIndexedPrimitives(
                         PrimitiveType.TriangleList,
-                        Vertices, 0, 4,
-                        Indices, 0, 2);
+                        _vertices, 0, 4,
+                        _indices, 0, 2);
                 }
             }
             else
