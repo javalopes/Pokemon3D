@@ -111,6 +111,7 @@
     <Compile Include="UI\Framework\OffsetTransition.cs" />
     <Compile Include="UI\Framework\PokemonProfile.cs" />
     <Compile Include="UI\Framework\PokemonSpriteSheet.cs" />
+    <Compile Include="UI\Framework\TextureProjectionQuad.cs" />
     <Compile Include="UI\Localization\CoreTranslationManager.cs" />
     <Compile Include="GameModes\Resources\GameModei18nManager.cs" />
     <Compile Include="GameCore\Program.cs" />
@@ -254,6 +255,10 @@
     <None Include="Content\Textures\UI\Common\Profile_Shadow.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Textures\UI\Tablet\Tablet_Back.xnb" />
+    <None Include="Content\Textures\UI\Tablet\Tablet_Emitter.xnb" />
+    <None Include="Content\Textures\UI\Tablet\Tablet_Shine.xnb" />
+    <None Include="Content\Textures\UI\Tablet\Tablet_Side.xnb" />
     <None Include="packages.config" />
     <None Include="ResourceNames.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

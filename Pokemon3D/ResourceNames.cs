@@ -52,6 +52,14 @@ namespace Pokemon3D
                     public const string Button_X = "Textures/UI/GamePadButtons/Button_X";
                     public const string Button_Y = "Textures/UI/GamePadButtons/Button_Y";
                 }
+                
+                public static class Tablet
+                {
+                    public const string Tablet_Back = "Textures/UI/Tablet/Tablet_Back";
+                    public const string Tablet_Emitter = "Textures/UI/Tablet/Tablet_Emitter";
+                    public const string Tablet_Shine = "Textures/UI/Tablet/Tablet_Shine";
+                    public const string Tablet_Side = "Textures/UI/Tablet/Tablet_Side";
+                }
             }
         }
     }
