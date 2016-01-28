@@ -127,6 +127,7 @@
     <Compile Include="UI\Screens\MainMenuScreen2.cs" />
     <Compile Include="UI\Screens\OverlayScreen.cs" />
     <Compile Include="UI\Screens\OverworldScreen.cs" />
+    <Compile Include="UI\Screens\TabletScreen.cs" />
     <Compile Include="UI\Transitions\BlendTransition.cs" />
     <Compile Include="UI\Screens\IntroScreen.cs" />
     <Compile Include="UI\Screens\MainMenuScreen.cs" />

@@ -20,6 +20,7 @@ namespace Pokemon3D.UI.Framework
         private Texture2D _texture;
         private VertexPositionNormalTexture[] _vertices;
         private short[] _indices;
+        private float _width, _height;
 
         private bool _projectionSet, _viewSet, _textureSet;
         
@@ -56,10 +57,24 @@ namespace Pokemon3D.UI.Framework
             }
         }
         
+        public Vector2 Size
+        {
+            get { return new Vector2(_width, _height); }
+            set
+            {
+                _width = value.X;
+                _height = value.Y;
+                CalculateQuadCorners();
+                FillVertices();
+            }
+        }
+
         public TextureProjectionQuad()
         {
             _vertices = new VertexPositionNormalTexture[4];
             _indices = new short[6];
+            _width = 1f;
+            _height = 1f;
 
             _origin = Vector3.Zero;
             _normal = Vector3.Backward;
@@ -72,15 +87,12 @@ namespace Pokemon3D.UI.Framework
 
         private void CalculateQuadCorners()
         {
-            float width = 1;
-            float height = 1;
-
             _left = Vector3.Cross(_normal, _up);
-            Vector3 uppercenter = (_up * height / 2) + _origin;
-            _upperLeft = uppercenter + (_left * width / 2);
-            _upperRight = uppercenter - (_left * width / 2);
-            _lowerLeft = _upperLeft - (_up * height);
-            _lowerRight = _upperRight - (_up * height);
+            Vector3 uppercenter = (_up * _height / 2) + _origin;
+            _upperLeft = uppercenter + (_left * _width / 2);
+            _upperRight = uppercenter - (_left * _width / 2);
+            _lowerLeft = _upperLeft - (_up * _height);
+            _lowerRight = _upperRight - (_up * _height);
         }
 
         private void FillVertices()
@@ -123,13 +135,17 @@ namespace Pokemon3D.UI.Framework
             _quadEffect = new BasicEffect(Game.GraphicsDevice);
             _quadEffect.World = Matrix.Identity;
             _quadEffect.TextureEnabled = true;
-            _quadEffect.EnableDefaultLighting();
         }
 
-        public void Draw()
+        public Texture2D GetProjected(int width, int height)
         {
             if (_projectionSet && _viewSet && _textureSet)
             {
+                var target = new RenderTarget2D(Game.GraphicsDevice, width, height);
+                var prevTargets = Game.GraphicsDevice.GetRenderTargets();
+                Game.GraphicsDevice.SetRenderTarget(target);
+                Game.GraphicsDevice.Clear(Color.Transparent);
+
                 foreach (EffectPass pass in _quadEffect.CurrentTechnique.Passes)
                 {
                     pass.Apply();
@@ -139,6 +155,9 @@ namespace Pokemon3D.UI.Framework
                         _vertices, 0, 4,
                         _indices, 0, 2);
                 }
+
+                Game.GraphicsDevice.SetRenderTargets(prevTargets);
+                return target;
             }
             else
             {

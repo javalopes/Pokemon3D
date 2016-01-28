@@ -185,7 +185,8 @@ namespace Pokemon3D.UI.Screens
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.X) || Game.InputSystem.GamePad.IsButtonDownOnce(Buttons.X))
             {
-                Game.ScreenManager.PushScreen(typeof(OverlayScreen));
+                // Game.ScreenManager.PushScreen(typeof(OverlayScreen));
+                Game.ScreenManager.PushScreen(typeof(TabletScreen));
             }
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F10))
