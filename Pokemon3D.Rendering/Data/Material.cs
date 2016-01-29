@@ -54,14 +54,14 @@ namespace Pokemon3D.Rendering.Data
             };
         }
 
-        internal int GetLightingTypeFlags(RenderSettings renderSettings)
+        internal LightTechniqueFlag GetLightingTypeFlags(RenderSettings renderSettings)
         {
-            var flags = 0;
+            LightTechniqueFlag flags = 0;
 
-            if (!IsUnlit) flags |= LightTechniqueFlags.Lit;
-            if (ReceiveShadow && renderSettings.EnableShadows) flags |= LightTechniqueFlags.ReciveShadows;
-            if (renderSettings.EnableSoftShadows) flags |= LightTechniqueFlags.SoftShadows;
-            if (DiffuseTexture != null) flags |= LightTechniqueFlags.UseTexture;
+            if (!IsUnlit) flags |= LightTechniqueFlag.Lit;
+            if (ReceiveShadow && renderSettings.EnableShadows) flags |= LightTechniqueFlag.ReceiveShadows;
+            if (renderSettings.EnableSoftShadows) flags |= LightTechniqueFlag.SoftShadows;
+            if (DiffuseTexture != null) flags |= LightTechniqueFlag.UseTexture;
 
             return flags;
         }

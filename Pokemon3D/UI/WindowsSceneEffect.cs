@@ -11,7 +11,7 @@ namespace Pokemon3D.UI
     {
         private readonly Effect _basicEffect;
 
-        private Dictionary<int, EffectTechnique> _effectsByLightingFlags;
+        private Dictionary<LightTechniqueFlag, EffectTechnique> _effectsByLightingFlags;
 
         private readonly EffectTechnique _shadowCasterTechnique;
         private EffectTechnique _shadowCasterTransparentTechnique;
@@ -41,16 +41,16 @@ namespace Pokemon3D.UI
             _shadowCasterTransparentTechnique = _basicEffect.Techniques["ShadowCasterTransparent"];
             ShadowMapDebugEffect = content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
 
-            _effectsByLightingFlags = new Dictionary<int, EffectTechnique>
+            _effectsByLightingFlags = new Dictionary<LightTechniqueFlag, EffectTechnique>
             {
-                { LightTechniqueFlags.Lit | LightTechniqueFlags.ReciveShadows,_basicEffect.Techniques["LitNoTextureShadowReceiver"] },
-                { LightTechniqueFlags.Lit | LightTechniqueFlags.ReciveShadows | LightTechniqueFlags.SoftShadows , _basicEffect.Techniques["LitNoTextureShadowReceiverPCF"] },
-                { LightTechniqueFlags.Lit | LightTechniqueFlags.UseTexture, _basicEffect.Techniques["Lit"] },
-                { LightTechniqueFlags.Lit | LightTechniqueFlags.UseTexture | LightTechniqueFlags.ReciveShadows, _basicEffect.Techniques["LitShadowReceiver"] },
-                { LightTechniqueFlags.Lit | LightTechniqueFlags.UseTexture | LightTechniqueFlags.ReciveShadows | LightTechniqueFlags.SoftShadows, _basicEffect.Techniques["LitShadowReceiverPCF"] },
+                { LightTechniqueFlag.Lit | LightTechniqueFlag.ReceiveShadows,_basicEffect.Techniques["LitNoTextureShadowReceiver"] },
+                { LightTechniqueFlag.Lit | LightTechniqueFlag.ReceiveShadows | LightTechniqueFlag.SoftShadows , _basicEffect.Techniques["LitNoTextureShadowReceiverPCF"] },
+                { LightTechniqueFlag.Lit | LightTechniqueFlag.UseTexture, _basicEffect.Techniques["Lit"] },
+                { LightTechniqueFlag.Lit | LightTechniqueFlag.UseTexture | LightTechniqueFlag.ReceiveShadows, _basicEffect.Techniques["LitShadowReceiver"] },
+                { LightTechniqueFlag.Lit | LightTechniqueFlag.UseTexture | LightTechniqueFlag.ReceiveShadows | LightTechniqueFlag.SoftShadows, _basicEffect.Techniques["LitShadowReceiverPCF"] },
                 
-                { LightTechniqueFlags.UseTexture, _basicEffect.Techniques["Unlit"] },
-                { LightTechniqueFlags.UseTexture | LightTechniqueFlags.LinearTextureSampling, _basicEffect.Techniques["UnlitLinearSampled"] },
+                { LightTechniqueFlag.UseTexture, _basicEffect.Techniques["Unlit"] },
+                { LightTechniqueFlag.UseTexture | LightTechniqueFlag.LinearTextureSampling, _basicEffect.Techniques["UnlitLinearSampled"] },
             };
 
             _lightViewProjection = _basicEffect.Parameters["LightViewProjection"];
@@ -77,7 +77,7 @@ namespace Pokemon3D.UI
             _basicEffect.CurrentTechnique = transparent ? _shadowCasterTransparentTechnique : _shadowCasterTechnique;
         }
 
-        public void ActivateLightingTechnique(int flags)
+        public void ActivateLightingTechnique(LightTechniqueFlag flags)
         {
             _basicEffect.CurrentTechnique = _effectsByLightingFlags[flags];
         }
