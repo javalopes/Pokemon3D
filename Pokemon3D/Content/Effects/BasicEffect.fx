@@ -5,6 +5,7 @@ float4x4 View;
 float4x4 Projection;
 float2 TexcoordOffset;
 float2 TexcoordScale;
+float4 MaterialColor = float4(1,1,1,1);
 
 //Parameters for shadow mapping.
 float4x4 LightViewProjection;
@@ -179,6 +180,26 @@ float4 LitPS(VertexShaderOutput input) : COLOR0
 	return ModulatePreserveAlpha(colorFromTexture, lightColor);
 }
 
+VertexShaderOutput LitNoTextureVS(VertexShaderInput input)
+{
+	VertexShaderOutput output;
+
+	float4 worldPosition = mul(input.Position, World);
+	float4 viewPosition = mul(worldPosition, View);
+	output.Position = mul(viewPosition, Projection);
+	output.Normal = mul(input.Normal, (float3x3)World);
+	output.TexCoord = float2(0,0);
+
+	return output;
+}
+
+float4 LitNoTexturePS(VertexShaderOutput input) : COLOR0
+{
+	float4 lightColor = CalculateAmbientDiffuseLighting(input.Normal, LightDirection, 1.0f);
+
+	return ModulatePreserveAlpha(MaterialColor, lightColor);
+}
+
 VertexShaderShadowReceiverOutput LitShadowReceiverVS(VertexShaderShadowReceiverInput input)
 {
 	VertexShaderShadowReceiverOutput output;
@@ -195,6 +216,22 @@ VertexShaderShadowReceiverOutput LitShadowReceiverVS(VertexShaderShadowReceiverI
 	return output;
 }
 
+VertexShaderShadowReceiverOutput LitNoTextureShadowReceiverVS(VertexShaderShadowReceiverInput input)
+{
+	VertexShaderShadowReceiverOutput output;
+
+	float4 worldPosition = mul(input.Position, World);
+	float4 viewPosition = mul(worldPosition, View);
+	output.Position = mul(viewPosition, Projection);
+	output.Normal = mul(input.Normal, (float3x3)World);
+	output.TexCoord = float2(0, 0);
+
+	float4 lightWorldPos = mul(input.Position, WorldLight);
+	output.LightPosition = mul(lightWorldPos, LightViewProjection);
+
+	return output;
+}
+
 float4 LitShadowReceiverPS(VertexShaderShadowReceiverOutput input) : COLOR0
 {
 	float shadowFactor = CalculateShadowFactor(input.LightPosition);
@@ -204,6 +241,14 @@ float4 LitShadowReceiverPS(VertexShaderShadowReceiverOutput input) : COLOR0
 	return ModulatePreserveAlpha(colorFromTexture, lightColor);
 }
 
+float4 LitNoTextureShadowReceiverPS(VertexShaderShadowReceiverOutput input) : COLOR0
+{
+	float shadowFactor = CalculateShadowFactor(input.LightPosition);
+	float4 lightColor = CalculateAmbientDiffuseLighting(input.Normal, LightDirection, shadowFactor);
+
+	return ModulatePreserveAlpha(MaterialColor, lightColor);
+}
+
 float4 LitShadowReceiverPCFPS(VertexShaderShadowReceiverOutput input) : COLOR0
 {
 	float shadowFactor = CalculateShadowFactorPCF(input.LightPosition);
@@ -211,7 +256,15 @@ float4 LitShadowReceiverPCFPS(VertexShaderShadowReceiverOutput input) : COLOR0
 	float4 colorFromTexture = tex2D(DiffuseSampler, input.TexCoord);
 
 	return ModulatePreserveAlpha(colorFromTexture, lightColor);
-	}
+}
+
+float4 LitNoTextureShadowReceiverPCFPS(VertexShaderShadowReceiverOutput input) : COLOR0
+{
+	float shadowFactor = CalculateShadowFactorPCF(input.LightPosition);
+	float4 lightColor = CalculateAmbientDiffuseLighting(input.Normal, LightDirection, shadowFactor);
+
+	return ModulatePreserveAlpha(MaterialColor, lightColor);
+}
 
 technique Lit
 {
@@ -219,6 +272,15 @@ technique Lit
 	{
 		VertexShader = compile vs_4_0 LitVS();
 		PixelShader = compile ps_4_0 LitPS();
+	}
+}
+
+technique LitNoTexture
+{
+	pass Pass1
+	{
+		VertexShader = compile vs_4_0 LitNoTextureVS();
+		PixelShader = compile ps_4_0 LitNoTexturePS();
 	}
 }
 
@@ -231,12 +293,30 @@ technique LitShadowReceiver
 	}
 }
 
+technique LitNoTextureShadowReceiver
+{
+	pass Pass1
+	{
+		VertexShader = compile vs_4_0 LitNoTextureShadowReceiverVS();
+		PixelShader = compile ps_4_0 LitNoTextureShadowReceiverPS();
+	}
+}
+
 technique LitShadowReceiverPCF
 {
 	pass Pass1
 	{
 		VertexShader = compile vs_4_0 LitShadowReceiverVS();
 		PixelShader = compile ps_4_0 LitShadowReceiverPCFPS();
+	}
+}
+
+technique LitNoTextureShadowReceiverPCF
+{
+	pass Pass1
+	{
+		VertexShader = compile vs_4_0 LitNoTextureShadowReceiverVS();
+		PixelShader = compile ps_4_0 LitNoTextureShadowReceiverPCFPS();
 	}
 }
 

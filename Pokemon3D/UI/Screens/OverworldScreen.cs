@@ -199,8 +199,8 @@ namespace Pokemon3D.UI.Screens
         public void OnDraw(GameTime gameTime)
         {
             _currentMap.RenderPreparations(_player.Camera);
-            _renderer.Draw(_scene);
             Game.CollisionManager.Draw(_player.Camera);
+            _renderer.Draw(_scene);
 
             if (_showRenderStatistics) DrawRenderStatsitics();
         }

@@ -96,7 +96,7 @@ namespace Pokemon3D.GameModes.Maps
                     SceneNode.Material.CastShadow = true;
                     SceneNode.Material.ReceiveShadow = !_dataModel.RenderMode.UseTransparency;
                     SceneNode.Material.UseTransparency = _dataModel.RenderMode.UseTransparency;
-                    SceneNode.Material.IsUnlit = true;
+                    SceneNode.Material.IsUnlit = false;
                 }
             }
             

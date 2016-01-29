@@ -142,5 +142,10 @@ namespace Pokemon3D.Rendering.Compositor
         /// Texcoord Scales.
         /// </summary>
         Vector2 TexcoordScale { get; set; }
+
+        /// <summary>
+        /// Color of Material.
+        /// </summary>
+        Color MaterialColor { get; set; }
     }
 }

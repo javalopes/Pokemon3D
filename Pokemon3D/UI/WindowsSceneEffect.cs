@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.Compositor;
 using System.Collections.Generic;
+using System;
 
 namespace Pokemon3D.UI
 {
@@ -29,7 +30,8 @@ namespace Pokemon3D.UI
         private readonly EffectParameter _ambientIntensity;
         private readonly EffectParameter _diffuseIntensity;
         private readonly EffectParameter _shadowScale;
-        
+        private readonly EffectParameter _materialColor;
+
         public WindowsSceneEffect(ContentManager content)
         {
             _basicEffect = content.Load<Effect>(ResourceNames.Effects.BasicEffect);
@@ -41,15 +43,14 @@ namespace Pokemon3D.UI
 
             _effectsByLightingFlags = new Dictionary<int, EffectTechnique>
             {
+                { LightTechniqueFlags.Lit | LightTechniqueFlags.ReciveShadows,_basicEffect.Techniques["LitNoTextureShadowReceiver"] },
+                { LightTechniqueFlags.Lit | LightTechniqueFlags.ReciveShadows | LightTechniqueFlags.SoftShadows , _basicEffect.Techniques["LitNoTextureShadowReceiverPCF"] },
                 { LightTechniqueFlags.Lit | LightTechniqueFlags.UseTexture, _basicEffect.Techniques["Lit"] },
                 { LightTechniqueFlags.Lit | LightTechniqueFlags.UseTexture | LightTechniqueFlags.ReciveShadows, _basicEffect.Techniques["LitShadowReceiver"] },
                 { LightTechniqueFlags.Lit | LightTechniqueFlags.UseTexture | LightTechniqueFlags.ReciveShadows | LightTechniqueFlags.SoftShadows, _basicEffect.Techniques["LitShadowReceiverPCF"] },
+                
                 { LightTechniqueFlags.UseTexture, _basicEffect.Techniques["Unlit"] },
                 { LightTechniqueFlags.UseTexture | LightTechniqueFlags.LinearTextureSampling, _basicEffect.Techniques["UnlitLinearSampled"] },
-
-                //workarounds
-                { LightTechniqueFlags.ReciveShadows, _basicEffect.Techniques["Unlit"] },
-                { LightTechniqueFlags.ReciveShadows | LightTechniqueFlags.SoftShadows, _basicEffect.Techniques["Unlit"] },
             };
 
             _lightViewProjection = _basicEffect.Parameters["LightViewProjection"];
@@ -66,6 +67,7 @@ namespace Pokemon3D.UI
             _ambientIntensity = _basicEffect.Parameters["AmbientIntensity"];
             _diffuseIntensity = _basicEffect.Parameters["DiffuseIntensity"];
             _shadowScale = _basicEffect.Parameters["ShadowScale"];
+            _materialColor = _basicEffect.Parameters["MaterialColor"];
         }
 
         public Effect ShadowMapDebugEffect { get; }
@@ -166,6 +168,15 @@ namespace Pokemon3D.UI
         {
             get { return _ambientLight.GetValueVector4(); }
             set { _ambientLight.SetValue(value);}
+        }
+
+        public Color MaterialColor
+        {
+            get { return new Color(_materialColor.GetValueVector4()); }
+            set
+            {
+                _materialColor.SetValue(value.ToVector4());
+            }
         }
     }
 }

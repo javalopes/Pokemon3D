@@ -69,6 +69,7 @@ namespace Pokemon3D.Rendering.Compositor
             sceneEffect.DiffuseTexture = element.Material.DiffuseTexture;
             sceneEffect.TexcoordScale = element.Material.TexcoordScale;
             sceneEffect.TexcoordOffset = element.Material.TexcoordOffset;
+            sceneEffect.MaterialColor = element.Material.Color;
 
             for (var i = 0; i < sceneEffect.CurrentTechniquePasses.Count; i++)
             {
