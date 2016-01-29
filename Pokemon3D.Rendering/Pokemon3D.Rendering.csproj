@@ -61,6 +61,7 @@
     <Compile Include="Compositor\ForwardSceneRenderer.cs" />
     <Compile Include="Compositor\DrawableElement.cs" />
     <Compile Include="Compositor\HorizontalBlurPostProcessingStep.cs" />
+    <Compile Include="Compositor\LightTechniqueFlag.cs" />
     <Compile Include="Compositor\RenderQueue.cs" />
     <Compile Include="Compositor\RenderSettings.cs" />
     <Compile Include="Compositor\RenderStatistics.cs" />
