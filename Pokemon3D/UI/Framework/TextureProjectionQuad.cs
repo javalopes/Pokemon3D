@@ -16,56 +16,66 @@ namespace Pokemon3D.UI.Framework
     {
         private Vector3 _origin, _upperLeft, _lowerLeft, _upperRight, _lowerRight, _normal, _up, _left;
         private BasicEffect _quadEffect;
+        private RenderTarget2D _target;
         private Matrix _projection, _view;
-        private Texture2D _texture;
         private VertexPositionNormalTexture[] _vertices;
         private short[] _indices;
-        private float _width, _height;
+        private bool _viewDirty = true;
+        private bool _projectionDirty = true;
+        private bool _targetDirty = true;
+        private float _fieldOfView = 45;
+        private int _textureOutputWidth = 0;
+        private int _textureOutputHeight = 0;
+        private Vector3 _cameraPosition = Vector3.Zero;
 
-        private bool _projectionSet, _viewSet, _textureSet;
-        
         public Texture2D Texture
         {
-            get { return _texture; }
+            get { return _quadEffect.Texture; }
             set
             {
-                _texture = value;
-                _quadEffect.Texture = _texture;
-                _textureSet = true;
+                _quadEffect.Texture = value;
             }
         }
 
-        public Matrix Projection
+        public float FieldOfView
         {
-            get { return _projection; }
+            get { return _fieldOfView; }
             set
             {
-                _projection = value;
-                _quadEffect.Projection = _projection;
-                _projectionSet = true;
+                _fieldOfView = value;
+                _projectionDirty = true;
             }
         }
 
-        public Matrix View
+        public int TextureOutputWidth
         {
-            get { return _view; }
+            get { return _textureOutputWidth; }
             set
             {
-                _view = value;
-                _quadEffect.View = _view;
-                _viewSet = true;
+                _textureOutputWidth = value;
+                _projectionDirty = true;
+                _targetDirty = true;
             }
         }
-        
-        public Vector2 Size
+
+        public int TextureOutputHeight
         {
-            get { return new Vector2(_width, _height); }
+            get { return _textureOutputHeight; }
             set
             {
-                _width = value.X;
-                _height = value.Y;
-                CalculateQuadCorners();
-                FillVertices();
+                _textureOutputHeight = value;
+                _projectionDirty = true;
+                _targetDirty = true;
+            }
+        }
+
+        public Vector3 CameraPosition
+        {
+            get { return _cameraPosition; }
+            set
+            {
+                _cameraPosition = value;
+                _viewDirty = true;
             }
         }
 
@@ -73,8 +83,6 @@ namespace Pokemon3D.UI.Framework
         {
             _vertices = new VertexPositionNormalTexture[4];
             _indices = new short[6];
-            _width = 1f;
-            _height = 1f;
 
             _origin = Vector3.Zero;
             _normal = Vector3.Backward;
@@ -88,11 +96,11 @@ namespace Pokemon3D.UI.Framework
         private void CalculateQuadCorners()
         {
             _left = Vector3.Cross(_normal, _up);
-            Vector3 uppercenter = (_up * _height / 2) + _origin;
-            _upperLeft = uppercenter + (_left * _width / 2);
-            _upperRight = uppercenter - (_left * _width / 2);
-            _lowerLeft = _upperLeft - (_up * _height);
-            _lowerRight = _upperRight - (_up * _height);
+            Vector3 uppercenter = (_up / 2) + _origin;
+            _upperLeft = uppercenter + (_left / 2);
+            _upperRight = uppercenter - (_left / 2);
+            _lowerLeft = _upperLeft - (_up);
+            _lowerRight = _upperRight - (_up);
         }
 
         private void FillVertices()
@@ -137,13 +145,30 @@ namespace Pokemon3D.UI.Framework
             _quadEffect.TextureEnabled = true;
         }
 
-        public Texture2D GetProjected(int width, int height)
+        public Texture2D GetProjected()
         {
-            if (_projectionSet && _viewSet && _textureSet)
+            if (_quadEffect.Texture != null)
             {
-                var target = new RenderTarget2D(Game.GraphicsDevice, width, height);
+                if (_projectionDirty)
+                {
+                    _projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(_fieldOfView), _textureOutputWidth / _textureOutputHeight, 0.01f, 10000f);
+                    _quadEffect.Projection = _projection;
+                    _projectionDirty = false;
+                }
+                if (_viewDirty)
+                {
+                    _view = Matrix.CreateLookAt(_cameraPosition, Vector3.Zero, Vector3.Up);
+                    _quadEffect.View = _view;
+                    _viewDirty = false;
+                }
+                if (_targetDirty)
+                {
+                    _target = new RenderTarget2D(Game.GraphicsDevice, _textureOutputWidth, _textureOutputHeight);
+                    _targetDirty = false;
+                }
+
                 var prevTargets = Game.GraphicsDevice.GetRenderTargets();
-                Game.GraphicsDevice.SetRenderTarget(target);
+                Game.GraphicsDevice.SetRenderTarget(_target);
                 Game.GraphicsDevice.Clear(Color.Transparent);
 
                 foreach (EffectPass pass in _quadEffect.CurrentTechnique.Passes)
@@ -157,11 +182,11 @@ namespace Pokemon3D.UI.Framework
                 }
 
                 Game.GraphicsDevice.SetRenderTargets(prevTargets);
-                return target;
+                return _target;
             }
             else
             {
-                throw new InvalidOperationException($"The {nameof(Texture)}, {nameof(View)} and {nameof(Projection)} members of the {nameof(TextureProjectionQuad)} have to be set.");
+                throw new InvalidOperationException($"The {nameof(Texture)} member of the {nameof(TextureProjectionQuad)} has to be set.");
             }
         }
     }

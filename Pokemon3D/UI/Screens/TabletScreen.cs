@@ -23,8 +23,9 @@ namespace Pokemon3D.UI.Screens
         public void OnOpening(object enterInformation)
         {
             _quad = new TextureProjectionQuad();
-            _quad.Size = new Vector2(1.5f, 1f);
-
+            _quad.TextureOutputWidth = 544 * 2;
+            _quad.TextureOutputHeight = 320 * 2;
+            
             _sideTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.Tablet_Side);
             _shineTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.Tablet_Shine);
             _backTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.Tablet_Back);
@@ -53,24 +54,22 @@ namespace Pokemon3D.UI.Screens
 
             Game.SpriteBatch.Draw(_sideTexture, new Vector2(target.Width / 2 - 32 - _sideSlider.Offset, target.Height / 2 - 160), Color.White);
             Game.SpriteBatch.Draw(_sideTexture, new Vector2(target.Width / 2 + _sideSlider.Offset, target.Height / 2 - 160), color: Color.White, effects: SpriteEffects.FlipHorizontally);
-
+            
             Game.SpriteBatch.End();
 
             Game.GraphicsDevice.SetRenderTarget(null);
 
+            _quad.CameraPosition = new Vector3(0, -0.3f, 1.3f);
             _quad.Texture = target;
-            _quad.View = Matrix.CreateLookAt(new Vector3(0, -0.1f, 0.8f), Vector3.Zero, Vector3.Up);
-            _quad.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(80), Game.GraphicsDevice.Viewport.AspectRatio, 0.1f, 10000f);
-            var projected = _quad.GetProjected(544 * 2, 320 * 2);
+            var projected = _quad.GetProjected();
 
             Game.SpriteBatch.Begin();
 
             Game.SpriteBatch.Draw(projected, Game.ScreenBounds, Color.White);
-
+            
             Game.SpriteBatch.End();
 
             target.Dispose();
-            projected.Dispose();
         }
 
         public void OnUpdate(float elapsedTime)
