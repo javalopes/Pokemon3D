@@ -11,7 +11,7 @@ namespace Pokemon3D.UI
     {
         private readonly Effect _basicEffect;
 
-        private Dictionary<LightTechniqueFlag, EffectTechnique> _effectsByLightingFlags;
+        private Dictionary<int, EffectTechnique> _effectsByLightingFlags;
 
         private readonly EffectTechnique _shadowCasterTechnique;
         private EffectTechnique _shadowCasterTransparentTechnique;
@@ -41,7 +41,7 @@ namespace Pokemon3D.UI
             _shadowCasterTransparentTechnique = _basicEffect.Techniques["ShadowCasterTransparent"];
             ShadowMapDebugEffect = content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
 
-            _effectsByLightingFlags = new Dictionary<LightTechniqueFlag, EffectTechnique>
+            _effectsByLightingFlags = new Dictionary<int, EffectTechnique>()
             {
                 { LightTechniqueFlag.Lit | LightTechniqueFlag.ReceiveShadows,_basicEffect.Techniques["LitNoTextureShadowReceiver"] },
                 { LightTechniqueFlag.Lit | LightTechniqueFlag.ReceiveShadows | LightTechniqueFlag.SoftShadows , _basicEffect.Techniques["LitNoTextureShadowReceiverPCF"] },
@@ -77,7 +77,7 @@ namespace Pokemon3D.UI
             _basicEffect.CurrentTechnique = transparent ? _shadowCasterTransparentTechnique : _shadowCasterTechnique;
         }
 
-        public void ActivateLightingTechnique(LightTechniqueFlag flags)
+        public void ActivateLightingTechnique(int flags)
         {
             _basicEffect.CurrentTechnique = _effectsByLightingFlags[flags];
         }

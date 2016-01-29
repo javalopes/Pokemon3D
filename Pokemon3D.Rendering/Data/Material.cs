@@ -54,9 +54,9 @@ namespace Pokemon3D.Rendering.Data
             };
         }
 
-        internal LightTechniqueFlag GetLightingTypeFlags(RenderSettings renderSettings)
+        internal int GetLightingTypeFlags(RenderSettings renderSettings)
         {
-            LightTechniqueFlag flags = 0;
+            int flags = 0;
 
             if (!IsUnlit) flags |= LightTechniqueFlag.Lit;
             if (ReceiveShadow && renderSettings.EnableShadows) flags |= LightTechniqueFlag.ReceiveShadows;

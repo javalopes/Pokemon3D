@@ -25,7 +25,7 @@ namespace Pokemon3D.Rendering.Compositor
         /// Activates to Draw Objekt unlit or using directional lighting.
         /// Shadows are optional for both.
         /// </summary>
-        void ActivateLightingTechnique(LightTechniqueFlag flags);
+        void ActivateLightingTechnique(int flags);
 
         /// <summary>
         /// Light Matrix for Shadow Map.
