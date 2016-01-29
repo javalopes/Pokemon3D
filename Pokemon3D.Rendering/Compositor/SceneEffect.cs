@@ -9,22 +9,30 @@ namespace Pokemon3D.Rendering.Compositor
     /// </summary>
     public static class LightTechniqueFlags
     {
+        /// <summary>
+        /// Object will be lit dynamically.
+        /// </summary>
         public const int Lit = 1;
 
+        /// <summary>
+        /// Object can receive a shadow.
+        /// </summary>
         public const int ReciveShadows = 2;
 
+        /// <summary>
+        /// When object cna receive a shadows this should be a soft one.
+        /// </summary>
         public const int SoftShadows = 4;
 
+        /// <summary>
+        /// Object uses a texture.
+        /// </summary>
         public const int UseTexture = 8;
 
+        /// <summary>
+        /// Object uses linear sampling.
+        /// </summary>
         public const int LinearTextureSampling = 16;
-
-        public const int Default = Lit | ReciveShadows | UseTexture;
-
-        public static bool HasFlag(int value, int containingFlag)
-        {
-            return (value & containingFlag) == containingFlag;
-        }
     }
 
     /// <summary>
@@ -52,7 +60,7 @@ namespace Pokemon3D.Rendering.Compositor
         /// <param name="unlit">Ignore lighting</param>
         /// <param name="receiveShadows">Is an object receiving shadows.</param>
         /// <param name="pcfShadows">If PCF Filtering is enabled</param>
-        void ActivateLightingTechnique(int flags = LightTechniqueFlags.Default);
+        void ActivateLightingTechnique(int flags);
 
         /// <summary>
         /// Light Matrix for Shadow Map.
