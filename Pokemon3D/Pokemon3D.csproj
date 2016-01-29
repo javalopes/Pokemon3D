@@ -250,16 +250,24 @@
     <Content Include="Content\Textures\UI\GamePadButtons\Button_Y.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Content\Textures\UI\Common\Profile.xnb">
+    <Content Include="Content\Textures\UI\Common\Profile.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Common\Profile_Shadow.xnb">
+    </Content>
+    <Content Include="Content\Textures\UI\Common\Profile_Shadow.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Tablet\Tablet_Back.xnb" />
-    <None Include="Content\Textures\UI\Tablet\Tablet_Emitter.xnb" />
-    <None Include="Content\Textures\UI\Tablet\Tablet_Shine.xnb" />
-    <None Include="Content\Textures\UI\Tablet\Tablet_Side.xnb" />
+    </Content>
+    <Content Include="Content\Textures\UI\Tablet\Tablet_Back.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\UI\Tablet\Tablet_Emitter.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\UI\Tablet\Tablet_Shine.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\UI\Tablet\Tablet_Side.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="ResourceNames.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
