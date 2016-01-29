@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Rendering.Compositor;
 
 namespace Pokemon3D.Rendering.Data
 {
@@ -51,6 +52,18 @@ namespace Pokemon3D.Rendering.Data
                 TexcoordScale = TexcoordScale,
                 IsUnlit = IsUnlit
             };
+        }
+
+        internal int GetLightingTypeFlags(RenderSettings renderSettings)
+        {
+            var flags = 0;
+
+            if (!IsUnlit) flags |= LightTechniqueFlags.Lit;
+            if (ReceiveShadow && renderSettings.EnableShadows) flags |= LightTechniqueFlags.ReciveShadows;
+            if (renderSettings.EnableSoftShadows) flags |= LightTechniqueFlags.SoftShadows;
+            if (DiffuseTexture != null) flags |= LightTechniqueFlags.UseTexture;
+
+            return flags;
         }
     }
 }

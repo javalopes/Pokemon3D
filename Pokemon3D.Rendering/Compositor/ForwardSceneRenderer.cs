@@ -140,12 +140,13 @@ namespace Pokemon3D.Rendering.Compositor
 
         private void HandleSolidObjects(Material material)
         {
-            _sceneEffect.ActivateLightingTechnique(false, material.IsUnlit, material.ReceiveShadow && RenderSettings.EnableShadows, RenderSettings.EnableSoftShadows);
+            var flags = material.GetLightingTypeFlags(RenderSettings);
+            _sceneEffect.ActivateLightingTechnique(flags);
         }
 
         private void HandleEffectTransparentObjects(Material material)
         {
-            _sceneEffect.ActivateLightingTechnique(false, material.IsUnlit, false, false);
+            _sceneEffect.ActivateLightingTechnique(LightTechniqueFlags.UseTexture);
         }
 
         private void HandleShadowCasterObjects(Material material)
@@ -243,7 +244,7 @@ namespace Pokemon3D.Rendering.Compositor
                 _device.DepthStencilState = DepthStencilState.None;
                 _device.BlendState = BlendState.Opaque;
 
-                _sceneEffect.ActivateLightingTechnique(true, true, false, false);
+                _sceneEffect.ActivateLightingTechnique(LightTechniqueFlags.UseTexture | LightTechniqueFlags.LinearTextureSampling);
                 RenderQueue.DrawElement(camera, skybox.SceneNode, _sceneEffect, 0.0f);
 
                 _device.DepthStencilState = DepthStencilState.Default;

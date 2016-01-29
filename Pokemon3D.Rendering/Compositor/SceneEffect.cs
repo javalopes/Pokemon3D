@@ -1,8 +1,32 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Pokemon3D.Rendering.Compositor
 {
+    /// <summary>
+    /// Defines Lighting Flags
+    /// </summary>
+    public static class LightTechniqueFlags
+    {
+        public const int Lit = 1;
+
+        public const int ReciveShadows = 2;
+
+        public const int SoftShadows = 4;
+
+        public const int UseTexture = 8;
+
+        public const int LinearTextureSampling = 16;
+
+        public const int Default = Lit | ReciveShadows | UseTexture;
+
+        public static bool HasFlag(int value, int containingFlag)
+        {
+            return (value & containingFlag) == containingFlag;
+        }
+    }
+
     /// <summary>
     /// Concrete Implementation for Effects used by the scene.
     /// This is abstracted because of different platform implementations
@@ -28,7 +52,7 @@ namespace Pokemon3D.Rendering.Compositor
         /// <param name="unlit">Ignore lighting</param>
         /// <param name="receiveShadows">Is an object receiving shadows.</param>
         /// <param name="pcfShadows">If PCF Filtering is enabled</param>
-        void ActivateLightingTechnique(bool linearSampling, bool unlit, bool receiveShadows, bool pcfShadows);
+        void ActivateLightingTechnique(int flags = LightTechniqueFlags.Default);
 
         /// <summary>
         /// Light Matrix for Shadow Map.

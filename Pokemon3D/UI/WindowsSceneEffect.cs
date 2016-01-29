@@ -2,18 +2,17 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.Compositor;
+using System.Collections.Generic;
 
 namespace Pokemon3D.UI
 {
     class WindowsSceneEffect : SceneEffect
     {
         private readonly Effect _basicEffect;
+
+        private Dictionary<int, EffectTechnique> _effectsByLightingFlags;
+
         private readonly EffectTechnique _shadowCasterTechnique;
-        private readonly EffectTechnique _litShadowReceiver;
-        private readonly EffectTechnique _litShadowReceiverPcf; 
-        private readonly EffectTechnique _litTechnique;
-        private readonly EffectTechnique _unlitTechnique;
-        private readonly EffectTechnique _unlitLinearSampledTechnique;
         private EffectTechnique _shadowCasterTransparentTechnique;
 
         private readonly EffectParameter _lightViewProjection;
@@ -36,14 +35,22 @@ namespace Pokemon3D.UI
             _basicEffect = content.Load<Effect>(ResourceNames.Effects.BasicEffect);
             PostProcessingEffect = content.Load<Effect>(ResourceNames.Effects.PostProcessing);
 
-            _litTechnique = _basicEffect.Techniques["Lit"];
             _shadowCasterTechnique = _basicEffect.Techniques["ShadowCaster"];
             _shadowCasterTransparentTechnique = _basicEffect.Techniques["ShadowCasterTransparent"];
-            _litShadowReceiver = _basicEffect.Techniques["LitShadowReceiver"];
-            _litShadowReceiverPcf = _basicEffect.Techniques["LitShadowReceiverPCF"];
-            _unlitTechnique = _basicEffect.Techniques["Unlit"];
-            _unlitLinearSampledTechnique = _basicEffect.Techniques["UnlitLinearSampled"];
             ShadowMapDebugEffect = content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
+
+            _effectsByLightingFlags = new Dictionary<int, EffectTechnique>
+            {
+                { LightTechniqueFlags.Lit | LightTechniqueFlags.UseTexture, _basicEffect.Techniques["Lit"] },
+                { LightTechniqueFlags.Lit | LightTechniqueFlags.UseTexture | LightTechniqueFlags.ReciveShadows, _basicEffect.Techniques["LitShadowReceiver"] },
+                { LightTechniqueFlags.Lit | LightTechniqueFlags.UseTexture | LightTechniqueFlags.ReciveShadows | LightTechniqueFlags.SoftShadows, _basicEffect.Techniques["LitShadowReceiverPCF"] },
+                { LightTechniqueFlags.UseTexture, _basicEffect.Techniques["Unlit"] },
+                { LightTechniqueFlags.UseTexture | LightTechniqueFlags.LinearTextureSampling, _basicEffect.Techniques["UnlitLinearSampled"] },
+
+                //workarounds
+                { LightTechniqueFlags.ReciveShadows, _basicEffect.Techniques["Unlit"] },
+                { LightTechniqueFlags.ReciveShadows | LightTechniqueFlags.SoftShadows, _basicEffect.Techniques["Unlit"] },
+            };
 
             _lightViewProjection = _basicEffect.Parameters["LightViewProjection"];
             _world = _basicEffect.Parameters["World"];
@@ -68,16 +75,9 @@ namespace Pokemon3D.UI
             _basicEffect.CurrentTechnique = transparent ? _shadowCasterTransparentTechnique : _shadowCasterTechnique;
         }
 
-        public void ActivateLightingTechnique(bool linearSampling, bool unlit, bool receiveShadows, bool pcfShadows)
+        public void ActivateLightingTechnique(int flags)
         {
-            if (unlit)
-            {
-                _basicEffect.CurrentTechnique = linearSampling ? _unlitLinearSampledTechnique : _unlitTechnique;
-            }
-            else
-            {
-                _basicEffect.CurrentTechnique = receiveShadows ? (pcfShadows ? _litShadowReceiverPcf : _litShadowReceiver) : _litTechnique;
-            }
+            _basicEffect.CurrentTechnique = _effectsByLightingFlags[flags];
         }
 
         public Matrix LightViewProjection
