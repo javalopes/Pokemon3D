@@ -70,20 +70,27 @@ namespace Pokemon3D.GameModes
 
         public AsyncTexture2D GetTextureAsync(string filePath)
         {
+            var fullPath = Path.Combine(TexturePath, filePath);
+
             Texture2D existing;
-            if (_textureCache.TryGetValue(filePath, out existing)) return new AsyncTexture2D(existing);
+            if (_textureCache.TryGetValue(fullPath, out existing)) return new AsyncTexture2D(existing);
 
             var newTextureLoadRequest = new AsyncTexture2D();
-            FileLoader.GetFileAsync(Path.Combine(TexturePath, filePath + ".png"), d =>
+            FileLoader.GetFileAsync(Path.Combine(TexturePath, fullPath), d =>
             {
                 var texture = GetTextureFromByteArrayDispatched(d.Data);
-                _textureCache.Add(filePath, texture);
+                _textureCache.Add(fullPath, texture);
                 newTextureLoadRequest.SetTexture(texture);
             });
             return newTextureLoadRequest;
         }
 
         public Texture2D GetTexture(string filePath)
+        {
+            return GetTextureFromRawFolder(Path.Combine(TexturePath, filePath));
+        }
+
+        public Texture2D GetTextureFromRawFolder(string filePath)
         {
             Texture2D existing;
             if (_textureCache.TryGetValue(filePath, out existing)) return existing;
@@ -98,6 +105,7 @@ namespace Pokemon3D.GameModes
             Texture2D texture = null;
             using (var memoryStream = new MemoryStream(data))
             {
+                memoryStream.Seek(0, SeekOrigin.Begin);
                 if (GameContext.MainThreadDispatcher.CheckAccess())
                 {
                     texture = Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream);
@@ -115,19 +123,13 @@ namespace Pokemon3D.GameModes
 
         public void GetModelAsync(string filePath, Action<ModelMesh[]> modelLoaded)
         {
-            FileLoader.GetFileAsync(Path.Combine(ModelPath, filePath), d =>
-            {
-                var meshsArray = ModelMesh.LoadFromMemory(GameContext.MainThreadDispatcher, this, filePath, d.Data);
-                _meshCache.Add(filePath, meshsArray);
-                modelLoaded(meshsArray);
-            });
+            throw new NotImplementedException("Currently disabled");
         }
 
         public ModelMesh[] GetModel(string filePath, Dispatcher mainThreadDispatcher = null)
         {
             var absolutePath = Path.Combine(ModelPath, filePath);
-            var data = File.ReadAllBytes(absolutePath);
-            var meshsArray = ModelMesh.LoadFromMemory(mainThreadDispatcher, this, absolutePath, data);
+            var meshsArray = ModelMesh.LoadFromFile(mainThreadDispatcher, this, absolutePath);
             _meshCache.Add(filePath, meshsArray);
             return meshsArray;
         }

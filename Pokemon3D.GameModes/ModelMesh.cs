@@ -13,26 +13,23 @@ namespace Pokemon3D.GameModes
         public Rendering.Data.Mesh Mesh { get; private set; }
         public Rendering.Data.Material Material { get; private set; }
 
-        public static ModelMesh[] LoadFromMemory(Dispatcher mainThreadDispatcher, GameMode gameMode, string filePath, byte[] data)
+        public static ModelMesh[] LoadFromFile(Dispatcher mainThreadDispatcher, GameMode gameMode, string filePath)
         {
             var modelDirectory = Path.GetDirectoryName(filePath);
             var formatHint = Path.GetExtension(filePath);
 
             AssimpContext context = new AssimpContext();
-            using (var memoryStream = new MemoryStream(data))
+            var flags = PostProcessSteps.GenerateNormals | PostProcessSteps.GenerateUVCoords | PostProcessSteps.Triangulate | PostProcessSteps.FlipWindingOrder;
+            var scene = context.ImportFile(filePath, flags);
+
+            var meshs = new List<ModelMesh>();
+            foreach (var assimpMesh in scene.Meshes)
             {
-                var flags = PostProcessSteps.GenerateNormals | PostProcessSteps.GenerateUVCoords | PostProcessSteps.Triangulate;
-                var scene = context.ImportFileFromStream(memoryStream, flags, formatHint);
-
-                var meshs = new List<ModelMesh>();
-                foreach (var assimpMesh in scene.Meshes)
-                {
-                    var modelMesh = new ModelMesh(mainThreadDispatcher, gameMode, scene, assimpMesh, modelDirectory);
-                    meshs.Add(modelMesh);
-                }
-
-                return meshs.ToArray();
+                var modelMesh = new ModelMesh(mainThreadDispatcher, gameMode, scene, assimpMesh, modelDirectory);
+                meshs.Add(modelMesh);
             }
+
+            return meshs.ToArray();
         }
 
         public ModelMesh(Dispatcher mainThreadDispatcher, GameMode gameMode, Scene assimpScene, Assimp.Mesh assimpMesh, string modelDirectory)
@@ -105,7 +102,7 @@ namespace Pokemon3D.GameModes
             var fileName = Path.GetFileName(textureSlot.FilePath) ?? "";
             var textureFilePath = Path.Combine(modelDirectory, fileName);
 
-            return gameMode.GetTexture(textureFilePath);
+            return gameMode.GetTextureFromRawFolder(textureFilePath);
         }
     }
 }

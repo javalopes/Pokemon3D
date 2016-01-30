@@ -40,7 +40,8 @@ namespace Pokemon3D.GameModes.Maps
         {
             Camera = scene.CreateCamera();
             Camera.SetParent(SceneNode);
-            Camera.FarClipDistance = 50.0f;
+            Camera.FarClipDistance = 5000.0f;
+            Camera.NearClipDistance = 1.0f;
 
             Camera.Skybox = new Skybox(Game)
             {

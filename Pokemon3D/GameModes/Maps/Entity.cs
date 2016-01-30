@@ -78,7 +78,7 @@ namespace Pokemon3D.GameModes.Maps
                 {
                     SceneNode.Mesh = map.GameMode.GetPrimitiveMesh(renderMode.PrimitiveModelId);
                     SceneNode.Material.Color = new Color(_dataModel.RenderMode.Shading.GetVector3());
-                    SceneNode.Material.CastShadow = true;
+                    SceneNode.Material.CastShadow = false;
                     SceneNode.Material.ReceiveShadow = !_dataModel.RenderMode.UseTransparency;
                     SceneNode.Material.UseTransparency = _dataModel.RenderMode.UseTransparency;
                     SceneNode.Material.IsUnlit = false;
@@ -88,15 +88,21 @@ namespace Pokemon3D.GameModes.Maps
                 else
                 {
                     var models = _map.GameMode.GetModel(renderMode.ModelPath);
-                    var firstModel = models[0];
 
-                    SceneNode.Mesh = firstModel.Mesh;
-                    SceneNode.Material = firstModel.Material;
-                    SceneNode.Material.Color = new Color(_dataModel.RenderMode.Shading.GetVector3());
-                    SceneNode.Material.CastShadow = true;
-                    SceneNode.Material.ReceiveShadow = !_dataModel.RenderMode.UseTransparency;
-                    SceneNode.Material.UseTransparency = _dataModel.RenderMode.UseTransparency;
-                    SceneNode.Material.IsUnlit = false;
+                    if (models.Length == 1)
+                    {
+                        AttachModelToSceneNode(SceneNode, models[0]);
+                    }
+                    else
+                    {
+                        foreach(var modelMesh in models)
+                        {
+                            var childNode = Scene.CreateSceneNode(true);
+                            AttachModelToSceneNode(childNode, modelMesh);
+                            SceneNode.AddChild(childNode);
+                            childNode.EndInitializing();
+                        }
+                    }
                 }
             }
             
@@ -113,6 +119,17 @@ namespace Pokemon3D.GameModes.Maps
                 Collider = Collider.CreateBoundingBox(colliderComponent.GetCollisionSizeVector3(), colliderComponent.GetCollisionOffset());
                 Collider.SetPosition(Position);
             }
+        }
+
+        private void AttachModelToSceneNode(SceneNode sceneNode, ModelMesh modelMesh)
+        {
+            sceneNode.Mesh = modelMesh.Mesh;
+            sceneNode.Material = modelMesh.Material;
+            sceneNode.Material.Color = new Color(_dataModel.RenderMode.Shading.GetVector3());
+            sceneNode.Material.CastShadow = true;
+            sceneNode.Material.ReceiveShadow = !_dataModel.RenderMode.UseTransparency;
+            sceneNode.Material.UseTransparency = _dataModel.RenderMode.UseTransparency;
+            sceneNode.Material.IsUnlit = false;
         }
 
         public Entity(Scene scene)
