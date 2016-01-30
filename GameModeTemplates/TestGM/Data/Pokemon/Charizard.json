@@ -31,11 +31,11 @@
             },
             "MenuTexture" : 
             {
-                "Source" : "Pokemon\\Charizard\\Shiny\\Menu"
+                "Source" : "Pokemon\\Charizard\\Shiny\\Menu.png"
             },
             "FrontSpriteSheet" : 
             {
-                "Source" : "Pokemon\\Charizard\\Shiny\\Front",
+                "Source" : "Pokemon\\Charizard\\Shiny\\Front.png",
                 "FrameSize" : {
                     "Width" : 140,
                     "Height" : 140
@@ -43,7 +43,7 @@
             },
             "BackSpriteSheet" : 
             {
-                "Source" : "Pokemon\\Charizard\\Shiny\\Back",
+                "Source" : "Pokemon\\Charizard\\Shiny\\Back.png",
                 "FrameSize" : {
                     "Width" : 172,
                     "Height" : 172
@@ -51,7 +51,7 @@
             },
             "OverworldTexture" : 
             {
-                "Source" : "Pokemon\\Charizard\\Shiny\\Overworld"
+                "Source" : "Pokemon\\Charizard\\Shiny\\Overworld.png"
             },
             "Type1" : "Fire",
             "Type2" : "Flying",
@@ -75,11 +75,11 @@
             },
             "MenuTexture" : 
             {
-                "Source" : "Pokemon\\Charizard\\Default\\Menu"
+                "Source" : "Pokemon\\Charizard\\Default\\Menu.png"
             },
             "FrontSpriteSheet" : 
             {
-                "Source" : "Pokemon\\Charizard\\Default\\Front",
+                "Source" : "Pokemon\\Charizard\\Default\\Front.png",
                 "FrameSize" : 
                 {
                     "Width" : 140,
@@ -88,7 +88,7 @@
             },
             "BackSpriteSheet" : 
             {
-                "Source" : "Pokemon\\Charizard\\Default\\Back",
+                "Source" : "Pokemon\\Charizard\\Default\\Back.png",
                 "FrameSize" : 
                 {
                     "Width" : 172,
@@ -97,7 +97,7 @@
             },
             "OverworldTexture" : 
             {
-                "Source" : "Pokemon\\Charizard\\Default\\Overworld"
+                "Source" : "Pokemon\\Charizard\\Default\\Overworld.png"
             },
             "Type1" : "Fire",
             "Type2" : "Flying",
