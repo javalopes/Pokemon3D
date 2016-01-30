@@ -68,9 +68,14 @@ namespace Pokemon3D.UI.Framework
             base.Update();
         }
 
-        public override void Draw()
+        public override void Draw(SamplerState samplerState = null, BlendState blendState = null)
         {
-            _batch.Begin(samplerState: SamplerState.PointWrap, blendState: BlendState.AlphaBlend);
+            if (samplerState == null)
+                samplerState = SamplerState.PointWrap;
+            if (blendState == null)
+                blendState = BlendState.AlphaBlend;
+
+            _batch.Begin(samplerState: samplerState, blendState: blendState);
             InternalDraw(_batch);
             _batch.End();
         }

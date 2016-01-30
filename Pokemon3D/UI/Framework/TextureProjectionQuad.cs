@@ -28,6 +28,8 @@ namespace Pokemon3D.UI.Framework
         private int _textureOutputHeight = 0;
         private Vector3 _cameraPosition = Vector3.Zero;
 
+        public Matrix World { get; set; } = Matrix.Identity;
+
         public Texture2D Texture
         {
             get { return _quadEffect.Texture; }
@@ -141,7 +143,6 @@ namespace Pokemon3D.UI.Framework
         private void SetupEffect()
         {
             _quadEffect = new BasicEffect(Game.GraphicsDevice);
-            _quadEffect.World = Matrix.Identity;
             _quadEffect.TextureEnabled = true;
         }
 
@@ -166,6 +167,8 @@ namespace Pokemon3D.UI.Framework
                     _target = new RenderTarget2D(Game.GraphicsDevice, _textureOutputWidth, _textureOutputHeight);
                     _targetDirty = false;
                 }
+
+                _quadEffect.World = World;
 
                 var prevTargets = Game.GraphicsDevice.GetRenderTargets();
                 Game.GraphicsDevice.SetRenderTarget(_target);

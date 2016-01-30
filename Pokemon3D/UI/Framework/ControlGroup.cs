@@ -16,6 +16,8 @@ namespace Pokemon3D.UI.Framework
     {
         protected List<Control> _controls;
 
+        public List<Control> Controls { get { return _controls; } }
+
         /// <summary>
         /// If this control group gets drawn.
         /// </summary>
@@ -123,7 +125,7 @@ namespace Pokemon3D.UI.Framework
             _controls.ForEach(b => b.Update());
         }
 
-        public virtual void Draw()
+        public virtual void Draw(SamplerState samplerState = null, BlendState blendState = null)
         {
             InternalDraw(Game.SpriteBatch);
         }

@@ -81,7 +81,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
             _target = new RenderTarget2D(Game.GraphicsDevice, Game.ScreenBounds.Width, Game.ScreenBounds.Height);
         }
 
-        public override void Draw()
+        public override void Draw(SamplerState samplerState = null, BlendState blendState = null)
         {
             if (Visible)
             {
