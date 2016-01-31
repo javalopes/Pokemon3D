@@ -15,13 +15,14 @@ namespace Pokemon3D.UI.Screens
     class TabletScreen : GameObject, Screen
     {
         private TextureProjectionQuad _quad;
-        private Texture2D _sideTexture, _shineTexture, _backTexture, _emitterTexture;
-        private int _flickerChance = 100;
+        private Texture2D _sideTexture, _shineTexture, _backTexture, _emitterTexture, _circuitTexture;
+        private int _flickerChance;
         private OffsetTransition _sideSlider;
         private ShapeRenderer _renderer;
-        private int _introDelay = 20;
-
-        private DefaultControlGroup _pokemonProfiles;
+        private int _introDelay;
+        private bool _closing;
+        private SpriteFont _font, _bigFont;
+        private RenderTarget2D _target;
 
         private float _cameraY = -0.3f;
         private float _cameraX = 0.0f;
@@ -36,6 +37,9 @@ namespace Pokemon3D.UI.Screens
             _shineTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.Tablet_Shine);
             _backTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.Tablet_Back);
             _emitterTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.Tablet_Emitter);
+            _circuitTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.Circuit);
+            _font = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _bigFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
 
             _sideSlider = new OffsetTransition(0f, 0.8f);
             _sideSlider.TargetOffset = 540f;
@@ -43,60 +47,112 @@ namespace Pokemon3D.UI.Screens
             _renderer = new ShapeRenderer(Game.SpriteBatch, Game.GraphicsDevice);
 
             _flickerChance = 80;
-            _introDelay = 20;
+            _introDelay = 12;
+            _closing = false;
 
-            // profiles initialization:
-            _pokemonProfiles = new DefaultControlGroup();
-
-            for (int i = 0; i < Game.LoadedSave.PartyPokemon.Count; i++)
-            {
-                var pokemon = Game.LoadedSave.PartyPokemon[i];
-                _pokemonProfiles.Add(new PokemonProfile(Game.ActiveGameMode, pokemon, new Vector2(110 * i + 340, 150 + ((i % 2) * 52))));
-            }
-
-            _pokemonProfiles.Active = false;
-            _pokemonProfiles.Visible = true;
-            _pokemonProfiles.Orientation = ControlGroupOrientation.Horizontal;
+            _target = new RenderTarget2D(Game.GraphicsDevice, 1200, 800);
         }
 
         public void OnDraw(GameTime gameTime)
         {
-            RenderTarget2D target = new RenderTarget2D(Game.GraphicsDevice, 1200, 800);
-            Game.GraphicsDevice.SetRenderTarget(target);
+            Game.GraphicsDevice.SetRenderTarget(_target);
             Game.GraphicsDevice.Clear(Color.Transparent);
 
             bool flickerResult = (_flickerChance == 0 || GlobalRandomProvider.Instance.Rnd.Next(0, _flickerChance) <= 5) && _introDelay == 0;
 
-            Game.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
+            Game.SpriteBatch.Begin(blendState: BlendState.Additive);
 
             if (flickerResult)
             {
-                _renderer.DrawFilledRectangle(new Rectangle((int)(target.Width / 2 - _sideSlider.Offset), target.Height / 2 - 280, (int)(_sideSlider.Offset * 2), 560), new Color(87, 211, 244, 210));
+                _renderer.DrawFilledRectangle(new Rectangle((int)(_target.Width / 2 - _sideSlider.Offset), _target.Height / 2 - 280, (int)(_sideSlider.Offset * 2), 560), new Color(77, 186, 216, 230)); //new Color(87, 211, 244, 230));
+
+                if (_sideSlider.TargetOffset == _sideSlider.Offset)
+                {
+                    DrawCircuit();
+                    //Game.SpriteBatch.Draw(_emitterTexture, new Rectangle(150, 200, 128, 128), Color.White);
+                }
             }
 
-            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(target.Width / 2 - 32 - _sideSlider.Offset), (int)(target.Height / 2 - 320), 64, 640), Color.White);
-            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(target.Width / 2 + _sideSlider.Offset), (int)(target.Height / 2 - 320), 64, 640), null, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
+            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2 - 64 - _sideSlider.Offset), (int)(_target.Height / 2 - 320), 64, 640), Color.White);
+            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2 + _sideSlider.Offset), (int)(_target.Height / 2 - 320), 64, 640), null, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
 
             Game.SpriteBatch.End();
 
             if (flickerResult)
             {
-                _pokemonProfiles.Draw(blendState: BlendState.NonPremultiplied);
             }
 
             Game.GraphicsDevice.SetRenderTarget(null);
 
             _quad.CameraPosition = new Vector3(_cameraX, _cameraY, 1.3f);
-            _quad.Texture = target;
+            _quad.Texture = _target;
             var projected = _quad.GetProjected();
 
             Game.SpriteBatch.Begin();
 
             Game.SpriteBatch.Draw(projected, Game.ScreenBounds, Color.White);
-            
-            Game.SpriteBatch.End();
 
-            target.Dispose();
+            Game.SpriteBatch.End();
+        }
+
+        private void DrawCircuit()
+        {
+            if (!_closing)
+            {
+                int startX = 128;
+                int startY = 128;
+
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX, startY, 16, 16), new Rectangle(0, 0, 16, 16), Color.White);
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX, startY + 16, 16, 16), new Rectangle(16, 16, 16, 16), Color.White);
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 16, startY + 16, 16, 16), new Rectangle(16, 16, 16, 16), Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically, 0f);
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 16, startY + 32, 16, 16), new Rectangle(16, 16, 16, 16), Color.White);
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 32, startY + 32, 16, 16), new Rectangle(16, 16, 16, 16), Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically, 0f);
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 32, startY + 48, 16, 16), new Rectangle(16, 16, 16, 16), Color.White);
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 48, startY + 48, 16, 16), new Rectangle(0, 0, 16, 16), Color.White);
+
+                for (int i = 0; i < 7; i++)
+                    Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 64 + 16 * i, startY + 48, 16, 16), new Rectangle(16, 0, 16, 16), Color.White);
+
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 176, startY + 48, 16, 16), new Rectangle(0, 0, 16, 16), Color.White);
+
+                for (int i = 0; i < 7; i++)
+                    Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 192 + 16 * i, startY + 48, 16, 16), new Rectangle(16, 0, 16, 16), Color.White);
+
+                startX = 64;
+                startY = 200;
+
+                for (int i = 0; i < 4; i++)
+                    Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 16 * i, startY, 16, 16), new Rectangle(16, 0, 16, 16), Color.White);
+
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 64, startY, 16, 16), new Rectangle(0, 0, 16, 16), Color.White);
+
+                for (int i = 0; i < 2; i++)
+                    Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 80 + 16 * i, startY, 16, 16), new Rectangle(16, 0, 16, 16), Color.White);
+
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 112, startY + 16, 16, 16), new Rectangle(16, 16, 16, 16), Color.White);
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 112, startY, 16, 16), new Rectangle(16, 16, 16, 16), Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically, 0f);
+
+                startX = 200;
+                startY = 200;
+
+                for (int i = 0; i < 8; i++)
+                    Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 16 * i, startY, 16, 16), new Rectangle(16, 0, 16, 16), Color.White);
+
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 128, startY, 16, 16), new Rectangle(16, 16, 16, 16), Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 128, startY - 16, 16, 16), new Rectangle(16, 16, 16, 16), Color.White, 0f, Vector2.Zero, SpriteEffects.FlipVertically, 0f);
+
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 128 + 16, startY - 16, 16, 16), new Rectangle(16, 16, 16, 16), Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
+                Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 128 + 16, startY - 32, 16, 16), new Rectangle(16, 16, 16, 16), Color.White, 0f, Vector2.Zero, SpriteEffects.FlipVertically, 0f);
+
+                _renderer.DrawLine(64, 140, 300, 140, new Color(255, 255, 255, 100));
+                _renderer.DrawLine(64, 170, 400, 170, new Color(255, 255, 255, 100));
+                _renderer.DrawLine(64, 200, 400, 200, new Color(255, 255, 255, 100));
+                _renderer.DrawLine(200, 200, 250, 170, new Color(255, 255, 255, 100));
+                _renderer.DrawLine(100, 140, 150, 170, new Color(255, 255, 255, 100));
+
+                Game.SpriteBatch.DrawString(_font, "Holo Tablet", new Vector2(224, 182), Color.White);
+                Game.SpriteBatch.DrawString(_bigFont, "Main Menu", new Vector2(180, 132), Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
+            }
         }
 
         public void OnUpdate(float elapsedTime)
@@ -111,73 +167,87 @@ namespace Pokemon3D.UI.Screens
                     _flickerChance--;
 
                 _sideSlider.Update();
-                _pokemonProfiles.Update();
 
-                bool hasInput = false;
-
-                if (Game.InputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
+                if (!_closing)
                 {
-                    if (_cameraX < 0.6f)
-                        _cameraX += 0.02f;
-                    hasInput = true;
-                }
-                if (Game.InputSystem.Right(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
-                {
-                    if (_cameraX > -0.6f)
-                        _cameraX -= 0.02f;
-                    hasInput = true;
-                }
-                if (Game.InputSystem.Down(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
-                {
-                    if (_cameraY < 0.6f)
-                        _cameraY += 0.02f;
-                    hasInput = true;
-                }
-                if (Game.InputSystem.Up(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
-                {
-                    if (_cameraY > -1.2f)
-                        _cameraY -= 0.02f;
-                    hasInput = true;
-                }
-                if (!hasInput)
-                {
-                    if (_cameraY < -0.3f)
+                    UpdateTurnTablet();
+                    if (Game.InputSystem.Dismiss(DismissInputTypes.BButton | DismissInputTypes.EscapeKey))
                     {
-                        _cameraY += 0.1f;
-                        if (_cameraY >= -0.3f)
-                            _cameraY = -0.3f;
-                    }
-                    else if (_cameraY > -0.3f)
-                    {
-                        _cameraY -= 0.1f;
-                        if (_cameraY <= -0.3f)
-                            _cameraY = -0.3f;
-                    }
-
-                    if (_cameraX < -0.0f)
-                    {
-                        _cameraX += 0.1f;
-                        if (_cameraX >= 0.0f)
-                            _cameraX = 0.0f;
-                    }
-                    else if (_cameraX > -0.0f)
-                    {
-                        _cameraX -= 0.1f;
-                        if (_cameraX <= 0.0f)
-                            _cameraX = 0.0f;
+                        _closing = true;
+                        _sideSlider.TargetOffset = 0f;
+                        _sideSlider.Speed = 0.5f;
                     }
                 }
-
-                if (Game.InputSystem.Dismiss(DismissInputTypes.BButton | DismissInputTypes.EscapeKey))
+                else
                 {
-                    Game.ScreenManager.PopScreen();
+                    if (_sideSlider.Offset == _sideSlider.TargetOffset)
+                    {
+                        Game.ScreenManager.PopScreen();
+                    }
+                }
+            }
+        }
+
+        private void UpdateTurnTablet()
+        {
+            bool hasInput = false;
+            if (Game.InputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
+            {
+                if (_cameraX < 0.6f)
+                    _cameraX += 0.02f;
+                hasInput = true;
+            }
+            if (Game.InputSystem.Right(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
+            {
+                if (_cameraX > -0.6f)
+                    _cameraX -= 0.02f;
+                hasInput = true;
+            }
+            if (Game.InputSystem.Down(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
+            {
+                if (_cameraY < 0.6f)
+                    _cameraY += 0.02f;
+                hasInput = true;
+            }
+            if (Game.InputSystem.Up(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
+            {
+                if (_cameraY > -1.2f)
+                    _cameraY -= 0.02f;
+                hasInput = true;
+            }
+            if (!hasInput)
+            {
+                if (_cameraY < -0.3f)
+                {
+                    _cameraY += 0.1f;
+                    if (_cameraY >= -0.3f)
+                        _cameraY = -0.3f;
+                }
+                else if (_cameraY > -0.3f)
+                {
+                    _cameraY -= 0.1f;
+                    if (_cameraY <= -0.3f)
+                        _cameraY = -0.3f;
+                }
+
+                if (_cameraX < -0.0f)
+                {
+                    _cameraX += 0.1f;
+                    if (_cameraX >= 0.0f)
+                        _cameraX = 0.0f;
+                }
+                else if (_cameraX > -0.0f)
+                {
+                    _cameraX -= 0.1f;
+                    if (_cameraX <= 0.0f)
+                        _cameraX = 0.0f;
                 }
             }
         }
 
         public void OnClosing()
         {
-
+            _target.Dispose();
         }
     }
 }

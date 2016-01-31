@@ -19,18 +19,18 @@ namespace Pokemon3D.UI.Framework
 
         public float TargetOffset { get; set; }
 
-        private float _speedValue;
-
+        public float Speed { get; set; }
+        
         public OffsetTransition(float offset, float speedValue)
         {
             Offset = offset;
             TargetOffset = offset;
-            _speedValue = speedValue;
+            Speed = speedValue;
         }
 
         public void Update()
         {
-            Offset = MathHelper.SmoothStep(TargetOffset, Offset, _speedValue);
+            Offset = MathHelper.SmoothStep(TargetOffset, Offset, Speed);
             if (Math.Abs(Offset - TargetOffset) < 0.1f)
                 Offset = TargetOffset;
         }

@@ -55,6 +55,7 @@ namespace Pokemon3D
                 
                 public static class Tablet
                 {
+                    public const string Circuit = "Textures/UI/Tablet/Circuit";
                     public const string Tablet_Back = "Textures/UI/Tablet/Tablet_Back";
                     public const string Tablet_Emitter = "Textures/UI/Tablet/Tablet_Emitter";
                     public const string Tablet_Shine = "Textures/UI/Tablet/Tablet_Shine";
