@@ -60,7 +60,7 @@ namespace Pokemon3D.Rendering.Data
 
             if (!IsUnlit) flags |= LightTechniqueFlag.Lit;
             if (ReceiveShadow && renderSettings.EnableShadows) flags |= LightTechniqueFlag.ReceiveShadows;
-            if (renderSettings.EnableSoftShadows) flags |= LightTechniqueFlag.SoftShadows;
+            if (ReceiveShadow && renderSettings.EnableShadows && renderSettings.EnableSoftShadows) flags |= LightTechniqueFlag.SoftShadows;
             if (DiffuseTexture != null) flags |= LightTechniqueFlag.UseTexture;
 
             return flags;
