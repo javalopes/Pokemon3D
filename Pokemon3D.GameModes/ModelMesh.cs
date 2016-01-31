@@ -19,7 +19,7 @@ namespace Pokemon3D.GameModes
 
             AssimpContext context = new AssimpContext();
             var flags = PostProcessSteps.GenerateNormals | PostProcessSteps.GenerateUVCoords 
-                                                         | PostProcessSteps.FlipWindingOrder 
+                                                         | PostProcessSteps.FlipWindingOrder
                                                          | PostProcessSteps.FlipUVs;
             var scene = context.ImportFile(filePath, flags);
 
