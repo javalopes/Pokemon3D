@@ -128,6 +128,9 @@ namespace Pokemon3D.GameModes
 
         public ModelMesh[] GetModel(string filePath, Dispatcher mainThreadDispatcher = null)
         {
+            ModelMesh[] meshes;
+            if (_meshCache.TryGetValue(filePath, out meshes)) return meshes;
+
             var absolutePath = Path.Combine(ModelPath, filePath);
             var meshsArray = ModelMesh.LoadFromFile(mainThreadDispatcher, this, absolutePath);
             _meshCache.Add(filePath, meshsArray);
