@@ -45,7 +45,8 @@ namespace Pokemon3D.UI.Framework.Dialogs
 
         private void HandleWindowSizeChanged(object sender, EventArgs e)
         {
-            SetupLayout();
+            if (Visible)
+                SetupLayout();
         }
 
         private void SetupLayout()
@@ -124,6 +125,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
             base.Show();
             SetSelection(0);
             _colorStepper.TargetColor = Color.White;
+            SetupLayout();
         }
 
         public override void Close()
