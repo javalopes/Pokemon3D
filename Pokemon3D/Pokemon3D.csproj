@@ -128,6 +128,8 @@
     <Compile Include="UI\Screens\OverlayScreen.cs" />
     <Compile Include="UI\Screens\OverworldScreen.cs" />
     <Compile Include="UI\Screens\TabletScreen.cs" />
+    <Compile Include="UI\Screens\Tablet\MainMenuPlugin.cs" />
+    <Compile Include="UI\Screens\Tablet\TabletPlugin.cs" />
     <Compile Include="UI\Transitions\BlendTransition.cs" />
     <Compile Include="UI\Screens\IntroScreen.cs" />
     <Compile Include="UI\Screens\MainMenuScreen.cs" />

@@ -9,6 +9,7 @@ using Pokemon3D.GameCore;
 using Pokemon3D.UI.Framework;
 using Pokemon3D.Common;
 using Pokemon3D.Common.Input;
+using Pokemon3D.UI.Screens.Tablet;
 
 namespace Pokemon3D.UI.Screens
 {
@@ -23,6 +24,8 @@ namespace Pokemon3D.UI.Screens
         private bool _closing;
         private SpriteFont _font, _bigFont;
         private RenderTarget2D _target;
+        private TabletPlugin _plugin;
+        private int _pluginTitleIntro = 0;
 
         private float _cameraY = -0.3f;
         private float _cameraX = 0.0f;
@@ -51,6 +54,7 @@ namespace Pokemon3D.UI.Screens
             _closing = false;
 
             _target = new RenderTarget2D(Game.GraphicsDevice, 1200, 800);
+            SetPlugin(new MainMenuPlugin());
         }
 
         public void OnDraw(GameTime gameTime)
@@ -69,7 +73,6 @@ namespace Pokemon3D.UI.Screens
                 if (_sideSlider.TargetOffset == _sideSlider.Offset)
                 {
                     DrawCircuit();
-                    //Game.SpriteBatch.Draw(_emitterTexture, new Rectangle(150, 200, 128, 128), Color.White);
                 }
             }
 
@@ -80,6 +83,7 @@ namespace Pokemon3D.UI.Screens
 
             if (flickerResult)
             {
+                _plugin.Draw();
             }
 
             Game.GraphicsDevice.SetRenderTarget(null);
@@ -151,7 +155,9 @@ namespace Pokemon3D.UI.Screens
                 _renderer.DrawLine(100, 140, 150, 170, new Color(255, 255, 255, 100));
 
                 Game.SpriteBatch.DrawString(_font, "Holo Tablet", new Vector2(224, 182), Color.White);
-                Game.SpriteBatch.DrawString(_bigFont, "Main Menu", new Vector2(180, 132), Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
+                
+                int titleLength = (int)Math.Ceiling((double)_plugin.Title.Length / 100 * _pluginTitleIntro);
+                Game.SpriteBatch.DrawString(_bigFont, _plugin.Title.Substring(_plugin.Title.Length - titleLength, titleLength), new Vector2(180, 132), Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
             }
         }
 
@@ -171,11 +177,19 @@ namespace Pokemon3D.UI.Screens
                 if (!_closing)
                 {
                     UpdateTurnTablet();
+
+                    if (_pluginTitleIntro < 100 && _sideSlider.TargetOffset == _sideSlider.Offset)
+                        _pluginTitleIntro += 4;
+
                     if (Game.InputSystem.Dismiss(DismissInputTypes.BButton | DismissInputTypes.EscapeKey))
                     {
                         _closing = true;
                         _sideSlider.TargetOffset = 0f;
                         _sideSlider.Speed = 0.5f;
+                    }
+                    else
+                    {
+                        _plugin.Update();
                     }
                 }
                 else
@@ -243,6 +257,12 @@ namespace Pokemon3D.UI.Screens
                         _cameraX = 0.0f;
                 }
             }
+        }
+
+        private void SetPlugin(TabletPlugin plugin)
+        {
+            _plugin = plugin;
+            _pluginTitleIntro = 0;
         }
 
         public void OnClosing()
