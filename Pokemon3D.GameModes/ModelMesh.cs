@@ -16,10 +16,9 @@ namespace Pokemon3D.GameModes
         public static ModelMesh[] LoadFromFile(Dispatcher mainThreadDispatcher, GameMode gameMode, string filePath)
         {
             var modelDirectory = Path.GetDirectoryName(filePath);
-            var formatHint = Path.GetExtension(filePath);
 
             AssimpContext context = new AssimpContext();
-            var flags = PostProcessSteps.GenerateNormals | PostProcessSteps.GenerateUVCoords | PostProcessSteps.Triangulate | PostProcessSteps.FlipWindingOrder;
+            var flags = PostProcessSteps.GenerateNormals | PostProcessSteps.GenerateUVCoords | PostProcessSteps.Triangulate;
             var scene = context.ImportFile(filePath, flags);
 
             var meshs = new List<ModelMesh>();
