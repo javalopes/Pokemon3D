@@ -31,11 +31,11 @@
             },
             "MenuTexture" : 
             {
-                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Menu"
+                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Menu.png"
             },
             "FrontSpriteSheet" : 
             {
-                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Front",
+                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Front.png",
                 "FrameSize" : {
                     "Width" : 49,
                     "Height" : 49
@@ -43,7 +43,7 @@
             },
             "BackSpriteSheet" : 
             {
-                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Back",
+                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Back.png",
                 "FrameSize" : {
                     "Width" : 52,
                     "Height" : 52
@@ -51,7 +51,7 @@
             },
             "OverworldTexture" : 
             {
-                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Overworld"
+                "Source" : "Pokemon\\Bulbasaur\\Shiny\\Overworld.png"
             },
             "Type1" : "Grass",
             "Type2" : null,
@@ -75,11 +75,11 @@
             },
             "MenuTexture" : 
             {
-                "Source" : "Pokemon\\Bulbasaur\\Default\\Menu"
+                "Source" : "Pokemon\\Bulbasaur\\Default\\Menu.png"
             },
             "FrontSpriteSheet" : 
             {
-                "Source" : "Pokemon\\Bulbasaur\\Default\\Front",
+                "Source" : "Pokemon\\Bulbasaur\\Default\\Front.png",
                 "FrameSize" : 
                 {
                     "Width" : 49,
@@ -88,7 +88,7 @@
             },
             "BackSpriteSheet" : 
             {
-                "Source" : "Pokemon\\Bulbasaur\\Default\\Back",
+                "Source" : "Pokemon\\Bulbasaur\\Default\\Back.png",
                 "FrameSize" : 
                 {
                     "Width" : 52,
@@ -97,7 +97,7 @@
             },
             "OverworldTexture" : 
             {
-                "Source" : "Pokemon\\Bulbasaur\\Default\\Overworld"
+                "Source" : "Pokemon\\Bulbasaur\\Default\\Overworld.png"
             },
             "Type1" : "Grass",
             "Type2" : null,

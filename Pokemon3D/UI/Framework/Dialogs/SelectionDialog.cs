@@ -45,7 +45,8 @@ namespace Pokemon3D.UI.Framework.Dialogs
 
         private void HandleWindowSizeChanged(object sender, EventArgs e)
         {
-            SetupLayout();
+            if (Visible)
+                SetupLayout();
         }
 
         private void SetupLayout()
@@ -81,7 +82,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
             _target = new RenderTarget2D(Game.GraphicsDevice, Game.ScreenBounds.Width, Game.ScreenBounds.Height);
         }
 
-        public override void Draw()
+        public override void Draw(SamplerState samplerState = null, BlendState blendState = null)
         {
             if (Visible)
             {
@@ -124,6 +125,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
             base.Show();
             SetSelection(0);
             _colorStepper.TargetColor = Color.White;
+            SetupLayout();
         }
 
         public override void Close()
