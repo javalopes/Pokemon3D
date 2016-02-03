@@ -111,6 +111,7 @@
     <Compile Include="UI\Framework\OffsetTransition.cs" />
     <Compile Include="UI\Framework\PokemonProfile.cs" />
     <Compile Include="UI\Framework\PokemonSpriteSheet.cs" />
+    <Compile Include="UI\Framework\Shapes\Polygon.cs" />
     <Compile Include="UI\Framework\TextureProjectionQuad.cs" />
     <Compile Include="UI\Localization\CoreTranslationManager.cs" />
     <Compile Include="GameModes\Resources\GameModei18nManager.cs" />
