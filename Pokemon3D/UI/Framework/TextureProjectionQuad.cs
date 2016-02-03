@@ -192,5 +192,51 @@ namespace Pokemon3D.UI.Framework
                 throw new InvalidOperationException($"The {nameof(Texture)} member of the {nameof(TextureProjectionQuad)} has to be set.");
             }
         }
+
+        /// <summary>
+        /// Projects a <see cref="Vector2"/> from screen to world space.
+        /// </summary>
+        public Vector2 ProjectToTarget(Vector2 source)
+        {
+            var projectVector = new Vector3(
+                -0.5f + (source.X / _textureOutputWidth), 
+                0.5f - (source.Y / _textureOutputHeight),
+                0f);
+
+            var projected = Project(projectVector, _projection, _view, World);
+
+            return new Vector2(projected.X, projected.Y);
+        }
+
+        private Vector3 Project(Vector3 source, Matrix projection, Matrix view, Matrix world)
+        {
+            var viewport = Game.GraphicsDevice.Viewport;
+            int x = viewport.X;
+            int y = viewport.Y;
+            int width = TextureOutputWidth;
+            int height = TextureOutputHeight;
+            float maxDepth = viewport.MaxDepth;
+            float minDepth = viewport.MinDepth;
+
+            Matrix matrix = Matrix.Multiply(Matrix.Multiply(world, view), projection);
+            Vector3 vector = Vector3.Transform(source, matrix);
+            float a = (((source.X * matrix.M14) + (source.Y * matrix.M24)) + (source.Z * matrix.M34)) + matrix.M44;
+            if (!WithinEpsilon(a, 1f))
+            {
+                vector.X = vector.X / a;
+                vector.Y = vector.Y / a;
+                vector.Z = vector.Z / a;
+            }
+            vector.X = (((vector.X + 1f) * 0.5f) * width) + x;
+            vector.Y = (((-vector.Y + 1f) * 0.5f) * height) + y;
+            vector.Z = (vector.Z * (maxDepth - minDepth)) + minDepth;
+            return vector;
+        }
+
+        private static bool WithinEpsilon(float a, float b)
+        {
+            float num = a - b;
+            return ((-1.401298E-45f <= num) && (num <= float.Epsilon));
+        }
     }
 }

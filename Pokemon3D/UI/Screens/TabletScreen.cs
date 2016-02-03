@@ -95,14 +95,24 @@ namespace Pokemon3D.UI.Screens
             Game.SpriteBatch.Begin();
 
             Game.SpriteBatch.Draw(projected, Game.ScreenBounds, Color.White);
+            
+            var pos1 = _quad.ProjectToTarget(new Vector2(128, 128));
+
+            _renderer.DrawFilledRectangle(new Rectangle((int)(pos1.X * ((float)Game.ScreenBounds.Width / 1200)),
+                (int)(pos1.Y * ((float)Game.ScreenBounds.Height / 800)), 10, 10), Color.Black);
 
             Game.SpriteBatch.End();
         }
-
+        
         private void DrawCircuit()
         {
+            // TODO: give a shit
+
             if (!_closing)
             {
+                // this extracts parts from a sprite sheet atlas and draws the repeatedly to create some kind of structure.
+                // it starts at X, Y coordinates and sorta moves along them:
+
                 int startX = 128;
                 int startY = 128;
 
@@ -148,14 +158,18 @@ namespace Pokemon3D.UI.Screens
                 Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 128 + 16, startY - 16, 16, 16), new Rectangle(16, 16, 16, 16), Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
                 Game.SpriteBatch.Draw(_circuitTexture, new Rectangle(startX + 128 + 16, startY - 32, 16, 16), new Rectangle(16, 16, 16, 16), Color.White, 0f, Vector2.Zero, SpriteEffects.FlipVertically, 0f);
 
+                // draws blue lines in the background:
+
                 _renderer.DrawLine(64, 140, 300, 140, new Color(255, 255, 255, 100));
                 _renderer.DrawLine(64, 170, 400, 170, new Color(255, 255, 255, 100));
                 _renderer.DrawLine(64, 200, 400, 200, new Color(255, 255, 255, 100));
                 _renderer.DrawLine(200, 200, 250, 170, new Color(255, 255, 255, 100));
                 _renderer.DrawLine(100, 140, 150, 170, new Color(255, 255, 255, 100));
 
+                // draws the small subtitle:
                 Game.SpriteBatch.DrawString(_font, "Holo Tablet", new Vector2(224, 182), Color.White);
                 
+                // draws the slowly fading in title:
                 int titleLength = (int)Math.Ceiling((double)_plugin.Title.Length / 100 * _pluginTitleIntro);
                 Game.SpriteBatch.DrawString(_bigFont, _plugin.Title.Substring(_plugin.Title.Length - titleLength, titleLength), new Vector2(180, 132), Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
             }
