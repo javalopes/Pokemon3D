@@ -96,11 +96,6 @@ namespace Pokemon3D.UI.Screens
 
             Game.SpriteBatch.Draw(projected, Game.ScreenBounds, Color.White);
             
-            var pos1 = _quad.ProjectToTarget(new Vector2(128, 128));
-
-            _renderer.DrawFilledRectangle(new Rectangle((int)(pos1.X * ((float)Game.ScreenBounds.Width / 1200)),
-                (int)(pos1.Y * ((float)Game.ScreenBounds.Height / 800)), 10, 10), Color.Black);
-
             Game.SpriteBatch.End();
         }
         
