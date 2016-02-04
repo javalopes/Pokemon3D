@@ -196,16 +196,31 @@ namespace Pokemon3D.UI.Framework
         /// <summary>
         /// Projects a <see cref="Vector2"/> from screen to world space.
         /// </summary>
-        public Vector2 ProjectToTarget(Vector2 source)
+        public Vector2 ProjectVector2(Vector2 source)
         {
             var projectVector = new Vector3(
                 -0.5f + (source.X / _textureOutputWidth), 
                 0.5f - (source.Y / _textureOutputHeight),
-                0f);
+                0f); // disregard depth value
 
             var projected = Project(projectVector, _projection, _view, World);
 
-            return new Vector2(projected.X, projected.Y);
+            return new Vector2(projected.X, projected.Y); // disregard depth value
+        }
+
+        public Polygon ProjectRectangle(Rectangle rectangle)
+        {
+            Polygon polygon = new Polygon();
+            
+            // get corners counter clockwise starting on the top left and project them to create the polygon:
+            Vertices.AddRange(new Vector2[] {
+                new Vector2(rectangle.X, rectangle.Y), // top left
+                new Vector2(rectangle.X, rectangle.Y + rectangle.Height), // bottom left
+                new Vector2(rectangle.X + rectangle.Width, rectangle.Y + rectangle.Height), // bottom right
+                new Vector2(rectangle.X + rectangle.Width, rectangle.Y) // top right
+            }.Select(v => ProjectVector2(v)));
+            
+            return polygon;
         }
 
         private Vector3 Project(Vector3 source, Matrix projection, Matrix view, Matrix world)
