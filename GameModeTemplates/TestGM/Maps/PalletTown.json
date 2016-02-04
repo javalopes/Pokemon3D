@@ -15,6 +15,57 @@
     }
   },
   "Entities": [
+     {
+      "Entity": {
+        "Id": "Trees3D",
+        "RenderMode": {
+          "RenderMethod": "Model",
+          "PrimitiveModelId": "",
+          "ModelPath": "Pokecenter/Pokecenter.obj",
+          "Visible": true,
+          "Opacity": 1.0,
+          "Shading": {
+            "X": 1,
+            "Y": 1,
+            "Z": 1
+          },
+          "ObstructCamera": false,
+          "SeasonPalettes": [ ]
+        },
+        "Components": []
+      },
+      "Placing": [
+        {
+          "Position": {
+            "X": 5,
+            "Y": 0,
+            "Z": 13
+          },
+          "Size": {
+            "X": 1,
+            "Y": 1,
+            "Z": 1
+          },
+          "Fill": true,
+          "Steps": {
+            "X": 1,
+            "Y": 1,
+            "Z": 1
+          },
+          "Rotation": {
+            "X": 0,
+            "Y": 5,
+            "Z": 0
+          },
+          "CardinalRotation": false,
+          "Scale": {
+            "X": 1,
+            "Y": 1,
+            "Z": 1
+          }
+        }
+      ]
+    },
     {
       "Entity": {
         "Id": "Dirt1",
