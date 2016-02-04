@@ -50,6 +50,8 @@ namespace Pokemon3D.Editor.Core
         {
             var selectedPath = PlatformService.ShowSelectFolderDialog();
             if (string.IsNullOrEmpty(selectedPath) || !Directory.Exists(selectedPath)) return;
+
+            var gameModeModel = Model.GameModeModel.Open(selectedPath);
             
             Root = new TreeElementViewModel(this, "Root", TreeElementType.Folder);
 

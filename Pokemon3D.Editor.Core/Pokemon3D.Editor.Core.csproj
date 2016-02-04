@@ -62,6 +62,8 @@
     <Compile Include="Framework\TreeElementViewModel.cs" />
     <Compile Include="Framework\ViewModel.cs" />
     <Compile Include="DataModelViewModels\GameModeDataViewModel.cs" />
+    <Compile Include="Model\FileSystem.cs" />
+    <Compile Include="Model\GameModeModel.cs" />
     <Compile Include="PlatformService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
