@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
+using Pokemon3D.UI.Framework.Shapes;
 
 namespace Pokemon3D.UI.Framework
 {
@@ -213,7 +214,7 @@ namespace Pokemon3D.UI.Framework
             Polygon polygon = new Polygon();
             
             // get corners counter clockwise starting on the top left and project them to create the polygon:
-            Vertices.AddRange(new Vector2[] {
+            polygon.Vertices.AddRange(new Vector2[] {
                 new Vector2(rectangle.X, rectangle.Y), // top left
                 new Vector2(rectangle.X, rectangle.Y + rectangle.Height), // bottom left
                 new Vector2(rectangle.X + rectangle.Width, rectangle.Y + rectangle.Height), // bottom right

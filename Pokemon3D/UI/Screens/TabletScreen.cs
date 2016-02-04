@@ -101,8 +101,6 @@ namespace Pokemon3D.UI.Screens
         
         private void DrawCircuit()
         {
-            // TODO: give a shit
-
             if (!_closing)
             {
                 // this extracts parts from a sprite sheet atlas and draws the repeatedly to create some kind of structure.
