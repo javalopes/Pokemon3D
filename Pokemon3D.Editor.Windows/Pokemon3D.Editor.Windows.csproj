@@ -100,6 +100,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CustomControls\ColorModelColorPicker.cs" />
     <Compile Include="DataTemplates\Class1.cs" />
     <Compile Include="Extensions\EnumToItemsSource.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -140,6 +141,10 @@
     <Resource Include="Images\json.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Pokemon3D.DataModel\Pokemon3D.DataModel.csproj">
+      <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
+      <Name>Pokemon3D.DataModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Pokemon3D.Editor.Core\Pokemon3D.Editor.Core.csproj">
       <Project>{4365490b-cc67-45e5-a113-1120e0d2b3ec}</Project>
       <Name>Pokemon3D.Editor.Core</Name>
