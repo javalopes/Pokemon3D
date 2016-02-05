@@ -1,4 +1,5 @@
-﻿using Pokemon3D.Editor.Core.DetailViewModels;
+﻿using Pokemon3D.Editor.Core.DataModelViewModels;
+using Pokemon3D.Editor.Core.DetailViewModels;
 using Pokemon3D.Editor.Core.Framework;
 using Pokemon3D.Editor.Core.Model;
 using System;
@@ -56,9 +57,13 @@ namespace Pokemon3D.Editor.Core
             var selectedPath = PlatformService.ShowSelectFolderDialog();
             if (string.IsNullOrEmpty(selectedPath) || !Directory.Exists(selectedPath)) return;
 
-            var gameModeModel = Model.GameModeModel.Open(selectedPath);
+            var gameModeModel = GameModeModel.Open(selectedPath);
             
             Root = new TreeElementViewModel(this, "Root", TreeElementType.Folder);
+            Root.AddChild(new TreeElementViewModel(this, GameModeModel.GameModeJsonFile, TreeElementType.JsonFile)
+            {
+                DetailsViewModel = new GameModeDataViewModel(gameModeModel.GameModeDataModel)
+            });
 
             var contentElement = Root.AddChild(new TreeElementViewModel(this, "Content", TreeElementType.Folder));
             var texturesElement = contentElement.AddChild(new TreeElementViewModel(this, "Textures", TreeElementType.Folder));
@@ -68,6 +73,17 @@ namespace Pokemon3D.Editor.Core
             FillResourcesInHierarchy(modelsElement, gameModeModel.ModelModels);
 
             var dataElement = Root.AddChild(new TreeElementViewModel(this, "Data", TreeElementType.Folder));
+            var movesElement = dataElement.AddChild(new TreeElementViewModel(this, "Moves", TreeElementType.Folder));
+            foreach(var move in gameModeModel.MoveModels)
+            {
+                movesElement.AddChild(new TreeElementViewModel(this, move.Id, TreeElementType.JsonFile)
+                {
+                    DetailsViewModel = new MoveDataViewModel(move)
+                });
+            }
+
+            var pokemonElement = dataElement.AddChild(new TreeElementViewModel(this, "Pokemon", TreeElementType.Folder));
+
             var fragmentsElement = Root.AddChild(new TreeElementViewModel(this, "Fragments", TreeElementType.Folder));
             var MapsElement = Root.AddChild(new TreeElementViewModel(this, "Maps", TreeElementType.Folder));
             var ScriptsElement = Root.AddChild(new TreeElementViewModel(this, "Scripts", TreeElementType.Folder));

@@ -68,6 +68,8 @@ namespace Pokemon3D.Editor.Core.Model
 
         private const string FolderNameScripts = "Scripts";
 
+        public const string GameModeJsonFile = "GameMode.json";
+
         private List<TextureModel> _textureModels;
         private List<ModelModel> _modelModels;
         private List<MoveModel> _moveModels;
@@ -101,6 +103,9 @@ namespace Pokemon3D.Editor.Core.Model
             EnsureDefaultFoldersExists(folderPath);
 
             var gameMode = new GameModeModel();
+
+            var gameModeFilePath = Path.Combine(folderPath, GameModeJsonFile);
+            gameMode.GameModeDataModel = DataModel<DataModel.GameMode.GameModeModel>.FromFile(gameModeFilePath);
 
             ReadContentFolder(gameMode, folderPath);
             ReadDataFolder(gameMode, folderPath);
@@ -149,6 +154,8 @@ namespace Pokemon3D.Editor.Core.Model
         public ReadOnlyCollection<MoveModel> MoveModels { get; private set; }
 
         public ReadOnlyCollection<PokemonModel> PokemonModels { get; private set; }
+
+        public DataModel.GameMode.GameModeModel GameModeDataModel { get; private set; }
 
         public void AddTexture(TextureModel textureModel)
         {
