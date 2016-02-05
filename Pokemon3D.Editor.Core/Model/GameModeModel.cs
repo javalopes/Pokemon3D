@@ -4,6 +4,8 @@ using Pokemon3D.DataModel.GameMode.Pokemon;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System;
+using System.Linq;
 
 namespace Pokemon3D.Editor.Core.Model
 {
@@ -12,7 +14,7 @@ namespace Pokemon3D.Editor.Core.Model
         JsonFile,
         TextureFile,
         File,
-
+        Model,
     }
 
     public abstract class ResourceModel
@@ -40,9 +42,14 @@ namespace Pokemon3D.Editor.Core.Model
         }
     }
 
-    public class ModelModel
+    public class ModelModel : ResourceModel
     {
-        public string Name { get; set; }
+        public ModelModel(string basePath, string[] filePartPaths) : base(basePath, filePartPaths.First())
+        {
+            ResourceType = ResourceType.Model;
+            Name = Path.GetFileNameWithoutExtension(filePartPaths.First(f => f.EndsWith(".obj", StringComparison.OrdinalIgnoreCase)));
+            HierarchyPath = HierarchyPath.Take(HierarchyPath.Length - 1).ToArray();
+        }
     }
 
     public class GameModeModel
@@ -105,6 +112,15 @@ namespace Pokemon3D.Editor.Core.Model
         {
             var texturesPath = Path.Combine(folderPath, FolderNameContent, FolderNameTextures);
             FileSystem.GetFilesRecursive(texturesPath, file => model.AddTexture(new TextureModel(texturesPath, file)));
+
+            var modelPath = Path.Combine(folderPath, FolderNameContent, FolderNameModels);
+            FileSystem.GetFilesOfFolderRecursive(modelPath, files =>
+            {
+                if (files.Any(f => (Path.GetExtension(f) ?? "").Equals(".obj", StringComparison.OrdinalIgnoreCase)))
+                {
+                    model.AddModel(new ModelModel(modelPath, files));
+                }
+            });
         }
 
         private static void ReadDataFolder(GameModeModel gameMode, string folderPath)

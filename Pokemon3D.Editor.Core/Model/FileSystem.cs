@@ -27,6 +27,17 @@ namespace Pokemon3D.Editor.Core.Model
             }
         }
 
+        public static void GetFilesOfFolderRecursive(string folderPath, Action<string[]> onFilesInFolderFound)
+        {
+            foreach (var directory in Directory.GetDirectories(folderPath))
+            {
+                GetFilesOfFolderRecursive(directory, onFilesInFolderFound);
+            }
+
+            var filesInCurrentFolder = Directory.GetFiles(folderPath);
+            if (filesInCurrentFolder.Length > 0) onFilesInFolderFound(filesInCurrentFolder);
+        }
+
         public static void EnsureFolderExists(string folderPath)
         {
             if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);

@@ -1,5 +1,6 @@
 ﻿using Pokemon3D.Editor.Core.DetailViewModels;
 using Pokemon3D.Editor.Core.Framework;
+using Pokemon3D.Editor.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,14 @@ namespace Pokemon3D.Editor.Core
 {
     public class ApplicationViewModel : ViewModel
     {
+        private static readonly Dictionary<ResourceType, TreeElementType> ResourceTypeToTreeElementType = new Dictionary<ResourceType, TreeElementType>
+        {
+            {ResourceType.File, TreeElementType.File },
+            { ResourceType.JsonFile, TreeElementType.JsonFile },
+            { ResourceType.Model, TreeElementType.Model },
+            { ResourceType.TextureFile, TreeElementType.TextureFile },
+        };
+
         private TreeElementViewModel _root;
         private ViewModel _activeDetails;
 
@@ -53,9 +62,10 @@ namespace Pokemon3D.Editor.Core
 
             var contentElement = Root.AddChild(new TreeElementViewModel(this, "Content", TreeElementType.Folder));
             var texturesElement = contentElement.AddChild(new TreeElementViewModel(this, "Textures", TreeElementType.Folder));
-            FillTexturesFolder(texturesElement, gameModeModel);
-
+            FillResourcesInHierarchy(texturesElement, gameModeModel.TextureModels, r => new TextureDetailViewModel(r));
+            
             var modelsElement = contentElement.AddChild(new TreeElementViewModel(this, "Models", TreeElementType.Folder));
+            FillResourcesInHierarchy(modelsElement, gameModeModel.ModelModels);
 
             var dataElement = Root.AddChild(new TreeElementViewModel(this, "Data", TreeElementType.Folder));
             var fragmentsElement = Root.AddChild(new TreeElementViewModel(this, "Fragments", TreeElementType.Folder));
@@ -76,14 +86,17 @@ namespace Pokemon3D.Editor.Core
             return parent;
         }
 
-        private void FillTexturesFolder(TreeElementViewModel texturesElement, Model.GameModeModel gameModelModel)
+        private void FillResourcesInHierarchy<TResourceType>(TreeElementViewModel parentElement, 
+                                                             IEnumerable<TResourceType> resources, 
+                                                             Func<TResourceType, ViewModel> createDetails = null) 
+            where TResourceType : ResourceModel
         {
-            foreach(var textureModel in gameModelModel.TextureModels.OrderBy(t => t.FilePath))
+            foreach (var resourceModel in resources.OrderBy(t => t.FilePath))
             {
-                var parent = GetElementInHierarchy(texturesElement, textureModel.HierarchyPath);
-                parent.AddChild(new TreeElementViewModel(this, textureModel.Name, TreeElementType.TextureFile)
+                var parent = GetElementInHierarchy(parentElement, resourceModel.HierarchyPath);
+                parent.AddChild(new TreeElementViewModel(this, resourceModel.Name, ResourceTypeToTreeElementType[resourceModel.ResourceType])
                 {
-                    DetailsViewModel = new TextureDetailViewModel(textureModel)
+                    DetailsViewModel = createDetails != null ? createDetails(resourceModel) : null
                 });
             }
         }

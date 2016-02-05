@@ -10,6 +10,7 @@
                 <Image Source="../Images/folder.png" Stretch="Uniform" Width="16" Height="16" Margin="2" x:Name="FolderIcon" Visibility="Hidden" />
                 <Image Source="../Images/json.png" Stretch="Uniform" Width="16" Height="16" Margin="2" x:Name="JsonIcon" Visibility="Hidden" />
                 <Image Source="../Images/texture.png" Stretch="Uniform" Width="16" Height="16" Margin="2" x:Name="TextureIcon" Visibility="Hidden" />
+                <Image Source="../Images/model.png" Stretch="Uniform" Width="16" Height="16" Margin="2" x:Name="ModelIcon" Visibility="Hidden" />
             </Grid>
             <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="0,2,2,2" />
             <StackPanel.InputBindings>
@@ -25,6 +26,9 @@
             </DataTrigger>
             <DataTrigger Binding="{Binding Type}" Value="{x:Static viewModels:TreeElementType.TextureFile}">
                 <Setter TargetName="TextureIcon" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Type}" Value="{x:Static viewModels:TreeElementType.Model}">
+                <Setter TargetName="ModelIcon" Property="Visibility" Value="Visible" />
             </DataTrigger>
         </HierarchicalDataTemplate.Triggers>
     </HierarchicalDataTemplate>

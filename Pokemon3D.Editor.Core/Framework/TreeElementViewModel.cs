@@ -10,6 +10,7 @@ namespace Pokemon3D.Editor.Core.Framework
         JsonFile,
         TextureFile,
         File,
+        Model,
     }
 
     public class TreeElementViewModel : ViewModel
