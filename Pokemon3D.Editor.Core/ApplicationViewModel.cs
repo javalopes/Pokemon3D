@@ -60,19 +60,23 @@ namespace Pokemon3D.Editor.Core
             var gameModeModel = GameModeModel.Open(selectedPath);
             
             Root = new TreeElementViewModel(this, "Root", TreeElementType.Folder);
+            var contentElement = Root.AddChild(new TreeElementViewModel(this, "Content", TreeElementType.Folder));
+            var dataElement = Root.AddChild(new TreeElementViewModel(this, "Data", TreeElementType.Folder));
+            var fragmentsElement = Root.AddChild(new TreeElementViewModel(this, "Fragments", TreeElementType.Folder));
+            var MapsElement = Root.AddChild(new TreeElementViewModel(this, "Maps", TreeElementType.Folder));
+            var ScriptsElement = Root.AddChild(new TreeElementViewModel(this, "Scripts", TreeElementType.Folder));
+
             Root.AddChild(new TreeElementViewModel(this, GameModeModel.GameModeJsonFile, TreeElementType.JsonFile)
             {
                 DetailsViewModel = new GameModeDataViewModel(gameModeModel.GameModeDataModel)
             });
-
-            var contentElement = Root.AddChild(new TreeElementViewModel(this, "Content", TreeElementType.Folder));
+            
             var texturesElement = contentElement.AddChild(new TreeElementViewModel(this, "Textures", TreeElementType.Folder));
             FillResourcesInHierarchy(texturesElement, gameModeModel.TextureModels, r => new TextureDetailViewModel(r));
             
             var modelsElement = contentElement.AddChild(new TreeElementViewModel(this, "Models", TreeElementType.Folder));
             FillResourcesInHierarchy(modelsElement, gameModeModel.ModelModels);
-
-            var dataElement = Root.AddChild(new TreeElementViewModel(this, "Data", TreeElementType.Folder));
+                        
             var movesElement = dataElement.AddChild(new TreeElementViewModel(this, "Moves", TreeElementType.Folder));
             foreach(var move in gameModeModel.MoveModels)
             {
@@ -83,10 +87,13 @@ namespace Pokemon3D.Editor.Core
             }
 
             var pokemonElement = dataElement.AddChild(new TreeElementViewModel(this, "Pokemon", TreeElementType.Folder));
-
-            var fragmentsElement = Root.AddChild(new TreeElementViewModel(this, "Fragments", TreeElementType.Folder));
-            var MapsElement = Root.AddChild(new TreeElementViewModel(this, "Maps", TreeElementType.Folder));
-            var ScriptsElement = Root.AddChild(new TreeElementViewModel(this, "Scripts", TreeElementType.Folder));
+            foreach (var pokemon in gameModeModel.PokemonModels)
+            {
+                pokemonElement.AddChild(new TreeElementViewModel(this, pokemon.Id, TreeElementType.JsonFile)
+                {
+                    DetailsViewModel = new PokemonDataViewModel(pokemon)
+                });
+            }
 
             Root.SortChildren();
         }

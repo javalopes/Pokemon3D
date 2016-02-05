@@ -51,6 +51,23 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type viewModels:FloatDataModelPropertyViewModel}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="DataModelPropertyLabels" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Content="{Binding Caption}" Grid.Column="0" Margin="2"/>
+
+            <xctk:DoubleUpDown Value="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+                               Width="100"
+                               HorizontalAlignment="Left"
+                               Grid.Column="1" 
+                               Margin="2"/>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type viewModels:EnumDataModelPropertyViewModel}">
         <Grid>
             <Grid.ColumnDefinitions>

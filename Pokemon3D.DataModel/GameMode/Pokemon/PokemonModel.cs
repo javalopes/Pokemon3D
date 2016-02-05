@@ -39,6 +39,7 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
         public ExperienceType ExperienceType
         {
             get { return ConvertStringToEnum<ExperienceType>(_experienceType); }
+            set { _experienceType = value.ToString(); }
         }
         
         [DataMember(Order = 8)]
