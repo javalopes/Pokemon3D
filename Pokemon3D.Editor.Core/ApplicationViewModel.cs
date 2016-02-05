@@ -1,13 +1,9 @@
-﻿using Pokemon3D.DataModel.GameMode;
-using Pokemon3D.Editor.Core.DataModelViewModels;
-using Pokemon3D.Editor.Core.DetailViewModels;
+﻿using Pokemon3D.Editor.Core.DetailViewModels;
 using Pokemon3D.Editor.Core.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Pokemon3D.DataModel.GameMode.Battle;
-using Pokemon3D.DataModel.GameMode.Map;
 
 namespace Pokemon3D.Editor.Core
 {
@@ -55,88 +51,46 @@ namespace Pokemon3D.Editor.Core
             
             Root = new TreeElementViewModel(this, "Root", TreeElementType.Folder);
 
-            LoadRootFolder(selectedPath);
-            LoadContentFolder(selectedPath);
-            LoadDataFolder(selectedPath);
-            LoadFragmentsFolder(selectedPath);
-            LoadMapsFolder(selectedPath);
-            LoadScriptsFolder(selectedPath);
-            
+            var contentElement = Root.AddChild(new TreeElementViewModel(this, "Content", TreeElementType.Folder));
+            var texturesElement = contentElement.AddChild(new TreeElementViewModel(this, "Textures", TreeElementType.Folder));
+            FillTexturesFolder(texturesElement, gameModeModel);
+
+            var modelsElement = contentElement.AddChild(new TreeElementViewModel(this, "Models", TreeElementType.Folder));
+
+            var dataElement = Root.AddChild(new TreeElementViewModel(this, "Data", TreeElementType.Folder));
+            var fragmentsElement = Root.AddChild(new TreeElementViewModel(this, "Fragments", TreeElementType.Folder));
+            var MapsElement = Root.AddChild(new TreeElementViewModel(this, "Maps", TreeElementType.Folder));
+            var ScriptsElement = Root.AddChild(new TreeElementViewModel(this, "Scripts", TreeElementType.Folder));
+
             Root.SortChildren();
+        }
+
+        private TreeElementViewModel GetElementInHierarchy(TreeElementViewModel root, string[] hierarchyPath)
+        {
+            var parent = root;
+            foreach(var currentPath in hierarchyPath)
+            {
+                parent = parent.Children.FirstOrDefault(c => c.Name == currentPath) 
+                         ?? parent.AddChild(new TreeElementViewModel(this, currentPath, TreeElementType.Folder));
+            }
+            return parent;
+        }
+
+        private void FillTexturesFolder(TreeElementViewModel texturesElement, Model.GameModeModel gameModelModel)
+        {
+            foreach(var textureModel in gameModelModel.TextureModels.OrderBy(t => t.FilePath))
+            {
+                var parent = GetElementInHierarchy(texturesElement, textureModel.HierarchyPath);
+                parent.AddChild(new TreeElementViewModel(this, textureModel.Name, TreeElementType.TextureFile)
+                {
+                    DetailsViewModel = new TextureDetailViewModel(textureModel)
+                });
+            }
         }
 
         internal void ShowDetails(ViewModel detailsViewModel)
         {
             ActiveDetails = detailsViewModel;
-        }
-
-        private void LoadRootFolder(string selectedPath)
-        {
-            foreach (var file in GetFilesOfDirectory(selectedPath))
-            {
-                var fileName = Path.GetFileName(file) ?? "";
-                ViewModel details = null;
-                if (fileName.Equals("GameMode.json", StringComparison.OrdinalIgnoreCase))
-                {
-                    details = new GameModeDataViewModel(GameModeModel.FromFile(file));
-                }
-                Root.AddChild(new TreeElementViewModel(this, fileName) { DetailsViewModel = details });
-            }
-        }
-
-        private void LoadContentFolder(string selectedPath)
-        {
-            var contentElement = Root.AddChild(new TreeElementViewModel(this, "Content", TreeElementType.Folder));
-            var texturesElement = contentElement.AddChild(new TreeElementViewModel(this, "Textures", TreeElementType.Folder));
-
-            foreach (var file in GetFilesOfDirectory(Path.Combine(selectedPath, "Content", "Textures")))
-            {
-                texturesElement.AddChild(new TreeElementViewModel(this, Path.GetFileName(file))
-                {
-                    DetailsViewModel = new TextureDetailViewModel(file)
-                });
-            }
-        }
-
-        private void LoadDataFolder(string selectedPath)
-        {
-            var dataElement = Root.AddChild(new TreeElementViewModel(this, "Data", TreeElementType.Folder));
-            var movesElement = dataElement.AddChild(new TreeElementViewModel(this, "Moves", TreeElementType.Folder));
-
-            foreach (var moveFilePath in Directory.GetFiles(Path.Combine(selectedPath, "Data", "Moves")))
-            {
-                var fileName = Path.GetFileName(moveFilePath);
-                movesElement.AddChild(new TreeElementViewModel(this, fileName, TreeElementType.JsonFile)
-                {
-                    DetailsViewModel = new MoveDataViewModel(MoveModel.FromFile(moveFilePath))
-                });
-            }
-
-            dataElement.AddChild(new TreeElementViewModel(this, "Pokemon", TreeElementType.Folder));
-        }
-
-        private void LoadFragmentsFolder(string selectedPath)
-        {
-            Root.AddChild(new TreeElementViewModel(this, "Fragments", TreeElementType.Folder));
-        }
-
-        private void LoadMapsFolder(string selectedPath)
-        {
-            var mapsElement = Root.AddChild(new TreeElementViewModel(this, "Maps", TreeElementType.Folder));
-
-            var mapPath = Path.Combine(selectedPath, "Maps");
-            foreach (var file in GetFilesOfDirectory(mapPath))
-            {
-                mapsElement.AddChild(new TreeElementViewModel(this, Path.GetFileName(file))
-                {
-                    DetailsViewModel = new MapDataViewModel(MapModel.FromFile(file))
-                });
-            }
-        }
-
-        private void LoadScriptsFolder(string selectedPath)
-        {
-            Root.AddChild(new TreeElementViewModel(this, "Scripts", TreeElementType.Folder));
         }
     }
 }

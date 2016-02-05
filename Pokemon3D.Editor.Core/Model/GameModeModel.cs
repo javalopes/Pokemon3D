@@ -7,23 +7,45 @@ using System.IO;
 
 namespace Pokemon3D.Editor.Core.Model
 {
-    class TextureModel
+    public enum ResourceType
     {
-        public string FilePath { get; set; }
+        JsonFile,
+        TextureFile,
+        File,
 
-        public TextureModel(string filePath)
-        {
-            FilePath = filePath;
-        }
     }
 
-    class ModelModel
+    public abstract class ResourceModel
     {
         public string FilePath { get; set; }
         public string Name { get; set; }
+        public string[] HierarchyPath { get; set; }
+
+        public ResourceType ResourceType { get; set; }
+
+        protected ResourceModel(string basePath, string filePath)
+        {
+            FilePath = filePath;
+            var localPath = (Path.GetDirectoryName(filePath) ?? "").Replace(basePath.Trim(), "");
+            HierarchyPath = localPath.Split(new[] { Path.DirectorySeparatorChar }, System.StringSplitOptions.RemoveEmptyEntries);
+        }
     }
 
-    class GameModeModel
+    public class TextureModel : ResourceModel
+    {
+        public TextureModel(string basePath, string filePath) : base(basePath, filePath)
+        {
+            ResourceType = ResourceType.TextureFile;
+            Name = Path.GetFileName(filePath);
+        }
+    }
+
+    public class ModelModel
+    {
+        public string Name { get; set; }
+    }
+
+    public class GameModeModel
     {
         private const string FolderNameContent = "Content";
         private const string FolderNameTextures = "Textures";
@@ -82,7 +104,7 @@ namespace Pokemon3D.Editor.Core.Model
         private static void ReadContentFolder(GameModeModel model, string folderPath)
         {
             var texturesPath = Path.Combine(folderPath, FolderNameContent, FolderNameTextures);
-            FileSystem.GetFilesRecursive(texturesPath, file => model.AddTexture(new TextureModel(file)));
+            FileSystem.GetFilesRecursive(texturesPath, file => model.AddTexture(new TextureModel(texturesPath, file)));
         }
 
         private static void ReadDataFolder(GameModeModel gameMode, string folderPath)
