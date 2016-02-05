@@ -58,14 +58,12 @@ namespace Pokemon3D.UI
             
             var elementHeight = _spriteFont.LineSpacing + 2 * ElementPadding;
 
-            var startY = Game.ScreenBounds.Height;
+            var startY = Game.ScreenBounds.Height - _notifications.Count * (elementHeight + ElementMargin);
             var startX = (Game.ScreenBounds.Width - _width) /2;
 
             Game.SpriteBatch.Begin();
             foreach (var notification in _notifications)
             {
-                startY -= elementHeight;
-
                 Game.ShapeRenderer.DrawFilledRectangle(startX, startY, _width, elementHeight, _backgroundColor * notification.Alpha);
 
                 var currentX = startX + ElementMargin;
@@ -76,7 +74,8 @@ namespace Pokemon3D.UI
                 position = new Vector2(currentX + IconSize + ElementMargin, startY + ElementPadding);
                 Game.SpriteBatch.DrawString(_spriteFont, notification.Message, position, Color.White * notification.Alpha);
 
-                startY -= ElementMargin;
+                startY += elementHeight;
+                startY += ElementMargin;
             }
             Game.SpriteBatch.End();
         }

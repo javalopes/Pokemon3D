@@ -5,6 +5,7 @@ using Pokemon3D.Rendering.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace Pokemon3D.Rendering
@@ -262,6 +263,8 @@ namespace Pokemon3D.Rendering
             if (Mesh != null)
             {
                 var box = Mesh.LocalBounds;
+                box.Min = box.Min * _scale;
+                box.Max = box.Max * _scale;
 
                 if (IsBillboard)
                 {
@@ -270,7 +273,7 @@ namespace Pokemon3D.Rendering
                     box.Max.X = MathHelper.Max(box.Max.X, box.Max.Z);
                     box.Max.Z = box.Max.X;
                 }
-
+                
                 box.Min += _globalPosition;
                 box.Max += _globalPosition;
 
