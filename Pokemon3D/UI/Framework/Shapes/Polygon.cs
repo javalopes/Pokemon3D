@@ -6,7 +6,7 @@ namespace Pokemon3D.UI.Framework.Shapes
 {
     class Polygon
     {
-        public List<Vector2> Vertices { get; private set; }
+        public List<Vector2> Vertices { get; set; }
 
         public Rectangle Bounds
         {

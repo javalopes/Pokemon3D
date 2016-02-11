@@ -219,8 +219,20 @@ namespace Pokemon3D.UI.Framework
                 new Vector2(rectangle.X, rectangle.Y + rectangle.Height), // bottom left
                 new Vector2(rectangle.X + rectangle.Width, rectangle.Y + rectangle.Height), // bottom right
                 new Vector2(rectangle.X + rectangle.Width, rectangle.Y) // top right
-            }.Select(v => ProjectVector2(v)));
-            
+            }.Select(v => ProjectVector2(v)));            
+            return polygon;
+        }
+
+        public Vector2 AdjustToScreen(Vector2 v)
+        {
+            v.X = v.X * ((float)Game.ScreenBounds.Width / _textureOutputWidth);
+            v.Y = v.Y * ((float)Game.ScreenBounds.Height / _textureOutputHeight);
+            return v;
+        }
+
+        public Polygon AdjustToScreen(Polygon polygon)
+        {
+            polygon.Vertices = polygon.Vertices.Select(v => AdjustToScreen(v)).ToList();
             return polygon;
         }
 

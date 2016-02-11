@@ -112,6 +112,8 @@
     <Compile Include="UI\Framework\PokemonProfile.cs" />
     <Compile Include="UI\Framework\PokemonSpriteSheet.cs" />
     <Compile Include="UI\Framework\Shapes\Polygon.cs" />
+    <Compile Include="UI\Framework\Tablet\MainMenuButton.cs" />
+    <Compile Include="UI\Framework\Tablet\TabletControl.cs" />
     <Compile Include="UI\Framework\TextureProjectionQuad.cs" />
     <Compile Include="UI\Localization\CoreTranslationManager.cs" />
     <Compile Include="GameModes\Resources\GameModei18nManager.cs" />
@@ -272,6 +274,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Content\Textures\UI\Tablet\Circuit.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\UI\Tablet\MainMenu\ButtonBack.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\UI\Tablet\MainMenu\ButtonLine.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\UI\Tablet\MainMenu\Pokeball.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

@@ -27,14 +27,35 @@ namespace Pokemon3D.UI.Screens
         private TabletPlugin _plugin;
         private int _pluginTitleIntro = 0;
 
-        private float _cameraY = -0.3f;
-        private float _cameraX = 0.0f;
+        private const int TABLET_TARGET_WIDTH = 1200;
+        private const int TABLET_TARGET_HEIGHT = 800;
+
+        // tablet rotation consts.
+        private const float CAMERA_X_TARGET = 0f;
+        private const float CAMERA_Y_TARGET = 0f;
+        private const float CAMERA_X_MAX_OFFSET = 0.6f;
+        private const float CAMERA_Y_MAX_OFFSET = 0.6f;
+        private const float CAMERA_RETURN_SPEED = 0.05f;
+        
+        // if the tablet should move towards the mouse.
+        private bool _doMouseTurnUpdate = true;
+        // the last known position of the mouse on the screen
+        private Point _lastMousePosition = Point.Zero;
+
+        // current rotation of the tablet.
+        private float _cameraX = CAMERA_X_TARGET;
+        private float _cameraY = CAMERA_Y_TARGET;
+
+        public TextureProjectionQuad ActiveQuad
+        {
+            get { return _quad; }
+        }
 
         public void OnOpening(object enterInformation)
         {
             _quad = new TextureProjectionQuad();
-            _quad.TextureOutputWidth = 1200;
-            _quad.TextureOutputHeight = 800;
+            _quad.TextureOutputWidth = TABLET_TARGET_WIDTH;
+            _quad.TextureOutputHeight = TABLET_TARGET_HEIGHT;
 
             _sideTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.Tablet_Side);
             _shineTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.Tablet_Shine);
@@ -45,7 +66,7 @@ namespace Pokemon3D.UI.Screens
             _bigFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
 
             _sideSlider = new OffsetTransition(0f, 0.8f);
-            _sideSlider.TargetOffset = 540f;
+            _sideSlider.TargetOffset = 540f; 
 
             _renderer = new ShapeRenderer(Game.SpriteBatch, Game.GraphicsDevice);
 
@@ -53,8 +74,8 @@ namespace Pokemon3D.UI.Screens
             _introDelay = 12;
             _closing = false;
 
-            _target = new RenderTarget2D(Game.GraphicsDevice, 1200, 800);
-            SetPlugin(new MainMenuPlugin());
+            _target = new RenderTarget2D(Game.GraphicsDevice, TABLET_TARGET_WIDTH, TABLET_TARGET_HEIGHT);
+            SetPlugin(new MainMenuPlugin(this));
         }
 
         public void OnDraw(GameTime gameTime)
@@ -78,10 +99,10 @@ namespace Pokemon3D.UI.Screens
 
             Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2 - 64 - _sideSlider.Offset), (int)(_target.Height / 2 - 320), 64, 640), Color.White);
             Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2 + _sideSlider.Offset), (int)(_target.Height / 2 - 320), 64, 640), null, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
-
+            
             Game.SpriteBatch.End();
 
-            if (flickerResult)
+            if (flickerResult && !_closing)
             {
                 _plugin.Draw();
             }
@@ -211,58 +232,71 @@ namespace Pokemon3D.UI.Screens
 
         private void UpdateTurnTablet()
         {
-            bool hasInput = false;
+            bool hasDirectionalInput = false;
             if (Game.InputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
             {
-                if (_cameraX < 0.6f)
+                if (_cameraX < CAMERA_X_MAX_OFFSET)
                     _cameraX += 0.02f;
-                hasInput = true;
+                hasDirectionalInput = true;
             }
             if (Game.InputSystem.Right(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
             {
-                if (_cameraX > -0.6f)
+                if (_cameraX > -CAMERA_X_MAX_OFFSET)
                     _cameraX -= 0.02f;
-                hasInput = true;
+                hasDirectionalInput = true;
             }
             if (Game.InputSystem.Down(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
             {
-                if (_cameraY < 0.6f)
+                if (_cameraY < CAMERA_Y_MAX_OFFSET)
                     _cameraY += 0.02f;
-                hasInput = true;
+                hasDirectionalInput = true;
             }
             if (Game.InputSystem.Up(InputDetectionType.HeldDown, DirectionalInputTypes.RightThumbstick))
             {
-                if (_cameraY > -1.2f)
+                if (_cameraY > -CAMERA_Y_MAX_OFFSET)
                     _cameraY -= 0.02f;
-                hasInput = true;
+                hasDirectionalInput = true;
             }
-            if (!hasInput)
+            if (!hasDirectionalInput)
             {
-                if (_cameraY < -0.3f)
+                if (_cameraY < CAMERA_Y_TARGET)
                 {
-                    _cameraY += 0.1f;
-                    if (_cameraY >= -0.3f)
-                        _cameraY = -0.3f;
+                    _cameraY += CAMERA_RETURN_SPEED;
+                    if (_cameraY >= CAMERA_Y_TARGET)
+                        _cameraY = CAMERA_Y_TARGET;
                 }
-                else if (_cameraY > -0.3f)
+                else if (_cameraY > CAMERA_Y_TARGET)
                 {
-                    _cameraY -= 0.1f;
-                    if (_cameraY <= -0.3f)
-                        _cameraY = -0.3f;
+                    _cameraY -= CAMERA_RETURN_SPEED;
+                    if (_cameraY <= CAMERA_Y_TARGET)
+                        _cameraY = CAMERA_Y_TARGET;
                 }
 
-                if (_cameraX < -0.0f)
+                if (_cameraX < CAMERA_X_TARGET)
                 {
-                    _cameraX += 0.1f;
-                    if (_cameraX >= 0.0f)
-                        _cameraX = 0.0f;
+                    _cameraX += CAMERA_RETURN_SPEED;
+                    if (_cameraX >= CAMERA_X_TARGET)
+                        _cameraX = CAMERA_X_TARGET;
                 }
-                else if (_cameraX > -0.0f)
+                else if (_cameraX > CAMERA_X_TARGET)
                 {
-                    _cameraX -= 0.1f;
-                    if (_cameraX <= 0.0f)
-                        _cameraX = 0.0f;
+                    _cameraX -= CAMERA_RETURN_SPEED;
+                    if (_cameraX <= CAMERA_X_TARGET)
+                        _cameraX = CAMERA_X_TARGET;
                 }
+            }
+            else
+            {
+                _doMouseTurnUpdate = false;
+                _lastMousePosition = Game.InputSystem.Mouse.Position;
+            }
+
+            if (_doMouseTurnUpdate || _lastMousePosition != Game.InputSystem.Mouse.Position)
+            {
+                _doMouseTurnUpdate = true;
+                _lastMousePosition = Game.InputSystem.Mouse.Position;
+                _cameraX = -((_lastMousePosition.X - (float)Game.ScreenBounds.Width / 2) / ((float)Game.ScreenBounds.Width / 2)) * (CAMERA_X_MAX_OFFSET / 4);
+                _cameraY = ((_lastMousePosition.Y - (float)Game.ScreenBounds.Height / 2) / ((float)Game.ScreenBounds.Height / 2)) * (CAMERA_Y_MAX_OFFSET / 4);
             }
         }
 

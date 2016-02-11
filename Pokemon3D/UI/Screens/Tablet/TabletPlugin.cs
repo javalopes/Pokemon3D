@@ -1,4 +1,5 @@
 ﻿using Pokemon3D.GameCore;
+using Pokemon3D.UI.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,23 @@ namespace Pokemon3D.UI.Screens.Tablet
 {
     abstract class TabletPlugin : GameObject
     {
+        private TabletScreen _screen;
+
+        public TabletPlugin(TabletScreen screen)
+        {
+            _screen = screen;
+        }
+
         public TabletScreen ActiveTabletScreen
         {
-            get { return (TabletScreen)Game.ScreenManager.CurrentScreen; }
+            get { return _screen; }
         }
         
+        public TextureProjectionQuad ActiveQuad
+        {
+            get { return ActiveTabletScreen.ActiveQuad; }
+        }
+
         public abstract void Draw();
 
         public abstract void Update();
