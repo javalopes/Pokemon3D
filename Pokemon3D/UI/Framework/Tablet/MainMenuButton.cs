@@ -9,8 +9,13 @@ using Pokemon3D.Common;
 
 namespace Pokemon3D.UI.Framework.Tablet
 {
+    /// <summary> 
+    /// A hexagonal shaped UI element that renders an icon and text to display a button for the tablet's main menu.
+    /// </summary>
     class MainMenuButton : TabletControl
     {
+        private const float ANIMATION_SPEED = 0.6f;
+        
         private Texture2D _backTexture, _outlineTexture;
         private Texture2D _buttonTexture;
         private SpriteFont _font;
@@ -26,8 +31,8 @@ namespace Pokemon3D.UI.Framework.Tablet
             _position = position;
             _text = text;
 
-            _outerSizeStepper = new OffsetTransition(0f, 0.6f);
-            _colorStepper = new ColorTransition(Color.White, 0.6f);
+            _outerSizeStepper = new OffsetTransition(0f, ANIMATION_SPEED);
+            _colorStepper = new ColorTransition(Color.White, ANIMATION_SPEED);
 
             _backTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.MainMenu.ButtonBack);
             _outlineTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.MainMenu.ButtonLine);
@@ -37,11 +42,14 @@ namespace Pokemon3D.UI.Framework.Tablet
 
         private Rectangle GetBoundsInternal()
         {
+            // returns the unprojected bounds rectangle for this button.
             return new Rectangle((int)_position.X, (int)_position.Y, 110, 118);
         }
 
         public override Rectangle GetBounds()
         {
+            // projects the bounds from GetInternalBounds, adjusts it to fit the screen size
+            // and returns the bounds of the resulting polyong.
             return _quad.AdjustToScreen(_quad.ProjectRectangle(GetBoundsInternal())).Bounds;
         }
 
@@ -54,6 +62,7 @@ namespace Pokemon3D.UI.Framework.Tablet
         {
             base.Select();
 
+            // when selected, start animation to fill texture and change color
             _outerSizeStepper.TargetOffset = 1f;
             _colorStepper.TargetColor = new Color(77, 186, 216);
         }
@@ -62,6 +71,7 @@ namespace Pokemon3D.UI.Framework.Tablet
         {
             base.Deselect();
 
+            // when deselected, start animation to unfill texture and change color
             _outerSizeStepper.TargetOffset = 0f;
             _colorStepper.TargetColor = Color.White;
         }
@@ -73,6 +83,10 @@ namespace Pokemon3D.UI.Framework.Tablet
             _outerSizeStepper.Update();
             _colorStepper.Update();
 
+            // when the button is selected, the inner texture spins slowly.
+            //
+            // once it gets deselected, it spins it the other way round, with decreasing velocity,
+            // based on the current rotation value.
             if (Selected)
             {
                 _rotation += 0.03f;
@@ -92,13 +106,16 @@ namespace Pokemon3D.UI.Framework.Tablet
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            // renderer is getting initialized here because this is where we get the spritebatch instance.
             if (_renderer == null)
                 _renderer = new ShapeRenderer(spriteBatch, Game.GraphicsDevice);
 
             Color textColor = Color.White;
             Vector2 textSize = _font.MeasureString(_text);
 
+            // draws the outline texture for the button
             spriteBatch.Draw(_outlineTexture, GetBoundsInternal(), Color.White);
+            // as long as its selected or the filling texture should be drawn, do this:
             if (Selected || _outerSizeStepper.Offset > 0f)
             {
                 var bounds = GetBoundsInternal();
@@ -107,11 +124,12 @@ namespace Pokemon3D.UI.Framework.Tablet
                 int height = (int)Math.Floor(bounds.Height * _outerSizeStepper.Offset);
 
                 var drawBounds = new Rectangle(bounds.X + (bounds.Width - width) / 2, bounds.Y + (bounds.Height - height) / 2, width, height);
-
                 var cutRect = new Rectangle(bounds.Width / 2 - width / 2, bounds.Height / 2 - height / 2, width, height);
 
+                // draw the back texture, animation is "from center growing"
                 spriteBatch.Draw(_backTexture, drawBounds, null, new Color(255, 255, 255, 255));
 
+                // different text color when selected.
                 textColor = new Color(77, 186, 216);
                 _renderer.DrawFilledRectangle(new Rectangle((int)(_position.X + _outlineTexture.Width / 2 - textSize.X / 2 - 4), (int)(_position.Y + _outlineTexture.Height), (int)textSize.X + 8, (int)textSize.Y), Color.White);
             }
