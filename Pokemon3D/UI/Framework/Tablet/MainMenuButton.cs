@@ -22,7 +22,6 @@ namespace Pokemon3D.UI.Framework.Tablet
         private Vector2 _position;
         private OffsetTransition _outerSizeStepper;
         private ColorTransition _colorStepper;
-        private float _rotation = 0f;
         private string _text;
         private ShapeRenderer _renderer;
 
@@ -82,26 +81,6 @@ namespace Pokemon3D.UI.Framework.Tablet
 
             _outerSizeStepper.Update();
             _colorStepper.Update();
-
-            // when the button is selected, the inner texture spins slowly.
-            //
-            // once it gets deselected, it spins it the other way round, with decreasing velocity,
-            // based on the current rotation value.
-            if (Selected)
-            {
-                _rotation += 0.03f;
-            }
-            else
-            {
-                if (_rotation > 0f)
-                {
-                    _rotation -= _rotation / 10f;
-                    if (_rotation <= 0.01f)
-                    {
-                        _rotation = 0f;
-                    }
-                }
-            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -137,8 +116,7 @@ namespace Pokemon3D.UI.Framework.Tablet
             spriteBatch.Draw(texture: _buttonTexture,
                 position: _position + new Vector2(_outlineTexture.Width / 2, _outlineTexture.Height / 2),
                 color: _colorStepper.Color,
-                origin: new Vector2(32, 32),
-                rotation: _rotation);
+                origin: new Vector2(32, 32));
 
             spriteBatch.DrawString(_font, _text, new Vector2(_position.X + _outlineTexture.Width / 2 - textSize.X / 2, _position.Y + _outlineTexture.Height), textColor);
         }
