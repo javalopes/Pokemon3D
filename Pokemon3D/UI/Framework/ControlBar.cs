@@ -93,7 +93,7 @@ namespace Pokemon3D.UI.Framework
                         boxWidth = (int)(_font.MeasureString(displayString).X + 10);
                     }
 
-                    _renderer.DrawRectangle(new Rectangle(offset, Game.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor);
+                    _renderer.DrawRectangle(new Rectangle(offset, Game.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor, filled: false);
                     _batch.DrawString(_font, displayString, new Vector2(offset + 5, Game.ScreenBounds.Height - 48), _highlightColor);
 
                     offset += boxWidth;
