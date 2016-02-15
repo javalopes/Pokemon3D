@@ -110,7 +110,7 @@ namespace Pokemon3D.GameCore
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             InputSystem = new InputSystem();
             GuiSystem = new GuiSystem(this);
-            ShapeRenderer = new ShapeRenderer(SpriteBatch, GraphicsDevice);
+            ShapeRenderer = new ShapeRenderer(SpriteBatch);
             ScreenManager = new ScreenManager();
             TranslationProvider = new CoreTranslationManager();
             NotificationBar = new NotificationBar(400);

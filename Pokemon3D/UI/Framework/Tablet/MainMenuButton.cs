@@ -87,7 +87,7 @@ namespace Pokemon3D.UI.Framework.Tablet
         {
             // renderer is getting initialized here because this is where we get the spritebatch instance.
             if (_renderer == null)
-                _renderer = new ShapeRenderer(spriteBatch, Game.GraphicsDevice);
+                _renderer = new ShapeRenderer(spriteBatch);
 
             Color textColor = Color.White;
             Vector2 textSize = _font.MeasureString(_text);
@@ -110,7 +110,7 @@ namespace Pokemon3D.UI.Framework.Tablet
 
                 // different text color when selected.
                 textColor = new Color(77, 186, 216);
-                _renderer.DrawFilledRectangle(new Rectangle((int)(_position.X + _outlineTexture.Width / 2 - textSize.X / 2 - 4), (int)(_position.Y + _outlineTexture.Height), (int)textSize.X + 8, (int)textSize.Y), Color.White);
+                _renderer.DrawRectangle(new Rectangle((int)(_position.X + _outlineTexture.Width / 2 - textSize.X / 2 - 4), (int)(_position.Y + _outlineTexture.Height), (int)textSize.X + 8, (int)textSize.Y), Color.White);
             }
 
             spriteBatch.Draw(texture: _buttonTexture,

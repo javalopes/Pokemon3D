@@ -7,62 +7,96 @@ namespace Pokemon3D.Common.Shapes
 {
     public class ShapeRenderer
     {
-        private readonly Texture2D _blank;
-        private readonly SpriteBatch _spriteBatch;
+        private readonly Texture2D _canvas;
+        private readonly SpriteBatch _batch;
+        private SingleColorShapeTextureProvider _singleColorTextureProvider;
 
-        public ShapeRenderer(SpriteBatch spriteBatch, GraphicsDevice device)
+        public ShapeRenderer(SpriteBatch spriteBatch)
         {
-            var texture = new Texture2D(device, 1, 1);
-            texture.SetData(new[] { Color.White });
-            _blank = texture;
-            _spriteBatch = spriteBatch;
+            _batch = spriteBatch;
+            // create a 1x1 white texture to use as canvas for rectangle and line shapes.
+            _canvas = new Texture2D(_batch.GraphicsDevice, 1, 1);
+            _canvas.SetData(new[] { Color.White });
         }
 
-        public void DrawLine(int x1, int y1, int x2, int y2, Color color)
+        internal GraphicsDevice GraphicsDevice
+        {
+            get { return _batch.GraphicsDevice; }
+        }
+
+        #region Lines and Rectangles
+
+        public void DrawLine(Point startPoint, Point endPoint, Color color, int thinkness = 1)
+        {
+            DrawLine(startPoint.X, startPoint.Y, endPoint.X, endPoint.Y, color, thinkness);
+        }
+
+        public void DrawLine(int x1, int y1, int x2, int y2, Color color, int thinkness = 1)
         {
             var dX = x2 - x1;
             var dY = y2 - y1;
             var length = (float)Math.Sqrt(dX * dX + dY * dY);
 
-            _spriteBatch.Draw(_blank, new Vector2(x1, y1), null, color, (float)Math.Atan2(dY, dX), Vector2.Zero, new Vector2(length, 1), SpriteEffects.None, 0);
+            _batch.Draw(_canvas, new Vector2(x1, y1), null, color, (float)Math.Atan2(dY, dX), Vector2.Zero, new Vector2(length, thinkness), SpriteEffects.None, 0);
         }
 
         public void DrawRectangle(int x, int y, int width, int height, Color color)
         {
-            _spriteBatch.Draw(_blank, new Rectangle(x, y, width, 1), color);
-            _spriteBatch.Draw(_blank, new Rectangle(x, y + height - 1, width, 1), color);
-            _spriteBatch.Draw(_blank, new Rectangle(x, y, 1, height), color);
-            _spriteBatch.Draw(_blank, new Rectangle(x + width - 1, y, 1, height), color);
+            DrawRectangle(new Rectangle(x, y, width, height), color, 0f, Vector2.Zero, true);
         }
 
-        public void DrawFilledRectangle(int x, int y, int width, int height, Color color)
+        public void DrawRectangle(Rectangle destinationRectangle, Color color)
         {
-            _spriteBatch.Draw(_blank, new Rectangle(x, y, width, height), color);
+            DrawRectangle(destinationRectangle, color, 0f, Vector2.Zero, true);
         }
 
-        public void DrawFilledRectangle(Rectangle rectangle, Color color)
+        public void DrawRectangle(Rectangle destinationRectangle, Color color, float rotation = 0f, Vector2? origin = null, bool filled = true)
         {
-            _spriteBatch.Draw(_blank, rectangle, color);
-        }
+            Vector2 useOrigin = Vector2.Zero;
+            if (origin.HasValue)
+                useOrigin = origin.Value;
 
-        public void DrawRectangle(Rectangle target, Color color)
-        {
-            DrawRectangle(target.X, target.Y, target.Width, target.Height, color);
-        }
-
-        public void DrawCircle(int x, int y, int radius, int slices, Color color)
-        {
-            var deltaAngle = 1 / (float)slices * MathHelper.TwoPi;
-            var segmentWidth = 2f * (float)Math.Sin(deltaAngle * 0.5f) * radius;
-
-            for (var i = 0; i <= slices; i++)
+            if (filled)
             {
-                _spriteBatch.Draw(_blank,
-                    new Vector2(x + (float)(Math.Cos(i * deltaAngle) * radius),
-                                y + (float)(Math.Sin(i * deltaAngle) * radius)).SnapToPixels(),
-                    null, color, i * deltaAngle + deltaAngle * 0.5f + MathHelper.PiOver2,
-                    Vector2.Zero, new Vector2(segmentWidth, 1), SpriteEffects.None, 0);
+                _batch.Draw(_canvas, destinationRectangle, null, color, rotation, useOrigin, SpriteEffects.None, 0f);
             }
+            else
+            {
+                _batch.Draw(_canvas, new Rectangle(destinationRectangle.X, destinationRectangle.Y, destinationRectangle.Width, 1), null, color, rotation, useOrigin, SpriteEffects.None, 0f);
+                _batch.Draw(_canvas, new Rectangle(destinationRectangle.X, destinationRectangle.Y + destinationRectangle.Height - 1, destinationRectangle.Width, 1), null, color, rotation, useOrigin, SpriteEffects.None, 0f);
+                _batch.Draw(_canvas, new Rectangle(destinationRectangle.X, destinationRectangle.Y, 1, destinationRectangle.Height), null, color, rotation, useOrigin, SpriteEffects.None, 0f);
+                _batch.Draw(_canvas, new Rectangle(destinationRectangle.X + destinationRectangle.Width - 1, destinationRectangle.Y, 1, destinationRectangle.Height), null, color, rotation, useOrigin, SpriteEffects.None, 0f);
+            }
+        }
+
+        #endregion
+
+        public void DrawShape(Shape shape, Color color)
+        {
+            DrawShape(shape, null, color, 0f, Vector2.Zero, SpriteEffects.None);
+        }
+
+        public void DrawShape(Shape shape, Rectangle destinationRectangle, Color color)
+        {
+            DrawShape(shape, destinationRectangle, color, 0f, Vector2.Zero, SpriteEffects.None);
+        }
+
+        public void DrawShape(Shape shape, Rectangle? destinationRectangle, Color color, float rotation = 0f, Vector2? origin = null, SpriteEffects effects = SpriteEffects.None)
+        {
+            Vector2 useOrigin = Vector2.Zero;
+            if (origin.HasValue)
+                useOrigin = origin.Value;
+
+            Rectangle useRectangle = shape.Bounds;
+            if (destinationRectangle.HasValue)
+                useRectangle = destinationRectangle.Value;
+
+            if (_singleColorTextureProvider == null)
+                _singleColorTextureProvider = new SingleColorShapeTextureProvider(this);
+
+            var texture = _singleColorTextureProvider.GetTexture(shape);
+
+            _batch.Draw(texture, useRectangle, null, color, rotation, useOrigin, effects, 0f);
         }
     }
 }

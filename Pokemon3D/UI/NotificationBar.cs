@@ -64,7 +64,7 @@ namespace Pokemon3D.UI
             Game.SpriteBatch.Begin();
             foreach (var notification in _notifications)
             {
-                Game.ShapeRenderer.DrawFilledRectangle(startX, startY, _width, elementHeight, _backgroundColor * notification.Alpha);
+                Game.ShapeRenderer.DrawRectangle(startX, startY, _width, elementHeight, _backgroundColor * notification.Alpha);
 
                 var currentX = startX + ElementMargin;
                 var sourceRectangle = _notificationRectangle[notification.NotificationKind];

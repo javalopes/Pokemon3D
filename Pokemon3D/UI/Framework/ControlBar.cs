@@ -53,7 +53,7 @@ namespace Pokemon3D.UI.Framework
         public ControlBar()
         {
             _batch = new SpriteBatch(Game.GraphicsDevice);
-            _renderer = new ShapeRenderer(_batch, Game.GraphicsDevice);
+            _renderer = new ShapeRenderer(_batch);
             _font = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
             _highlightColor = new Color(100, 193, 238);
         }
@@ -72,7 +72,7 @@ namespace Pokemon3D.UI.Framework
         {
             _batch.Begin();
 
-            _renderer.DrawFilledRectangle(0, Game.ScreenBounds.Height - 64, Game.ScreenBounds.Width, 64, Color.White);
+            _renderer.DrawRectangle(0, Game.ScreenBounds.Height - 64, Game.ScreenBounds.Width, 64, Color.White);
 
             int offset = 11;
 

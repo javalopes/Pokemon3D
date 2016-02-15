@@ -69,7 +69,7 @@ namespace Pokemon3D.UI.Screens
             _sideSlider = new OffsetTransition(0f, 0.8f);
             _sideSlider.TargetOffset = 540f; 
 
-            _renderer = new ShapeRenderer(Game.SpriteBatch, Game.GraphicsDevice);
+            _renderer = new ShapeRenderer(Game.SpriteBatch);
 
             _flickerChance = 80;
             _introDelay = 12;
@@ -90,7 +90,7 @@ namespace Pokemon3D.UI.Screens
 
             if (flickerResult)
             {
-                _renderer.DrawFilledRectangle(new Rectangle((int)(_target.Width / 2 - _sideSlider.Offset), _target.Height / 2 - 280, (int)(_sideSlider.Offset * 2), 560), new Color(77, 186, 216, 230)); //new Color(87, 211, 244, 230));
+                _renderer.DrawRectangle(new Rectangle((int)(_target.Width / 2 - _sideSlider.Offset), _target.Height / 2 - 280, (int)(_sideSlider.Offset * 2), 560), new Color(77, 186, 216, 230)); //new Color(87, 211, 244, 230));
 
                 if (_sideSlider.TargetOffset == _sideSlider.Offset)
                 {

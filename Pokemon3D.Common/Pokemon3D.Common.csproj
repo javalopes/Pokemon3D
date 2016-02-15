@@ -107,6 +107,8 @@
     <Compile Include="Shapes\Polygon.cs" />
     <Compile Include="Shapes\Shape.cs" />
     <Compile Include="Shapes\ShapeRenderer.cs" />
+    <Compile Include="Shapes\ShapeTextureProvider.cs" />
+    <Compile Include="Shapes\SingleColorShapeTextureProvider.cs" />
     <Compile Include="Shapes\Triangle.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Animations\WaitAnimation.cs" />

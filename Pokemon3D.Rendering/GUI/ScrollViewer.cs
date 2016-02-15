@@ -117,20 +117,20 @@ namespace Pokemon3D.Rendering.GUI
 
             if (CanScrollVertically && _verticalScrollRepresenter.CanContentScroll)
             {
-                GuiSystem.GameContext.ShapeRenderer.DrawFilledRectangle(_clientClipBounds.Right + 1, _clientClipBounds.Top, SliderSize, _clientClipBounds.Height, Color.Red);
+                GuiSystem.GameContext.ShapeRenderer.DrawRectangle(_clientClipBounds.Right + 1, _clientClipBounds.Top, SliderSize, _clientClipBounds.Height, Color.Red);
 
                 var thumb = GetThumbRectangleVertical();
 
-                GuiSystem.GameContext.ShapeRenderer.DrawFilledRectangle(thumb.X, thumb.Y, thumb.Width, thumb.Height, Color.Blue);
+                GuiSystem.GameContext.ShapeRenderer.DrawRectangle(thumb.X, thumb.Y, thumb.Width, thumb.Height, Color.Blue);
             }
 
             if (CanScrollHorizontally && _horizontalScrollRepresenter.CanContentScroll)
             {
-                GuiSystem.GameContext.ShapeRenderer.DrawFilledRectangle(_clientClipBounds.Left, _clientClipBounds.Bottom - SliderSize, _clientClipBounds.Width, SliderSize, Color.Red);
+                GuiSystem.GameContext.ShapeRenderer.DrawRectangle(_clientClipBounds.Left, _clientClipBounds.Bottom - SliderSize, _clientClipBounds.Width, SliderSize, Color.Red);
 
                 var thumb = GetThumbRectangleHorizontal();
 
-                GuiSystem.GameContext.ShapeRenderer.DrawFilledRectangle(thumb.X, thumb.Y, thumb.Width, thumb.Height, Color.Blue);
+                GuiSystem.GameContext.ShapeRenderer.DrawRectangle(thumb.X, thumb.Y, thumb.Width, thumb.Height, Color.Blue);
             }
         }
 

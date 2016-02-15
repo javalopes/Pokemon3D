@@ -217,7 +217,7 @@ namespace Pokemon3D.UI.Screens
             var startPosition = new Vector2(Game.ScreenBounds.Width - width, Game.ScreenBounds.Height - height);
 
             Game.SpriteBatch.Begin();
-            Game.ShapeRenderer.DrawFilledRectangle((int) startPosition.X,
+            Game.ShapeRenderer.DrawRectangle((int) startPosition.X,
                 (int) startPosition.Y,
                 width,
                 height,

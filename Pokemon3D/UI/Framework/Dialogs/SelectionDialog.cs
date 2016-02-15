@@ -29,7 +29,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
             AddRange(buttons);
 
             _batch = new SpriteBatch(Game.GraphicsDevice);
-            _renderer = new ShapeRenderer(_batch, Game.GraphicsDevice);
+            _renderer = new ShapeRenderer(_batch);
             _colorStepper = new ColorTransition(new Color(255, 255, 255, 0), 0.7f);
 
             _titleFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
@@ -107,8 +107,8 @@ namespace Pokemon3D.UI.Framework.Dialogs
         {
             int startY = Game.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
 
-            _renderer.DrawFilledRectangle(0, 0, Game.ScreenBounds.Width, Game.ScreenBounds.Height, new Color(255, 255, 255, 100));
-            _renderer.DrawFilledRectangle(0, startY, Game.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
+            _renderer.DrawRectangle(0, 0, Game.ScreenBounds.Width, Game.ScreenBounds.Height, new Color(255, 255, 255, 100));
+            _renderer.DrawRectangle(0, startY, Game.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
 
             _batch.DrawString(_titleFont, _title, new Vector2(100, startY + 20), Color.Black);
 
