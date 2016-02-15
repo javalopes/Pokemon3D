@@ -40,16 +40,11 @@ namespace Pokemon3D.Common.Shapes
         /// <summary>
         /// Returns if this shape contains a <see cref="Rectangle"/>.
         /// </summary>
-        bool Contains(Rectangle rectangle);
+        bool Contains(Rectangle value);
 
         /// <summary>
         /// Returns if this shape contains a <see cref="Point"/>.
         /// </summary>
         bool Contains(Point value);
-
-        /// <summary>
-        /// Returns if this shape contains another <see cref="Shape"/>.
-        /// </summary>
-        bool Contains(Shape shape);
     }
 }
