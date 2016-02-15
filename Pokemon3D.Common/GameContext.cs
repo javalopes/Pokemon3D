@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Input;
+using Pokemon3D.Common.Shapes;
 
 namespace Pokemon3D.Common
 {

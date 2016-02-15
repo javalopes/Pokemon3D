@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
-using Pokemon3D.Common;
+using Pokemon3D.Common.Shapes;
 using Microsoft.Xna.Framework;
 
 namespace Pokemon3D.UI.Framework

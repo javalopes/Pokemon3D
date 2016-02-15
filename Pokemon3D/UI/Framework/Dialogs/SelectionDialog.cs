@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
 using Microsoft.Xna.Framework;
-using Pokemon3D.Common;
+using Pokemon3D.Common.Shapes;
 using Pokemon3D.Common.Input;
 
 namespace Pokemon3D.UI.Framework.Dialogs

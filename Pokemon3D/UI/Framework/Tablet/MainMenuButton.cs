@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Pokemon3D.Common;
+using Pokemon3D.Common.Shapes;
 
 namespace Pokemon3D.UI.Framework.Tablet
 {

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
 using System;
 
-namespace Pokemon3D.Common
+namespace Pokemon3D.Common.Shapes
 {
     public class ShapeRenderer
     {

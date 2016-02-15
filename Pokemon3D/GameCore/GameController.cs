@@ -12,6 +12,7 @@ using System;
 using System.Windows.Threading;
 using Pokemon3D.Collisions;
 using Pokemon3D.Common.Input;
+using Pokemon3D.Common.Shapes;
 
 namespace Pokemon3D.GameCore
 {
