@@ -84,10 +84,34 @@ namespace Pokemon3D.Common.Shapes
             return isInside;
         }
 
+        public void SetPoints(IEnumerable<Point> points)
+        {
+            if (points.Count() < 3)
+                throw new ArgumentException("A Polygon has to consist of at least three vertices.");
+
+            _points = points.ToList();
+            CalculateBounds();
+        }
+
         public void Add(Point point)
         {
+            if (_points == null)
+                _points = new List<Point>();
+
             _points.Add(point);
             CalculateBounds();
+        }
+
+        public void AddRange(IEnumerable<Point> points)
+        {
+            if (points.Count() > 0)
+            {
+                if (_points == null)
+                    _points = new List<Point>();
+
+                _points.AddRange(points);
+                CalculateBounds();
+            }
         }
 
         public void Insert(int index, Point point)
