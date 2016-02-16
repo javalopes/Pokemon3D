@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Content;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Localization;
 using System.Windows.Threading;
+using Pokemon3D.Common.Shapes;
 
 namespace Pokemon3D.Editor.Windows.View3D
 {
@@ -73,7 +74,6 @@ namespace Pokemon3D.Editor.Windows.View3D
         public InputSystem InputSystem { get { throw new NotImplementedException(); } }
         public ContentManager Content { get { throw new NotImplementedException(); } }
         public SpriteBatch SpriteBatch { get { throw new NotImplementedException(); } }
-        public ShapeRenderer ShapeRenderer { get { throw new NotImplementedException(); } }
         public TranslationProvider TranslationProvider { get { throw new NotImplementedException(); } }
         public string VersionInformation { get { throw new NotImplementedException(); } }
 
@@ -88,6 +88,14 @@ namespace Pokemon3D.Editor.Windows.View3D
         public Dispatcher MainThreadDispatcher
         {
             get { return Application.Current.Dispatcher; }
+        }
+
+        ShapeRenderer GameContext.ShapeRenderer
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
         /// <summary>
