@@ -41,7 +41,7 @@ namespace Pokemon3D.Rendering
             AllCameras = new List<Camera>();
             StaticNodes = new List<SceneNode>();
             AmbientLight = new Vector4(1,1,1,1);
-            Light = new Light(GameContext.GraphicsDevice);
+            Light = new Light();
         }
 
         /// <summary>

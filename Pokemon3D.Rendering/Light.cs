@@ -43,8 +43,7 @@ namespace Pokemon3D.Rendering
         /// <summary>
         /// Creates a new light instance.
         /// </summary>
-        /// <param name="device">Graphics Device</param>
-        internal Light(GraphicsDevice device)
+        internal Light()
         {
             Type = LightType.Directional;
             AmbientIntensity = 0.1f;

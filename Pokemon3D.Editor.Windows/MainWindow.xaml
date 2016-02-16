@@ -39,7 +39,7 @@
                 <ContentControl Content="{Binding ActiveDetails}" />
             </TabItem>
             <TabItem Header="3D View">
-                <local:D3D11Host SnapsToDevicePixels="True" Stretch="Fill" />
+                <local:D3D11Host x:Name="View3DControl" SnapsToDevicePixels="True" Stretch="Fill" />
             </TabItem>
         </TabControl>
     </Grid>

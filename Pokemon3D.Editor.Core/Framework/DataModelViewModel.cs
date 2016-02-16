@@ -1,8 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using Pokemon3D.Editor.Core.DetailViewModels;
+using System.Collections.ObjectModel;
+using System;
 
 namespace Pokemon3D.Editor.Core.Framework
 {
-    public abstract class DataModelViewModel: ViewModel
+    public class DataModelViewModel: DetailViewModel
     {
         private readonly ObservableCollection<DataModelPropertyViewModel> _properties;
         private string _name;
@@ -34,6 +36,15 @@ namespace Pokemon3D.Editor.Core.Framework
         {
             model = (TModel)dataModelViewModel.Model;
             Model = dataModelViewModel.Model;
+        }
+
+        internal override void OnActivate()
+        {
+            
+        }
+
+        internal override void OnDeactivate()
+        {
         }
     }
 }

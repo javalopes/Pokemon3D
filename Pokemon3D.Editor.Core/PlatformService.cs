@@ -9,5 +9,9 @@ namespace Pokemon3D.Editor.Core
     public interface PlatformService
     {
         string ShowSelectFolderDialog();
+
+        void Activate3DViewForModel(string filePath);
+
+        void Deactivate3DView();
     }
 }

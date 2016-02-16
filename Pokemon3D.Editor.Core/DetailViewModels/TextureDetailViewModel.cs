@@ -1,9 +1,9 @@
-﻿using Pokemon3D.Editor.Core.Framework;
+﻿using System;
 using Pokemon3D.Editor.Core.Model;
 
 namespace Pokemon3D.Editor.Core.DetailViewModels
 {
-    public class TextureDetailViewModel : ViewModel
+    public class TextureDetailViewModel : DetailViewModel
     {
         public string AbsoluteFilePath { get; private set; }
         public string FileName { get; private set; }
@@ -16,6 +16,14 @@ namespace Pokemon3D.Editor.Core.DetailViewModels
             FileName = textureModel.Name;
             Width = 100;
             Height = 100;
+        }
+
+        internal override void OnActivate()
+        {
+        }
+
+        internal override void OnDeactivate()
+        {
         }
     }
 }

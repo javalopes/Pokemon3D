@@ -48,6 +48,8 @@
     <Compile Include="DataModelViewModels\MoveDataViewModel.cs" />
     <Compile Include="DataModelViewModels\PokedexEntryDataViewModel.cs" />
     <Compile Include="DataModelViewModels\PokemonDataViewModel.cs" />
+    <Compile Include="DetailViewModels\DetailViewModel.cs" />
+    <Compile Include="DetailViewModels\ModelDetailViewModel.cs" />
     <Compile Include="DetailViewModels\TextureDetailViewModel.cs" />
     <Compile Include="Framework\BoolDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\DataModelPropertyViewModel.cs" />

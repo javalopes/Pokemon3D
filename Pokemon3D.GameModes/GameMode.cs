@@ -19,9 +19,9 @@ namespace Pokemon3D.GameModes
     /// <summary>
     /// Contains methods and members that control a GameMode, a collection of maps, scripts and assets.
     /// </summary>
-    public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable
+    public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable, ModelMeshContext
     {
-        private readonly Dictionary<string, ModelMesh[]> _meshCache = new Dictionary<string, ModelMesh[]>();
+        private readonly Dictionary<string, Rendering.Data.ModelMesh[]> _meshCache = new Dictionary<string, Rendering.Data.ModelMesh[]>();
         private readonly Dictionary<string, Mesh> _meshPrimitivesByName = new Dictionary<string, Mesh>(); 
         private readonly Dictionary<string, Texture2D> _textureCache = new Dictionary<string, Texture2D>();
 
@@ -37,6 +37,16 @@ namespace Pokemon3D.GameModes
         public PokemonFactory PokemonFactory { get; private set; }
 
         public bool IsValid { get; }
+
+        public Dispatcher MainThreadDispatcher
+        {
+            get { return GameContext.MainThreadDispatcher; }
+        }
+
+        public GraphicsDevice GraphicsDevice
+        {
+            get { return GameContext.GraphicsDevice; }
+        }
 
         /// <summary>
         /// Creates an instance of the <see cref="GameMode"/> class and loads the data model.
@@ -121,18 +131,18 @@ namespace Pokemon3D.GameModes
             return texture;
         }
 
-        public void GetModelAsync(string filePath, Action<ModelMesh[]> modelLoaded)
+        public void GetModelAsync(string filePath, Action<Rendering.Data.ModelMesh[]> modelLoaded)
         {
             throw new NotImplementedException("Currently disabled");
         }
 
-        public ModelMesh[] GetModel(string filePath, Dispatcher mainThreadDispatcher = null)
+        public Rendering.Data.ModelMesh[] GetModel(string filePath, Dispatcher mainThreadDispatcher = null)
         {
-            ModelMesh[] meshes;
+            Rendering.Data.ModelMesh[] meshes;
             if (_meshCache.TryGetValue(filePath, out meshes)) return meshes;
 
             var absolutePath = Path.Combine(ModelPath, filePath);
-            var meshsArray = ModelMesh.LoadFromFile(mainThreadDispatcher, this, absolutePath);
+            var meshsArray = Rendering.Data.ModelMesh.LoadFromFile(this, absolutePath);
             _meshCache.Add(filePath, meshsArray);
             return meshsArray;
         }

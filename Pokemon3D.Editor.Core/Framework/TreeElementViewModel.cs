@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pokemon3D.Editor.Core.DetailViewModels;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -17,7 +18,7 @@ namespace Pokemon3D.Editor.Core.Framework
     {
         private ObservableCollection<TreeElementViewModel> _children;
         private string _name;
-        private ViewModel _detailsViewModel;
+        private DetailViewModel _detailsViewModel;
         private ApplicationViewModel _application;
 
         public ReadOnlyObservableCollection<TreeElementViewModel> Children { get; }
@@ -71,7 +72,7 @@ namespace Pokemon3D.Editor.Core.Framework
             set { SetProperty(ref _name, value); }
         }
 
-        public ViewModel DetailsViewModel
+        public DetailViewModel DetailsViewModel
         {
             get { return _detailsViewModel; }
             set { SetProperty(ref _detailsViewModel, value); }

@@ -20,7 +20,7 @@ namespace Pokemon3D.Editor.Core
         };
 
         private TreeElementViewModel _root;
-        private ViewModel _activeDetails;
+        private DetailViewModel _activeDetails;
 
         public CommandViewModel OpenGameModeCommand { get; private set; }
         public PlatformService PlatformService { get; private set; }
@@ -31,10 +31,14 @@ namespace Pokemon3D.Editor.Core
             set { SetProperty(ref _root, value); }
         }
 
-        public ViewModel ActiveDetails
+        public DetailViewModel ActiveDetails
         {
             get { return _activeDetails; }
-            set { SetProperty(ref _activeDetails, value); }
+            set { SetProperty(ref _activeDetails, value, old => 
+            {
+                old?.OnDeactivate();
+                _activeDetails?.OnActivate();
+            }); }
         }
 
         public ApplicationViewModel(PlatformService platformService)
@@ -75,7 +79,7 @@ namespace Pokemon3D.Editor.Core
             FillResourcesInHierarchy(texturesElement, gameModeModel.TextureModels, r => new TextureDetailViewModel(r));
             
             var modelsElement = contentElement.AddChild(new TreeElementViewModel(this, "Models", TreeElementType.Folder));
-            FillResourcesInHierarchy(modelsElement, gameModeModel.ModelModels);
+            FillResourcesInHierarchy(modelsElement, gameModeModel.ModelModels, r => new ModelDetailViewModel(PlatformService, r));
                         
             var movesElement = dataElement.AddChild(new TreeElementViewModel(this, "Moves", TreeElementType.Folder));
             foreach(var move in gameModeModel.MoveModels)
@@ -111,7 +115,7 @@ namespace Pokemon3D.Editor.Core
 
         private void FillResourcesInHierarchy<TResourceType>(TreeElementViewModel parentElement, 
                                                              IEnumerable<TResourceType> resources, 
-                                                             Func<TResourceType, ViewModel> createDetails = null) 
+                                                             Func<TResourceType, DetailViewModel> createDetails = null) 
             where TResourceType : ResourceModel
         {
             foreach (var resourceModel in resources.OrderBy(t => t.FilePath))
@@ -124,7 +128,7 @@ namespace Pokemon3D.Editor.Core
             }
         }
 
-        internal void ShowDetails(ViewModel detailsViewModel)
+        internal void ShowDetails(DetailViewModel detailsViewModel)
         {
             ActiveDetails = detailsViewModel;
         }

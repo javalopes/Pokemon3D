@@ -7,7 +7,6 @@ using System.Windows.Media;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Color = Microsoft.Xna.Framework.Color;
-using Matrix = Microsoft.Xna.Framework.Matrix;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering;
 using Pokemon3D.Common;
@@ -17,13 +16,14 @@ using Pokemon3D.Common.Localization;
 using System.Windows.Threading;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.Rendering.Data;
+using System.IO;
 
 namespace Pokemon3D.Editor.Windows.View3D
 {
     /// <summary>
-     /// Host a Direct3D 11 scene.
-     /// </summary>
-    public class D3D11Host : Image, GameContext
+    /// Host a Direct3D 11 scene.
+    /// </summary>
+    public class D3D11Host : Image, GameContext, ModelMeshContext
     {
         private static GraphicsDevice _graphicsDevice;
         private static int _referenceCount;
@@ -107,6 +107,29 @@ namespace Pokemon3D.Editor.Windows.View3D
             _timer = new Stopwatch();
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+            MouseMove += D3D11Host_MouseMove;
+        }
+
+        private bool _isFirstMouseMove = true;
+        private System.Windows.Point _lastMousePosition;
+
+        private void D3D11Host_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var currentPosition = e.GetPosition(this);
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                if (!_isFirstMouseMove)
+                {
+                    var dx = _lastMousePosition.X - currentPosition.X;
+                    var dy = _lastMousePosition.Y - currentPosition.Y;
+
+                    _cameraHolder.RotateY((float)dx / ScreenWidth * MathHelper.TwoPi);
+                    _cameraHolder.RotateX((float)dy / ScreenHeight * MathHelper.TwoPi);
+                }
+            }
+
+            _lastMousePosition = currentPosition;
+            _isFirstMouseMove = false;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs eventArgs)
@@ -273,6 +296,8 @@ namespace Pokemon3D.Editor.Windows.View3D
                 StopRendering();
             }
         }
+
+        private SceneNode _cameraHolder;
         
         private void Initialize()
         {
@@ -283,12 +308,19 @@ namespace Pokemon3D.Editor.Windows.View3D
                 EnableSoftShadows = false,
                 ShadowMapSize = 32
             });
-
+            
             _scene = new Scene(this);
+            _scene.Light.Direction = new Vector3(1, -1, -1);
+             _scene.Light.AmbientIntensity = 0.5f;
+             _scene.Light.DiffuseIntensity = 0.5f;
+
+            _cameraHolder = _scene.CreateSceneNode();
 
             var camera = _scene.CreateCamera();
-            camera.Position = new Vector3(0, 10, 10);
-            camera.RotateX(MathHelper.ToRadians(-45));
+            camera.Position = new Vector3(0, 0, 20);
+            camera.SetParent(_cameraHolder);
+
+            _cameraHolder.RotateX(MathHelper.ToRadians(-45));
 
             var sceneNode = _scene.CreateSceneNode();
             sceneNode.Mesh = new Mesh(GraphicsDevice, CreateGroundFloorGeometryData(10, 1.0f), PrimitiveType.LineList);
@@ -299,6 +331,22 @@ namespace Pokemon3D.Editor.Windows.View3D
                 IsUnlit = true,
                 Color = Color.White
             };
+        }
+
+        public void Activate3DModel(string filePath)
+        {
+            foreach(var model in Rendering.Data.ModelMesh.LoadFromFile(this, filePath))
+            {
+                var node = _scene.CreateSceneNode(true);
+                node.Mesh = model.Mesh;
+                node.Material = model.Material;
+                node.EndInitializing();
+            }
+        }
+
+        public void Deactivate3D()
+        {
+
         }
 
         private GeometryData CreateGroundFloorGeometryData(int cells, float cellSize)
@@ -359,6 +407,15 @@ namespace Pokemon3D.Editor.Windows.View3D
         {
             _scene.Update((float)time.TotalSeconds);
             _renderer.Draw(_scene);
+        }
+
+        public Texture2D GetTextureFromRawFolder(string path)
+        {
+            using (var memoryStream = new MemoryStream(File.ReadAllBytes(path)))
+            {
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return Texture2D.FromStream(GraphicsDevice, memoryStream);
+            }
         }
     }
 }
