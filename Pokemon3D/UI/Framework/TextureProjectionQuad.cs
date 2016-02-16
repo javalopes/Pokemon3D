@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
-using Pokemon3D.UI.Framework.Shapes;
+using Pokemon3D.Common.Shapes;
 
 namespace Pokemon3D.UI.Framework
 {
@@ -209,17 +209,29 @@ namespace Pokemon3D.UI.Framework
             return new Vector2(projected.X, projected.Y); // disregard depth value
         }
 
+        public Point ProjectPoint(Point source)
+        {
+            var projectVector = new Vector3(
+                -0.5f + ((float)source.X / _textureOutputWidth),
+                0.5f - ((float)source.Y / _textureOutputHeight),
+                0f); // disregard depth value
+
+            var projected = Project(projectVector, _projection, _view, World);
+
+            return new Point((int)projected.X, (int)projected.Y); // disregard depth value
+        }
+
         public Polygon ProjectRectangle(Rectangle rectangle)
         {
             Polygon polygon = new Polygon();
             
             // get corners counter clockwise starting on the top left and project them to create the polygon:
-            polygon.Vertices.AddRange(new Vector2[] {
-                new Vector2(rectangle.X, rectangle.Y), // top left
-                new Vector2(rectangle.X, rectangle.Y + rectangle.Height), // bottom left
-                new Vector2(rectangle.X + rectangle.Width, rectangle.Y + rectangle.Height), // bottom right
-                new Vector2(rectangle.X + rectangle.Width, rectangle.Y) // top right
-            }.Select(v => ProjectVector2(v)));            
+            polygon.AddRange(new Point[] {
+                new Point(rectangle.X, rectangle.Y), // top left
+                new Point(rectangle.X, rectangle.Y + rectangle.Height), // bottom left
+                new Point(rectangle.X + rectangle.Width, rectangle.Y + rectangle.Height), // bottom right
+                new Point(rectangle.X + rectangle.Width, rectangle.Y) // top right
+            }.Select(v => ProjectPoint(v)));            
             return polygon;
         }
 
@@ -230,9 +242,16 @@ namespace Pokemon3D.UI.Framework
             return v;
         }
 
+        public Point AdjustToScreen(Point p)
+        {
+            p.X = (int)((float)p.X * ((float)Game.ScreenBounds.Width / _textureOutputWidth));
+            p.Y = (int)((float)p.Y * ((float)Game.ScreenBounds.Height / _textureOutputHeight));
+            return p;
+        }
+
         public Polygon AdjustToScreen(Polygon polygon)
         {
-            polygon.Vertices = polygon.Vertices.Select(v => AdjustToScreen(v)).ToList();
+            polygon.SetPoints(polygon.Points.Select(v => AdjustToScreen(v)));
             return polygon;
         }
 

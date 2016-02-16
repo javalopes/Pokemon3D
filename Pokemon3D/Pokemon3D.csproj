@@ -111,7 +111,6 @@
     <Compile Include="UI\Framework\OffsetTransition.cs" />
     <Compile Include="UI\Framework\PokemonProfile.cs" />
     <Compile Include="UI\Framework\PokemonSpriteSheet.cs" />
-    <Compile Include="UI\Framework\Shapes\Polygon.cs" />
     <Compile Include="UI\Framework\Tablet\MainMenuButton.cs" />
     <Compile Include="UI\Framework\Tablet\TabletControl.cs" />
     <Compile Include="UI\Framework\TextureProjectionQuad.cs" />
