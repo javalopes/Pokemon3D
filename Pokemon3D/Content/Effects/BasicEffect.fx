@@ -449,6 +449,11 @@ float4 UnlitPS(UnlitOutputVS input) : COLOR0
 	return tex2D(DiffuseSampler, input.TexCoord);
 }
 
+float4 UnlitNoTexturePS(UnlitOutputVS input) : COLOR0
+{
+	return MaterialColor;
+}
+
 float4 UnlitPSLinearSampled(UnlitOutputVS input) : COLOR0
 {
 	return tex2D(LinearSampler, input.TexCoord);
@@ -460,6 +465,15 @@ technique Unlit
 	{
 		VertexShader = compile vs_4_0 UnlitVS();
 		PixelShader = compile ps_4_0 UnlitPS();
+	}
+}
+
+technique UnlitNoTexture
+{
+	pass p0
+	{
+		VertexShader = compile vs_4_0 UnlitVS();
+		PixelShader = compile ps_4_0 UnlitNoTexturePS();
 	}
 }
 

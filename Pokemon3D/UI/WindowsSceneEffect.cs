@@ -48,7 +48,7 @@ namespace Pokemon3D.UI
                 { LightTechniqueFlag.Lit | LightTechniqueFlag.UseTexture, _basicEffect.Techniques["Lit"] },
                 { LightTechniqueFlag.Lit | LightTechniqueFlag.UseTexture | LightTechniqueFlag.ReceiveShadows, _basicEffect.Techniques["LitShadowReceiver"] },
                 { LightTechniqueFlag.Lit | LightTechniqueFlag.UseTexture | LightTechniqueFlag.ReceiveShadows | LightTechniqueFlag.SoftShadows, _basicEffect.Techniques["LitShadowReceiverPCF"] },
-                
+                { 0, _basicEffect.Techniques["UnlitNoTexture"] },
                 { LightTechniqueFlag.UseTexture, _basicEffect.Techniques["Unlit"] },
                 { LightTechniqueFlag.UseTexture | LightTechniqueFlag.LinearTextureSampling, _basicEffect.Techniques["UnlitLinearSampled"] },
             };

@@ -16,6 +16,7 @@ using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Localization;
 using System.Windows.Threading;
 using Pokemon3D.Common.Shapes;
+using Pokemon3D.Rendering.Data;
 
 namespace Pokemon3D.Editor.Windows.View3D
 {
@@ -284,6 +285,70 @@ namespace Pokemon3D.Editor.Windows.View3D
             });
 
             _scene = new Scene(this);
+
+            var camera = _scene.CreateCamera();
+            camera.Position = new Vector3(0, 10, 10);
+            camera.RotateX(MathHelper.ToRadians(-45));
+
+            var sceneNode = _scene.CreateSceneNode();
+            sceneNode.Mesh = new Mesh(GraphicsDevice, CreateGroundFloorGeometryData(10, 1.0f), PrimitiveType.LineList);
+            sceneNode.Material = new Material
+            {
+                CastShadow = false,
+                ReceiveShadow = false,
+                IsUnlit = true,
+                Color = Color.White
+            };
+        }
+
+        private GeometryData CreateGroundFloorGeometryData(int cells, float cellSize)
+        {
+            var geometryData = new GeometryData
+            {
+                Vertices = new VertexPositionNormalTexture[(cells + 1) * (cells + 1)],
+                Indices = new ushort[(cells * (cells + 1) + cells * (cells + 1)) * 2]
+            };
+
+            for (var x = 0; x <= cells; x++)
+            {
+                for (var z = 0; z <= cells; z++)
+                {
+                    var position = new Vector3(
+                        -cells * cellSize * 0.5f + x * cellSize,
+                        0.0f,
+                        -cells * cellSize * 0.5f + z * cellSize);
+
+                    geometryData.Vertices[z * (cells + 1) + x] = new VertexPositionNormalTexture(position, Vector3.Up, Vector2.Zero);
+                }
+            }
+
+            var baseVertexIndex = 0;
+            var baseIndex = 0;
+            for (var z = 0; z <= cells; z++)
+            {
+                for (var x = 0; x < cells; x++)
+                {
+                    geometryData.Indices[baseIndex + 0] = (ushort)(baseVertexIndex);
+                    geometryData.Indices[baseIndex + 1] = (ushort)(baseVertexIndex + 1);
+                    baseVertexIndex += 1;
+                    baseIndex += 2;
+                }
+                baseVertexIndex += 1;
+            }
+
+            baseVertexIndex = 0;
+            for (var z = 0; z < cells; z++)
+            {
+                for (var x = 0; x <= cells; x++)
+                {
+                    geometryData.Indices[baseIndex + 0] = (ushort)(baseVertexIndex);
+                    geometryData.Indices[baseIndex + 1] = (ushort)(baseVertexIndex + cells + 1);
+                    baseVertexIndex += 1;
+                    baseIndex += 2;
+                }
+            }
+
+            return geometryData;
         }
         
         private void Unitialize()
