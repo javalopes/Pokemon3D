@@ -93,6 +93,7 @@
     <Compile Include="View3D\D3D11Host.cs" />
     <Compile Include="View3D\D3D11Image.cs" />
     <Compile Include="View3D\D3D9.cs" />
+    <Compile Include="View3D\WpfSceneEffect.cs" />
     <Page Include="DataTemplates\DataModelDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -140,6 +141,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="EditorContent\BasicEffect.mgfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -154,6 +158,10 @@
     <Resource Include="Images\json.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Pokemon3D.Common\Pokemon3D.Common.csproj">
+      <Project>{b29dc7f0-2a16-4585-80a2-b4030558ec35}</Project>
+      <Name>Pokemon3D.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Pokemon3D.DataModel\Pokemon3D.DataModel.csproj">
       <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
       <Name>Pokemon3D.DataModel</Name>
@@ -161,6 +169,14 @@
     <ProjectReference Include="..\Pokemon3D.Editor.Core\Pokemon3D.Editor.Core.csproj">
       <Project>{4365490b-cc67-45e5-a113-1120e0d2b3ec}</Project>
       <Name>Pokemon3D.Editor.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Pokemon3D.GameModes\Pokemon3D.GameModes.csproj">
+      <Project>{54de5a5d-f265-4359-add6-f5b6e0ca6eaa}</Project>
+      <Name>Pokemon3D.GameModes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Pokemon3D.Rendering\Pokemon3D.Rendering.csproj">
+      <Project>{d3c6ea8f-1a82-4885-849e-d83747cd8ebc}</Project>
+      <Name>Pokemon3D.Rendering</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
