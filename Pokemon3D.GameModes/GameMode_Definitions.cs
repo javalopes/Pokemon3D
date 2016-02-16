@@ -16,6 +16,7 @@ namespace Pokemon3D.GameModes
         private const string FILE_DATA_NATURES = "Natures";
         private const string FILE_DATA_TYPES = "Types";
         private const string FILE_DATA_PRIMITIVES = "Primitives";
+        private const string FILE_DATA_POKEDEXES = "Pokedexes";
 
         private const string PATH_MAPS = "Maps";
         private const string PATH_FRAGMENTS = "Fragments";
@@ -63,6 +64,11 @@ namespace Pokemon3D.GameModes
         /// The file path to the file containing the Pokémon type data.
         /// </summary>
         public string TypesFilePath => Path.Combine(GameModeInfo.DirectoryPath, PATH_DATA, FILE_DATA_TYPES + JSON_FILE_EXTENSION);
+
+        /// <summary>
+        /// The file path to the file containing the Pokédex definition data.
+        /// </summary>
+        public string PokedexesFilePath => Path.Combine(GameModeInfo.DirectoryPath, PATH_DATA, FILE_DATA_POKEDEXES + JSON_FILE_EXTENSION);
 
         /// <summary>
         /// The file path to the file containing the primitive data.

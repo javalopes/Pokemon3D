@@ -30,7 +30,7 @@ namespace Pokemon3D.DataModel.Savegame
         public StorageSystemModel StorageSystem;
 
         [DataMember(Order = 5)]
-        public PokedexSaveModel Pokedex;
+        public PokedexSaveModel[] Pokedexes;
 
         public override object Clone()
         {
@@ -38,7 +38,7 @@ namespace Pokemon3D.DataModel.Savegame
             clone.PlayerData = PlayerData.CloneModel();
             clone.Pokemon = (PokemonSaveModel[])Pokemon.Clone();
             clone.Items = (InventoryItemModel[])Items.Clone();
-            clone.Pokedex = Pokedex.CloneModel();
+            clone.Pokedexes = (PokedexSaveModel[])Pokedexes.Clone();
             clone.StorageSystem = StorageSystem.CloneModel();
             return clone;
         }

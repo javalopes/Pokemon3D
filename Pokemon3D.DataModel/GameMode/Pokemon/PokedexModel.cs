@@ -9,7 +9,7 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
     /// Contains information about a Pokédex in the game.
     /// </summary>
     [DataContract(Namespace = "")]
-    class PokedexModel : DataModel<PokedexModel>
+    public class PokedexModel : DataModel<PokedexModel>
     {
         /// <summary>
         /// The identification of this Pokédex that it is referred to.

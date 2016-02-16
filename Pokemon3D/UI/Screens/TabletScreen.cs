@@ -37,7 +37,7 @@ namespace Pokemon3D.UI.Screens
         private const float CAMERA_X_MAX_OFFSET = 0.6f;
         private const float CAMERA_Y_MAX_OFFSET = 0.6f;
         private const float CAMERA_RETURN_SPEED = 0.05f;
-        
+
         // if the tablet should move towards the mouse.
         private bool _doMouseTurnUpdate = true;
         // the last known position of the mouse on the screen
@@ -67,7 +67,7 @@ namespace Pokemon3D.UI.Screens
             _bigFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
 
             _sideSlider = new OffsetTransition(0f, 0.8f);
-            _sideSlider.TargetOffset = 540f; 
+            _sideSlider.TargetOffset = 540f;
 
             _renderer = new ShapeRenderer(Game.SpriteBatch);
 
@@ -90,17 +90,17 @@ namespace Pokemon3D.UI.Screens
 
             if (flickerResult)
             {
-                _renderer.DrawRectangle(new Rectangle((int)(_target.Width / 2 - _sideSlider.Offset), _target.Height / 2 - 280, (int)(_sideSlider.Offset * 2), 560), new Color(77, 186, 216, 230)); //new Color(87, 211, 244, 230));
+                _renderer.DrawRectangle(new Rectangle((int)(_target.Width / 2 - _sideSlider.Offset), _target.Height / 2 - 280, (int)(_sideSlider.Offset * 2), 560), new Color(77, 186, 216, 230));
 
                 if (_sideSlider.TargetOffset == _sideSlider.Offset)
                 {
                     DrawCircuit();
                 }
             }
-
+            
             Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2 - 64 - _sideSlider.Offset), (int)(_target.Height / 2 - 320), 64, 640), Color.White);
             Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2 + _sideSlider.Offset), (int)(_target.Height / 2 - 320), 64, 640), null, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
-            
+
             Game.SpriteBatch.End();
 
             if (flickerResult && !_closing)
@@ -117,10 +117,10 @@ namespace Pokemon3D.UI.Screens
             Game.SpriteBatch.Begin();
 
             Game.SpriteBatch.Draw(projected, Game.ScreenBounds, Color.White);
-            
+
             Game.SpriteBatch.End();
         }
-        
+
         private void DrawCircuit()
         {
             if (!_closing)
@@ -183,7 +183,7 @@ namespace Pokemon3D.UI.Screens
 
                 // draws the small subtitle:
                 Game.SpriteBatch.DrawString(_font, "Holo Tablet", new Vector2(224, 182), Color.White);
-                
+
                 // draws the slowly fading in title:
                 int titleLength = (int)Math.Ceiling((double)_plugin.Title.Length / 100 * _pluginTitleIntro);
                 Game.SpriteBatch.DrawString(_bigFont, _plugin.Title.Substring(_plugin.Title.Length - titleLength, titleLength), new Vector2(180, 132), Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);

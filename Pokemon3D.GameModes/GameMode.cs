@@ -13,6 +13,7 @@ using Pokemon3D.Common.DataHandling;
 using Pokemon3D.Common;
 using Mesh = Pokemon3D.Rendering.Data.Mesh;
 using System.Windows.Threading;
+using Pokemon3D.DataModel.GameMode.Pokemon;
 
 namespace Pokemon3D.GameModes
 {
@@ -29,6 +30,7 @@ namespace Pokemon3D.GameModes
         private NatureModel[] _natureModels;
         private TypeModel[] _typeModels;
         private MoveModel[] _moveModels;
+        private PokedexModel[] _pokedexModels;
 
         public FileProvider FileLoader { get; }
         public GameModeInfo GameModeInfo { get; }
@@ -73,7 +75,8 @@ namespace Pokemon3D.GameModes
             {
                 PrimitivesFilePath,
                 NaturesFilePath,
-                TypesFilePath
+                TypesFilePath,
+                PokedexesFilePath
             }, OnLoadFinished);
             FileLoader.GetFilesOfFolderAsync(MoveFilesPath, d => OnMovesLoaded(d, finished));
         }
@@ -174,6 +177,7 @@ namespace Pokemon3D.GameModes
 
             _natureModels = DataModel<NatureModel[]>.FromByteArray(data[1].Data);
             _typeModels = DataModel<TypeModel[]>.FromByteArray(data[2].Data);
+            _pokedexModels = DataModel<PokedexModel[]>.FromByteArray(data[3].Data);
         }
 
         public Mesh GetPrimitiveMesh(string primitiveName)
@@ -225,6 +229,11 @@ namespace Pokemon3D.GameModes
         public MoveModel GetMoveModel(string id)
         {
             return _moveModels.Single(m => m.Id == id);
+        }
+
+        public PokedexModel GetPokedexModel(string id)
+        {
+            return _pokedexModels.Single(m => m.Id == id);
         }
 
         public NatureModel[] GetNatures()

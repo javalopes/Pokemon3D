@@ -1,0 +1,9 @@
+[
+    {
+        "Id" : "National",
+        "PokemonIds" : [
+            "Bulbasaur",
+            "Charizard"
+        ]
+    }
+]

@@ -6,7 +6,7 @@
 namespace Pokemon3D.DataModel.Savegame.Pokemon
 {
     /// <summary>
-    /// Contains the save information about the Pokédex.
+    /// Contains the save information about a Pokédex.
     /// </summary>
     [DataContract(Namespace = "")]
     public class PokedexSaveModel : DataModel<PokedexSaveModel>

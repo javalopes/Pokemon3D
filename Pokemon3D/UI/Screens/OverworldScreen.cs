@@ -58,8 +58,27 @@ namespace Pokemon3D.UI.Screens
             dataModel.PlayerData = new PlayerModel();
             dataModel.GameMode = "TestGM";
             dataModel.Items = new InventoryItemModel[] { };
-            dataModel.Pokedex = new PokedexSaveModel();
-            dataModel.Pokemon = new PokemonSaveModel[] 
+            dataModel.Pokedexes = new PokedexSaveModel[]
+            {
+                new PokedexSaveModel()
+                {
+                    PokedexId = "National",
+                    Entries = new PokedexEntrySaveModel[]
+                    {
+                        new PokedexEntrySaveModel()
+                        {
+                            EntryType = PokedexEntryType.Caught,
+                            Forms = new string[]
+                            {
+                                "Default",
+                                "Shiny"
+                            },
+                            Id = "Bulbasaur"
+                        }
+                    }
+                }
+            };
+            dataModel.Pokemon = new PokemonSaveModel[]
             {
                 new PokemonSaveModel()
                 {
@@ -211,14 +230,14 @@ namespace Pokemon3D.UI.Screens
 
             const int spacing = 5;
             var elementHeight = _debugSpriteFont.LineSpacing + spacing;
-            var height = elementHeight*4 + spacing;
+            var height = elementHeight * 4 + spacing;
             const int width = 180;
 
             var startPosition = new Vector2(Game.ScreenBounds.Width - width, Game.ScreenBounds.Height - height);
 
             Game.SpriteBatch.Begin();
-            Game.ShapeRenderer.DrawRectangle((int) startPosition.X,
-                (int) startPosition.Y,
+            Game.ShapeRenderer.DrawRectangle((int)startPosition.X,
+                (int)startPosition.Y,
                 width,
                 height,
                 Color.DarkGreen);
@@ -236,6 +255,6 @@ namespace Pokemon3D.UI.Screens
         public void OnClosing()
         {
         }
-        
+
     }
 }

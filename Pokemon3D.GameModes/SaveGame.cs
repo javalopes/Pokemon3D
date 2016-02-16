@@ -9,6 +9,9 @@ using Pokemon3D.DataModel.Savegame.Pokemon;
 
 namespace Pokemon3D.GameModes
 {
+    /// <summary>
+    /// Exposes the SaveFileModel properties to the API.
+    /// </summary>
     public class SaveGame
     {
         private SaveFileModel _dataModel;
@@ -27,8 +30,10 @@ namespace Pokemon3D.GameModes
             get { return _dataModel.PlayerData.Money; }
             set { _dataModel.PlayerData.Money = value; }
         }
-
+        
         public List<Pokemon.Pokemon> PartyPokemon { get; private set; }
+
+        public PokedexSaveModel[] Pokedexes => _dataModel.Pokedexes;
 
         private int _loadedItems = 0;
         private int _loadingCounter = 0;
