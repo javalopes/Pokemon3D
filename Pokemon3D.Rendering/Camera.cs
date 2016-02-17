@@ -30,6 +30,11 @@ namespace Pokemon3D.Rendering
             ClearColor = Color.CornflowerBlue;
         }
 
+        internal void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize)
+        {
+            Viewport = new Viewport(0,0,newSize.Width, newSize.Height);
+        }
+
         protected override void HandleIsDirty()
         {
             base.HandleIsDirty();

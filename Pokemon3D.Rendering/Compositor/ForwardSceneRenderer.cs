@@ -191,6 +191,8 @@ namespace Pokemon3D.Rendering.Compositor
 
         private void DrawSceneForCamera(Scene scene, Camera camera, bool hasSceneNodesChanged)
         {
+            _device.Viewport = camera.Viewport;
+
             DrawShadowCastersToDepthmap(scene, camera);
             HandleCameraClearOrSkyPass(camera);
 

@@ -4,6 +4,7 @@ using Pokemon3D.Editor.Core.Framework;
 using Pokemon3D.Editor.Core.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
@@ -13,7 +14,7 @@ namespace Pokemon3D.Editor.Core
     {
         private static readonly Dictionary<ResourceType, TreeElementType> ResourceTypeToTreeElementType = new Dictionary<ResourceType, TreeElementType>
         {
-            {ResourceType.File, TreeElementType.File },
+            { ResourceType.File, TreeElementType.File },
             { ResourceType.JsonFile, TreeElementType.JsonFile },
             { ResourceType.Model, TreeElementType.Model },
             { ResourceType.TextureFile, TreeElementType.TextureFile },
@@ -21,6 +22,7 @@ namespace Pokemon3D.Editor.Core
 
         private TreeElementViewModel _root;
         private DetailViewModel _activeDetails;
+        private readonly ObservableCollection<string> _output;
 
         public CommandViewModel OpenGameModeCommand { get; private set; }
         public PlatformService PlatformService { get; private set; }
@@ -45,10 +47,16 @@ namespace Pokemon3D.Editor.Core
         {
             if (platformService == null) throw new ArgumentNullException(nameof(platformService));
 
-            PlatformService = platformService;
+            _output = new ObservableCollection<string>();
+            Output = new ReadOnlyObservableCollection<string>(_output);
 
+            PlatformService = platformService;
+            PlatformService.OnErrorOccurred = s => _output.Add(s);
+            
             OpenGameModeCommand = new CommandViewModel(OnOpenGameModeCommand);
         }
+
+        public ReadOnlyObservableCollection<string> Output { get; private set; }
 
         private IEnumerable<string> GetFilesOfDirectory(string directory)
         {

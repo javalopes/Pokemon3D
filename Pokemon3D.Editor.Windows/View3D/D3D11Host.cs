@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.Rendering.Data;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Pokemon3D.Editor.Windows.View3D
 {
@@ -39,6 +40,7 @@ namespace Pokemon3D.Editor.Windows.View3D
         private WpfSceneEffect _sceneEffect;
         private SceneRenderer _renderer;
         private Scene _scene;
+        private List<SceneNode> _customNodes = new List<SceneNode>();
 
         /// <summary>
         /// Gets a value indicating whether the controls runs in the context of a designer (e.g.
@@ -108,6 +110,29 @@ namespace Pokemon3D.Editor.Windows.View3D
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             MouseMove += D3D11Host_MouseMove;
+            SizeChanged += D3D11Host_SizeChanged;
+            PreviewMouseWheel += D3D11Host_PreviewMouseWheel;
+        }
+
+        private void D3D11Host_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            var position = _camera.Position;
+            if (e.Delta > 0)
+            {
+                position.Z = Math.Min(50, position.Z + 0.4f);
+            }
+            else if (e.Delta < 0)
+            {
+                position.Z = Math.Max(5, position.Z - 0.4f);
+            }
+            _camera.Position = position;
+        }
+
+        private void D3D11Host_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            _scene?.OnViewSizeChanged(new Rectangle(0,0,(int)e.PreviousSize.Width, (int)e.PreviousSize.Height),
+                                      new Rectangle(0, 0, (int)e.NewSize.Width, (int)e.NewSize.Height));
+            CreateBackBuffer();
         }
 
         private bool _isFirstMouseMove = true;
@@ -116,18 +141,26 @@ namespace Pokemon3D.Editor.Windows.View3D
         private void D3D11Host_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var currentPosition = e.GetPosition(this);
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
-            {
-                if (!_isFirstMouseMove)
-                {
-                    var dx = _lastMousePosition.X - currentPosition.X;
-                    var dy = _lastMousePosition.Y - currentPosition.Y;
 
-                    _cameraHolder.RotateY((float)dx / ScreenWidth * MathHelper.TwoPi);
-                    _cameraHolder.RotateX((float)dy / ScreenHeight * MathHelper.TwoPi);
+            if (!_isFirstMouseMove)
+            {
+                var dx = (float)(_lastMousePosition.X - currentPosition.X) / ScreenWidth;
+                var dy = (float)( _lastMousePosition.Y - currentPosition.Y) / ScreenHeight;
+
+                if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+                {
+                    _cameraHolder.RotateY(dx * MathHelper.TwoPi);
+                    _cameraHolder.RotateX(dy * MathHelper.TwoPi);
+                }
+                else if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed)
+                {
+                    var forwardFlat = Vector3.Normalize(new Vector3(_cameraHolder.Forward.X, 0.0f, _cameraHolder.Forward.Z));
+                    var rightFlat = Vector3.Normalize(new Vector3(_cameraHolder.Right.X, 0.0f, _cameraHolder.Right.Z));
+
+                    _cameraHolder.Position += forwardFlat * -dy * 4.0f + rightFlat * dx * 4.0f;
                 }
             }
-
+            
             _lastMousePosition = currentPosition;
             _isFirstMouseMove = false;
         }
@@ -298,6 +331,7 @@ namespace Pokemon3D.Editor.Windows.View3D
         }
 
         private SceneNode _cameraHolder;
+        private Camera _camera;
         
         private void Initialize()
         {
@@ -316,9 +350,9 @@ namespace Pokemon3D.Editor.Windows.View3D
 
             _cameraHolder = _scene.CreateSceneNode();
 
-            var camera = _scene.CreateCamera();
-            camera.Position = new Vector3(0, 0, 20);
-            camera.SetParent(_cameraHolder);
+            _camera = _scene.CreateCamera();
+            _camera.Position = new Vector3(0, 0, 20);
+            _camera.SetParent(_cameraHolder);
 
             _cameraHolder.RotateX(MathHelper.ToRadians(-45));
 
@@ -341,12 +375,17 @@ namespace Pokemon3D.Editor.Windows.View3D
                 node.Mesh = model.Mesh;
                 node.Material = model.Material;
                 node.EndInitializing();
+                _customNodes.Add(node);
             }
         }
 
         public void Deactivate3D()
         {
-
+            foreach(var node in _customNodes)
+            {
+                _scene.RemoveSceneNode(node);
+            }
+            _lastExceptionMessage = null;
         }
 
         private GeometryData CreateGroundFloorGeometryData(int cells, float cellSize)
@@ -402,12 +441,27 @@ namespace Pokemon3D.Editor.Windows.View3D
         private void Unitialize()
         {
         }
+
+        private string _lastExceptionMessage;
         
         private void Render(TimeSpan time)
         {
-            _scene.Update((float)time.TotalSeconds);
-            _renderer.Draw(_scene);
+            try
+            {
+                _scene.Update((float)time.TotalSeconds);
+                _renderer.Draw(_scene);
+            }
+            catch(Exception ex)
+            {
+                if (ex.Message != _lastExceptionMessage)
+                {
+                    _lastExceptionMessage = ex.Message;
+                    OnErrorOccurred?.Invoke(_lastExceptionMessage);
+                }
+            }
         }
+
+        public Action<string> OnErrorOccurred;
 
         public Texture2D GetTextureFromRawFolder(string path)
         {

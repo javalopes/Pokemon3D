@@ -44,6 +44,14 @@ namespace Pokemon3D.Rendering
             Light = new Light();
         }
 
+        public void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize)
+        {
+            foreach(var camera in AllCameras)
+            {
+                camera.OnViewSizeChanged(oldSize, newSize);
+            }
+        }
+
         /// <summary>
         /// Creates a new sceneNode instance.
         /// </summary>

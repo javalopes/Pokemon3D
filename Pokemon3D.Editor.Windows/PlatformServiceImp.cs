@@ -12,6 +12,12 @@ namespace Pokemon3D.Editor.Windows
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
             _host = host;
+            _host.OnErrorOccurred = s => OnErrorOccurred?.Invoke(s);
+        }
+
+        public Action<string> OnErrorOccurred
+        {
+            get; set;
         }
 
         public void Activate3DViewForModel(string filePath)

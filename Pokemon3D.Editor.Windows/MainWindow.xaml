@@ -13,6 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -34,7 +35,7 @@
             <TreeView ItemsSource="{Binding Root.Children}" />
         </ScrollViewer>
 
-        <TabControl Grid.Column="1" Grid.Row="1" Margin="5">
+        <TabControl Grid.Column="1" Grid.Row="1" Margin="5" SelectedIndex="1">
             <TabItem Header="Data">
                 <ContentControl Content="{Binding ActiveDetails}" />
             </TabItem>
@@ -42,5 +43,24 @@
                 <local:D3D11Host x:Name="View3DControl" SnapsToDevicePixels="True" Stretch="Fill" />
             </TabItem>
         </TabControl>
+
+        <Border Grid.Row="2" 
+                Grid.ColumnSpan="2" 
+                BorderThickness="1"
+                BorderBrush="Gray" 
+                Margin="5">
+            <ItemsControl Height="150"
+                          Margin="5"
+                          ItemsSource="{Binding Output}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock FontFamily="Courier New" 
+                                   FontSize="12"
+                                   Text="{Binding}"
+                                   TextWrapping="NoWrap" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
     </Grid>
 </Window>

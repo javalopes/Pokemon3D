@@ -13,5 +13,7 @@ namespace Pokemon3D.Editor.Core
         void Activate3DViewForModel(string filePath);
 
         void Deactivate3DView();
+
+        Action<string> OnErrorOccurred { get; set; }
     }
 }
