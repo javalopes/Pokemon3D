@@ -33,7 +33,7 @@ namespace Pokemon3D.UI.Screens
 
         // tablet rotation consts.
         private const float CAMERA_X_TARGET = 0f;
-        private const float CAMERA_Y_TARGET = 0f;
+        private const float CAMERA_Y_TARGET = -0.1f;
         private const float CAMERA_X_MAX_OFFSET = 0.6f;
         private const float CAMERA_Y_MAX_OFFSET = 0.6f;
         private const float CAMERA_RETURN_SPEED = 0.05f;

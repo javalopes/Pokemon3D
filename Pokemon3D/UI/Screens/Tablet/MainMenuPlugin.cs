@@ -17,9 +17,9 @@ namespace Pokemon3D.UI.Screens.Tablet
         public MainMenuPlugin(TabletScreen screen) : base(screen)
         {
             _buttons = new DefaultControlGroup();
-            _buttons.Add(new MainMenuButton(ActiveQuad, new Vector2(200, 250), ResourceNames.Textures.UI.Tablet.MainMenu.Pokeball, "Pokedex"));
-            _buttons.Add(new MainMenuButton(ActiveQuad, new Vector2(340, 250), ResourceNames.Textures.UI.Tablet.MainMenu.Pokeball, "Pokemon"));
-            _buttons.Add(new MainMenuButton(ActiveQuad, new Vector2(480, 250), ResourceNames.Textures.UI.Tablet.MainMenu.Pokeball, "Inventory"));
+            _buttons.Add(new MainMenuButton(ActiveQuad, new Vector2(200, 250), ResourceNames.Textures.UI.Tablet.MainMenu.Pokeball, "Pokedex", null));
+            _buttons.Add(new MainMenuButton(ActiveQuad, new Vector2(340, 250), ResourceNames.Textures.UI.Tablet.MainMenu.Pokeball, "Pokemon", null));
+            _buttons.Add(new MainMenuButton(ActiveQuad, new Vector2(480, 250), ResourceNames.Textures.UI.Tablet.MainMenu.Pokeball, "Inventory", null));
             _buttons.Visible = true;
             _buttons.Active = true;
             _buttons.Orientation = ControlGroupOrientation.Horizontal;

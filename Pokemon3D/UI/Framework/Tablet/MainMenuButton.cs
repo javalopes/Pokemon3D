@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Pokemon3D.Common.Shapes;
+using Pokemon3D.Common.Input;
 
 namespace Pokemon3D.UI.Framework.Tablet
 {
@@ -24,14 +25,16 @@ namespace Pokemon3D.UI.Framework.Tablet
         private ColorTransition _colorStepper;
         private string _text;
         private ShapeRenderer _renderer;
+        private Action<Control> _onClick;
 
-        public MainMenuButton(TextureProjectionQuad quad, Vector2 position, string buttonTextureResource, string text) : base(quad)
+        public MainMenuButton(TextureProjectionQuad quad, Vector2 position, string buttonTextureResource, string text, Action<Control> onClick) : base(quad)
         {
             _position = position;
             _text = text;
 
             _outerSizeStepper = new OffsetTransition(0f, ANIMATION_SPEED);
             _colorStepper = new ColorTransition(Color.White, ANIMATION_SPEED);
+            _onClick = onClick;
 
             _backTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.MainMenu.ButtonBack);
             _outlineTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Tablet.MainMenu.ButtonLine);
@@ -78,6 +81,15 @@ namespace Pokemon3D.UI.Framework.Tablet
         public override void Update()
         {
             base.Update();
+
+            if (_onClick != null && Selected && Group != null && Group.Active)
+            {
+                if (Game.InputSystem.Accept(AcceptInputTypes.Buttons) ||
+                    GetBounds().Contains(Game.InputSystem.Mouse.Position) && Game.InputSystem.Accept(AcceptInputTypes.LeftClick))
+                {
+                    _onClick(this);
+                }
+            }
 
             _outerSizeStepper.Update();
             _colorStepper.Update();
