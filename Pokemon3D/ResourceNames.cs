@@ -63,6 +63,11 @@ namespace Pokemon3D
                         public const string ButtonLine = "Textures/UI/Tablet/MainMenu/ButtonLine";
                         public const string Pokeball = "Textures/UI/Tablet/MainMenu/Pokeball";
                     }
+                    
+                    public static class Pokedex
+                    {
+                        public const string LoadContainer = "Textures/UI/Tablet/Pokedex/LoadContainer";
+                    }
                     public const string Tablet_Back = "Textures/UI/Tablet/Tablet_Back";
                     public const string Tablet_Emitter = "Textures/UI/Tablet/Tablet_Emitter";
                     public const string Tablet_Shine = "Textures/UI/Tablet/Tablet_Shine";

@@ -363,3 +363,14 @@
 /processorParam:TextureFormat=Color
 /build:Textures/UI/Tablet/MainMenu/Pokeball.png
 
+#begin Textures/UI/Tablet/Pokedex/LoadContainer.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:Textures/UI/Tablet/Pokedex/LoadContainer.png
+

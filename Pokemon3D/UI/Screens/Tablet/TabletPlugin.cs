@@ -1,4 +1,5 @@
-﻿using Pokemon3D.GameCore;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.GameCore;
 using Pokemon3D.UI.Framework;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace Pokemon3D.UI.Screens.Tablet
             get { return ActiveTabletScreen.ActiveQuad; }
         }
 
-        public abstract void Draw();
+        public abstract Texture2D Draw();
 
         public abstract void Update();
 

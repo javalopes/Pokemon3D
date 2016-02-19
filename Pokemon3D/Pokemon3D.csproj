@@ -131,6 +131,7 @@
     <Compile Include="UI\Screens\OverworldScreen.cs" />
     <Compile Include="UI\Screens\TabletScreen.cs" />
     <Compile Include="UI\Screens\Tablet\MainMenuPlugin.cs" />
+    <Compile Include="UI\Screens\Tablet\PokedexPlugin.cs" />
     <Compile Include="UI\Screens\Tablet\TabletPlugin.cs" />
     <Compile Include="UI\Transitions\BlendTransition.cs" />
     <Compile Include="UI\Screens\IntroScreen.cs" />
@@ -282,6 +283,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Textures\UI\Tablet\MainMenu\Pokeball.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\UI\Tablet\Pokedex\LoadContainer.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

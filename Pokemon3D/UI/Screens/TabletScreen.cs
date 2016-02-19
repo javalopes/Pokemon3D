@@ -28,8 +28,8 @@ namespace Pokemon3D.UI.Screens
         private TabletPlugin _plugin;
         private int _pluginTitleIntro = 0;
 
-        private const int TABLET_TARGET_WIDTH = 1200;
-        private const int TABLET_TARGET_HEIGHT = 800;
+        public const int TABLET_TARGET_WIDTH = 1200;
+        public const int TABLET_TARGET_HEIGHT = 800;
 
         // tablet rotation consts.
         private const float CAMERA_X_TARGET = 0f;
@@ -81,10 +81,17 @@ namespace Pokemon3D.UI.Screens
 
         public void OnDraw(GameTime gameTime)
         {
+            bool flickerResult = (_flickerChance == 0 || GlobalRandomProvider.Instance.Rnd.Next(0, _flickerChance) <= 5) && _introDelay == 0;
+
+            // rendering the plugin before setting the render target to the screen target.
+            // this is to avoid removing the screen target to render to a potential plugin target, because they need to be set in the right order.
+            Texture2D pluginResult = null;
+
+            if (flickerResult && !_closing)
+                pluginResult = _plugin.Draw();
+
             Game.GraphicsDevice.SetRenderTarget(_target);
             Game.GraphicsDevice.Clear(Color.Transparent);
-
-            bool flickerResult = (_flickerChance == 0 || GlobalRandomProvider.Instance.Rnd.Next(0, _flickerChance) <= 5) && _introDelay == 0;
 
             Game.SpriteBatch.Begin(blendState: BlendState.Additive);
 
@@ -98,15 +105,17 @@ namespace Pokemon3D.UI.Screens
                 }
             }
             
-            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2 - 64 - _sideSlider.Offset), (int)(_target.Height / 2 - 320), 64, 640), Color.White);
-            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2 + _sideSlider.Offset), (int)(_target.Height / 2 - 320), 64, 640), null, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
+            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2f - 64 - _sideSlider.Offset), (int)(_target.Height / 2f - 320), 64, 640), Color.White);
+            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2f + _sideSlider.Offset), (int)(_target.Height / 2f - 320), 64, 640), null, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
 
             Game.SpriteBatch.End();
 
-            if (flickerResult && !_closing)
-            {
-                _plugin.Draw();
-            }
+            Game.SpriteBatch.Begin(blendState: BlendState.AlphaBlend);
+
+            if (pluginResult != null)
+                Game.SpriteBatch.Draw(pluginResult, Vector2.Zero, Color.White);
+
+            Game.SpriteBatch.End();
 
             Game.GraphicsDevice.SetRenderTarget(null);
 
@@ -185,7 +194,7 @@ namespace Pokemon3D.UI.Screens
                 Game.SpriteBatch.DrawString(_font, "Holo Tablet", new Vector2(224, 182), Color.White);
 
                 // draws the slowly fading in title:
-                int titleLength = (int)Math.Ceiling((double)_plugin.Title.Length / 100 * _pluginTitleIntro);
+                int titleLength = (int)MathHelper.Clamp((float)Math.Ceiling((double)_plugin.Title.Length / 100 * _pluginTitleIntro), 0, _plugin.Title.Length);
                 Game.SpriteBatch.DrawString(_bigFont, _plugin.Title.Substring(_plugin.Title.Length - titleLength, titleLength), new Vector2(180, 132), Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
             }
         }
@@ -301,7 +310,7 @@ namespace Pokemon3D.UI.Screens
             }
         }
 
-        private void SetPlugin(TabletPlugin plugin)
+        public void SetPlugin(TabletPlugin plugin)
         {
             _plugin = plugin;
             _pluginTitleIntro = 0;
