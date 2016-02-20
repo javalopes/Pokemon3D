@@ -132,6 +132,7 @@
     <Compile Include="UI\Screens\TabletScreen.cs" />
     <Compile Include="UI\Screens\Tablet\MainMenuPlugin.cs" />
     <Compile Include="UI\Screens\Tablet\PokedexPlugin.cs" />
+    <Compile Include="UI\Screens\Tablet\PokemonPlugin.cs" />
     <Compile Include="UI\Screens\Tablet\TabletPlugin.cs" />
     <Compile Include="UI\Transitions\BlendTransition.cs" />
     <Compile Include="UI\Screens\IntroScreen.cs" />

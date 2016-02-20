@@ -22,7 +22,10 @@ namespace Pokemon3D.UI.Screens.Tablet
             {
                 screen.SetPlugin(new PokedexPlugin(screen));
             }));
-            _buttons.Add(new MainMenuButton(ActiveQuad, new Vector2(340, 250), ResourceNames.Textures.UI.Tablet.MainMenu.Pokeball, "Pokemon", null));
+            _buttons.Add(new MainMenuButton(ActiveQuad, new Vector2(340, 250), ResourceNames.Textures.UI.Tablet.MainMenu.Pokeball, "Pokemon", (c) =>
+            {
+                screen.SetPlugin(new PokemonPlugin(screen));
+            }));
             _buttons.Add(new MainMenuButton(ActiveQuad, new Vector2(480, 250), ResourceNames.Textures.UI.Tablet.MainMenu.Pokeball, "Inventory", null));
             _buttons.Visible = true;
             _buttons.Active = true;

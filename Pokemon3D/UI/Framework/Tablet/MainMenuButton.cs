@@ -128,7 +128,7 @@ namespace Pokemon3D.UI.Framework.Tablet
             spriteBatch.Draw(texture: _buttonTexture,
                 position: _position + new Vector2(_outlineTexture.Width / 2, _outlineTexture.Height / 2),
                 color: _colorStepper.Color,
-                origin: new Vector2(32, 32));
+                origin: new Vector2(_buttonTexture.Width / 2, _buttonTexture.Height / 2));
 
             spriteBatch.DrawString(_font, _text, new Vector2(_position.X + _outlineTexture.Width / 2 - textSize.X / 2, _position.Y + _outlineTexture.Height), textColor);
         }

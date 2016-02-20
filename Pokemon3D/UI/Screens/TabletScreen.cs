@@ -24,7 +24,7 @@ namespace Pokemon3D.UI.Screens
         private int _introDelay;
         private bool _closing;
         private SpriteFont _font, _bigFont;
-        private RenderTarget2D _target;
+        private RenderTarget2D _mainTarget, _target;
         private TabletPlugin _plugin;
         private int _pluginTitleIntro = 0;
 
@@ -76,6 +76,7 @@ namespace Pokemon3D.UI.Screens
             _closing = false;
 
             _target = new RenderTarget2D(Game.GraphicsDevice, TABLET_TARGET_WIDTH, TABLET_TARGET_HEIGHT);
+            _mainTarget = new RenderTarget2D(Game.GraphicsDevice, TABLET_TARGET_WIDTH, TABLET_TARGET_HEIGHT);
             SetPlugin(new MainMenuPlugin(this));
         }
 
@@ -90,24 +91,25 @@ namespace Pokemon3D.UI.Screens
             if (flickerResult && !_closing)
                 pluginResult = _plugin.Draw();
 
-            Game.GraphicsDevice.SetRenderTarget(_target);
+            // set the target to the main render target.
+            // this contains the inner parts of the tablet screen, meaning the blue area.
+            Game.GraphicsDevice.SetRenderTarget(_mainTarget);
             Game.GraphicsDevice.Clear(Color.Transparent);
 
             Game.SpriteBatch.Begin(blendState: BlendState.Additive);
 
+            // drawing once the flickering is over:
             if (flickerResult)
             {
-                _renderer.DrawRectangle(new Rectangle((int)(_target.Width / 2 - _sideSlider.Offset), _target.Height / 2 - 280, (int)(_sideSlider.Offset * 2), 560), new Color(77, 186, 216, 230));
+                _renderer.DrawRectangle(new Rectangle((int)(_target.Width / 2 - _sideSlider.Offset), _target.Height / 2 - 280, (int)(_sideSlider.Offset * 2), 560), new Color(77, 186, 216));
 
                 if (_sideSlider.TargetOffset == _sideSlider.Offset)
                 {
                     DrawCircuit();
                 }
             }
-            
-            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2f - 64 - _sideSlider.Offset), (int)(_target.Height / 2f - 320), 64, 640), Color.White);
-            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2f + _sideSlider.Offset), (int)(_target.Height / 2f - 320), 64, 640), null, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
 
+            // end and begin spritebatch to change blend state, so the transparency for the plugin result texture works correctly.
             Game.SpriteBatch.End();
 
             Game.SpriteBatch.Begin(blendState: BlendState.AlphaBlend);
@@ -117,6 +119,22 @@ namespace Pokemon3D.UI.Screens
 
             Game.SpriteBatch.End();
 
+            // set to the target that will get transformed.
+            Game.GraphicsDevice.SetRenderTarget(_target);
+            Game.GraphicsDevice.Clear(Color.Transparent);
+
+            // change blend state to non premuliplied to render the result of the main target (tablet screen) with a slight transparency.
+            Game.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
+
+            Game.SpriteBatch.Draw(_mainTarget, Vector2.Zero, new Color(255, 255, 255, 240));
+
+            // render the bars left and right.
+            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2f - 64 - _sideSlider.Offset), (int)(_target.Height / 2f - 320), 64, 640), Color.White);
+            Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2f + _sideSlider.Offset), (int)(_target.Height / 2f - 320), 64, 640), null, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
+
+            Game.SpriteBatch.End();
+
+            // reset render target to back buffer, transform target and draw to back buffer
             Game.GraphicsDevice.SetRenderTarget(null);
 
             _quad.CameraPosition = new Vector3(_cameraX, _cameraY, 1.3f);
