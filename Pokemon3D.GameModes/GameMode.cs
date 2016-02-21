@@ -223,6 +223,9 @@ namespace Pokemon3D.GameModes
 
         public TypeModel GetTypeModel(string typeId)
         {
+            if (typeId == null)
+                return null;
+
             return _typeModels.Single(n => n.Id == typeId);
         }
 

@@ -86,12 +86,23 @@ namespace Pokemon3D.UI.Screens
                     HP = 1,
                     IVs = new PokemonStatSetModel()
                     {
-                        HP = 10
+                        HP = 21,
+                        Atk = 20,
+                        Def = 11,
+                        SpAtk = 15,
+                        SpDef = 30,
+                        Speed = 1
                     },
                     EVs = new PokemonStatSetModel()
                     {
-                        HP = 0
-                    }
+                        HP = 50,
+                        Atk = 255,
+                        Def = 128,
+                        SpAtk = 255,
+                        SpDef = 255,
+                        Speed = 0
+                    },
+                    Experience = 10000
                 },
                 new PokemonSaveModel()
                 {
@@ -205,7 +216,8 @@ namespace Pokemon3D.UI.Screens
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.X) || Game.InputSystem.GamePad.IsButtonDownOnce(Buttons.X))
             {
                 // Game.ScreenManager.PushScreen(typeof(OverlayScreen));
-                Game.ScreenManager.PushScreen(typeof(TabletScreen));
+                // Game.ScreenManager.PushScreen(typeof(TabletScreen));
+                Game.ScreenManager.PushScreen(typeof(PokemonTableScreen));
             }
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F10))

@@ -34,6 +34,14 @@ namespace Pokemon3D
             public static class UI
             {
                 
+                public static class Cards
+                {
+                    public const string CardBack = "Textures/UI/Cards/CardBack";
+                    public const string CardHP = "Textures/UI/Cards/CardHP";
+                    public const string CardTypeBack = "Textures/UI/Cards/CardTypeBack";
+                    public const string CardTypeFront = "Textures/UI/Cards/CardTypeFront";
+                }
+                
                 public static class Common
                 {
                     public const string Button_Blank = "Textures/UI/Common/Button_Blank";

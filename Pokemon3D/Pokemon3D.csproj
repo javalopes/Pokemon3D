@@ -129,6 +129,7 @@
     <Compile Include="UI\Screens\MainMenuScreen2.cs" />
     <Compile Include="UI\Screens\OverlayScreen.cs" />
     <Compile Include="UI\Screens\OverworldScreen.cs" />
+    <Compile Include="UI\Screens\PokemonTableScreen.cs" />
     <Compile Include="UI\Screens\TabletScreen.cs" />
     <Compile Include="UI\Screens\Tablet\MainMenuPlugin.cs" />
     <Compile Include="UI\Screens\Tablet\PokedexPlugin.cs" />
@@ -274,6 +275,18 @@
     <Content Include="Content\Textures\UI\Tablet\Tablet_Side.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\Textures\UI\Cards\CardBack.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\UI\Cards\CardHP.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\UI\Cards\CardTypeBack.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\UI\Cards\CardTypeFront.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Textures\UI\Tablet\Circuit.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

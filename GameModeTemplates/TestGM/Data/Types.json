@@ -20,6 +20,56 @@
             "Ghost"
         ]
     },
+    {
+        "Id" : "Fire",
+        "Name" : "Fire",
+        "Color" : {
+            "Red" : 240,
+            "Green" : 128,
+            "Blue" : 48
+        },
+        "Texture" : {
+            "Source" : "sometexture",
+            "Rectangle" : null
+        },
+        "Effective" : [
+            "Bug",
+            "Grass",
+            "Ice",
+            "Steel"
+        ],
+        "Ineffective" : [
+            "Dragon",
+            "Fire",
+            "Rock",
+            "Water"
+        ],
+        "Unaffected" : []
+    },
+    {
+        "Id" : "Flying",
+        "Name" : "Flying",
+        "Color" : {
+            "Red" : 192,
+            "Green" : 255,
+            "Blue" : 255
+        },
+        "Texture" : {
+            "Source" : "sometexture",
+            "Rectangle" : null
+        },
+        "Effective" : [
+            "Bug",
+            "Fighting",
+            "Grass"
+        ],
+        "Ineffective" : [
+            "Electric",
+            "Rock",
+            "Steel"
+        ],
+        "Unaffected" : []
+    },
 	{
         "Id" : "Grass",
         "Name" : "Grass",

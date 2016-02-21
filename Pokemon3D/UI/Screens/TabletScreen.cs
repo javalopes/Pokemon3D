@@ -126,7 +126,7 @@ namespace Pokemon3D.UI.Screens
             // change blend state to non premuliplied to render the result of the main target (tablet screen) with a slight transparency.
             Game.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
 
-            Game.SpriteBatch.Draw(_mainTarget, Vector2.Zero, new Color(255, 255, 255, 240));
+            Game.SpriteBatch.Draw(_mainTarget, Vector2.Zero, new Color(255, 255, 255, 250));
 
             // render the bars left and right.
             Game.SpriteBatch.Draw(_sideTexture, new Rectangle((int)(_target.Width / 2f - 64 - _sideSlider.Offset), (int)(_target.Height / 2f - 320), 64, 640), Color.White);

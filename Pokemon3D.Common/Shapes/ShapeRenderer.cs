@@ -76,6 +76,12 @@ namespace Pokemon3D.Common.Shapes
             DrawShape(shape, null, color, 0f, Vector2.Zero, SpriteEffects.None);
         }
 
+        public void DrawShape(Shape shape, Vector2 position, Color color)
+        {
+            var bounds = shape.Bounds;
+            DrawShape(shape, new Rectangle((int)position.X, (int)position.Y, bounds.Width, bounds.Height), color, 0f, Vector2.Zero, SpriteEffects.None);
+        }
+
         public void DrawShape(Shape shape, Rectangle destinationRectangle, Color color)
         {
             DrawShape(shape, destinationRectangle, color, 0f, Vector2.Zero, SpriteEffects.None);
@@ -87,9 +93,11 @@ namespace Pokemon3D.Common.Shapes
             if (origin.HasValue)
                 useOrigin = origin.Value;
 
-            Rectangle useRectangle = shape.Bounds;
+            Rectangle useRectangle;
             if (destinationRectangle.HasValue)
                 useRectangle = destinationRectangle.Value;
+            else
+                useRectangle = shape.Bounds;
 
             if (_singleColorTextureProvider == null)
                 _singleColorTextureProvider = new SingleColorShapeTextureProvider(this);
@@ -97,6 +105,26 @@ namespace Pokemon3D.Common.Shapes
             var texture = _singleColorTextureProvider.GetTexture(shape);
 
             _batch.Draw(texture, useRectangle, null, color, rotation, useOrigin, effects, 0f);
+        }
+
+        public void DrawOutline(Triangle triangle, Vector2 position, Color color, int thickness = 1)
+        {
+            DrawLine(triangle.A, triangle.B, color, thickness);
+            DrawLine(triangle.B, triangle.C, color, thickness);
+            DrawLine(triangle.C, triangle.A, color, thickness);
+        }
+
+        public void DrawOutline(Polygon polygon, Vector2 position, Color color, int thickness = 1)
+        {
+            var points = polygon.Points;
+            var offset = position.ToPoint();
+            for (int i = 0; i < points.Length; i++)
+            {
+                Point A = points[i] + offset;
+                Point B = i == points.Length - 1 ? points[0] + offset : points[i + 1] + offset; 
+
+                DrawLine(A, B, color, thickness);
+            }
         }
     }
 }
