@@ -132,7 +132,8 @@ namespace Pokemon3D.Editor.Windows.View3D
         {
             _scene?.OnViewSizeChanged(new Rectangle(0,0,(int)e.PreviousSize.Width, (int)e.PreviousSize.Height),
                                       new Rectangle(0, 0, (int)e.NewSize.Width, (int)e.NewSize.Height));
-            CreateBackBuffer();
+
+            if (_d3D11Image != null) CreateBackBuffer();
         }
 
         private bool _isFirstMouseMove = true;
