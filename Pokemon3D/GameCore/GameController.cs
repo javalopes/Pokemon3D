@@ -27,29 +27,15 @@ namespace Pokemon3D.GameCore
         /// </summary>
         public static GameController Instance { get; private set; }
 
-        /// <summary>
-        /// The name of the game.
-        /// </summary>
+        /// <summary>The name of the game.</summary>
         public const string GAME_NAME = "Pokémon3D";
-
-        /// <summary>
-        /// The current version of the game.
-        /// </summary>
+        /// <summary>The current version of the game.</summary>
         public const string VERSION = "1.0";
-
-        /// <summary>
-        /// The development stage of the game.
-        /// </summary>
+        /// <summary>The development stage of the game.</summary>
         public const string DEVELOPMENT_STAGE = "Alpha";
-
-        /// <summary>
-        /// The internal build number of the game. This number will increase with every release.
-        /// </summary>
+        /// <summary>The internal build number of the game. This number will increase with every release.</summary>
         public const string INTERNAL_VERSION = "89";
-
-        /// <summary>
-        /// If the debug mode is currently active.
-        /// </summary>
+        /// <summary>If the debug mode is currently active.</summary>
         public const bool IS_DEBUG_ACTIVE = true;
 
         public GraphicsDeviceManager GraphicsDeviceManager { get; private set; }
@@ -79,7 +65,7 @@ namespace Pokemon3D.GameCore
         public ShapeRenderer ShapeRenderer { get; private set; }
 
         public Dispatcher MainThreadDispatcher { get; }
-        
+
         public SaveGame LoadedSave { get; set; }
 
         public GameController()
@@ -144,7 +130,7 @@ namespace Pokemon3D.GameCore
         protected override void Update(GameTime gameTime)
         {
             var elapsedSeconds = gameTime.ElapsedGameTime.Milliseconds * 0.001f;
-            
+
             base.Update(gameTime);
             InputSystem.Update();
 

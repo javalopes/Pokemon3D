@@ -96,6 +96,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourceNames.tt</DependentUpon>
     </Compile>
+    <Compile Include="Screens\GameMenu\GameMenuScreen.cs" />
     <Compile Include="UI\Framework\ColorTransition.cs" />
     <Compile Include="UI\Framework\Control.cs" />
     <Compile Include="UI\Framework\ControlBar.cs" />
