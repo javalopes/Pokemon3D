@@ -111,8 +111,6 @@
     <Compile Include="UI\Framework\OffsetTransition.cs" />
     <Compile Include="UI\Framework\PokemonProfile.cs" />
     <Compile Include="UI\Framework\PokemonSpriteSheet.cs" />
-    <Compile Include="UI\Framework\Tablet\MainMenuButton.cs" />
-    <Compile Include="UI\Framework\Tablet\TabletControl.cs" />
     <Compile Include="UI\Framework\TextureProjectionQuad.cs" />
     <Compile Include="UI\Localization\CoreTranslationManager.cs" />
     <Compile Include="GameModes\Resources\GameModei18nManager.cs" />
@@ -122,28 +120,18 @@
     <Compile Include="UI\NotificationBar.cs" />
     <Compile Include="UI\NotificationItem.cs" />
     <Compile Include="UI\NotificationKind.cs" />
-    <Compile Include="UI\Screens\GameModeLoadingResult.cs" />
-    <Compile Include="UI\Screens\GameModeLoadingScreen.cs" />
-    <Compile Include="UI\Screens\InitializeableScreen.cs" />
-    <Compile Include="UI\Screens\LoadGameScreen.cs" />
-    <Compile Include="UI\Screens\MainMenuScreen2.cs" />
-    <Compile Include="UI\Screens\OverlayScreen.cs" />
-    <Compile Include="UI\Screens\OverworldScreen.cs" />
-    <Compile Include="UI\Screens\PokemonTableScreen.cs" />
-    <Compile Include="UI\Screens\TabletScreen.cs" />
-    <Compile Include="UI\Screens\Tablet\MainMenuPlugin.cs" />
-    <Compile Include="UI\Screens\Tablet\PokedexPlugin.cs" />
-    <Compile Include="UI\Screens\Tablet\PokemonPlugin.cs" />
-    <Compile Include="UI\Screens\Tablet\TabletPlugin.cs" />
-    <Compile Include="UI\Transitions\BlendTransition.cs" />
-    <Compile Include="UI\Screens\IntroScreen.cs" />
-    <Compile Include="UI\Screens\MainMenuScreen.cs" />
-    <Compile Include="UI\Screens\Screen.cs" />
-    <Compile Include="UI\Screens\ScreenManager.cs" />
-    <Compile Include="UI\Transitions\FadeTransition.cs" />
-    <Compile Include="UI\Transitions\ScreenTransition.cs" />
-    <Compile Include="UI\Transitions\SlideTransition.cs" />
-    <Compile Include="UI\WindowsSceneEffect.cs" />
+    <Compile Include="Screens\GameModeLoading\GameModeLoadingResult.cs" />
+    <Compile Include="Screens\GameModeLoading\GameModeLoadingScreen.cs" />
+    <Compile Include="Screens\InitializeableScreen.cs" />
+    <Compile Include="Screens\MainMenu\MainMenuScreen.cs" />
+    <Compile Include="Screens\Overworld\OverworldScreen.cs" />
+    <Compile Include="Screens\Transitions\BlendTransition.cs" />
+    <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Screens\ScreenManager.cs" />
+    <Compile Include="Screens\Transitions\FadeTransition.cs" />
+    <Compile Include="Screens\Transitions\ScreenTransition.cs" />
+    <Compile Include="Screens\Transitions\SlideTransition.cs" />
+    <Compile Include="Screens\WindowsSceneEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AssimpNet, Version=3.3.1.0, Culture=neutral, PublicKeyToken=0d51b391f59f42a6, processorArchitecture=MSIL">
@@ -232,6 +220,15 @@
     <Content Include="Content\Textures\UI\Common\Button_Blank.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\Fonts\LargeUIRegular.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\NormalUIRegular.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\SmallUIRegular.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Textures\test_background.xnb" />
     <Content Include="Content\Textures\UI\Common\Checkbox_Back.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -263,45 +260,6 @@
     <Content Include="Content\Textures\UI\Common\Profile_Shadow.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\UI\Tablet\Tablet_Back.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\UI\Tablet\Tablet_Emitter.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\UI\Tablet\Tablet_Shine.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\UI\Tablet\Tablet_Side.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Content\Textures\UI\Cards\CardBack.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Cards\CardHP.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Cards\CardTypeBack.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Cards\CardTypeFront.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Tablet\Circuit.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Tablet\MainMenu\ButtonBack.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Tablet\MainMenu\ButtonLine.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Tablet\MainMenu\Pokeball.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\UI\Tablet\Pokedex\LoadContainer.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
     <None Include="ResourceNames.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

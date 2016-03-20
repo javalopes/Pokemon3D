@@ -1,0 +1,32 @@
+{
+    "Id" : "Potion",
+    "Name" : "Potion",
+    "PluralName" : "Potions",
+    "Price" : 300,
+    "Texture" : {
+        "Source" : "Items\\Potion.png",
+        "Rectangle" : null
+    },
+    "Description" : "A spray-type medicine for treating wounds. It can be used to restore 20 HP to an injured Pokémon.",
+    "ScriptBinding" : "",
+    "InventoryData" : {
+        "ItemCategory" : "Medicine",
+        "BattleItemCategory" : "Healing",
+        "SortValue" : 0
+    },
+    "Usage" : {
+        "Overworld" : true,
+        "Trade" : true,
+        "Held" : true,
+        "InBattle" : true,
+        "Toss" : true
+    },
+    "Classification" : {
+        "IsBall" : false,
+        "IsBerry" : false,
+        "IsHealingItem" : true,
+        "IsMail" : false,
+        "IsMegastone" : false,
+        "IsPlate" : false
+    }
+}
