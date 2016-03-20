@@ -15,8 +15,11 @@ namespace Pokemon3D
         {
             public const string BigFont = "Fonts/BigFont";
             public const string DebugFont = "Fonts/DebugFont";
+            public const string LargeUIRegular = "Fonts/LargeUIRegular";
             public const string NormalFont = "Fonts/NormalFont";
+            public const string NormalUIRegular = "Fonts/NormalUIRegular";
             public const string NotificationFont = "Fonts/NotificationFont";
+            public const string SmallUIRegular = "Fonts/SmallUIRegular";
         }
         
         public static class Textures
@@ -33,14 +36,6 @@ namespace Pokemon3D
             
             public static class UI
             {
-                
-                public static class Cards
-                {
-                    public const string CardBack = "Textures/UI/Cards/CardBack";
-                    public const string CardHP = "Textures/UI/Cards/CardHP";
-                    public const string CardTypeBack = "Textures/UI/Cards/CardTypeBack";
-                    public const string CardTypeFront = "Textures/UI/Cards/CardTypeFront";
-                }
                 
                 public static class Common
                 {
@@ -59,27 +54,6 @@ namespace Pokemon3D
                     public const string Button_Menu = "Textures/UI/GamePadButtons/Button_Menu";
                     public const string Button_X = "Textures/UI/GamePadButtons/Button_X";
                     public const string Button_Y = "Textures/UI/GamePadButtons/Button_Y";
-                }
-                
-                public static class Tablet
-                {
-                    public const string Circuit = "Textures/UI/Tablet/Circuit";
-                    
-                    public static class MainMenu
-                    {
-                        public const string ButtonBack = "Textures/UI/Tablet/MainMenu/ButtonBack";
-                        public const string ButtonLine = "Textures/UI/Tablet/MainMenu/ButtonLine";
-                        public const string Pokeball = "Textures/UI/Tablet/MainMenu/Pokeball";
-                    }
-                    
-                    public static class Pokedex
-                    {
-                        public const string LoadContainer = "Textures/UI/Tablet/Pokedex/LoadContainer";
-                    }
-                    public const string Tablet_Back = "Textures/UI/Tablet/Tablet_Back";
-                    public const string Tablet_Emitter = "Textures/UI/Tablet/Tablet_Emitter";
-                    public const string Tablet_Shine = "Textures/UI/Tablet/Tablet_Shine";
-                    public const string Tablet_Side = "Textures/UI/Tablet/Tablet_Side";
                 }
             }
         }

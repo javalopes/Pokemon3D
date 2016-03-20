@@ -30,8 +30,9 @@ namespace Pokemon3D.GameModes.Maps
 
         private void OnFragmentLoaded(string dataPath, DataLoadResult data, Action<MapFragmentModel> fragmentLoaded)
         {
-            var fragment = DataModel.DataModel<MapFragmentModel>.FromByteArray(data.Data); 
-            _fragmentModelCache.Add(dataPath, fragment);
+            var fragment = DataModel.DataModel<MapFragmentModel>.FromByteArray(data.Data);
+            if (!_fragmentModelCache.ContainsKey(dataPath))
+                _fragmentModelCache.Add(dataPath, fragment);
             fragmentLoaded(fragment);
         }
     }

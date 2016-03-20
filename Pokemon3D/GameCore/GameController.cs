@@ -7,12 +7,13 @@ using Pokemon3D.GameModes;
 using Pokemon3D.Rendering.GUI;
 using Pokemon3D.UI;
 using Pokemon3D.UI.Localization;
-using Pokemon3D.UI.Screens;
 using System;
 using System.Windows.Threading;
 using Pokemon3D.Collisions;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Shapes;
+using Pokemon3D.Screens;
+using Pokemon3D.Screens.MainMenu;
 
 namespace Pokemon3D.GameCore
 {
@@ -131,8 +132,7 @@ namespace Pokemon3D.GameCore
             });
 
 #if DEBUG
-            ScreenManager.SetScreen(typeof(MainMenuScreen2));
-            //ScreenManager.SetScreen(typeof(MainMenuScreen));
+            ScreenManager.SetScreen(typeof(MainMenuScreen));
 #else
             ScreenManager.SetScreen(typeof(IntroScreen));
 #endif

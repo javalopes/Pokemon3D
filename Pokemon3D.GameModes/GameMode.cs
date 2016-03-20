@@ -14,6 +14,7 @@ using Pokemon3D.Common;
 using Mesh = Pokemon3D.Rendering.Data.Mesh;
 using System.Windows.Threading;
 using Pokemon3D.DataModel.GameMode.Pokemon;
+using Pokemon3D.DataModel.GameMode.Items;
 
 namespace Pokemon3D.GameModes
 {
@@ -30,6 +31,7 @@ namespace Pokemon3D.GameModes
         private NatureModel[] _natureModels;
         private TypeModel[] _typeModels;
         private MoveModel[] _moveModels;
+        private ItemModel[] _itemModels;
         private PokedexModel[] _pokedexModels;
 
         public FileProvider FileLoader { get; }
@@ -79,6 +81,7 @@ namespace Pokemon3D.GameModes
                 PokedexesFilePath
             }, OnLoadFinished);
             FileLoader.GetFilesOfFolderAsync(MoveFilesPath, d => OnMovesLoaded(d, finished));
+            FileLoader.GetFilesOfFolderAsync(ItemFilesPath, d => OnItemsLoaded(d, finished));
         }
 
         public AsyncTexture2D GetTextureAsync(string filePath)
@@ -153,6 +156,12 @@ namespace Pokemon3D.GameModes
         private void OnMovesLoaded(DataLoadResult[] data, Action finished)
         {
             _moveModels = data.Select(d => DataModel<MoveModel>.FromByteArray(d.Data)).ToArray();
+            finished();
+        }
+
+        private void OnItemsLoaded(DataLoadResult[] data, Action finished)
+        {
+            _itemModels = data.Select(d => DataModel<ItemModel>.FromByteArray(d.Data)).ToArray();
             finished();
         }
 
@@ -237,6 +246,11 @@ namespace Pokemon3D.GameModes
         public PokedexModel GetPokedexModel(string id)
         {
             return _pokedexModels.Single(m => m.Id == id);
+        }
+
+        public ItemModel GetItemModel(string id)
+        {
+            return _itemModels.Single(m => m.Id == id);
         }
 
         public NatureModel[] GetNatures()
