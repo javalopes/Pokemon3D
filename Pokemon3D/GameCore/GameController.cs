@@ -63,7 +63,7 @@ namespace Pokemon3D.GameCore
         public CollisionManager CollisionManager { get; private set; }
 
         public event System.EventHandler WindowSizeChanged;
-        private Rectangle _lastScreenBounds;
+        private Rectangle _currentScreenBounds;
 
         public string VersionInformation => string.Format("{0} {1}", VERSION, DEVELOPMENT_STAGE);
 
@@ -74,7 +74,7 @@ namespace Pokemon3D.GameCore
 
         public GameMode ActiveGameMode { get; set; }
 
-        public Rectangle ScreenBounds => Window.ClientBounds;
+        public Rectangle ScreenBounds => _currentScreenBounds;
 
         public ShapeRenderer ShapeRenderer { get; private set; }
 
@@ -88,9 +88,11 @@ namespace Pokemon3D.GameCore
 
             GameLogger.Instance.Log(MessageType.Message, "Game started.");
             Exiting += OnGameExit;
+            Window.ClientSizeChanged += OnClientSizeChanged;
 
+            _currentScreenBounds = Window.ClientBounds;
             Instance = this;
-         
+
             Content.RootDirectory = "Content";
             GameConfig = new GameConfiguration();
             GraphicsDeviceManager = new GraphicsDeviceManager(this)
@@ -136,8 +138,6 @@ namespace Pokemon3D.GameCore
 #else
             ScreenManager.SetScreen(typeof(IntroScreen));
 #endif
-
-            _lastScreenBounds = ScreenBounds;
             GraphicsDevice.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
         }
 
@@ -147,9 +147,6 @@ namespace Pokemon3D.GameCore
             
             base.Update(gameTime);
             InputSystem.Update();
-
-            if (WindowSizeChanged != null && _lastScreenBounds != ScreenBounds)
-                WindowSizeChanged(this, EventArgs.Empty);
 
             if (!ScreenManager.Update(elapsedSeconds)) Exit();
             NotificationBar.Update(elapsedSeconds);
@@ -165,6 +162,14 @@ namespace Pokemon3D.GameCore
         private void OnGameExit(object sender, EventArgs e)
         {
             GameLogger.Instance.Log(MessageType.Message, "Exiting game.");
+        }
+
+        private void OnClientSizeChanged(object sender, EventArgs e)
+        {
+            if (WindowSizeChanged != null && _currentScreenBounds != Window.ClientBounds)
+                WindowSizeChanged(this, EventArgs.Empty);
+
+            _currentScreenBounds = Window.ClientBounds;
         }
     }
 }
