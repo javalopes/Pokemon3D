@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace Pokemon3D.UI.Transitions
+namespace Pokemon3D.Screens.Transitions
 {
     interface ScreenTransition
     {

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
 
-namespace Pokemon3D.UI.Transitions
+namespace Pokemon3D.Screens.Transitions
 {
     class SlideTransition : GameObject, ScreenTransition
     {

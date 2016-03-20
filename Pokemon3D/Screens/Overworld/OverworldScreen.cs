@@ -7,7 +7,7 @@ using Pokemon3D.GameModes.Maps;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
 using System;
-using Pokemon3D.UI.Transitions;
+using Pokemon3D.Screens.Transitions;
 using Pokemon3D.DataModel.Savegame;
 using Pokemon3D.DataModel.Savegame.Pokemon;
 using Pokemon3D.DataModel.Savegame.Inventory;

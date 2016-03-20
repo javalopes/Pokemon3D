@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
 using Pokemon3D.Common.Input;
-using Pokemon3D.UI.Transitions;
+using Pokemon3D.Screens.Transitions;
 using Pokemon3D.UI.Framework;
 using Pokemon3D.UI.Framework.Dialogs;
 using Microsoft.Xna.Framework.Input;

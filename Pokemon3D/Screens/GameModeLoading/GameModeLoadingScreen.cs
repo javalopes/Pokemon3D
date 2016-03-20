@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using Pokemon3D.GameCore;
-using Pokemon3D.UI.Transitions;
+using Pokemon3D.Screens.Transitions;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.GUI;

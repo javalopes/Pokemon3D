@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace Pokemon3D.UI.Transitions
+namespace Pokemon3D.Screens.Transitions
 {
     class FadeTransition : GameObject, ScreenTransition
     {
