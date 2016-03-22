@@ -83,7 +83,14 @@ namespace Pokemon3D.UI.Framework
         }
 
         public TextureProjectionQuad()
+            : this(0, 0)
+        { }
+
+        public TextureProjectionQuad(int width, int height)
         {
+            TextureOutputWidth = width;
+            TextureOutputHeight = height;
+
             _vertices = new VertexPositionNormalTexture[4];
             _indices = new short[6];
 
@@ -200,7 +207,7 @@ namespace Pokemon3D.UI.Framework
         public Vector2 ProjectVector2(Vector2 source)
         {
             var projectVector = new Vector3(
-                -0.5f + (source.X / _textureOutputWidth), 
+                -0.5f + (source.X / _textureOutputWidth),
                 0.5f - (source.Y / _textureOutputHeight),
                 0f); // disregard depth value
 
@@ -224,14 +231,14 @@ namespace Pokemon3D.UI.Framework
         public Polygon ProjectRectangle(Rectangle rectangle)
         {
             Polygon polygon = new Polygon();
-            
+
             // get corners counter clockwise starting on the top left and project them to create the polygon:
             polygon.AddRange(new Point[] {
                 new Point(rectangle.X, rectangle.Y), // top left
                 new Point(rectangle.X, rectangle.Y + rectangle.Height), // bottom left
                 new Point(rectangle.X + rectangle.Width, rectangle.Y + rectangle.Height), // bottom right
                 new Point(rectangle.X + rectangle.Width, rectangle.Y) // top right
-            }.Select(v => ProjectPoint(v)));            
+            }.Select(v => ProjectPoint(v)));
             return polygon;
         }
 

@@ -27,29 +27,15 @@ namespace Pokemon3D.GameCore
         /// </summary>
         public static GameController Instance { get; private set; }
 
-        /// <summary>
-        /// The name of the game.
-        /// </summary>
+        /// <summary>The name of the game.</summary>
         public const string GAME_NAME = "Pokémon3D";
-
-        /// <summary>
-        /// The current version of the game.
-        /// </summary>
+        /// <summary>The current version of the game.</summary>
         public const string VERSION = "1.0";
-
-        /// <summary>
-        /// The development stage of the game.
-        /// </summary>
+        /// <summary>The development stage of the game.</summary>
         public const string DEVELOPMENT_STAGE = "Alpha";
-
-        /// <summary>
-        /// The internal build number of the game. This number will increase with every release.
-        /// </summary>
+        /// <summary>The internal build number of the game. This number will increase with every release.</summary>
         public const string INTERNAL_VERSION = "89";
-
-        /// <summary>
-        /// If the debug mode is currently active.
-        /// </summary>
+        /// <summary>If the debug mode is currently active.</summary>
         public const bool IS_DEBUG_ACTIVE = true;
 
         public GraphicsDeviceManager GraphicsDeviceManager { get; private set; }
@@ -63,7 +49,7 @@ namespace Pokemon3D.GameCore
         public CollisionManager CollisionManager { get; private set; }
 
         public event System.EventHandler WindowSizeChanged;
-        private Rectangle _lastScreenBounds;
+        private Rectangle _currentScreenBounds;
 
         public string VersionInformation => string.Format("{0} {1}", VERSION, DEVELOPMENT_STAGE);
 
@@ -74,12 +60,12 @@ namespace Pokemon3D.GameCore
 
         public GameMode ActiveGameMode { get; set; }
 
-        public Rectangle ScreenBounds => Window.ClientBounds;
+        public Rectangle ScreenBounds => _currentScreenBounds;
 
         public ShapeRenderer ShapeRenderer { get; private set; }
 
         public Dispatcher MainThreadDispatcher { get; }
-        
+
         public SaveGame LoadedSave { get; set; }
 
         public GameController()
@@ -88,9 +74,11 @@ namespace Pokemon3D.GameCore
 
             GameLogger.Instance.Log(MessageType.Message, "Game started.");
             Exiting += OnGameExit;
+            Window.ClientSizeChanged += OnClientSizeChanged;
 
+            _currentScreenBounds = Window.ClientBounds;
             Instance = this;
-         
+
             Content.RootDirectory = "Content";
             GameConfig = new GameConfiguration();
             GraphicsDeviceManager = new GraphicsDeviceManager(this)
@@ -136,20 +124,15 @@ namespace Pokemon3D.GameCore
 #else
             ScreenManager.SetScreen(typeof(IntroScreen));
 #endif
-
-            _lastScreenBounds = ScreenBounds;
             GraphicsDevice.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
         }
 
         protected override void Update(GameTime gameTime)
         {
             var elapsedSeconds = gameTime.ElapsedGameTime.Milliseconds * 0.001f;
-            
+
             base.Update(gameTime);
             InputSystem.Update();
-
-            if (WindowSizeChanged != null && _lastScreenBounds != ScreenBounds)
-                WindowSizeChanged(this, EventArgs.Empty);
 
             if (!ScreenManager.Update(elapsedSeconds)) Exit();
             NotificationBar.Update(elapsedSeconds);
@@ -165,6 +148,14 @@ namespace Pokemon3D.GameCore
         private void OnGameExit(object sender, EventArgs e)
         {
             GameLogger.Instance.Log(MessageType.Message, "Exiting game.");
+        }
+
+        private void OnClientSizeChanged(object sender, EventArgs e)
+        {
+            if (WindowSizeChanged != null && _currentScreenBounds != Window.ClientBounds)
+                WindowSizeChanged(this, EventArgs.Empty);
+
+            _currentScreenBounds = Window.ClientBounds;
         }
     }
 }
