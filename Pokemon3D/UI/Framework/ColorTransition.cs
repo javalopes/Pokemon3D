@@ -9,7 +9,6 @@ namespace Pokemon3D.UI.Framework
     /// </summary>
     class ColorTransition
     {
-        private Color _color;
         private float _speedValue;
 
         private float _r, _g, _b, _a;
@@ -29,9 +28,13 @@ namespace Pokemon3D.UI.Framework
 
         public ColorTransition(Color startColor, float speedValue)
         {
-            _color = startColor;
             TargetColor = startColor;
             _speedValue = speedValue;
+
+            _r = TargetColor.R;
+            _g = TargetColor.G;
+            _b = TargetColor.B;
+            _a = TargetColor.A;
         }
 
         public void Update()
