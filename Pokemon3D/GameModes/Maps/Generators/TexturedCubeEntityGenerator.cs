@@ -5,12 +5,10 @@ using System.Collections.Generic;
 
 namespace Pokemon3D.GameModes.Maps.Generators
 {
-    class TexturedCubeEntityGenerator : EntityGenerator
+    class TexturedCubeEntityGenerator : SimpleEntityGenerator
     {
-        public List<Entity> Generate(Map map, EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 position)
+        public override IEnumerable<Entity> Generate(EntitySystem entitySystem, EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 position)
         {
-            List<Entity> entities = new List<Entity>();
-
             // scale of the entity is the entire cube's scale.
             // generate 6 entities from the one definition that is passed in
             // the definition has to hold either 1, 5 or 6 textures.
@@ -85,7 +83,7 @@ namespace Pokemon3D.GameModes.Maps.Generators
                     Z = position.Z + entityPlacing.Scale.Z / 2
                 };
 
-                entities.Add(new Entity(map, frontEntityModel, frontEntityPlacing, frontEntityPosition));
+                yield return  entitySystem.CreateEntityFromDataModel(frontEntityModel, frontEntityPlacing, frontEntityPosition);
 
                 // Back side:
                 var backEntityModel = entityDefinition.Entity.CloneModel();
@@ -112,7 +110,7 @@ namespace Pokemon3D.GameModes.Maps.Generators
                     Z = position.Z - entityPlacing.Scale.Z / 2
                 };
 
-                entities.Add(new Entity(map, backEntityModel, backEntityPlacing, backEntityPosition));
+                yield return entitySystem.CreateEntityFromDataModel(backEntityModel, backEntityPlacing, backEntityPosition);
 
                 //Left side:
                 var leftEntityModel = entityDefinition.Entity.CloneModel();
@@ -139,7 +137,7 @@ namespace Pokemon3D.GameModes.Maps.Generators
                     Z = position.Z
                 };
 
-                entities.Add(new Entity(map, leftEntityModel, leftEntityPlacing, leftEntityPosition));
+                yield return entitySystem.CreateEntityFromDataModel(leftEntityModel, leftEntityPlacing, leftEntityPosition);
 
                 //right side:
                 var rightEntityModel = entityDefinition.Entity.CloneModel();
@@ -166,7 +164,7 @@ namespace Pokemon3D.GameModes.Maps.Generators
                     Z = position.Z
                 };
 
-                entities.Add(new Entity(map, rightEntityModel, rightEntityPlacing, rightEntityPosition));
+                yield return entitySystem.CreateEntityFromDataModel(rightEntityModel, rightEntityPlacing, rightEntityPosition);
 
                 //top:
                 var topEntityModel = entityDefinition.Entity.CloneModel();
@@ -193,7 +191,7 @@ namespace Pokemon3D.GameModes.Maps.Generators
                     Z = position.Z
                 };
 
-                entities.Add(new Entity(map, topEntityModel, topEntityPlacing, topEntityPosition));
+                yield return entitySystem.CreateEntityFromDataModel(topEntityModel, topEntityPlacing, topEntityPosition);
 
                 //bottom:
                 if (textureEnumLength.Value != 5)
@@ -222,11 +220,9 @@ namespace Pokemon3D.GameModes.Maps.Generators
                         Z = position.Z
                     };
 
-                    entities.Add(new Entity(map, bottomEntityModel, bottomEntityPlacing, bottomEntityPosition));
+                    yield return entitySystem.CreateEntityFromDataModel(bottomEntityModel, bottomEntityPlacing, bottomEntityPosition);
                 }
             }
-
-            return entities;
         }
     }
 }

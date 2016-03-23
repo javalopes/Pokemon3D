@@ -54,6 +54,9 @@ namespace Pokemon3D.DataModel.GameMode.Map.Entities
         public bool ObstructCamera;
 
         [DataMember(Order = 11)]
+        public bool IsBillboard;
+
+        [DataMember(Order = 12)]
         public EntitySeasonPaletteModel[] SeasonPalettes;
 
         public override object Clone()

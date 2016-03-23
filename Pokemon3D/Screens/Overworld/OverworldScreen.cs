@@ -23,7 +23,6 @@ namespace Pokemon3D.Screens.Overworld
         private GameMode _gameMode;
         private Map _currentMap;
         private SceneRenderer _renderer;
-        private Scene _scene;
         private Player _player;
 
         private SpriteFont _debugSpriteFont;
@@ -41,7 +40,6 @@ namespace Pokemon3D.Screens.Overworld
                 if (loadingResult == null) throw new InvalidOperationException("Did not receive loaded data.");
 
                 _renderer = loadingResult.SceneRenderer;
-                _scene = loadingResult.Scene;
                 _player = loadingResult.Player;
                 _currentMap = loadingResult.Map;
 
@@ -190,7 +188,8 @@ namespace Pokemon3D.Screens.Overworld
         {
             _player.Update(elapsedTime);
             _currentMap.Update(elapsedTime);
-            _scene.Update(elapsedTime);
+            Game.EntitySystem.Update(elapsedTime);
+            Game.Scene.Update(elapsedTime);
 
             if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Escape))
             {
@@ -241,7 +240,7 @@ namespace Pokemon3D.Screens.Overworld
         {
             _currentMap.RenderPreparations(_player.Camera);
             Game.CollisionManager.Draw(_player.Camera);
-            _renderer.Draw(_scene);
+            _renderer.Draw(Game.Scene);
 
             if (_showRenderStatistics) DrawRenderStatsitics();
         }

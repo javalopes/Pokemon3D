@@ -74,37 +74,31 @@ namespace Pokemon3D.Screens.GameModeLoading
             _result.SceneRenderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
             _result.SceneRenderer.EnablePostProcessing = false;
 
-            _result.Scene = new Scene(Game)
-            {
-                Light =
-                {
-                    Direction = new Vector3(-1.5f, -1.0f, -0.5f),
-                    AmbientIntensity = 0.5f,
-                    DiffuseIntensity = 0.8f
-                },
-                AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f)
-            };
+            Game.Scene.Light.Direction = new Vector3(-1.5f, -1.0f, -0.5f);
+            Game.Scene.Light.AmbientIntensity = 0.5f;
+            Game.Scene.Light.DiffuseIntensity = 0.8f;
+            Game.Scene.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
 
             Game.ActiveGameMode.MapManager.LoadMapAsync(Game.ActiveGameMode.GameModeInfo.StartMap, FinishedLoadingMapModel);
         }
 
         private void FinishedLoadingMapModel(MapModel mapModel)
         {
-            _result.Map = new Map(Game.ActiveGameMode, mapModel, _result.Scene);
-            _result.Player = new Player(_result.Scene);
+            _result.Map = new Map(Game.ActiveGameMode, mapModel);
+            _result.Player = new Player(Game.EntitySystem);
 
-            _result.Map.AddEntity(new NPC(_result.Scene, new DataModel.GameMode.Map.NPCs.RandomNPCModel()
-            {
-                Name = "Testificate",
-                Behaviour = DataModel.GameMode.Map.NPCs.NPCBehaviour.Roaming,
-                Texture = new DataModel.TextureSourceModel()
-                {
-                    Source = "test",
-                    Rectangle = null
-                },
-                Chance = 100,
-                ScriptBinding = "somescript"
-            }));
+            //_result.Map.AddEntity(new NPC(_result.Scene, new DataModel.GameMode.Map.NPCs.RandomNPCModel()
+            //{
+            //    Name = "Testificate",
+            //    Behaviour = DataModel.GameMode.Map.NPCs.NPCBehaviour.Roaming,
+            //    Texture = new DataModel.TextureSourceModel()
+            //    {
+            //        Source = "test",
+            //        Rectangle = null
+            //    },
+            //    Chance = 100,
+            //    ScriptBinding = "somescript"
+            //}));
             _loadingFinished = true;
         }
 

@@ -22,11 +22,16 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
         /// </summary>
         protected Entity Parent { get; }
 
-        protected EntityComponent(EntityComponentDataCreationStruct parameters)
+        protected EntityComponent(Entity parent, EntityComponentDataCreationStruct parameters)
         {
             Name = parameters.Name;
             Data = parameters.Data;
             Parent = parameters.Parent;
+        }
+
+        protected EntityComponent(Entity parent)
+        {
+            Parent = parent;
         }
 
         /// <summary>

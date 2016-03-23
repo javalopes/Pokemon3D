@@ -2,21 +2,21 @@
 
 namespace Pokemon3D.GameModes.Maps.Generators
 {
-    static class EntityGeneratorSupplier
+    class EntityGeneratorSupplier
     {
-        private static Dictionary<string, EntityGenerator> _generators;
+        private Dictionary<string, EntityGenerator> _generators;
 
-        public static EntityGenerator GetGenerator(string identifier)
+        public EntityGeneratorSupplier()
         {
-            if (_generators == null)
-            {
-                _generators = new Dictionary<string, EntityGenerator>()
+            _generators = new Dictionary<string, EntityGenerator>()
                 {
                     { "simple", new SimpleEntityGenerator() },
                     { "texturedcube", new TexturedCubeEntityGenerator() }
                 };
-            }
+        }
 
+        public EntityGenerator GetGenerator(string identifier)
+        { 
             if (string.IsNullOrWhiteSpace(identifier))
             {
                 return _generators["simple"];

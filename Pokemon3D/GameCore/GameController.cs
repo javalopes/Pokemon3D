@@ -14,6 +14,8 @@ using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.Screens;
 using Pokemon3D.Screens.MainMenu;
+using Pokemon3D.GameModes.Maps;
+using Pokemon3D.Rendering;
 
 namespace Pokemon3D.GameCore
 {
@@ -47,6 +49,8 @@ namespace Pokemon3D.GameCore
         public TranslationProvider TranslationProvider { get; private set; }
         public NotificationBar NotificationBar { get; private set; }
         public CollisionManager CollisionManager { get; private set; }
+        public EntitySystem EntitySystem { get; private set; }
+        public Scene Scene { get; private set; }
 
         public event System.EventHandler WindowSizeChanged;
         private Rectangle _currentScreenBounds;
@@ -95,6 +99,8 @@ namespace Pokemon3D.GameCore
 
             IsMouseVisible = true;
 
+            Scene = new Scene(this);
+            EntitySystem = new EntitySystem(Scene);
             GameModeManager = new GameModeManager();
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             InputSystem = new InputSystem();

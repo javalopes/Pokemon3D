@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
-using Pokemon3D.GameModes.Maps.Generators;
+using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 using System.Collections.Generic;
 
 namespace Pokemon3D.GameModes.Maps
 {
-    class Map
+    class Map : GameObject
     {
         private readonly List<Entity> _allEntities = new List<Entity>();
         private readonly MapModel _mapModel;
@@ -15,9 +15,8 @@ namespace Pokemon3D.GameModes.Maps
         public GameMode GameMode { get; }
         public Scene Scene { get; private set; }
 
-        public Map(GameMode gameMode, MapModel mapModel, Scene scene)
+        public Map(GameMode gameMode, MapModel mapModel)
         {
-            Scene = scene;
             GameMode = gameMode;
             _mapModel = mapModel;
 
@@ -60,7 +59,7 @@ namespace Pokemon3D.GameModes.Maps
 
         private void PlaceEntities(EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 offset)
         {
-            var generator = EntityGeneratorSupplier.GetGenerator(entityDefinition.Entity.Generator);
+            var generator = Game.EntitySystem.EntityGeneratorSupplier.GetGenerator(entityDefinition.Entity.Generator);
             for (var x = 1.0f; x <= entityPlacing.Size.X; x += entityPlacing.Steps.X)
             {
                 for (var y = 1.0f; y <= entityPlacing.Size.Y; y += entityPlacing.Steps.Y)
@@ -69,7 +68,7 @@ namespace Pokemon3D.GameModes.Maps
                     {
                         var position = entityPlacing.Position.GetVector3() + new Vector3(x, y, z) + offset;
 
-                        _allEntities.AddRange(generator.Generate(this, entityDefinition, entityPlacing, position));
+                        _allEntities.AddRange(generator.Generate(Game.EntitySystem, entityDefinition, entityPlacing, position));
                     }
                 }
             }

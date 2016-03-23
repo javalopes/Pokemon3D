@@ -5,10 +5,12 @@
     /// </summary>
     class AnimateTexturesEntityComponent : EntityComponent
     {
+        private ModelEntityComponent _modelComponent;
+
         float _animationDelay;
         int _textureIndex;
 
-        public AnimateTexturesEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
+        public AnimateTexturesEntityComponent(Entity parent, EntityComponentDataCreationStruct parameters) : base(parent, parameters)
         {
             SetInitialAnimationDelay();
             _textureIndex = 0;
@@ -19,22 +21,17 @@
             _animationDelay = GetData<float>();
         }
 
-        private void SetEntityTexture()
-        {
-            Parent.SetTexture(_textureIndex);
-        }
-
         public override void Update(float elapsedTime)
         {
             _animationDelay -= elapsedTime;
             if (_animationDelay <= 0f)
             {
+                //todo: repair.
                 // Flip to next texture:
-                _textureIndex++;
-                if (_textureIndex >= Parent.TextureSources.Length)
-                    _textureIndex = 0;
+                //if (++_textureIndex >= _modelComponent.TextureSources.Length) _textureIndex = 0;
 
-                SetEntityTexture();
+                //if (_modelComponent == null) _modelComponent = Parent.GetComponent<ModelEntityComponent>(IDs.VisualModel);
+                //_modelComponent?.SetTexture(_textureIndex);
 
                 // Reset delay after flip:
                 SetInitialAnimationDelay();

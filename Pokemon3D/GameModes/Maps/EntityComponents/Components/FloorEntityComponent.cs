@@ -2,7 +2,7 @@
 {
     class FloorEntityComponent : EntityComponent
     {
-        public FloorEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
+        public FloorEntityComponent(Entity parent, EntityComponentDataCreationStruct parameters) : base(parent, parameters)
         { }
     }
 }

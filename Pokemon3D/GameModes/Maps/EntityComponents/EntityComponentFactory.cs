@@ -16,7 +16,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
         /// </summary>
         public EntityComponent GetComponent(Entity parent, string name)
         {
-            return new DataStorageEntityComponent(new EntityComponentDataCreationStruct()
+            return new DataStorageEntityComponent(parent, new EntityComponentDataCreationStruct()
             {
                 Name = name,
                 Parent = parent
@@ -39,23 +39,17 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
 
             switch (dataModel.Id.ToLowerInvariant())
             {
-                case EntityComponent.IDs.Billboard:
-                    comp = new BillboardEntityComponent(parameters);
-                    break;
-                case EntityComponent.IDs.Static:
-                    comp = new StaticEntityComponent(parameters);
-                    break;
                 case EntityComponent.IDs.Floor:
-                    comp = new FloorEntityComponent(parameters);
+                    comp = new FloorEntityComponent(parent, parameters);
                     break;
                 case EntityComponent.IDs.AnimateTextures:
-                    comp = new AnimateTexturesEntityComponent(parameters);
+                    comp = new AnimateTexturesEntityComponent(parent, parameters);
                     break;
                 case EntityComponent.IDs.Collision:
-                    comp = new CollisionEntityComponent(parameters);
+                    comp = new CollisionEntityComponent(parent, parameters);
                     break;
                 default:
-                    comp = new DataStorageEntityComponent(parameters);
+                    comp = new DataStorageEntityComponent(parent, parameters);
                     break;
             }
 

@@ -9,6 +9,6 @@ namespace Pokemon3D.GameModes.Maps.Generators
     /// </summary>
     interface EntityGenerator
     {
-        List<Entity> Generate(Map map, EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 position);
+        IEnumerable<Entity> Generate(EntitySystem entitySystem, EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 position);
     }
 }
