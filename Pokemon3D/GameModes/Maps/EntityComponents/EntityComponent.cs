@@ -1,4 +1,5 @@
-﻿using Pokemon3D.Rendering;
+﻿using Pokemon3D.GameCore;
+using Pokemon3D.Rendering;
 
 namespace Pokemon3D.GameModes.Maps.EntityComponents
 {

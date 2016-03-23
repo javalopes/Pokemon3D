@@ -1,25 +1,33 @@
 ﻿using Microsoft.Xna.Framework;
+using Pokemon3D.Collisions;
 
 namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 {
     class CollisionEntityComponent : EntityComponent
     {
-        public CollisionEntityComponent(Entity parent, EntityComponentDataCreationStruct parameters) : base(parent, parameters)
-        { }
+        public Collider Collider { get; private set; }
 
-        public float GetCollisionSizeSingle()
+        public CollisionEntityComponent(Entity parent, Vector3 collisionSize, Vector3 collisionOffset) : base(parent)
         {
-            return Parent.HasComponent(IDs.CollisionSize) ? Parent.GetComponent(IDs.CollisionSize).GetData<float>() : 1f;
+            Collider = Collider.CreateBoundingBox(collisionSize, collisionOffset);
         }
 
-        public Vector3 GetCollisionSizeVector3()
+        public override void OnComponentAdded()
         {
-            return Parent.HasComponent(IDs.CollisionSize) ? Parent.GetComponent(IDs.CollisionSize).GetData<Vector3>() : Parent.Scale;
+            base.OnComponentAdded();
+            Parent.Game.CollisionManager.AddCollider(Collider);
         }
 
-        public Vector3 GetCollisionOffset()
+        public override void OnComponentRemove()
         {
-            return Parent.HasComponent(IDs.CollisionOffset) ? Parent.GetComponent(IDs.CollisionOffset).GetData<Vector3>() : Vector3.Zero;
+            base.OnComponentRemove();
+            Parent.Game.CollisionManager.RemoveCollider(Collider);
+        }
+
+        public override void Update(float elapsedTime)
+        {
+            base.Update(elapsedTime);
+            //Collider.SetPosition(Parent.Position);
         }
     }
 }

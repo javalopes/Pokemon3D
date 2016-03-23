@@ -45,9 +45,6 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
                 case EntityComponent.IDs.AnimateTextures:
                     comp = new AnimateTexturesEntityComponent(parent, parameters);
                     break;
-                case EntityComponent.IDs.Collision:
-                    comp = new CollisionEntityComponent(parent, parameters);
-                    break;
                 default:
                     comp = new DataStorageEntityComponent(parent, parameters);
                     break;

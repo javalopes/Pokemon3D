@@ -5,6 +5,7 @@ using Pokemon3D.GameModes.Maps.EntityComponents.Components;
 using Pokemon3D.GameModes.Maps.Generators;
 using Pokemon3D.Rendering;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Pokemon3D.GameModes.Maps
 {
@@ -28,7 +29,46 @@ namespace Pokemon3D.GameModes.Maps
 
             if (entityModel.RenderMode != null)
             {
-                entity.AddComponent(new ModelEntityComponent(entity, entityModel.RenderMode));
+                var modelComponent = new ModelEntityComponent(entity, entityModel.RenderMode);
+                entity.AddComponent(modelComponent);
+
+
+                modelComponent.SceneNode.Scale = entityPlacing.Scale?.GetVector3() ?? Vector3.One;
+
+                if (entityPlacing.Rotation != null)
+                {
+                    if (entityPlacing.CardinalRotation)
+                    {
+                        modelComponent.SceneNode.EulerAngles = new Vector3
+                        {
+                            X = entityPlacing.Rotation.X * MathHelper.PiOver2,
+                            Y = entityPlacing.Rotation.Y * MathHelper.PiOver2,
+                            Z = entityPlacing.Rotation.Z * MathHelper.PiOver2
+                        };
+                    }
+                    else
+                    {
+                        modelComponent.SceneNode.EulerAngles = new Vector3
+                        {
+                            X = MathHelper.ToDegrees(entityPlacing.Rotation.X),
+                            Y = MathHelper.ToDegrees(entityPlacing.Rotation.Y),
+                            Z = MathHelper.ToDegrees(entityPlacing.Rotation.Z)
+                        };
+                    }
+                }
+                else
+                {
+                    modelComponent.SceneNode.EulerAngles = Vector3.Zero;
+                }
+
+                modelComponent.SceneNode.Position = position;
+            }
+
+            if (entityModel.Components.Any(c =>EntityComponent.IDs.CollisionOffset.Equals(c.Id, System.StringComparison.OrdinalIgnoreCase)))
+            {
+                var size = TypeConverter.Convert<Vector3>(entityModel.Components.First(c => EntityComponent.IDs.CollisionSize.Equals(c.Id, System.StringComparison.OrdinalIgnoreCase)).Data);
+                var offset = TypeConverter.Convert<Vector3>(entityModel.Components.First(c => EntityComponent.IDs.CollisionOffset.Equals(c.Id, System.StringComparison.OrdinalIgnoreCase)).Data);
+                entity.AddComponent(new CollisionEntityComponent(entity, size, offset));
             }
 
             foreach (var compModel in entityModel.Components)

@@ -14,7 +14,6 @@ namespace Pokemon3D.GameModes.Maps
     class Entity : GameObject
     {
         private readonly List<EntityComponent> _components = new List<EntityComponent>();
-        private Collider _collider;
         private Vector3 _position;
         private Vector3 _scale;
 
@@ -26,35 +25,6 @@ namespace Pokemon3D.GameModes.Maps
         }
 
         /// <summary>
-        /// The absolute position of this entity in the world.
-        /// </summary>
-        public Vector3 Position
-        {
-            get
-            {
-                return _position;
-            }
-            set
-            {
-                if (IsStatic) return;
-                _position = value;
-            }
-        }
-
-        /// <summary>
-        /// The scale of this entity, relative to <see cref="Vector3.One"/>.
-        /// </summary>
-        public Vector3 Scale
-        {
-            get { return _scale; }
-            set
-            {
-                if (IsStatic) return;
-                _scale = value;
-            }
-        }
-
-        /// <summary>
         /// Returns, if this entity is marked as static. When an entity is static, it cannot modify its position, rotation and scale.
         /// </summary>
         public bool IsStatic { get; set; }
@@ -62,7 +32,7 @@ namespace Pokemon3D.GameModes.Maps
         /// <summary>
         /// Entity update method to update all of the entity's components.
         /// </summary>
-        public virtual void Update(float elapsedTime)
+        public void Update(float elapsedTime)
         {
             for (int i = 0; i < _components.Count; i++) _components[i].Update(elapsedTime);
         }
@@ -127,18 +97,5 @@ namespace Pokemon3D.GameModes.Maps
         }
 
         #endregion
-
-        public Collider Collider
-        {
-            get { return _collider; }
-            set
-            {
-                if (_collider == value) return;
-
-                if (_collider != null) Game.CollisionManager.RemoveCollider(_collider);
-                _collider = value;
-                if (_collider != null) Game.CollisionManager.AddCollider(_collider);
-            }
-        }
     }
 }
