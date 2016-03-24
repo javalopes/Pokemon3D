@@ -33,13 +33,13 @@ namespace Pokemon3D.GameModes.Maps
                 entity.AddComponent(modelComponent);
 
 
-                modelComponent.SceneNode.Scale = entityPlacing.Scale?.GetVector3() ?? Vector3.One;
+                entity.Scale = entityPlacing.Scale?.GetVector3() ?? Vector3.One;
 
                 if (entityPlacing.Rotation != null)
                 {
                     if (entityPlacing.CardinalRotation)
                     {
-                        modelComponent.SceneNode.EulerAngles = new Vector3
+                        entity.EulerAngles = new Vector3
                         {
                             X = entityPlacing.Rotation.X * MathHelper.PiOver2,
                             Y = entityPlacing.Rotation.Y * MathHelper.PiOver2,
@@ -48,7 +48,7 @@ namespace Pokemon3D.GameModes.Maps
                     }
                     else
                     {
-                        modelComponent.SceneNode.EulerAngles = new Vector3
+                        entity.EulerAngles = new Vector3
                         {
                             X = MathHelper.ToDegrees(entityPlacing.Rotation.X),
                             Y = MathHelper.ToDegrees(entityPlacing.Rotation.Y),
@@ -58,10 +58,10 @@ namespace Pokemon3D.GameModes.Maps
                 }
                 else
                 {
-                    modelComponent.SceneNode.EulerAngles = Vector3.Zero;
+                    entity.EulerAngles = Vector3.Zero;
                 }
 
-                modelComponent.SceneNode.Position = position;
+                entity.Position = position;
             }
 
             if (entityModel.Components.Any(c =>EntityComponent.IDs.CollisionOffset.Equals(c.Id, System.StringComparison.OrdinalIgnoreCase)))
@@ -83,9 +83,10 @@ namespace Pokemon3D.GameModes.Maps
             return entity;
         }
 
-        public Entity CreateEntity()
+        public Entity CreateEntity(Entity parent = null)
         {
             var entity = new Entity(this);
+            if (parent != null) parent.AddChild(entity);
             _entities.Add(entity);
             return entity;
         }

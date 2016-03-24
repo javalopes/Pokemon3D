@@ -19,8 +19,9 @@ namespace Pokemon3D.Rendering
 
         public float Scale
         {
-            get { return -SceneNode.Scale.X; }
-            set { SceneNode.Scale = new Vector3(-value); }
+            //get { return -SceneNode.Scale.X; }
+            //set { SceneNode.Scale = new Vector3(-value); }
+            get; set;
         }
 
         public Skybox(GameContext gameContext) : base(gameContext)
@@ -52,8 +53,8 @@ namespace Pokemon3D.Rendering
 
         internal void Update(Camera camera)
         {
-            SceneNode.Position = camera.GlobalPosition;
-            SceneNode.Update();
+            //SceneNode.Position = camera.GlobalPosition;
+            //SceneNode.Update();
         }
     }
 }

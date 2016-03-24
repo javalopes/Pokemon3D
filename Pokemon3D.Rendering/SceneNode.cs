@@ -23,6 +23,7 @@ namespace Pokemon3D.Rendering
         public ReadOnlyCollection<SceneNode> Children { get; private set; }
         public Mesh Mesh { get; set; }
         public Material Material { get; set; }
+        public Matrix WorldMatrix { get; set; }
 
         private Vector3 _rotationAxis;
         private Vector3 _position;
@@ -43,11 +44,7 @@ namespace Pokemon3D.Rendering
             _childNodes = new List<SceneNode>();
             Children = _childNodes.AsReadOnly();
             _scale = Vector3.One;
-            Right = Vector3.Right;
-            Up = Vector3.Up;
-            Forward = Vector3.Forward;
             IsInitializing = isInitializing;
-            SetDirty();
         }
 
         public bool IsInitializing { get; private set; }
@@ -61,236 +58,19 @@ namespace Pokemon3D.Rendering
         
         public bool IsActive
         {
-            get { return _isActive; }
-            set
-            {
-                if (_isActive != value)
-                {
-                    _isActive = value;
-                    for (var i = 0; i < _childNodes.Count; i++)
-                    {
-                        _childNodes[i].IsActive = _isActive;
-                    }
-                }
-                
-            }
-        }
-
-        public Vector3 Scale
-        {
-            get
-            {
-                HandleIsDirty();
-                return _scale;
-            }
-            set
-            {
-                _scale = value;
-                SetDirty();
-            }
-        }
-
-        public Vector3 EulerAngles
-        {
-            get
-            {
-                HandleIsDirty();
-                return _rotationAxis;
-            }
-            set
-            {
-                _rotationAxis = value;
-                SetDirty();
-            }
-        }
-
-        public Vector3 GlobalEulerAngles
-        {
-            get
-            {
-                HandleIsDirty();
-                return _globalEulerAngles;
-            }
-            private set { _globalEulerAngles = value; }
-        }
-
-        public Vector3 Position
-        {
-            get
-            {
-                HandleIsDirty();
-                return _position;
-            }
-            set
-            {
-                _position = value;
-                SetDirty();
-            }
-        }
-
-        public Vector3 GlobalPosition
-        {
-            get
-            {
-                HandleIsDirty();
-                return _globalPosition;
-            }
-            private set { _globalPosition = value; }
-        }
-
-        public BoundingBox BoundingBox { get; private set; }
-
-        public Vector3 Right
-        {
-            get
-            {
-                HandleIsDirty();
-                return _right;
-            }
-            private set { _right = value; }
-        }
-
-        public Vector3 Up
-        {
-            get
-            {
-                HandleIsDirty();
-                return _up;
-            }
-            private set { _up = value; }
-        }
-
-        public Vector3 Forward
-        {
-            get
-            {
-                HandleIsDirty();
-                return _forward;
-            }
-            private set { _forward = value; }
+            get; set;
         }
 
         public bool IsBillboard { get; set; }
-        
-        public void SetParent(SceneNode parent)
+
+        public Vector3 GlobalPosition
         {
-            if (parent == Parent) return;
-            Parent?.RemoveChild(this);
-            parent?.AddChild(this);
-            SetDirty();
+            get; set;
         }
 
-        public void AddChild(SceneNode childElement)
+        public BoundingBox BoundingBox
         {
-            childElement.Parent?.RemoveChild(childElement);
-            _childNodes.Add(childElement);
-            childElement.Parent = this;
-        }
-
-        public void RemoveChild(SceneNode childElement)
-        {
-            if (_childNodes.Remove(childElement))
-            {
-                childElement.Parent = null;
-            }
-        }
-
-        public void Update()
-        {
-            if (IsBillboard) return;
-            HandleIsDirty();
-        }
-
-        public void Translate(Vector3 translation)
-        {
-            Position += Right * translation.X + Up * translation.Y + Forward * translation.Z;
-            SetDirty();
-        }
-
-        public void RotateX(float angle)
-        {
-            EulerAngles += new Vector3(angle, 0, 0);
-            SetDirty();
-        }
-
-        public void RotateY(float angle)
-        {
-            EulerAngles += new Vector3(0, angle, 0);
-            SetDirty();
-        }
-
-        public void RotateZ(float angle)
-        {
-            EulerAngles += new Vector3(0, 0, angle);
-            SetDirty();
-        }
-
-        protected void SetDirty()
-        {
-            _isDirty = true;
-            for (var i = 0; i < _childNodes.Count; i++)
-            {
-                _childNodes[i].SetDirty();
-            }
-        }
-
-        protected virtual void HandleIsDirty()
-        {
-            if (!_isDirty) return;
-
-            _globalEulerAngles = Parent != null ? Parent.GlobalEulerAngles + _rotationAxis : _rotationAxis;
-
-            var localWorldMatrix = Matrix.CreateScale(_scale)*Matrix.CreateFromYawPitchRoll(_rotationAxis.Y, _rotationAxis.X, _rotationAxis.Z) *
-                                   Matrix.CreateTranslation(_position);
-
-            Parent?.HandleIsDirty();
-            _world = Parent == null ? localWorldMatrix :localWorldMatrix * Parent._world;
-
-            if (Parent != null)
-            {
-                GlobalPosition = new Vector3(_world.M41, _world.M42, _world.M43);
-            }
-            else
-            {
-                GlobalPosition = _position;
-            }
-
-            var rotationMatrix = Matrix.CreateFromYawPitchRoll(_globalEulerAngles.Y, _globalEulerAngles.X, _globalEulerAngles.Z);
-            _right = Vector3.TransformNormal(Vector3.Right, rotationMatrix);
-            _up = Vector3.TransformNormal(Vector3.Up, rotationMatrix);
-            _forward = Vector3.TransformNormal(Vector3.Forward, rotationMatrix);
-
-            if (Mesh != null)
-            {
-                var box = Mesh.LocalBounds;
-                box.Min = box.Min * _scale;
-                box.Max = box.Max * _scale;
-
-                if (IsBillboard)
-                {
-                    box.Min.X = MathHelper.Min(box.Min.X, box.Min.Z);
-                    box.Min.Z = box.Min.X;
-                    box.Max.X = MathHelper.Max(box.Max.X, box.Max.Z);
-                    box.Max.Z = box.Max.X;
-                }
-                
-                box.Min += _globalPosition;
-                box.Max += _globalPosition;
-
-                BoundingBox = box;
-            }
-
-            _isDirty = false;
-        }
-
-        public Matrix GetWorldMatrix(float yRotationForBillboards)
-        {
-            return IsBillboard ? CalculateBillboardMatrix(yRotationForBillboards) : _world;
-        }
-
-        private Matrix CalculateBillboardMatrix(float yRotationForBillboards)
-        {
-            return Matrix.CreateScale(Scale)* Matrix.CreateRotationY(yRotationForBillboards) * Matrix.CreateTranslation(Position);
+            get; set;
         }
 
         internal SceneNode Clone(bool cloneMesh)
@@ -299,15 +79,7 @@ namespace Pokemon3D.Rendering
             {
                 Mesh = cloneMesh ? Mesh?.Clone() : Mesh,
                 Material = Material.Clone(),
-                Position = Position,
-                IsBillboard = IsBillboard,
-                Scale = Scale,
-                Forward = Forward,
-                Right = Right,
-                Up = Up,
-                EulerAngles = EulerAngles
             };
-            sceneNode.SetParent(Parent);
             return sceneNode;
         }
     }

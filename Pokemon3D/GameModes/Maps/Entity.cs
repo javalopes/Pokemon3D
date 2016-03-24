@@ -5,6 +5,8 @@ using Pokemon3D.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using Pokemon3D.Collisions;
+using System;
+using System.Collections.ObjectModel;
 
 namespace Pokemon3D.GameModes.Maps
 {
@@ -14,26 +16,44 @@ namespace Pokemon3D.GameModes.Maps
     class Entity : GameObject
     {
         private readonly List<EntityComponent> _components = new List<EntityComponent>();
+        private readonly List<Entity> _childNodes;
+
+        private Vector3 _rotationAxis;
         private Vector3 _position;
         private Vector3 _scale;
+        private bool _isDirty;
+        private Matrix _world;
+        private Vector3 _globalPosition;
+        private Vector3 _globalEulerAngles;
+        private Vector3 _right;
+        private Vector3 _up;
+        private Vector3 _forward;
+        private bool _isActive;
 
         public Scene Scene { get; }
-                
+        public Entity Parent { get; private set; }
+        public ReadOnlyCollection<Entity> Children { get; private set; }
+        public bool IsStatic { get; set; }
+
         public Entity(EntitySystem system)
         {
             Scene = system.Scene;
+            _isActive = true;
+            _childNodes = new List<Entity>();
+            Children = _childNodes.AsReadOnly();
+            _scale = Vector3.One;
+            Right = Vector3.Right;
+            Up = Vector3.Up;
+            Forward = Vector3.Forward;
+            SetDirty();
         }
-
-        /// <summary>
-        /// Returns, if this entity is marked as static. When an entity is static, it cannot modify its position, rotation and scale.
-        /// </summary>
-        public bool IsStatic { get; set; }
-
+        
         /// <summary>
         /// Entity update method to update all of the entity's components.
         /// </summary>
         public void Update(float elapsedTime)
         {
+            HandleIsDirty();
             for (int i = 0; i < _components.Count; i++) _components[i].Update(elapsedTime);
         }
 
@@ -42,15 +62,14 @@ namespace Pokemon3D.GameModes.Maps
             for (int i = 0; i < _components.Count; i++) _components[i].RenderPreparations(observer);
         }
 
-        #region Components
-
-        public void AddComponent(EntityComponent component)
+        public T AddComponent<T>(T component) where T : EntityComponent
         {
             if (!HasComponent(component.Name))
             {
                 _components.Add(component);
                 component.OnComponentAdded();
             }
+            return component;
         }
 
         public void RemoveComponent(string componentName)
@@ -62,6 +81,202 @@ namespace Pokemon3D.GameModes.Maps
                 component.OnComponentRemove();
             }
         }
+
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    for (var i = 0; i < _childNodes.Count; i++)
+                    {
+                        _childNodes[i].IsActive = _isActive;
+                    }
+                }
+
+            }
+        }
+
+        public Vector3 Scale
+        {
+            get
+            {
+                HandleIsDirty();
+                return _scale;
+            }
+            set
+            {
+                _scale = value;
+                SetDirty();
+            }
+        }
+
+        public Vector3 EulerAngles
+        {
+            get
+            {
+                HandleIsDirty();
+                return _rotationAxis;
+            }
+            set
+            {
+                _rotationAxis = value;
+                SetDirty();
+            }
+        }
+
+        public Vector3 GlobalEulerAngles
+        {
+            get
+            {
+                HandleIsDirty();
+                return _globalEulerAngles;
+            }
+            private set { _globalEulerAngles = value; }
+        }
+
+        public Vector3 Position
+        {
+            get
+            {
+                HandleIsDirty();
+                return _position;
+            }
+            set
+            {
+                _position = value;
+                SetDirty();
+            }
+        }
+
+        public Vector3 GlobalPosition
+        {
+            get
+            {
+                HandleIsDirty();
+                return _globalPosition;
+            }
+            private set { _globalPosition = value; }
+        }
+        
+        public Vector3 Right
+        {
+            get
+            {
+                HandleIsDirty();
+                return _right;
+            }
+            private set { _right = value; }
+        }
+
+        public Vector3 Up
+        {
+            get
+            {
+                HandleIsDirty();
+                return _up;
+            }
+            private set { _up = value; }
+        }
+
+        public Vector3 Forward
+        {
+            get
+            {
+                HandleIsDirty();
+                return _forward;
+            }
+            private set { _forward = value; }
+        }
+
+        public void SetParent(Entity parent)
+        {
+            if (parent == Parent) return;
+            Parent?.RemoveChild(this);
+            parent?.AddChild(this);
+            SetDirty();
+        }
+
+        public void AddChild(Entity childElement)
+        {
+            childElement.Parent?.RemoveChild(childElement);
+            _childNodes.Add(childElement);
+            childElement.Parent = this;
+        }
+
+        public void RemoveChild(Entity childElement)
+        {
+            if (_childNodes.Remove(childElement))
+            {
+                childElement.Parent = null;
+            }
+        }
+
+        public void Translate(Vector3 translation)
+        {
+            Position += Right * translation.X + Up * translation.Y + Forward * translation.Z;
+            SetDirty();
+        }
+
+        public void RotateX(float angle)
+        {
+            EulerAngles += new Vector3(angle, 0, 0);
+            SetDirty();
+        }
+
+        public void RotateY(float angle)
+        {
+            EulerAngles += new Vector3(0, angle, 0);
+            SetDirty();
+        }
+
+        public void RotateZ(float angle)
+        {
+            EulerAngles += new Vector3(0, 0, angle);
+            SetDirty();
+        }
+
+        protected void SetDirty()
+        {
+            _isDirty = true;
+            for (var i = 0; i < _childNodes.Count; i++)
+            {
+                _childNodes[i].SetDirty();
+            }
+        }
+
+        private void HandleIsDirty()
+        {
+            if (!_isDirty) return;
+
+            _globalEulerAngles = Parent != null ? Parent.GlobalEulerAngles + _rotationAxis : _rotationAxis;
+
+            var localWorldMatrix = Matrix.CreateScale(_scale) * Matrix.CreateFromYawPitchRoll(_rotationAxis.Y, _rotationAxis.X, _rotationAxis.Z) *
+                                   Matrix.CreateTranslation(_position);
+
+            Parent?.HandleIsDirty();
+            _world = Parent == null ? localWorldMatrix : localWorldMatrix * Parent._world;
+
+            if (Parent != null)
+            {
+                GlobalPosition = new Vector3(_world.M41, _world.M42, _world.M43);
+            }
+            else
+            {
+                GlobalPosition = _position;
+            }
+
+            var rotationMatrix = Matrix.CreateFromYawPitchRoll(_globalEulerAngles.Y, _globalEulerAngles.X, _globalEulerAngles.Z);
+            _right = Vector3.TransformNormal(Vector3.Right, rotationMatrix);
+            _up = Vector3.TransformNormal(Vector3.Up, rotationMatrix);
+            _forward = Vector3.TransformNormal(Vector3.Forward, rotationMatrix);
+
+            _isDirty = false;
+        }
+
+        public Matrix WorldMatrix { get { return _world; } }
 
         /// <summary>
         /// Returns a component of this <see cref="Entity"/>.
@@ -92,10 +307,8 @@ namespace Pokemon3D.GameModes.Maps
         /// </summary>
         public bool HasComponent<T>(string componentName) where T : EntityComponent
         {
-            var component = GetComponent(componentName);
-            return component != null && component.GetType() == typeof(T);
+            return _components.Any(c => (c.Name ?? "").Equals(componentName, System.StringComparison.OrdinalIgnoreCase) 
+                                        && typeof(T).IsAssignableFrom(c.GetType()));
         }
-
-        #endregion
     }
 }

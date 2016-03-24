@@ -12,8 +12,6 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
         private EntityRenderModeModel _dataModel;
         private SceneNode _sceneNode;
 
-        public SceneNode SceneNode { get { return _sceneNode; } }
-
         public ModelEntityComponent(Entity parent, EntityRenderModeModel dataModel) : base(parent)
         {
             _dataModel = dataModel;
@@ -52,26 +50,10 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
             {
                 //todo: that might not be a good idea.
                 var models = GameController.Instance.ActiveGameMode.GetModel(modelPath);
-
-                if (models.Length == 1)
+                if (models.Length >= 1)
                 {
                     AttachModelToSceneNode(_sceneNode, models[0], shadingVector, useTransparency);
                 }
-                else
-                {
-                    foreach (var modelMesh in models)
-                    {
-                        var childNode = Parent.Scene.CreateSceneNode(true);
-                        AttachModelToSceneNode(childNode, modelMesh, shadingVector, useTransparency);
-                        _sceneNode.AddChild(childNode);
-                        childNode.EndInitializing();
-                    }
-                }
-            }
-
-            if (Parent.IsStatic)
-            {
-                Parent.Scene.ConvertToStaticSceneNode(_sceneNode);
             }
 
             _sceneNode.EndInitializing();
@@ -102,6 +84,35 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
                 _sceneNode.Material.TexcoordScale = Vector2.One;
             }
         }
+
+        public override void Update(float elapsedTime)
+        {
+            base.Update(elapsedTime);
+            _sceneNode.WorldMatrix = Parent.WorldMatrix;
+
+            if (_sceneNode.Mesh != null)
+            {
+                var box = _sceneNode.Mesh.LocalBounds;
+                box.Min = box.Min * Parent.Scale;
+                box.Max = box.Max * Parent.Scale;
+
+                if (IsBillboard)
+                {
+                    box.Min.X = MathHelper.Min(box.Min.X, box.Min.Z);
+                    box.Min.Z = box.Min.X;
+                    box.Max.X = MathHelper.Max(box.Max.X, box.Max.Z);
+                    box.Max.Z = box.Max.X;
+                }
+
+                box.Min += Parent.GlobalPosition;
+                box.Max += Parent.GlobalPosition;
+
+                _sceneNode.BoundingBox = box;
+                _sceneNode.GlobalPosition = Parent.GlobalPosition;
+            }
+        }
+
+        public Material Material { get { return _sceneNode.Material; } }
 
         private void AttachModelToSceneNode(SceneNode sceneNode, ModelMesh modelMesh, Vector3 shading, bool useTransparency)
         {

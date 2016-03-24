@@ -189,7 +189,6 @@ namespace Pokemon3D.Screens.Overworld
             _player.Update(elapsedTime);
             _currentMap.Update(elapsedTime);
             Game.EntitySystem.Update(elapsedTime);
-            Game.Scene.Update(elapsedTime);
 
             if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Escape))
             {

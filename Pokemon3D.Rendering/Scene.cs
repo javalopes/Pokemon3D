@@ -85,21 +85,6 @@ namespace Pokemon3D.Rendering
         }
 
         /// <summary>
-        /// Creates a static mesh which can be merged.
-        /// </summary>
-        public void ConvertToStaticSceneNode(SceneNode node)
-        {
-            var staticNode = node.Clone(false);
-            RemoveSceneNode(node);
-            staticNode.Update();
-
-            lock (LockObject)
-            {
-                StaticNodes.Add(staticNode);
-            }
-        }
-
-        /// <summary>
         /// Removes Scenenode from scene.
         /// </summary>
         /// <param name="node">scene node</param>
@@ -110,7 +95,6 @@ namespace Pokemon3D.Rendering
             lock (LockObject)
             {
                 AllSceneNodes.Remove(node);
-                AllCameras.Remove(node as Camera);
             }
         }
 
@@ -126,22 +110,9 @@ namespace Pokemon3D.Rendering
             lock (LockObject)
             {
                 AllCameras.Add(camera);
-                AllSceneNodes.Add(camera);
             }
             
             return camera;
-        }
-
-        /// <summary>
-        /// Updates all sceneNodes.
-        /// </summary>
-        /// <param name="elapsedTime">elapsed time since last call.</param>
-        public void Update(float elapsedTime)
-        {
-            foreach (var sceneNode in AllSceneNodes.OrderBy(n => n.Parent != null))
-            {
-                sceneNode.Update();
-            }
         }
 
         /// <summary>
@@ -161,24 +132,7 @@ namespace Pokemon3D.Rendering
                 AllSceneNodes.Add(cloned);
             }
 
-            CloneChildren(cloned, nodeToClone, cloneMeshs);
-
             return cloned;
-        }
-
-        private void CloneChildren(SceneNode parentCloned, SceneNode parentOriginal, bool cloneMeshs)
-        {
-            foreach (var childNode in parentOriginal.Children)
-            {
-                var clonedChild = childNode.Clone(cloneMeshs);
-
-                lock (LockObject)
-                {
-                    AllSceneNodes.Add(clonedChild);
-                    parentCloned.AddChild(clonedChild);
-                }
-                CloneChildren(clonedChild, childNode, cloneMeshs);
-            }
         }
     }
 }
