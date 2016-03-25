@@ -49,6 +49,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
             base.Update(elapsedTime);
             _camera.GlobalEulerAngles = Parent.GlobalEulerAngles;
             _camera.GlobalPosition = Parent.GlobalPosition;
+            _camera.Update();
         }
     }
 }

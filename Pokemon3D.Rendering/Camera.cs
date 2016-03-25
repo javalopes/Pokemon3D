@@ -21,7 +21,7 @@ namespace Pokemon3D.Rendering
 
         public Color? ClearColor { get; set; }
         public Skybox Skybox { get; set; }
-        
+                     
         internal Camera(Viewport viewport)
         {
             Viewport = viewport;
@@ -32,9 +32,9 @@ namespace Pokemon3D.Rendering
             ClearColor = Color.CornflowerBlue;
         }
 
-        public void Update(Matrix world)
+        public void Update()
         {
-            ViewMatrix = Matrix.Invert(world);
+            ViewMatrix = Matrix.Invert(Matrix.CreateFromYawPitchRoll(GlobalEulerAngles.Y, GlobalEulerAngles.X, GlobalEulerAngles.Z) * Matrix.CreateTranslation(GlobalPosition));
             ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView(FieldOfView, Viewport.AspectRatio, NearClipDistance, FarClipDistance);
             Frustum.Matrix = ViewMatrix * ProjectionMatrix;
         }
