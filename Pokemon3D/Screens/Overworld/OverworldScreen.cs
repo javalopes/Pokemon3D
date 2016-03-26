@@ -15,6 +15,7 @@ using Pokemon3D.DataModel.Pokemon;
 using Pokemon3D.Screens.GameModeLoading;
 using Pokemon3D.Screens.MainMenu;
 using Pokemon3D.UI;
+using Pokemon3D.Screens.GameMenu;
 
 namespace Pokemon3D.Screens.Overworld
 {
@@ -225,9 +226,7 @@ namespace Pokemon3D.Screens.Overworld
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.X) || Game.InputSystem.GamePad.IsButtonDownOnce(Buttons.X))
             {
-                // Game.ScreenManager.PushScreen(typeof(OverlayScreen));
-                // Game.ScreenManager.PushScreen(typeof(TabletScreen));
-                // Game.ScreenManager.PushScreen(typeof(PokemonTableScreen));
+                Game.ScreenManager.PushScreen(typeof(GameMenuScreen));
             }
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F10))

@@ -17,7 +17,7 @@ namespace Pokemon3D.Common.Shapes
         private float _angle = 0f;
         private float _radius = 0f;
         private int _tesselation = 0;
-        private bool _centered = true;
+        private bool _isAveraged = true;
         private bool _worldDirty = true;
 
         private Vector2 _position;
@@ -29,6 +29,10 @@ namespace Pokemon3D.Common.Shapes
                 CullMode = CullMode.None,
                 FillMode = FillMode.Solid
             };
+
+        private Color _primaryColor = Color.Yellow;
+        private Color _secondaryColor = Color.Blue;
+        private PieChartType _type = PieChartType.FullGradient;
 
         private BasicEffect _effect;
         private GraphicsDevice _device;
@@ -59,16 +63,22 @@ namespace Pokemon3D.Common.Shapes
             set
             {
                 _angle = value;
+                if (_angle > MathHelper.TwoPi)
+                    _angle -= MathHelper.TwoPi;
+
                 RebuildVertices();
+
+                if (_isAveraged)
+                    _worldDirty = true;
             }
         }
 
-        public bool IsCentered
+        public bool IsAveraged
         {
-            get { return _centered; }
+            get { return _isAveraged; }
             set
             {
-                _centered = value;
+                _isAveraged = value;
                 _worldDirty = true;
             }
         }
@@ -93,17 +103,47 @@ namespace Pokemon3D.Common.Shapes
             }
         }
 
+        public Color PrimaryColor
+        {
+            get { return _primaryColor; }
+            set
+            {
+                _primaryColor = value;
+                RebuildVertices();
+            }
+        }
+
+        public Color SecondaryColor
+        {
+            get { return _secondaryColor; }
+            set
+            {
+                _secondaryColor = value;
+                RebuildVertices();
+            }
+        }
+
+        public PieChartType ChartType
+        {
+            get { return _type; }
+            set
+            {
+                _type = value;
+                RebuildVertices();
+            }
+        }
+
         public Pie2D(GraphicsDevice device, float radius, float angle, int tesselation)
             : this(device, radius, angle, tesselation, Vector2.Zero, false)
         { }
 
-        public Pie2D(GraphicsDevice device, float radius, float angle, int tesselation, Vector2 position, bool centered)
+        public Pie2D(GraphicsDevice device, float radius, float angle, int tesselation, Vector2 position, bool isAveraged)
         {
             _device = device;
             _radius = radius;
             _tesselation = tesselation;
             _position = position;
-            _centered = centered;
+            _isAveraged = isAveraged;
             _angle = angle;
 
             Initialize();
@@ -128,10 +168,47 @@ namespace Pokemon3D.Common.Shapes
             for (int i = 0; i < _tesselation * 2; i++)
             {
                 float angle = Lerp(0, _tesselation, 0, _angle, i);
-                _vertices[i * 2] = new VertexPositionColor(new Vector3((float)Math.Cos(angle), (float)Math.Sin(angle), 0), Color.Red);
-                _vertices[(i * 2) + 1] = new VertexPositionColor(Vector3.Zero, Color.Red);
+                float part;
+                Color c;
+
+                switch (_type)
+                {
+                    case PieChartType.SingleColor:
+                        _vertices[i * 2] = new VertexPositionColor(new Vector3((float)Math.Cos(angle), (float)Math.Sin(angle), 0), _primaryColor);
+                        _vertices[(i * 2) + 1] = new VertexPositionColor(Vector3.Zero, _primaryColor);
+                        break;
+                    case PieChartType.RadialFill:
+                        _vertices[i * 2] = new VertexPositionColor(new Vector3((float)Math.Cos(angle), (float)Math.Sin(angle), 0), _primaryColor);
+                        _vertices[(i * 2) + 1] = new VertexPositionColor(Vector3.Zero, _secondaryColor);
+                        break;
+                    case PieChartType.Gradient:
+                        part = i / (float)_tesselation;
+                        
+                        c = new Color((byte)(_primaryColor.R + (_secondaryColor.R - _primaryColor.R) * part),
+                                            (byte)(_primaryColor.G + (_secondaryColor.G - _primaryColor.G) * part),
+                                            (byte)(_primaryColor.B + (_secondaryColor.B - _primaryColor.B) * part));
+
+                        _vertices[i * 2] = new VertexPositionColor(new Vector3((float)Math.Cos(angle), (float)Math.Sin(angle), 0), c);
+                        _vertices[(i * 2) + 1] = new VertexPositionColor(Vector3.Zero, c);
+                        break;
+                    case PieChartType.FullGradient:
+                        part = i / (float)_tesselation * (_angle / MathHelper.TwoPi);
+
+                        c = new Color((byte)(_primaryColor.R + (_secondaryColor.R - _primaryColor.R) * part),
+                                            (byte)(_primaryColor.G + (_secondaryColor.G - _primaryColor.G) * part),
+                                            (byte)(_primaryColor.B + (_secondaryColor.B - _primaryColor.B) * part));
+
+                        _vertices[i * 2] = new VertexPositionColor(new Vector3((float)Math.Cos(angle), (float)Math.Sin(angle), 0), c);
+                        _vertices[(i * 2) + 1] = new VertexPositionColor(Vector3.Zero, c);
+                        break;
+                }
+
             }
-            _vertices[_vertices.Length - 1] = new VertexPositionColor(new Vector3((float)Math.Cos(_angle), (float)Math.Sin(_angle), 0), Color.Red);
+
+            if (_type == PieChartType.SingleColor)
+                _vertices[_vertices.Length - 1] = new VertexPositionColor(new Vector3((float)Math.Cos(_angle), (float)Math.Sin(_angle), 0), _primaryColor);
+            else
+                _vertices[_vertices.Length - 1] = new VertexPositionColor(new Vector3((float)Math.Cos(_angle), (float)Math.Sin(_angle), 0), _secondaryColor);
         }
 
         private static float Lerp(float x0, float x1, float y0, float y1, float x2)
@@ -143,15 +220,14 @@ namespace Pokemon3D.Common.Shapes
         {
             if (_worldDirty)
             {
-                if (_centered)
-                    _world = Matrix.CreateScale(_radius) * Matrix.CreateRotationZ(_rotation - _angle / 2f) * Matrix.CreateTranslation(new Vector3(_position, 0));
+                if (_isAveraged)
+                    _world = Matrix.CreateScale(_radius) * Matrix.CreateRotationZ(_rotation - _angle / 2f) * Matrix.CreateTranslation(new Vector3(_position + new Vector2(_radius), 0));
                 else
-                    _world = Matrix.CreateScale(_radius) * Matrix.CreateRotationZ(_rotation) * Matrix.CreateTranslation(new Vector3(_position, 0));
+                    _world = Matrix.CreateScale(_radius) * Matrix.CreateRotationZ(_rotation) * Matrix.CreateTranslation(new Vector3(_position + new Vector2(_radius), 0));
 
+                _effect.World = _world;
                 _worldDirty = false;
             }
-
-            _effect.World = _world;
 
             var previousRsState = _device.RasterizerState;
             _device.RasterizerState = _rsState;
@@ -159,10 +235,19 @@ namespace Pokemon3D.Common.Shapes
             foreach (EffectPass pass in _effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                _device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleStrip, _vertices, 0, _tesselation * 2);
+                _device.DrawUserPrimitives(PrimitiveType.TriangleStrip, _vertices, 0, _tesselation * 2);
             }
 
             _device.RasterizerState = previousRsState;
+        }
+
+        /// <summary>
+        /// Sets the angle property of the <see cref="Pie2D"/> to a multiple of Pie and the input value.
+        /// </summary>
+        /// <param name="part">A number between 0 and 1.</param>
+        public void SetPart(float part)
+        {
+            _angle = (float)(MathHelper.Clamp(part, 0f, 1f) * Math.PI * 2.0);
         }
     }
 }
