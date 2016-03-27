@@ -19,6 +19,7 @@ namespace Pokemon3D.Common.Shapes
         private int _tesselation = 0;
         private bool _isAveraged = true;
         private bool _worldDirty = true;
+        private bool _verticesDirty = true;
 
         private Vector2 _position;
         private VertexPositionColor[] _vertices;
@@ -30,13 +31,16 @@ namespace Pokemon3D.Common.Shapes
                 FillMode = FillMode.Solid
             };
 
-        private Color _primaryColor = Color.Yellow;
-        private Color _secondaryColor = Color.Blue;
-        private PieChartType _type = PieChartType.FullGradient;
+        private Color _primaryColor = Color.White;
+        private Color _secondaryColor = Color.White;
+        private PieChartType _type = PieChartType.SingleColor;
 
         private BasicEffect _effect;
         private GraphicsDevice _device;
 
+        /// <summary>
+        /// The rotation in radians of the chart.
+        /// </summary>
         public float Rotation
         {
             get { return _rotation; }
@@ -46,7 +50,7 @@ namespace Pokemon3D.Common.Shapes
                 _worldDirty = true;
             }
         }
-
+        
         public float Radius
         {
             get { return _radius; }
@@ -57,6 +61,9 @@ namespace Pokemon3D.Common.Shapes
             }
         }
 
+        /// <summary>
+        /// The part of the chart that is visible. Completely invisible at 0.
+        /// </summary>
         public float Angle
         {
             get { return _angle; }
@@ -66,13 +73,16 @@ namespace Pokemon3D.Common.Shapes
                 if (_angle > MathHelper.TwoPi)
                     _angle -= MathHelper.TwoPi;
 
-                RebuildVertices();
+                _verticesDirty = true;
 
                 if (_isAveraged)
                     _worldDirty = true;
             }
         }
 
+        /// <summary>
+        /// If the chart has a set starting point of if it changes depending on the angle.
+        /// </summary>
         public bool IsAveraged
         {
             get { return _isAveraged; }
@@ -83,6 +93,9 @@ namespace Pokemon3D.Common.Shapes
             }
         }
 
+        /// <summary>
+        /// The position of the chart on the screen.
+        /// </summary>
         public Vector2 Position
         {
             get { return _position; }
@@ -93,13 +106,16 @@ namespace Pokemon3D.Common.Shapes
             }
         }
 
+        /// <summary>
+        /// The amount of vertices used to represent the chart.
+        /// </summary>
         public int Tesselation
         {
             get { return _tesselation; }
             set
             {
                 _tesselation = value;
-                RebuildVertices();
+                _verticesDirty = true;
             }
         }
 
@@ -109,7 +125,7 @@ namespace Pokemon3D.Common.Shapes
             set
             {
                 _primaryColor = value;
-                RebuildVertices();
+                _verticesDirty = true;
             }
         }
 
@@ -119,7 +135,7 @@ namespace Pokemon3D.Common.Shapes
             set
             {
                 _secondaryColor = value;
-                RebuildVertices();
+                _verticesDirty = true;
             }
         }
 
@@ -129,7 +145,7 @@ namespace Pokemon3D.Common.Shapes
             set
             {
                 _type = value;
-                RebuildVertices();
+                _verticesDirty = true;
             }
         }
 
@@ -153,13 +169,9 @@ namespace Pokemon3D.Common.Shapes
         {
             _effect = new BasicEffect(_device);
 
-            var pp = _device.PresentationParameters;
             _effect.View = Matrix.CreateLookAt(Vector3.Backward, Vector3.Zero, Vector3.Up);
-            _effect.Projection = Matrix.CreateOrthographicOffCenter(0, pp.BackBufferWidth, pp.BackBufferHeight, 0, 1, 50);
             _effect.VertexColorEnabled = true;
             _effect.LightingEnabled = false;
-
-            RebuildVertices();
         }
 
         private void RebuildVertices()
@@ -183,7 +195,7 @@ namespace Pokemon3D.Common.Shapes
                         break;
                     case PieChartType.Gradient:
                         part = i / (float)_tesselation;
-                        
+
                         c = new Color((byte)(_primaryColor.R + (_secondaryColor.R - _primaryColor.R) * part),
                                             (byte)(_primaryColor.G + (_secondaryColor.G - _primaryColor.G) * part),
                                             (byte)(_primaryColor.B + (_secondaryColor.B - _primaryColor.B) * part));
@@ -216,7 +228,40 @@ namespace Pokemon3D.Common.Shapes
             return y0 * (x2 - x1) / (x0 - x1) + y1 * (x2 - x0) / (x1 - x0);
         }
 
+        private RenderTarget2D _target;
+        private bool _isRenderTargetMode = false;
+
         public void Draw()
+        {
+            _isRenderTargetMode = false;
+            DrawInternal();
+        }
+
+        public void DrawBatched(SpriteBatch batch)
+        {
+            int diameter = (int)(_radius * 2f);
+            if (_target == null || _target.Width != diameter)
+                _target = new RenderTarget2D(_device, diameter, diameter);
+
+            var tempPosition = _position;
+            _position = Vector2.Zero;
+
+            var prevTargets = _device.GetRenderTargets();
+
+            _device.SetRenderTarget(_target);
+            _device.Clear(Color.Transparent);
+
+            _isRenderTargetMode = true;
+            DrawInternal();
+
+            _device.SetRenderTargets(prevTargets);
+
+            _position = tempPosition;
+
+            batch.Draw(_target, _position, Color.White);
+        }
+
+        private void DrawInternal()
         {
             if (_worldDirty)
             {
@@ -227,6 +272,19 @@ namespace Pokemon3D.Common.Shapes
 
                 _effect.World = _world;
                 _worldDirty = false;
+            }
+            if (_verticesDirty)
+            {
+                RebuildVertices();
+                _verticesDirty = false;
+            }
+
+            if (_isRenderTargetMode)
+                _effect.Projection = Matrix.CreateOrthographicOffCenter(0, _target.Width, _target.Height, 0, 1, 50);
+            else
+            {
+                var pp = _device.PresentationParameters;
+                _effect.Projection = Matrix.CreateOrthographicOffCenter(0, pp.BackBufferWidth, pp.BackBufferHeight, 0, 1, 50);
             }
 
             var previousRsState = _device.RasterizerState;
@@ -247,7 +305,7 @@ namespace Pokemon3D.Common.Shapes
         /// <param name="part">A number between 0 and 1.</param>
         public void SetPart(float part)
         {
-            _angle = (float)(MathHelper.Clamp(part, 0f, 1f) * Math.PI * 2.0);
+            Angle = MathHelper.Clamp(part, 0f, 1f) * MathHelper.TwoPi;
         }
     }
 }
