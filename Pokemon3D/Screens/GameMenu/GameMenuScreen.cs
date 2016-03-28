@@ -20,7 +20,7 @@ namespace Pokemon3D.Screens.GameMenu
         {
             Game.SpriteBatch.Begin();
 
-            _renderer.DrawShapeGradientFill(new Triangle(new Point(0, 0), new Point(100, 100), new Point(0, 100)), null, Color.White, Color.Black, true);
+            _renderer.DrawShapeGradientFill(new Plane2D(0, 0, 100, 100), null, Color.White, Color.Black, true);
 
             Game.SpriteBatch.End();
         }
