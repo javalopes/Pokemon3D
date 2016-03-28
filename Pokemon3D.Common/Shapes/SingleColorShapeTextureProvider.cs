@@ -1,16 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Pokemon3D.Common.Shapes
 {
-    class SingleColorShapeTextureProvider : ShapeTextureProvider
+    public class SingleColorShapeTextureProvider : ShapeTextureProvider
     {
-        public SingleColorShapeTextureProvider(ShapeRenderer renderer) 
-            : base(renderer)
-        {  }
+        private ShapeRenderer _renderer;
+        private Dictionary<int, Texture2D> _buffer = new Dictionary<int, Texture2D>();
 
-        protected override Texture2D CreateTexture(Shape shape)
+        public SingleColorShapeTextureProvider(ShapeRenderer renderer)
         {
+            _renderer = renderer;
+        }
+
+        private Texture2D CreateTexture(Shape shape, object[] textureData)
+        {
+            // ignore any texture data.
+
             var bounds = shape.Bounds;
             Color[] colorArr = new Color[bounds.Width * bounds.Height];
             int index = 0;
@@ -30,6 +37,20 @@ namespace Pokemon3D.Common.Shapes
 
             Texture2D texture = new Texture2D(_renderer.GraphicsDevice, bounds.Width, bounds.Height);
             texture.SetData(colorArr);
+            return texture;
+        }
+
+        public Texture2D GetTexture(Shape shape, object[] textureData)
+        {
+            int hash = shape.GetHashCode();
+            Texture2D texture;
+
+            if (!_buffer.TryGetValue(hash, out texture))
+            {
+                texture = CreateTexture(shape, textureData);
+                _buffer.Add(hash, texture);
+            }
+
             return texture;
         }
     }

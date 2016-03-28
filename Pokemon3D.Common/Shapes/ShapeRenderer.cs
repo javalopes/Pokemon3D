@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common.Extensions;
 using System;
 
 namespace Pokemon3D.Common.Shapes
@@ -10,6 +9,12 @@ namespace Pokemon3D.Common.Shapes
         private readonly Texture2D _canvas;
         private readonly SpriteBatch _batch;
         private SingleColorShapeTextureProvider _singleColorTextureProvider;
+        private GradientShapeTextureProvider _gradientTextureProvider;
+
+        public SpriteBatch Batch
+        {
+            get { return _batch; }
+        }
 
         public ShapeRenderer(SpriteBatch spriteBatch)
         {
@@ -89,6 +94,22 @@ namespace Pokemon3D.Common.Shapes
 
         public void DrawShape(Shape shape, Rectangle? destinationRectangle, Color color, float rotation = 0f, Vector2? origin = null, SpriteEffects effects = SpriteEffects.None)
         {
+            if (_singleColorTextureProvider == null)
+                _singleColorTextureProvider = new SingleColorShapeTextureProvider(this);
+
+            DrawShape(new ShapeFillData(shape, _singleColorTextureProvider, null), destinationRectangle, color, rotation, origin, effects);
+        }
+
+        public void DrawShapeGradientFill(Shape shape, Rectangle? destinationRectangle, Color colorFrom, Color colorTo, bool vertical, float rotation = 0f, Vector2? origin = null, SpriteEffects effects = SpriteEffects.None)
+        {
+            if (_gradientTextureProvider == null)
+                _gradientTextureProvider = new GradientShapeTextureProvider(this);
+
+            DrawShape(new ShapeFillData(shape, _gradientTextureProvider, new object[] { colorFrom, colorTo, vertical }), destinationRectangle, Color.White, rotation, origin, effects);
+        }
+
+        public void DrawShape(ShapeFillData fillData, Rectangle? destinationRectangle, Color color, float rotation = 0f, Vector2? origin = null, SpriteEffects effects = SpriteEffects.None)
+        {
             Vector2 useOrigin = Vector2.Zero;
             if (origin.HasValue)
                 useOrigin = origin.Value;
@@ -97,14 +118,9 @@ namespace Pokemon3D.Common.Shapes
             if (destinationRectangle.HasValue)
                 useRectangle = destinationRectangle.Value;
             else
-                useRectangle = shape.Bounds;
+                useRectangle = fillData.Shape.Bounds;
 
-            if (_singleColorTextureProvider == null)
-                _singleColorTextureProvider = new SingleColorShapeTextureProvider(this);
-
-            var texture = _singleColorTextureProvider.GetTexture(shape);
-
-            _batch.Draw(texture, useRectangle, null, color, rotation, useOrigin, effects, 0f);
+            _batch.Draw(fillData.GetTexture(), useRectangle, null, color, rotation, useOrigin, effects, 0f);
         }
 
         public void DrawOutline(Triangle triangle, Vector2 position, Color color, int thickness = 1)
