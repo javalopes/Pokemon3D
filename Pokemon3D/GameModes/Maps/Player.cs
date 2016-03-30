@@ -103,6 +103,8 @@ namespace Pokemon3D.GameModes.Maps
 
             var colliderComponent = new CollisionEntityComponent(_playerEntity, new Vector3(0.35f, 0.6f, 0.35f), new Vector3(0.0f, 0.3f, 0.0f));
             _playerEntity.AddComponent(colliderComponent);
+
+            _playerEntity.Position = new Vector3(10,1,8 );
         }
 
         public void Update(float elapsedTime)
