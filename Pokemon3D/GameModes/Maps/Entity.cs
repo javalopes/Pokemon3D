@@ -30,14 +30,13 @@ namespace Pokemon3D.GameModes.Maps
         private Vector3 _forward;
         private bool _isActive;
 
-        public Scene Scene { get; }
+        public SceneRenderer Renderer { get; }
         public Entity Parent { get; private set; }
         public ReadOnlyCollection<Entity> Children { get; private set; }
         public bool IsStatic { get; set; }
 
         public Entity(EntitySystem system)
         {
-            Scene = system.Scene;
             _isActive = true;
             _childNodes = new List<Entity>();
             Children = _childNodes.AsReadOnly();

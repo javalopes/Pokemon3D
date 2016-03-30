@@ -10,7 +10,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
     class ModelEntityComponent : EntityComponent
     {
         private EntityRenderModeModel _dataModel;
-        private SceneNode _sceneNode;
+        private DrawableElement _sceneNode;
 
         public ModelEntityComponent(Entity parent, EntityRenderModeModel dataModel) : base(parent)
         {
@@ -20,16 +20,17 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 
         public ModelEntityComponent(Entity parent, Mesh mesh, Material material, bool isBillboard) : base(parent)
         {
-            _sceneNode = Parent.Scene.CreateSceneNode(true);
+            _sceneNode = parent.Game.Renderer.CreateDrawableElement(true);
             _sceneNode.Material = material;
             _sceneNode.Mesh = mesh;
+            _sceneNode.IsBillboard = isBillboard;
+            _sceneNode.EndInitialzing();
             IsBillboard = isBillboard;
-            _sceneNode.EndInitializing();
         }
 
         private void InitializeRenderingData(bool isBillboard, RenderMethod renderMethod, string primitiveModelId, Vector3 shadingVector, bool useTransparency, string modelPath)
         {
-            _sceneNode = Parent.Scene.CreateSceneNode(true);
+            _sceneNode = Parent.Game.Renderer.CreateDrawableElement(true);
             _sceneNode.Material = new Material();
 
             IsBillboard = isBillboard;
@@ -56,7 +57,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
                 }
             }
 
-            _sceneNode.EndInitializing();
+            _sceneNode.EndInitialzing();
         }
 
         public bool IsBillboard
@@ -114,7 +115,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 
         public Material Material { get { return _sceneNode.Material; } }
 
-        private void AttachModelToSceneNode(SceneNode sceneNode, ModelMesh modelMesh, Vector3 shading, bool useTransparency)
+        private void AttachModelToSceneNode(DrawableElement sceneNode, ModelMesh modelMesh, Vector3 shading, bool useTransparency)
         {
             sceneNode.Mesh = modelMesh.Mesh;
             sceneNode.Material = modelMesh.Material;

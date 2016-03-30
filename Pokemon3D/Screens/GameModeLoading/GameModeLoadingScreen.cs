@@ -69,15 +69,14 @@ namespace Pokemon3D.Screens.GameModeLoading
             WindowsSceneEffect effect = null;
             _dispatcher.Invoke(() => { effect = new WindowsSceneEffect(Game.Content); });
 
-            _result.SceneRenderer = SceneRendererFactory.Create(Game, effect, settings);
-            _result.SceneRenderer.AddPostProcessingStep(new HorizontalBlurPostProcessingStep());
-            _result.SceneRenderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
-            _result.SceneRenderer.EnablePostProcessing = false;
+            Game.Renderer.AddPostProcessingStep(new HorizontalBlurPostProcessingStep());
+            Game.Renderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
+            Game.Renderer.EnablePostProcessing = false;
 
-            Game.Scene.Light.Direction = new Vector3(-1.5f, -1.0f, -0.5f);
-            Game.Scene.Light.AmbientIntensity = 0.5f;
-            Game.Scene.Light.DiffuseIntensity = 0.8f;
-            Game.Scene.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
+            Game.Renderer.Light.Direction = new Vector3(-1.5f, -1.0f, -0.5f);
+            Game.Renderer.Light.AmbientIntensity = 0.5f;
+            Game.Renderer.Light.DiffuseIntensity = 0.8f;
+            Game.Renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
 
             Game.ActiveGameMode.MapManager.LoadMapAsync(Game.ActiveGameMode.GameModeInfo.StartMap, FinishedLoadingMapModel);
         }

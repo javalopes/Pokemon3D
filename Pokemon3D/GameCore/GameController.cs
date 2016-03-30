@@ -16,6 +16,7 @@ using Pokemon3D.Screens;
 using Pokemon3D.Screens.MainMenu;
 using Pokemon3D.GameModes.Maps;
 using Pokemon3D.Rendering;
+using Pokemon3D.Rendering.Compositor;
 
 namespace Pokemon3D.GameCore
 {
@@ -40,6 +41,7 @@ namespace Pokemon3D.GameCore
         /// <summary>If the debug mode is currently active.</summary>
         public const bool IS_DEBUG_ACTIVE = true;
 
+        public SceneRenderer Renderer { get; private set; }
         public GraphicsDeviceManager GraphicsDeviceManager { get; private set; }
         public ScreenManager ScreenManager { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
@@ -50,7 +52,6 @@ namespace Pokemon3D.GameCore
         public NotificationBar NotificationBar { get; private set; }
         public CollisionManager CollisionManager { get; private set; }
         public EntitySystem EntitySystem { get; private set; }
-        public Scene Scene { get; private set; }
 
         public event System.EventHandler WindowSizeChanged;
         private Rectangle _currentScreenBounds;
@@ -99,8 +100,8 @@ namespace Pokemon3D.GameCore
 
             IsMouseVisible = true;
 
-            Scene = new Scene(this);
-            EntitySystem = new EntitySystem(Scene);
+            Renderer = SceneRendererFactory.Create(this, new WindowsSceneEffect(Content), new RenderSettings());
+            EntitySystem = new EntitySystem();
             GameModeManager = new GameModeManager();
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             InputSystem = new InputSystem();
@@ -146,6 +147,7 @@ namespace Pokemon3D.GameCore
 
         protected override void Draw(GameTime gameTime)
         {
+            Renderer.Draw();
             ScreenManager.Draw(gameTime);
             NotificationBar.Draw();
             base.Draw(gameTime);

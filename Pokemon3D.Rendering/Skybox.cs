@@ -8,25 +8,23 @@ namespace Pokemon3D.Rendering
     public class Skybox : GameContextObject
     {
         private readonly Mesh _skyBoxModel;
-
-        internal SceneNode SceneNode { get; }
+        
+        public DrawableElement DrawableElement { get; }
 
         public Texture2D Texture
         {
-            get { return SceneNode.Material.DiffuseTexture; }
-            set { SceneNode.Material.DiffuseTexture = value; }
+            get { return DrawableElement.Material.DiffuseTexture; }
+            set { DrawableElement.Material.DiffuseTexture = value; }
         }
 
         public float Scale
         {
-            //get { return -SceneNode.Scale.X; }
-            //set { SceneNode.Scale = new Vector3(-value); }
             get; set;
         }
 
         public Skybox(GameContext gameContext) : base(gameContext)
         {
-            SceneNode = new SceneNode(false, null);
+            DrawableElement = new DrawableElement(false, null);
 
             var height = 1.0f / 3.0f;
             var width = 0.25f;
@@ -41,8 +39,8 @@ namespace Pokemon3D.Rendering
             };
             
             _skyBoxModel = new Mesh(GameContext.GraphicsDevice, Primitives.GenerateCubeData(coords));
-            SceneNode.Mesh = _skyBoxModel;
-            SceneNode.Material = new Material
+            DrawableElement.Mesh = _skyBoxModel;
+            DrawableElement.Material = new Material
             {
                 CastShadow = false,
                 ReceiveShadow = false,
@@ -53,8 +51,7 @@ namespace Pokemon3D.Rendering
 
         internal void Update(Camera camera)
         {
-            //SceneNode.Position = camera.GlobalPosition;
-            //SceneNode.Update();
+            DrawableElement.WorldMatrix = Matrix.CreateScale(-Scale) * Matrix.CreateTranslation(camera.GlobalPosition);
         }
     }
 }

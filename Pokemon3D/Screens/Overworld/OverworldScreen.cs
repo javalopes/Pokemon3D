@@ -39,7 +39,6 @@ namespace Pokemon3D.Screens.Overworld
                 var loadingResult = enterInformation as GameModeLoadingResult;
                 if (loadingResult == null) throw new InvalidOperationException("Did not receive loaded data.");
 
-                _renderer = loadingResult.SceneRenderer;
                 _player = loadingResult.Player;
                 _currentMap = loadingResult.Map;
 
@@ -239,7 +238,6 @@ namespace Pokemon3D.Screens.Overworld
         {
             _currentMap.RenderPreparations(_player.Camera);
             Game.CollisionManager.Draw(_player.Camera);
-            _renderer.Draw(Game.Scene);
 
             if (_showRenderStatistics) DrawRenderStatsitics();
         }

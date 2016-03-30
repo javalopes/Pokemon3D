@@ -1,10 +1,17 @@
-﻿namespace Pokemon3D.Rendering.Compositor
+﻿namespace Pokemon3D.Rendering
 {
     /// <summary>
     /// Configuration of Rendering Settings.
     /// </summary>
     public class RenderSettings
     {
+        public RenderSettings()
+        {
+            EnableShadows = false;
+            EnableSoftShadows = false;
+            ShadowMapSize = 512;
+        }
+
         /// <summary>
         /// If shadows are enabled.
         /// </summary>

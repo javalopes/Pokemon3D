@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common;
-using Pokemon3D.Rendering.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +10,16 @@ namespace Pokemon3D.Rendering.Compositor
 {
     class ForwardSceneRenderer : GameContextObject, SceneRenderer
     {
+        private readonly object _lockObject = new object();
+
+        private readonly List<DrawableElement> _initializingDrawables;
+        private readonly List<DrawableElement> _allDrawables;
+        private readonly List<Camera> _allCameras;
+
         private readonly GraphicsDevice _device;
         private readonly SceneEffect _sceneEffect;
         private RenderTargetBinding[] _oldBindings;
 
-        private readonly HashSet<int> _registeredStaticNodes = new HashSet<int>();
-        private readonly List<StaticMeshBatch> _staticBatches = new List<StaticMeshBatch>();
-
-        private readonly List<DrawableElement> _allDrawableElements = new List<DrawableElement>(); 
         private readonly List<DrawableElement> _solidObjects = new List<DrawableElement>();
         private readonly List<DrawableElement> _transparentObjects = new List<DrawableElement>();
         private readonly List<DrawableElement> _shadowCastersObjectsSolid = new List<DrawableElement>();
@@ -38,6 +39,10 @@ namespace Pokemon3D.Rendering.Compositor
             _device = context.GraphicsDevice;
             _sceneEffect = effect;
             RenderSettings = settings;
+            _allDrawables = new List<DrawableElement>();
+            _initializingDrawables = new List<DrawableElement>();
+            _allCameras = new List<Camera>();
+            Light = new Light();
 
             _directionalLightShadowMap = new RenderTarget2D(_device, RenderSettings.ShadowMapSize, RenderSettings.ShadowMapSize, false, SurfaceFormat.Single, DepthFormat.Depth24);
 
@@ -109,21 +114,19 @@ namespace Pokemon3D.Rendering.Compositor
             _postProcessingSteps.Add(step);
         }
 
-        public void Draw(Scene scene)
+        public void Draw()
         {
             RenderStatistics.Instance.StartFrame();
             PreparePostProcessing();
 
-            lock (scene.LockObject)
+            lock (_lockObject)
             {
-                UpdateStaticNodes(scene.StaticNodes);
-                UpdateNodeLists(scene.AllSceneNodes);
+                UpdateNodeLists();
+                _sceneEffect.AmbientLight = AmbientLight;
 
-                _sceneEffect.AmbientLight = scene.AmbientLight;
-
-                for (var i = 0; i < scene.AllCameras.Count; i++)
+                for (var i = 0; i < _allCameras.Count; i++)
                 {
-                    DrawSceneForCamera(scene, scene.AllCameras[i], scene.HasSceneNodesChanged);
+                    DrawSceneForCamera(_allCameras[i]);
                 }
             }
 
@@ -133,23 +136,22 @@ namespace Pokemon3D.Rendering.Compositor
 #if DEBUG_RENDERING
             if (RenderSettings.EnableShadows) DrawDebugShadowMap(GameContext.SpriteBatch, new Rectangle(0,0,128,128));
 #endif
-            scene.HasSceneNodesChanged = false;
         }
         
         public RenderSettings RenderSettings { get; }
 
-        private void HandleSolidObjects(Material material)
+        private void HandleSolidObjects(Data.Material material)
         {
             var flags = material.GetLightingTypeFlags(RenderSettings);
             _sceneEffect.ActivateLightingTechnique(flags);
         }
 
-        private void HandleEffectTransparentObjects(Material material)
+        private void HandleEffectTransparentObjects(Data.Material material)
         {
             _sceneEffect.ActivateLightingTechnique(LightTechniqueFlag.UseTexture);
         }
 
-        private void HandleShadowCasterObjects(Material material)
+        private void HandleShadowCasterObjects(Data.Material material)
         {
             _sceneEffect.ActivateShadowDepthMapPass(material.UseTransparency);
         }
@@ -189,44 +191,44 @@ namespace Pokemon3D.Rendering.Compositor
             spriteBatch.End();
         }
 
-        private void DrawSceneForCamera(Scene scene, Camera camera, bool hasSceneNodesChanged)
+        private void DrawSceneForCamera(Camera camera)
         {
             _device.Viewport = camera.Viewport;
 
-            DrawShadowCastersToDepthmap(scene, camera);
+            DrawShadowCastersToDepthmap(camera);
             HandleCameraClearOrSkyPass(camera);
 
             _sceneEffect.ShadowMap = _directionalLightShadowMap;
             _sceneEffect.ShadowScale = 1.0f/_directionalLightShadowMap.Width;
             _sceneEffect.View = camera.ViewMatrix;
             _sceneEffect.Projection = camera.ProjectionMatrix;
-            _sceneEffect.LightDirection = scene.Light.Direction;
-            _sceneEffect.AmbientIntensity = scene.Light.AmbientIntensity;
-            _sceneEffect.DiffuseIntensity = scene.Light.DiffuseIntensity;
+            _sceneEffect.LightDirection = Light.Direction;
+            _sceneEffect.AmbientIntensity = Light.AmbientIntensity;
+            _sceneEffect.DiffuseIntensity = Light.DiffuseIntensity;
 
             for (var i = 0; i < _renderQueues.Count; i++)
             {
                 var renderQueue = _renderQueues[i];
                 if (!renderQueue.IsEnabled) continue;
-                renderQueue.Draw(camera, scene.Light, camera.GlobalEulerAngles.Y);
+                renderQueue.Draw(camera, Light, camera.GlobalEulerAngles.Y);
             }
         }
 
-        private void DrawShadowCastersToDepthmap(Scene scene, Camera camera)
+        private void DrawShadowCastersToDepthmap(Camera camera)
         {
             if (!RenderSettings.EnableShadows) return;
 
-            scene.Light.UpdateLightViewMatrixForCamera(camera, _shadowCastersObjectsSolid);
+            Light.UpdateLightViewMatrixForCamera(camera, _shadowCastersObjectsSolid);
             _sceneEffect.ShadowMap = null;
-            _sceneEffect.LightViewProjection = scene.Light.LightViewMatrix;
+            _sceneEffect.LightViewProjection = Light.LightViewMatrix;
 
             var oldRenderTargets = GameContext.GraphicsDevice.GetRenderTargets();
             GameContext.GraphicsDevice.SetRenderTarget(_directionalLightShadowMap);
             GameContext.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             
-            var angle = (float)Math.Atan2(scene.Light.Direction.Z, scene.Light.Direction.X) - MathHelper.Pi/4*3;
-            _shadowCasterQueueSolid.Draw(camera, scene.Light, angle);
-           _shadowCasterQueueTransparent.Draw(camera, scene.Light, angle);
+            var angle = (float)Math.Atan2(Light.Direction.Z, Light.Direction.X) - MathHelper.Pi/4*3;
+            _shadowCasterQueueSolid.Draw(camera, Light, angle);
+           _shadowCasterQueueTransparent.Draw(camera, Light, angle);
 
             GameContext.GraphicsDevice.SetRenderTargets(oldRenderTargets);
         }
@@ -247,68 +249,22 @@ namespace Pokemon3D.Rendering.Compositor
                 _device.BlendState = BlendState.Opaque;
 
                 _sceneEffect.ActivateLightingTechnique(LightTechniqueFlag.UseTexture | LightTechniqueFlag.LinearTextureSampling);
-                RenderQueue.DrawElement(camera, skybox.SceneNode, _sceneEffect, 0.0f);
+                RenderQueue.DrawElement(camera, skybox.DrawableElement, _sceneEffect, 0.0f);
 
                 _device.DepthStencilState = DepthStencilState.Default;
             }
         }
 
-        private readonly List<StaticMeshBatch> _batchesToUpdate = new List<StaticMeshBatch>(); 
-
-        private void UpdateStaticNodes(List<SceneNode> staticNodes)
+        private void UpdateNodeLists()
         {
-            var sortedNodes = staticNodes.OrderBy(n => n.Material.CompareId).ToArray();
-
-            _batchesToUpdate.Clear();
-            for (var i = 0; i < sortedNodes.Length; i++)
-            {
-                var currentNode = staticNodes[i];
-                if (_registeredStaticNodes.Contains(currentNode.Id)) continue;
-
-                var materialId = currentNode.Material.CompareId;
-
-                _registeredStaticNodes.Add(currentNode.Id);
-
-                var addedToExisting = false;
-                foreach (var suitableBatch in _staticBatches.Where(s => s.Material.CompareId == materialId))
-                {
-                    addedToExisting |= suitableBatch.AddBatch(currentNode);
-                    if (addedToExisting)
-                    {
-                        _batchesToUpdate.Add(suitableBatch);
-                        break;
-                    }
-                }
-
-                if (!addedToExisting)
-                {
-                    var staticBatch = new StaticMeshBatch(GameContext, currentNode.Material);
-                    staticBatch.AddBatch(currentNode);
-                    _staticBatches.Add(staticBatch);
-                    _batchesToUpdate.Add(staticBatch);
-                }
-            }
-
-            for (int i = 0; i < _batchesToUpdate.Count; i++)
-            {
-                _batchesToUpdate[i].Build();
-            }
-        }
-
-        private void UpdateNodeLists(IList<SceneNode> allDynamicNodes)
-        {
-            _allDrawableElements.Clear();
-            _allDrawableElements.AddRange(_staticBatches);
-            _allDrawableElements.AddRange(allDynamicNodes);
-
             _solidObjects.Clear();
             _transparentObjects.Clear();
             _shadowCastersObjectsSolid.Clear();
             _shadowCastersObjectsTransparent.Clear();
 
-            for (var i = 0; i < _allDrawableElements.Count; i++)
+            for (var i = 0; i < _allDrawables.Count; i++)
             {
-                var node = _allDrawableElements[i];
+                var node = _allDrawables[i];
                 if (node.Mesh == null || node.Material == null || !node.IsActive) continue;
 
                 if (node.Material.CastShadow)
@@ -331,6 +287,58 @@ namespace Pokemon3D.Rendering.Compositor
                 {
                     _solidObjects.Add(node);
                 }
+            }
+        }
+
+        public DrawableElement CreateDrawableElement(bool initializing)
+        {
+            var drawableElement = new DrawableElement(initializing, OnEndInitializing);
+
+            lock (_lockObject)
+            {
+                _allDrawables.Add(drawableElement);
+            }
+
+            return drawableElement;
+        }
+
+        private void OnEndInitializing(DrawableElement element)
+        {
+            lock (_lockObject)
+            {
+                if (_initializingDrawables.Remove(element))
+                {
+                    _allDrawables.Add(element);
+                }
+            }
+        }
+
+        public Camera CreateCamera()
+        {
+            var camera = new Camera(GameContext.GraphicsDevice.Viewport);
+            lock (_lockObject)
+            {
+                _allCameras.Add(camera);
+            }
+            return camera;
+        }
+
+        /// <summary>
+        /// Ambient Light for all Objects. Default is white.
+        /// </summary>
+        public Vector4 AmbientLight { get; set; }
+
+        /// <summary>
+        /// Currently single light just supported.
+        /// </summary>
+        public Light Light { get; set; }
+
+
+        public void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize)
+        {
+            foreach (var camera in _allCameras)
+            {
+                camera.OnViewSizeChanged(oldSize, newSize);
             }
         }
     }

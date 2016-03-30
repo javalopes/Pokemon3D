@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
+using Pokemon3D.GameCore;
 using Pokemon3D.GameModes.Maps.EntityComponents;
 using Pokemon3D.GameModes.Maps.EntityComponents.Components;
 using Pokemon3D.GameModes.Maps.Generators;
@@ -9,17 +10,18 @@ using System.Linq;
 
 namespace Pokemon3D.GameModes.Maps
 {
-    class EntitySystem
+    class EntitySystem : GameObject
     {
         private readonly List<Entity> _entities;
-        private readonly Scene _scene;
+        private readonly SceneRenderer _renderer;
+
+        public SceneRenderer Renderer { get; private set; }
         
         public EntityGeneratorSupplier EntityGeneratorSupplier { get; }
 
-        public EntitySystem(Scene scene)
+        public EntitySystem()
         {
             _entities = new List<Entity>();
-            _scene = scene;
             EntityGeneratorSupplier = new EntityGeneratorSupplier();
         }
 
@@ -31,8 +33,7 @@ namespace Pokemon3D.GameModes.Maps
             {
                 var modelComponent = new ModelEntityComponent(entity, entityModel.RenderMode);
                 entity.AddComponent(modelComponent);
-
-
+                
                 entity.Scale = entityPlacing.Scale?.GetVector3() ?? Vector3.One;
 
                 if (entityPlacing.Rotation != null)
@@ -95,8 +96,6 @@ namespace Pokemon3D.GameModes.Maps
         {
             _entities.Remove(entity);
         }
-
-        public Scene Scene { get { return _scene; } }
 
         public int EntityCount => _entities.Count;
 

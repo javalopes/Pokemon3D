@@ -13,7 +13,6 @@ namespace Pokemon3D.GameModes.Maps
         private readonly MapModel _mapModel;
 
         public GameMode GameMode { get; }
-        public Scene Scene { get; private set; }
 
         public Map(GameMode gameMode, MapModel mapModel)
         {
