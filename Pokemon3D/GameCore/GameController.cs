@@ -100,7 +100,14 @@ namespace Pokemon3D.GameCore
 
             IsMouseVisible = true;
 
-            Renderer = SceneRendererFactory.Create(this, new WindowsSceneEffect(Content), new RenderSettings());
+            var renderSettings = new RenderSettings
+            {
+                EnableShadows = GameConfig.ShadowsEnabled,
+                EnableSoftShadows = GameConfig.SoftShadows,
+                ShadowMapSize = 512 // todo: reenable
+            };
+
+            Renderer = SceneRendererFactory.Create(this, new WindowsSceneEffect(Content), renderSettings);
             EntitySystem = new EntitySystem();
             GameModeManager = new GameModeManager();
             SpriteBatch = new SpriteBatch(GraphicsDevice);
