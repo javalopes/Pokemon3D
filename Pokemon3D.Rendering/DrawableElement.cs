@@ -26,6 +26,7 @@ namespace Pokemon3D.Rendering
         {
             IsInitializing = initializing;
             if (initializing) _onEndInitializing = onEndInitializing;
+            IsActive = true;
         }
 
         public void EndInitialzing()
