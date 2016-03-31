@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
-using Pokemon3D.GameModes.Maps.EntityComponents;
-using Pokemon3D.GameModes.Maps.EntityComponents.Components;
 using System.Collections.Generic;
 
 namespace Pokemon3D.GameModes.Maps.Generators
@@ -10,7 +8,9 @@ namespace Pokemon3D.GameModes.Maps.Generators
     {
         public virtual IEnumerable<Entity> Generate(EntitySystem entitySystem, EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 position)
         {
-            yield return entitySystem.CreateEntityFromDataModel(entityDefinition.Entity, entityPlacing, position);
+            var list = new List<Entity>();
+            list.Add(entitySystem.CreateEntityFromDataModel(entityDefinition.Entity, entityPlacing, position));
+            return list;
         }
     }
 }

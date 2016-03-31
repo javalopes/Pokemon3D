@@ -13,7 +13,6 @@ namespace Pokemon3D.GameModes.Maps
     class EntitySystem : GameObject
     {
         private readonly List<Entity> _entities;
-        private readonly SceneRenderer _renderer;
 
         public SceneRenderer Renderer { get; private set; }
         

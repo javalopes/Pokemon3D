@@ -186,7 +186,6 @@ namespace Pokemon3D.Screens.Overworld
         public void OnUpdate(float elapsedTime)
         {
             _player.Update(elapsedTime);
-            _currentMap.Update(elapsedTime);
             Game.EntitySystem.Update(elapsedTime);
 
             if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Escape))
@@ -236,9 +235,7 @@ namespace Pokemon3D.Screens.Overworld
 
         public void OnDraw(GameTime gameTime)
         {
-            _currentMap.RenderPreparations(_player.Camera);
             Game.CollisionManager.Draw(_player.Camera);
-
             if (_showRenderStatistics) DrawRenderStatsitics();
         }
 

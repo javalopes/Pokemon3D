@@ -27,6 +27,7 @@ namespace Pokemon3D.Rendering
             IsInitializing = initializing;
             if (initializing) _onEndInitializing = onEndInitializing;
             IsActive = true;
+            Scale = Vector3.One;
         }
 
         public void EndInitialzing()
@@ -37,10 +38,18 @@ namespace Pokemon3D.Rendering
             IsInitializing = false;
         }
 
+        public Matrix GetWorldMatrix(float cameraRotationY)
+        {
+            return IsBillboard ? Matrix.CreateScale(Scale) * Matrix.CreateRotationY(cameraRotationY) * Matrix.CreateTranslation(GlobalPosition)
+                : WorldMatrix;
+        }
+
         public Vector3 GlobalPosition
         {
             get; set;
         }
+
+        public Vector3 Scale { get; set; }
 
         public BoundingBox BoundingBox
         {

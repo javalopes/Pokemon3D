@@ -71,19 +71,62 @@ namespace Pokemon3D.GameModes
             IsValid = true;
         }
 
+        private bool _loadFinished;
+        private bool _loadMovesFinished;
+        private bool _loadItemsFinished;
+
         public void PreloadAsync(Action finished)
         {
+            _loadFinished = false;
+            _loadMovesFinished = false;
+            _loadItemsFinished = false;
             FileLoader.GetFilesAsync(new[]
             {
                 PrimitivesFilePath,
                 NaturesFilePath,
                 TypesFilePath,
                 PokedexesFilePath
-            }, OnLoadFinished);
+            }, a => OnLoadFinished(a,finished));
+        }
+
+        private void OnLoadFinished(DataLoadResult[] data, Action finished)
+        {
+            _primitiveModels = DataModel<PrimitiveModel[]>.FromByteArray(data[0].Data);
+            foreach (var primitiveModel in _primitiveModels)
+            {
+                var geometryData = new GeometryData
+                {
+                    Vertices = primitiveModel.Vertices.Select(v => new VertexPositionNormalTexture
+                    {
+                        Position = v.Position.GetVector3(),
+                        TextureCoordinate = v.TexCoord.GetVector2(),
+                        Normal = v.Normal.GetVector3()
+                    }).ToArray(),
+                    Indices = primitiveModel.Indices.Select(i => (ushort)i).ToArray()
+                };
+                var mesh = new Mesh(GameContext.GraphicsDevice, geometryData);
+                _meshPrimitivesByName.Add(primitiveModel.Id, mesh);
+            }
+
+            _natureModels = DataModel<NatureModel[]>.FromByteArray(data[1].Data);
+            _typeModels = DataModel<TypeModel[]>.FromByteArray(data[2].Data);
+            _pokedexModels = DataModel<PokedexModel[]>.FromByteArray(data[3].Data);
+
             FileLoader.GetFilesOfFolderAsync(MoveFilesPath, d => OnMovesLoaded(d, finished));
+        }
+
+        private void OnMovesLoaded(DataLoadResult[] data, Action finished)
+        {
+            _moveModels = data.Select(d => DataModel<MoveModel>.FromByteArray(d.Data)).ToArray();
             FileLoader.GetFilesOfFolderAsync(ItemFilesPath, d => OnItemsLoaded(d, finished));
         }
 
+        private void OnItemsLoaded(DataLoadResult[] data, Action finished)
+        {
+            _itemModels = data.Select(d => DataModel<ItemModel>.FromByteArray(d.Data)).ToArray();
+            finished();
+        }
+        
         public AsyncTexture2D GetTextureAsync(string filePath)
         {
             var fullPath = Path.Combine(TexturePath, filePath);
@@ -151,42 +194,6 @@ namespace Pokemon3D.GameModes
             var meshsArray = Rendering.Data.ModelMesh.LoadFromFile(this, absolutePath);
             _meshCache.Add(filePath, meshsArray);
             return meshsArray;
-        }
-
-        private void OnMovesLoaded(DataLoadResult[] data, Action finished)
-        {
-            _moveModels = data.Select(d => DataModel<MoveModel>.FromByteArray(d.Data)).ToArray();
-            finished();
-        }
-
-        private void OnItemsLoaded(DataLoadResult[] data, Action finished)
-        {
-            _itemModels = data.Select(d => DataModel<ItemModel>.FromByteArray(d.Data)).ToArray();
-            finished();
-        }
-
-        private void OnLoadFinished(DataLoadResult[] data)
-        {
-            _primitiveModels = DataModel<PrimitiveModel[]>.FromByteArray(data[0].Data);
-            foreach(var primitiveModel in _primitiveModels)
-            {
-                var geometryData = new GeometryData
-                {
-                    Vertices = primitiveModel.Vertices.Select(v => new VertexPositionNormalTexture
-                    {
-                        Position = v.Position.GetVector3(),
-                        TextureCoordinate = v.TexCoord.GetVector2(),
-                        Normal = v.Normal.GetVector3()
-                    }).ToArray(),
-                    Indices = primitiveModel.Indices.Select(i => (ushort)i).ToArray()
-                };
-                var mesh = new Mesh(GameContext.GraphicsDevice, geometryData);
-                _meshPrimitivesByName.Add(primitiveModel.Id, mesh);
-            }
-
-            _natureModels = DataModel<NatureModel[]>.FromByteArray(data[1].Data);
-            _typeModels = DataModel<TypeModel[]>.FromByteArray(data[2].Data);
-            _pokedexModels = DataModel<PokedexModel[]>.FromByteArray(data[3].Data);
         }
 
         public Mesh GetPrimitiveMesh(string primitiveName)

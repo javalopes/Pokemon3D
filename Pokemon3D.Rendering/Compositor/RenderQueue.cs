@@ -64,9 +64,8 @@ namespace Pokemon3D.Rendering.Compositor
 
         internal static void DrawElement(Camera camera, DrawableElement element, SceneEffect sceneEffect, float yRotationForBillboards)
         {
-            //todo: Repair Billboards;
-            //sceneEffect.World = element.GetWorldMatrix(camera.GlobalEulerAngles.Y);
-            //sceneEffect.WorldLight = element.GetWorldMatrix(yRotationForBillboards);
+            sceneEffect.World = element.GetWorldMatrix(camera.GlobalEulerAngles.Y);
+            sceneEffect.WorldLight = element.GetWorldMatrix(yRotationForBillboards);
             sceneEffect.World = element.WorldMatrix;
             sceneEffect.WorldLight = element.WorldMatrix;
             sceneEffect.DiffuseTexture = element.Material.DiffuseTexture;

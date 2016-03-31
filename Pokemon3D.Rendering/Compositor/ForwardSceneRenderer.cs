@@ -296,7 +296,14 @@ namespace Pokemon3D.Rendering.Compositor
 
             lock (_lockObject)
             {
-                _allDrawables.Add(drawableElement);
+                if (initializing)
+                {
+                    _initializingDrawables.Add(drawableElement);
+                }
+                else
+                {
+                    _allDrawables.Add(drawableElement);
+                }
             }
 
             return drawableElement;

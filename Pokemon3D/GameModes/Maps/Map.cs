@@ -2,14 +2,11 @@
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.GameCore;
-using Pokemon3D.Rendering;
-using System.Collections.Generic;
 
 namespace Pokemon3D.GameModes.Maps
 {
     class Map : GameObject
     {
-        private readonly List<Entity> _allEntities = new List<Entity>();
         private readonly MapModel _mapModel;
 
         public GameMode GameMode { get; }
@@ -67,25 +64,11 @@ namespace Pokemon3D.GameModes.Maps
                     {
                         var position = entityPlacing.Position.GetVector3() + new Vector3(x, y, z) + offset;
 
-                        _allEntities.AddRange(generator.Generate(Game.EntitySystem, entityDefinition, entityPlacing, position));
+                        var entities = generator.Generate(Game.EntitySystem, entityDefinition, entityPlacing, position);
                     }
                 }
             }
         }
 
-        public void Update(float elapsedTime)
-        {
-            _allEntities.ForEach(e => e.Update(elapsedTime));
-        }
-
-        public void AddEntity(Entity entity)
-        {
-            _allEntities.Add(entity);
-        }
-
-        public void RenderPreparations(Camera observer)
-        {
-            _allEntities.ForEach(e => e.RenderPreparations(observer));
-        }
     }
 }

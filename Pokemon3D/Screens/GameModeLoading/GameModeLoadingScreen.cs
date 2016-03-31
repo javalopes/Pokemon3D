@@ -58,7 +58,6 @@ namespace Pokemon3D.Screens.GameModeLoading
 
         private void ContinueLoadMap()
         {
-
             var settings = new RenderSettings
             {
                 EnableShadows = Game.GameConfig.ShadowsEnabled,
@@ -85,19 +84,6 @@ namespace Pokemon3D.Screens.GameModeLoading
         {
             _result.Map = new Map(Game.ActiveGameMode, mapModel);
             _result.Player = new Player(Game.EntitySystem);
-
-            //_result.Map.AddEntity(new NPC(_result.Scene, new DataModel.GameMode.Map.NPCs.RandomNPCModel()
-            //{
-            //    Name = "Testificate",
-            //    Behaviour = DataModel.GameMode.Map.NPCs.NPCBehaviour.Roaming,
-            //    Texture = new DataModel.TextureSourceModel()
-            //    {
-            //        Source = "test",
-            //        Rectangle = null
-            //    },
-            //    Chance = 100,
-            //    ScriptBinding = "somescript"
-            //}));
             _loadingFinished = true;
         }
 

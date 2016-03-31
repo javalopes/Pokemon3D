@@ -10,40 +10,40 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
     class ModelEntityComponent : EntityComponent
     {
         private EntityRenderModeModel _dataModel;
-        private DrawableElement _sceneNode;
+        private DrawableElement _drawbaleElement;
 
         public ModelEntityComponent(Entity parent, EntityRenderModeModel dataModel) : base(parent)
         {
+            //todo: remove this method, because this is a task for the creator of this entity.
             _dataModel = dataModel;
             InitializeRenderingData(dataModel.IsBillboard, dataModel.RenderMethod, dataModel.PrimitiveModelId, dataModel.Shading.GetVector3(), dataModel.UseTransparency, dataModel.ModelPath);
         }
 
         public ModelEntityComponent(Entity parent, Mesh mesh, Material material, bool isBillboard) : base(parent)
         {
-            _sceneNode = parent.Game.Renderer.CreateDrawableElement(true);
-            _sceneNode.Material = material;
-            _sceneNode.Mesh = mesh;
-            _sceneNode.IsBillboard = isBillboard;
-            _sceneNode.EndInitialzing();
+            _drawbaleElement = parent.Game.Renderer.CreateDrawableElement(true);
+            _drawbaleElement.Material = material;
+            _drawbaleElement.Mesh = mesh;
+            _drawbaleElement.EndInitialzing();
             IsBillboard = isBillboard;
         }
 
         private void InitializeRenderingData(bool isBillboard, RenderMethod renderMethod, string primitiveModelId, Vector3 shadingVector, bool useTransparency, string modelPath)
         {
-            _sceneNode = Parent.Game.Renderer.CreateDrawableElement(true);
-            _sceneNode.Material = new Material();
+            _drawbaleElement = Parent.Game.Renderer.CreateDrawableElement(true);
+            _drawbaleElement.Material = new Material();
 
             IsBillboard = isBillboard;
 
             if (renderMethod == RenderMethod.Primitive)
             {
                 //todo: that might not be a good idea.
-                _sceneNode.Mesh = GameController.Instance.ActiveGameMode.GetPrimitiveMesh(primitiveModelId);
-                _sceneNode.Material.Color = new Color(shadingVector);
-                _sceneNode.Material.CastShadow = true;
-                _sceneNode.Material.ReceiveShadow = !useTransparency;
-                _sceneNode.Material.UseTransparency = useTransparency;
-                _sceneNode.Material.IsUnlit = false;
+                _drawbaleElement.Mesh = GameController.Instance.ActiveGameMode.GetPrimitiveMesh(primitiveModelId);
+                _drawbaleElement.Material.Color = new Color(shadingVector);
+                _drawbaleElement.Material.CastShadow = true;
+                _drawbaleElement.Material.ReceiveShadow = !useTransparency;
+                _drawbaleElement.Material.UseTransparency = useTransparency;
+                _drawbaleElement.Material.IsUnlit = false;
 
                 SetTexture(0);
             }
@@ -53,17 +53,17 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
                 var models = GameController.Instance.ActiveGameMode.GetModel(modelPath);
                 if (models.Length >= 1)
                 {
-                    AttachModelToSceneNode(_sceneNode, models[0], shadingVector, useTransparency);
+                    AttachModelToDrawableElement(_drawbaleElement, models[0], shadingVector, useTransparency);
                 }
             }
 
-            _sceneNode.EndInitialzing();
+            _drawbaleElement.EndInitialzing();
         }
 
         public bool IsBillboard
         {
-            get { return _sceneNode.IsBillboard; }
-            set { _sceneNode.IsBillboard = value; }
+            get { return _drawbaleElement.IsBillboard; }
+            set { _drawbaleElement.IsBillboard = value; }
         }
 
         public void SetTexture(int index)
@@ -72,28 +72,29 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 
             //todo: that might not be a good idea.
             var diffuseTexture = GameController.Instance.ActiveGameMode.GetTexture(texture.Source);
-            _sceneNode.Material.DiffuseTexture = diffuseTexture;
+            _drawbaleElement.Material.DiffuseTexture = diffuseTexture;
 
             if (texture.Rectangle != null)
             {
-                _sceneNode.Material.TexcoordOffset = diffuseTexture.GetTexcoordsFromPixelCoords(texture.Rectangle.X, texture.Rectangle.Y);
-                _sceneNode.Material.TexcoordScale = diffuseTexture.GetTexcoordsFromPixelCoords(texture.Rectangle.Width, texture.Rectangle.Height);
+                _drawbaleElement.Material.TexcoordOffset = diffuseTexture.GetTexcoordsFromPixelCoords(texture.Rectangle.X, texture.Rectangle.Y);
+                _drawbaleElement.Material.TexcoordScale = diffuseTexture.GetTexcoordsFromPixelCoords(texture.Rectangle.Width, texture.Rectangle.Height);
             }
             else
             {
-                _sceneNode.Material.TexcoordOffset = Vector2.Zero;
-                _sceneNode.Material.TexcoordScale = Vector2.One;
+                _drawbaleElement.Material.TexcoordOffset = Vector2.Zero;
+                _drawbaleElement.Material.TexcoordScale = Vector2.One;
             }
         }
 
         public override void Update(float elapsedTime)
         {
             base.Update(elapsedTime);
-            _sceneNode.WorldMatrix = Parent.WorldMatrix;
+            _drawbaleElement.WorldMatrix = Parent.WorldMatrix;
+            _drawbaleElement.Scale = Parent.Scale;
 
-            if (_sceneNode.Mesh != null)
+            if (_drawbaleElement.Mesh != null)
             {
-                var box = _sceneNode.Mesh.LocalBounds;
+                var box = _drawbaleElement.Mesh.LocalBounds;
                 box.Min = box.Min * Parent.Scale;
                 box.Max = box.Max * Parent.Scale;
 
@@ -108,22 +109,22 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
                 box.Min += Parent.GlobalPosition;
                 box.Max += Parent.GlobalPosition;
 
-                _sceneNode.BoundingBox = box;
-                _sceneNode.GlobalPosition = Parent.GlobalPosition;
+                _drawbaleElement.BoundingBox = box;
+                _drawbaleElement.GlobalPosition = Parent.GlobalPosition;
             }
         }
 
-        public Material Material { get { return _sceneNode.Material; } }
+        public Material Material { get { return _drawbaleElement.Material; } }
 
-        private void AttachModelToSceneNode(DrawableElement sceneNode, ModelMesh modelMesh, Vector3 shading, bool useTransparency)
+        private void AttachModelToDrawableElement(DrawableElement drawbaleElement, ModelMesh modelMesh, Vector3 shading, bool useTransparency)
         {
-            sceneNode.Mesh = modelMesh.Mesh;
-            sceneNode.Material = modelMesh.Material;
-            sceneNode.Material.Color = new Color(shading);
-            sceneNode.Material.CastShadow = true;
-            sceneNode.Material.ReceiveShadow = useTransparency;
-            sceneNode.Material.UseTransparency = useTransparency;
-            sceneNode.Material.IsUnlit = false;
+            drawbaleElement.Mesh = modelMesh.Mesh;
+            drawbaleElement.Material = modelMesh.Material;
+            drawbaleElement.Material.Color = new Color(shading);
+            drawbaleElement.Material.CastShadow = true;
+            drawbaleElement.Material.ReceiveShadow = useTransparency;
+            drawbaleElement.Material.UseTransparency = useTransparency;
+            drawbaleElement.Material.IsUnlit = false;
         }
     }
 }
