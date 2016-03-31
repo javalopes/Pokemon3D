@@ -66,8 +66,6 @@ namespace Pokemon3D.Rendering.Compositor
         {
             sceneEffect.World = element.GetWorldMatrix(camera.GlobalEulerAngles.Y);
             sceneEffect.WorldLight = element.GetWorldMatrix(yRotationForBillboards);
-            sceneEffect.World = element.WorldMatrix;
-            sceneEffect.WorldLight = element.WorldMatrix;
             sceneEffect.DiffuseTexture = element.Material.DiffuseTexture;
             sceneEffect.TexcoordScale = element.Material.TexcoordScale;
             sceneEffect.TexcoordOffset = element.Material.TexcoordOffset;

@@ -19,6 +19,9 @@ namespace Pokemon3D.Rendering
         public Matrix WorldMatrix { get; set; }
         public bool IsActive { get; set; }
         public bool IsBillboard { get; set; }
+        public Vector3 GlobalPosition { get; set; }
+        public Vector3 Scale { get; set; }
+        public BoundingBox BoundingBox { get; set; }
 
         public bool IsInitializing { get; private set; }
 
@@ -40,20 +43,8 @@ namespace Pokemon3D.Rendering
 
         public Matrix GetWorldMatrix(float cameraRotationY)
         {
-            return IsBillboard ? Matrix.CreateScale(Scale) * Matrix.CreateRotationY(cameraRotationY) * Matrix.CreateTranslation(GlobalPosition)
-                : WorldMatrix;
-        }
-
-        public Vector3 GlobalPosition
-        {
-            get; set;
-        }
-
-        public Vector3 Scale { get; set; }
-
-        public BoundingBox BoundingBox
-        {
-            get; set;
+            if (IsBillboard) return Matrix.CreateScale(Scale) * Matrix.CreateRotationY(cameraRotationY) * Matrix.CreateTranslation(GlobalPosition);
+            return WorldMatrix;
         }
     }
 }

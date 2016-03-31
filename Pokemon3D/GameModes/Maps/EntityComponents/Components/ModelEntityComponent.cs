@@ -32,7 +32,6 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
         {
             _drawbaleElement = Parent.Game.Renderer.CreateDrawableElement(true);
             _drawbaleElement.Material = new Material();
-
             IsBillboard = isBillboard;
 
             if (renderMethod == RenderMethod.Primitive)

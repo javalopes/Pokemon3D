@@ -1399,6 +1399,7 @@
           "ModelPath": "",
           "Visible": true,
           "UseTransparency": true,
+		  "IsBillboard" : true,
           "Opacity": 1.0,
           "Shading": {
             "X": 1,
@@ -1412,9 +1413,6 @@
 			{
 				"Id": "hasCollision"
 			},
-            {
-                "Id": "isbillboard"
-            },
 		    {
 				"Id" : "collisionsize",
 				"Data" : "1,1,1"
@@ -1747,6 +1745,7 @@
           "ModelPath": "",
           "Visible": true,
           "UseTransparency": true,
+		  "IsBillboard" : true,
           "Opacity": 1.0,
           "Shading": {
             "X": 1,
@@ -1757,9 +1756,6 @@
           "SeasonPalettes": [ ]
         },
         "Components": [
-          {
-            "Id": "isbillboard"
-          },
           {
             "Id": "AnimateTextures",
             "Data": "0.8"
@@ -1905,6 +1901,7 @@
           "PrimitiveModelId": "Billboard",
           "ModelPath": "",
           "Visible": true,
+		  "IsBillboard" : true,
           "UseTransparency": true,
           "Opacity": 1.0,
           "Shading": {
@@ -1915,11 +1912,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isbillboard"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
