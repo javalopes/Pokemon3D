@@ -52,9 +52,9 @@ namespace Pokemon3D.UI.Framework.Dialogs
         private void SetupLayout()
         {
             int totalHeight = 75;
-            if (_controls.Count > 0)
+            if (Controls.Count > 0)
             {
-                foreach (var control in _controls)
+                foreach (var control in Controls)
                 {
                     totalHeight += 20 + control.GetBounds().Height;
                 }
@@ -73,7 +73,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
             }
 
             int startY = Game.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
-            foreach (var control in _controls)
+            foreach (var control in Controls)
             {
                 control.SetPosition(new Vector2(120, controlY + startY));
                 controlY += control.GetBounds().Height + 20;
