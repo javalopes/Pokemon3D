@@ -109,7 +109,7 @@
     <Compile Include="Shapes\GradientShapeTextureProvider.cs" />
     <Compile Include="Shapes\Pie2D.cs" />
     <Compile Include="Shapes\PieChartType.cs" />
-    <Compile Include="Shapes\Plane.cs" />
+    <Compile Include="Shapes\Plane2D.cs" />
     <Compile Include="Shapes\Polygon.cs" />
     <Compile Include="Shapes\Shape.cs" />
     <Compile Include="Shapes\ShapeFillData.cs" />
