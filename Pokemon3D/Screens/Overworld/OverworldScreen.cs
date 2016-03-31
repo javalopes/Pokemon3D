@@ -202,10 +202,14 @@ namespace Pokemon3D.Screens.Overworld
             }
         }
 
-        public void OnDraw(GameTime gameTime)
+        public void OnLateDraw(GameTime gameTime)
         {
             Game.CollisionManager.Draw(_world.Player.Camera);
             if (_showRenderStatistics) DrawRenderStatsitics();
+        }
+
+        public void OnEarlyDraw(GameTime gameTime)
+        {
         }
 
         private void DrawRenderStatsitics()

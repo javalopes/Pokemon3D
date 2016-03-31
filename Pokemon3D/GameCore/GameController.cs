@@ -154,8 +154,9 @@ namespace Pokemon3D.GameCore
 
         protected override void Draw(GameTime gameTime)
         {
+            ScreenManager.OnEarlyDraw(gameTime);
             Renderer.Draw();
-            ScreenManager.Draw(gameTime);
+            ScreenManager.OnLateDraw(gameTime);
             NotificationBar.Draw();
             base.Draw(gameTime);
         }

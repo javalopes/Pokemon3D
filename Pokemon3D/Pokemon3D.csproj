@@ -125,7 +125,6 @@
     <Compile Include="UI\NotificationKind.cs" />
     <Compile Include="Screens\GameModeLoading\GameModeLoadingResult.cs" />
     <Compile Include="Screens\GameModeLoading\GameModeLoadingScreen.cs" />
-    <Compile Include="Screens\InitializeableScreen.cs" />
     <Compile Include="Screens\MainMenu\MainMenuScreen.cs" />
     <Compile Include="Screens\Overworld\OverworldScreen.cs" />
     <Compile Include="Screens\Transitions\BlendTransition.cs" />

@@ -8,9 +8,15 @@ namespace Pokemon3D.Screens
     interface Screen
     {
         /// <summary>
-        /// Raises the Draw event.
+        /// This is called before the internal renderer draws all entities.
         /// </summary>
-        void OnDraw(GameTime gameTime);
+        void OnEarlyDraw(GameTime gameTime);
+
+        /// <summary>
+        /// This is called after the internal renderer draws all entities. This is useful for drawing custom overlays.
+        /// </summary>
+        /// <param name="gameTime"></param>
+        void OnLateDraw(GameTime gameTime);
 
         /// <summary>
         /// Raises the Update event.

@@ -69,7 +69,7 @@ namespace Pokemon3D.Screens.MainMenu
             _buttons.Active = true;
         }
 
-        public void OnDraw(GameTime gameTime)
+        public void OnLateDraw(GameTime gameTime)
         {
             Game.GraphicsDevice.Clear(Color.LightGray);
             
@@ -80,6 +80,10 @@ namespace Pokemon3D.Screens.MainMenu
             _buttons.Draw();
 
             _closeDialog.Draw();
+        }
+
+        public void OnEarlyDraw(GameTime gameTime)
+        {
         }
 
         public void OnUpdate(float elapsedTime)

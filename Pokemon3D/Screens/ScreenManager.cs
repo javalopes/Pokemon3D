@@ -98,11 +98,13 @@ namespace Pokemon3D.Screens
             var currentRenderTarget = Game.GraphicsDevice.GetRenderTargets();
 
             Game.GraphicsDevice.SetRenderTarget(_sourceRenderTarget);
-            oldScreen.OnDraw(new GameTime());
+            oldScreen.OnEarlyDraw(new GameTime());
+            oldScreen.OnLateDraw(new GameTime());
 
             Game.GraphicsDevice.SetRenderTarget(_targetRenderTarget);
             currentScreen.OnUpdate(0);
-            currentScreen.OnDraw(new GameTime());
+            currentScreen.OnEarlyDraw(new GameTime());
+            currentScreen.OnLateDraw(new GameTime());
 
             Game.GraphicsDevice.SetRenderTargets(currentRenderTarget);
             _currentTransition = _screenTransitionsByType[transition];
@@ -112,7 +114,7 @@ namespace Pokemon3D.Screens
         /// <summary>
         /// Draws the current screen.
         /// </summary>
-        public void Draw(GameTime gameTime)
+        public void OnEarlyDraw(GameTime gameTime)
         {
             if (_executingScreenTransition)
             {
@@ -120,8 +122,24 @@ namespace Pokemon3D.Screens
             }
             else
             {
-                CurrentScreen?.OnDraw(gameTime);
-                foreach (var overlay in _activeOverlays) overlay.OnDraw(gameTime);
+                CurrentScreen?.OnEarlyDraw(gameTime);
+                foreach (var overlay in _activeOverlays) overlay.OnEarlyDraw(gameTime);
+            }
+        }
+
+        /// <summary>
+        /// Draws the current screen.
+        /// </summary>
+        public void OnLateDraw(GameTime gameTime)
+        {
+            if (_executingScreenTransition)
+            {
+                _currentTransition.Draw();
+            }
+            else
+            {
+                CurrentScreen?.OnLateDraw(gameTime);
+                foreach (var overlay in _activeOverlays) overlay.OnLateDraw(gameTime);
             }
         }
 

@@ -57,7 +57,7 @@ namespace Pokemon3D.Screens.GameModeLoading
             _world.StartNewGameAsync(() => _loadingFinished = true);
         }
 
-        public void OnDraw(GameTime gameTime)
+        public void OnLateDraw(GameTime gameTime)
         {
             Game.GraphicsDevice.Clear(Color.Black);
 
@@ -65,6 +65,10 @@ namespace Pokemon3D.Screens.GameModeLoading
             _loadingText.Draw(Game.SpriteBatch);
             _pokeBallSprite.Draw(Game.SpriteBatch);
             Game.SpriteBatch.End();
+        }
+
+        public void OnEarlyDraw(GameTime gameTime)
+        {
         }
 
         public void OnUpdate(float elapsedTime)
