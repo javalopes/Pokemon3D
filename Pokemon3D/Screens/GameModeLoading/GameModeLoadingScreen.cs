@@ -28,21 +28,19 @@ namespace Pokemon3D.Screens.GameModeLoading
 
         private Stopwatch _sw;
         private bool _loadingFinished;
-
         private Sprite _pokeBallSprite;
         private SpriteText _loadingText;
-
-        private Dispatcher _dispatcher;
 
         private GameModeLoadingResult _result;
 
         public void OnOpening(object enterInformation)
         {
-            _dispatcher = Dispatcher.CurrentDispatcher;
             _result = new GameModeLoadingResult();
 
-            _pokeBallSprite = new Sprite(Game.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball));
-            _pokeBallSprite.Position = new Vector2(Game.ScreenBounds.Width, Game.ScreenBounds.Height) * 0.5f;
+            _pokeBallSprite = new Sprite(Game.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball))
+            {
+                Position = new Vector2(Game.ScreenBounds.Width, Game.ScreenBounds.Height)*0.5f
+            };
 
             _loadingText = new SpriteText(Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont), "@Loading...");
             _loadingText.SetTargetRectangle(new Rectangle(0, 100, Game.ScreenBounds.Width, 100));
@@ -58,26 +56,16 @@ namespace Pokemon3D.Screens.GameModeLoading
 
         private void ContinueLoadMap()
         {
-            var settings = new RenderSettings
-            {
-                EnableShadows = Game.GameConfig.ShadowsEnabled,
-                ShadowMapSize = ShadowMapSizeForQuality[Game.GameConfig.ShadowQuality],
-                EnableSoftShadows = Game.GameConfig.SoftShadows
-            };
+            var renderer = Game.Renderer;
+            renderer.AddPostProcessingStep(new HorizontalBlurPostProcessingStep());
+            renderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
+            renderer.EnablePostProcessing = false;
+            renderer.Light.Direction = new Vector3(-1.5f, -1.0f, -0.5f);
+            renderer.Light.AmbientIntensity = 0.5f;
+            renderer.Light.DiffuseIntensity = 0.8f;
+            renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
 
-            WindowsSceneEffect effect = null;
-            _dispatcher.Invoke(() => { effect = new WindowsSceneEffect(Game.Content); });
-
-            Game.Renderer.AddPostProcessingStep(new HorizontalBlurPostProcessingStep());
-            Game.Renderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
-            Game.Renderer.EnablePostProcessing = false;
-
-            Game.Renderer.Light.Direction = new Vector3(-1.5f, -1.0f, -0.5f);
-            Game.Renderer.Light.AmbientIntensity = 0.5f;
-            Game.Renderer.Light.DiffuseIntensity = 0.8f;
-            Game.Renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
-
-            Game.ActiveGameMode.MapManager.LoadMapAsync(Game.ActiveGameMode.GameModeInfo.StartMap, FinishedLoadingMapModel);
+            Game.ActiveGameMode.LoadMapAsync(Game.ActiveGameMode.GameModeInfo.StartMap, FinishedLoadingMapModel);
         }
 
         private void FinishedLoadingMapModel(MapModel mapModel)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.GameCore;
@@ -34,7 +35,7 @@ namespace Pokemon3D.GameModes.Maps
                 }
             }
         }
-        
+
         private void FinishLoadingMapFragment(MapFragmentImportModel importModel, MapFragmentModel fragmentModel)
         {
             var positions = importModel.Positions;
@@ -64,7 +65,7 @@ namespace Pokemon3D.GameModes.Maps
                     {
                         var position = entityPlacing.Position.GetVector3() + new Vector3(x, y, z) + offset;
 
-                        var entities = generator.Generate(Game.EntitySystem, entityDefinition, entityPlacing, position);
+                        generator.Generate(Game.EntitySystem, entityDefinition, entityPlacing, position);
                     }
                 }
             }

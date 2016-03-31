@@ -4,7 +4,7 @@ namespace Pokemon3D.GameModes.Maps.Generators
 {
     class EntityGeneratorSupplier
     {
-        private Dictionary<string, EntityGenerator> _generators;
+        private readonly Dictionary<string, EntityGenerator> _generators;
 
         public EntityGeneratorSupplier()
         {

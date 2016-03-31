@@ -11,7 +11,9 @@ namespace Pokemon3D.Collisions
     class CollisionManager : GameObject
     {
         private readonly List<Collider> _allColliders;
-        private Mesh _boundingBoxMesh;
+        private readonly Mesh _boundingBoxMesh;
+        private readonly List<CollisionResult> _colliderList = new List<CollisionResult>();
+
 
         private readonly Effect _lineDrawEffect;
         private readonly EffectParameter _worldViewProjection;
@@ -61,8 +63,6 @@ namespace Pokemon3D.Collisions
         {
             _allColliders.Remove(collider);
         }
-
-        private List<CollisionResult> _colliderList = new List<CollisionResult>();
 
         public CollisionResult[] CheckCollision(Collider collider)
         {

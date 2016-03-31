@@ -10,10 +10,10 @@ namespace Pokemon3D.UI.Localization
     /// </summary>
     abstract class TranslationManager : GameCore.GameObject, TranslationProvider
     {
-        protected const string i18nFileExtension = ".json";
+        protected const string I18NFileExtension = ".json";
         private const string KeyFormat = "{0}>{1}>{2}";
 
-        private Dictionary<string, string> _translations = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _translations = new Dictionary<string, string>();
 
         public event EventHandler LanguageChanged;
 
@@ -42,7 +42,7 @@ namespace Pokemon3D.UI.Localization
         
         public void OnLanguageChanged(object sender, EventArgs e)
         {
-            LanguageChanged(this, e);
+            LanguageChanged?.Invoke(this, e);
         }
     }
 }

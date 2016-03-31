@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
@@ -44,11 +40,11 @@ namespace Pokemon3D.UI.Framework
             }
         }
 
-        private SpriteBatch _batch;
-        private List<BarEntry> _entries = new List<BarEntry>();
-        private ShapeRenderer _renderer;
-        private SpriteFont _font;
-        private Color _highlightColor;
+        private readonly SpriteBatch _batch;
+        private readonly List<BarEntry> _entries = new List<BarEntry>();
+        private readonly ShapeRenderer _renderer;
+        private readonly SpriteFont _font;
+        private readonly Color _highlightColor;
 
         public ControlBar()
         {

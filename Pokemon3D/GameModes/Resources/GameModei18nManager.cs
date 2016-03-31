@@ -21,7 +21,7 @@ namespace Pokemon3D.GameModes.Resources
                 List<SectionModel> sectionModels = new List<SectionModel>();
 
                 var files = Directory.GetFiles(_gameMode.i18nPath).
-                    Where(m => m.EndsWith(i18nFileExtension, StringComparison.OrdinalIgnoreCase));
+                    Where(m => m.EndsWith(I18NFileExtension, StringComparison.OrdinalIgnoreCase));
 
                 foreach (var file in files)
                 {

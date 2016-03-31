@@ -22,7 +22,6 @@ namespace Pokemon3D.GameModes.Maps
         private Vector3 _position;
         private Vector3 _scale;
         private bool _isDirty;
-        private Matrix _world;
         private Vector3 _globalPosition;
         private Vector3 _globalEulerAngles;
         private Vector3 _right;
@@ -30,12 +29,11 @@ namespace Pokemon3D.GameModes.Maps
         private Vector3 _forward;
         private bool _isActive;
 
-        public SceneRenderer Renderer { get; }
         public Entity Parent { get; private set; }
         public ReadOnlyCollection<Entity> Children { get; private set; }
         public bool IsStatic { get; set; }
 
-        public Entity(EntitySystem system)
+        public Entity()
         {
             _isActive = true;
             _childNodes = new List<Entity>();
@@ -133,7 +131,6 @@ namespace Pokemon3D.GameModes.Maps
                 HandleIsDirty();
                 return _globalEulerAngles;
             }
-            private set { _globalEulerAngles = value; }
         }
 
         public Vector3 Position
@@ -256,16 +253,9 @@ namespace Pokemon3D.GameModes.Maps
                                    Matrix.CreateTranslation(_position);
 
             Parent?.HandleIsDirty();
-            _world = Parent == null ? localWorldMatrix : localWorldMatrix * Parent._world;
+            WorldMatrix = Parent == null ? localWorldMatrix : localWorldMatrix * Parent.WorldMatrix;
 
-            if (Parent != null)
-            {
-                GlobalPosition = new Vector3(_world.M41, _world.M42, _world.M43);
-            }
-            else
-            {
-                GlobalPosition = _position;
-            }
+            GlobalPosition = Parent != null ? new Vector3(WorldMatrix.M41, WorldMatrix.M42, WorldMatrix.M43) : _position;
 
             var rotationMatrix = Matrix.CreateFromYawPitchRoll(_globalEulerAngles.Y, _globalEulerAngles.X, _globalEulerAngles.Z);
             _right = Vector3.TransformNormal(Vector3.Right, rotationMatrix);
@@ -275,7 +265,7 @@ namespace Pokemon3D.GameModes.Maps
             _isDirty = false;
         }
 
-        public Matrix WorldMatrix { get { return _world; } }
+        public Matrix WorldMatrix { get; private set; }
 
         /// <summary>
         /// Returns a component of this <see cref="Entity"/>.
@@ -307,7 +297,7 @@ namespace Pokemon3D.GameModes.Maps
         public bool HasComponent<T>(string componentName) where T : EntityComponent
         {
             return _components.Any(c => (c.Name ?? "").Equals(componentName, System.StringComparison.OrdinalIgnoreCase) 
-                                        && typeof(T).IsAssignableFrom(c.GetType()));
+                                        && c is T);
         }
     }
 }

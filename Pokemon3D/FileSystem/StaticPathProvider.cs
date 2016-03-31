@@ -16,23 +16,11 @@ namespace Pokemon3D.FileSystem
         /// <summary>
         /// The path to the main configuration file of the game.
         /// </summary>
-        public static string ConfigFile
-        {
-            get
-            {
-                return Path.Combine(StartupPath, CONFIG_FILE_NAME);
-            }
-        }
+        public static string ConfigFile => Path.Combine(StartupPath, CONFIG_FILE_NAME);
 
         /// <summary>
         /// The path to the save files.
         /// </summary>
-        public static string SavePath
-        {
-            get
-            {
-                return Path.Combine(StartupPath, SAVE_PATH);
-            }
-        }
+        public static string SavePath => Path.Combine(StartupPath, SAVE_PATH);
     }
 }

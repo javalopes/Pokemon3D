@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Pokemon3D.GameCore;
-using Pokemon3D.Common.Input;
 using Pokemon3D.Screens.Transitions;
 using Pokemon3D.UI.Framework;
 using Pokemon3D.UI.Framework.Dialogs;
@@ -18,8 +13,8 @@ namespace Pokemon3D.Screens.MainMenu
         private DefaultControlGroup _buttons;
         private SelectionDialog _closeDialog;
 
-        private HexagonBackground _hexagons = new HexagonBackground();
-        private ControlBar _bar = new ControlBar();
+        private readonly HexagonBackground _hexagons = new HexagonBackground();
+        private readonly ControlBar _bar = new ControlBar();
         
         public void OnOpening(object enterInformation)
         {
@@ -37,19 +32,19 @@ namespace Pokemon3D.Screens.MainMenu
             }));
             _buttons.Add(new LeftSideButton("GameJolt", new Vector2(26, 169), null));
             _buttons.Add(new LeftSideButton("Options", new Vector2(26, 231), null));
-            _buttons.Add(new LeftSideButton("Exit game", new Vector2(26, 293), (b) =>
+            _buttons.Add(new LeftSideButton("Exit game", new Vector2(26, 293), b =>
             {
                 _closeDialog.Show();
             }));
             _buttons.Add(new LeftSideCheckbox("Checkbox test", new Vector2(26, 355), null));
 
-            _closeDialog = new SelectionDialog("Do you really want to exit?", "Any unsaved changes will be lost.", new LeftSideButton[]
+            _closeDialog = new SelectionDialog("Do you really want to exit?", "Any unsaved changes will be lost.", new[]
             {
-                new LeftSideButton("No", new Vector2(50, 50), (b) =>
+                new LeftSideButton("No", new Vector2(50, 50), b =>
                 {
                     _closeDialog.Close();
                 }),
-                new LeftSideButton("Yes", new Vector2(50, 100), (b) =>
+                new LeftSideButton("Yes", new Vector2(50, 100), b =>
                 {
                     Game.ScreenManager.NotifyQuitGame();
                 })

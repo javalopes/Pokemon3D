@@ -47,7 +47,7 @@ namespace Pokemon3D.GameCore
         public SpriteBatch SpriteBatch { get; private set; }
         public GuiSystem GuiSystem { get; private set; }
         public InputSystem InputSystem { get; private set; }
-        public GameConfiguration GameConfig { get; private set; }
+        public GameConfiguration GameConfig { get; }
         public TranslationProvider TranslationProvider { get; private set; }
         public NotificationBar NotificationBar { get; private set; }
         public CollisionManager CollisionManager { get; private set; }

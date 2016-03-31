@@ -9,20 +9,17 @@ namespace Pokemon3D.UI.Framework
     /// </summary>
     class ColorTransition
     {
-        private float _speedValue;
+        private readonly float _speedValue;
 
         private float _r, _g, _b, _a;
         
         /// <summary>
         /// The current color.
         /// </summary>
-        public Color Color
-        {
-            get { return new Color((byte)Clamp(_r, 0, 255),
-                (byte)Clamp(_g, 0, 255),
-                (byte)Clamp(_b, 0, 255),
-                (byte)Clamp(_a, 0, 255)); }
-        }
+        public Color Color => new Color((byte)Clamp(_r, 0, 255),
+            (byte)Clamp(_g, 0, 255),
+            (byte)Clamp(_b, 0, 255),
+            (byte)Clamp(_a, 0, 255));
 
         public Color TargetColor { get; set; }
 

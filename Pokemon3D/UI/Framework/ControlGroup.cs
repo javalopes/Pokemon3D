@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common.Input;
 using Pokemon3D.GameCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pokemon3D.UI.Framework
 {
@@ -14,16 +11,16 @@ namespace Pokemon3D.UI.Framework
     /// </summary>
     abstract class ControlGroup : GameObject
     {
-        protected List<Control> _controls;
+        private readonly List<Control> _controls;
 
-        public List<Control> Controls { get { return _controls; } }
+        public List<Control> Controls => _controls;
 
         /// <summary>
         /// If this control group gets drawn.
         /// </summary>
         public bool Visible { get; set; } = false;
 
-        private bool _isActive = false;
+        private bool _isActive;
 
         /// <summary>
         /// If this control group gets updated.
@@ -40,14 +37,12 @@ namespace Pokemon3D.UI.Framework
                 if (_isActive)
                 {
                     _controls.ForEach(c => c.GroupActivated());
-                    if (Activated != null)
-                        Activated(this);
+                    Activated?.Invoke(this);
                 }
                 else
                 {
                     _controls.ForEach(c => c.GroupDeactivated());
-                    if (Deactivated != null)
-                        Deactivated(this);
+                    Deactivated?.Invoke(this);
                 }
             }
         }

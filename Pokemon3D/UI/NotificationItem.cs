@@ -6,7 +6,7 @@ namespace Pokemon3D.UI
 {
     class NotificationItem
     {
-        private Animator _animator;
+        private readonly Animator _animator;
 
         public NotificationItem(float lifeTime, NotificationKind notificationKind, string message)
         {

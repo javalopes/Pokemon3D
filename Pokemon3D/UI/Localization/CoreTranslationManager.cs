@@ -18,7 +18,7 @@ namespace Pokemon3D.UI.Localization
                 List<SectionModel> sectionModels = new List<SectionModel>();
 
                 var files = Directory.GetFiles(i18nPathProvider.LookupPath).
-                    Where(m => m.EndsWith(i18nFileExtension, StringComparison.OrdinalIgnoreCase));
+                    Where(m => m.EndsWith(I18NFileExtension, StringComparison.OrdinalIgnoreCase));
 
                 foreach (var file in files)
                 {

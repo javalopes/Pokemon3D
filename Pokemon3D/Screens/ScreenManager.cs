@@ -21,7 +21,7 @@ namespace Pokemon3D.Screens
         private bool _executingScreenTransition;
         private bool _quitGame;
         private ScreenTransition _currentTransition;
-        private List<Screen> _activeOverlays;
+        private readonly List<Screen> _activeOverlays;
 
         public Screen CurrentScreen { get; private set; }
 

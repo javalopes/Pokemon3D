@@ -9,7 +9,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 {
     class ModelEntityComponent : EntityComponent
     {
-        private EntityRenderModeModel _dataModel;
+        private readonly EntityRenderModeModel _dataModel;
         private DrawableElement _drawbaleElement;
 
         public ModelEntityComponent(Entity parent, EntityRenderModeModel dataModel) : base(parent)
@@ -113,7 +113,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
             }
         }
 
-        public Material Material { get { return _drawbaleElement.Material; } }
+        public Material Material => _drawbaleElement.Material;
 
         private void AttachModelToDrawableElement(DrawableElement drawbaleElement, ModelMesh modelMesh, Vector3 shading, bool useTransparency)
         {

@@ -33,7 +33,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
         private static object ToArray<T>(string data)
         {
             return data.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => Convert<string>(x)).ToArray();
+                .Select(Convert<string>).ToArray();
         }
 
         private static object ToVector3(string data)

@@ -32,7 +32,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
             set { Camera.ClearColor = value; }
         }
 
-        public Camera Camera { get; private set; }
+        public Camera Camera { get; }
 
         public CameraEntityComponent(Entity parent, Skybox skybox) : base(parent)
         {

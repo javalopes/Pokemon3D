@@ -15,6 +15,7 @@ using Mesh = Pokemon3D.Rendering.Data.Mesh;
 using System.Windows.Threading;
 using Pokemon3D.DataModel.GameMode.Pokemon;
 using Pokemon3D.DataModel.GameMode.Items;
+using Pokemon3D.DataModel.GameMode.Map;
 
 namespace Pokemon3D.GameModes
 {
@@ -26,6 +27,7 @@ namespace Pokemon3D.GameModes
         private readonly Dictionary<string, Rendering.Data.ModelMesh[]> _meshCache = new Dictionary<string, Rendering.Data.ModelMesh[]>();
         private readonly Dictionary<string, Mesh> _meshPrimitivesByName = new Dictionary<string, Mesh>(); 
         private readonly Dictionary<string, Texture2D> _textureCache = new Dictionary<string, Texture2D>();
+        private readonly Dictionary<string, MapModel> _mapModelsCache = new Dictionary<string, MapModel>(); 
 
         private PrimitiveModel[] _primitiveModels;
         private NatureModel[] _natureModels;
@@ -36,7 +38,6 @@ namespace Pokemon3D.GameModes
 
         public FileProvider FileLoader { get; }
         public GameModeInfo GameModeInfo { get; }
-        public MapManager MapManager { get; private set; }
         public MapFragmentManager MapFragmentManager { get; private set; }
         public PokemonFactory PokemonFactory { get; private set; }
 
@@ -63,7 +64,6 @@ namespace Pokemon3D.GameModes
             // only continue if the game mode config file loaded correctly.
             if (GameModeInfo.IsValid)
             {
-                MapManager = new MapManager(this);
                 MapFragmentManager = new MapFragmentManager(this);
                 PokemonFactory = new PokemonFactory(this);
             }
@@ -71,15 +71,8 @@ namespace Pokemon3D.GameModes
             IsValid = true;
         }
 
-        private bool _loadFinished;
-        private bool _loadMovesFinished;
-        private bool _loadItemsFinished;
-
         public void PreloadAsync(Action finished)
         {
-            _loadFinished = false;
-            _loadMovesFinished = false;
-            _loadItemsFinished = false;
             FileLoader.GetFilesAsync(new[]
             {
                 PrimitivesFilePath,
@@ -178,6 +171,14 @@ namespace Pokemon3D.GameModes
                 }
             }
             return texture;
+        }
+
+        public void LoadMapAsync(string dataPath, Action<MapModel> mapModelLoaded)
+        {
+            FileLoader.GetFileAsync(GetMapFilePath(dataPath), a =>
+            {
+                mapModelLoaded(DataModel<MapModel>.FromByteArray(a.Data));
+            });
         }
 
         public void GetModelAsync(string filePath, Action<Rendering.Data.ModelMesh[]> modelLoaded)

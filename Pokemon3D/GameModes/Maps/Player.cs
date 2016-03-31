@@ -14,10 +14,10 @@ namespace Pokemon3D.GameModes.Maps
 {
     class Player : GameObject
     {
-        private Entity _playerEntity;
-        private Entity _cameraEntity;
+        private readonly Entity _playerEntity;
+        private readonly Entity _cameraEntity;
 
-        private ModelEntityComponent _modelEntityComponent;
+        private readonly ModelEntityComponent _modelEntityComponent;
         private readonly Animator _figureAnimator;
         private PlayerMovementMode _movementMode;
         private MouseState _mouseState;
@@ -154,11 +154,11 @@ namespace Pokemon3D.GameModes.Maps
 
             if (MovementMode != PlayerMovementMode.GodMode)
             {
-                if (_cameraTargetPosition.Z != _cameraEntity.Position.Z)
+                if (Math.Abs(_cameraTargetPosition.Z - _cameraEntity.Position.Z) > float.Epsilon)
                 {
                     _cameraEntity.Position = new Vector3(_cameraEntity.Position.X, _cameraEntity.Position.Y, MathHelper.SmoothStep(_cameraEntity.Position.Z, _cameraTargetPosition.Z, 0.2f));
                 }
-                if (_cameraTargetPosition.Y != _cameraEntity.Position.Y)
+                if (Math.Abs(_cameraTargetPosition.Y - _cameraEntity.Position.Y) > float.Epsilon)
                 {
                     _cameraEntity.Position = new Vector3(_cameraEntity.Position.X, MathHelper.SmoothStep(_cameraEntity.Position.Y, _cameraTargetPosition.Y, 0.2f), _cameraEntity.Position.Z);
                 }
@@ -265,14 +265,7 @@ namespace Pokemon3D.GameModes.Maps
                 }
                 else
                 {
-                    if (movementDirection.Z > 0.0f)
-                    {
-                        _figureAnimator.SetAnimation("WalkForward");
-                    }
-                    else
-                    {
-                        _figureAnimator.SetAnimation("WalkBackward");
-                    }
+                    _figureAnimator.SetAnimation(movementDirection.Z > 0.0f ? "WalkForward" : "WalkBackward");
                 }
             }
             else

@@ -4,7 +4,6 @@ using Pokemon3D.GameCore;
 using Pokemon3D.GameModes.Maps.EntityComponents;
 using Pokemon3D.GameModes.Maps.EntityComponents.Components;
 using Pokemon3D.GameModes.Maps.Generators;
-using Pokemon3D.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,8 +12,6 @@ namespace Pokemon3D.GameModes.Maps
     class EntitySystem : GameObject
     {
         private readonly List<Entity> _entities;
-
-        public SceneRenderer Renderer { get; private set; }
         
         public EntityGeneratorSupplier EntityGeneratorSupplier { get; }
 
@@ -85,8 +82,8 @@ namespace Pokemon3D.GameModes.Maps
 
         public Entity CreateEntity(Entity parent = null)
         {
-            var entity = new Entity(this);
-            if (parent != null) parent.AddChild(entity);
+            var entity = new Entity();
+            parent?.AddChild(entity);
             _entities.Add(entity);
             return entity;
         }

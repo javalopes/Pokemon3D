@@ -11,10 +11,10 @@ namespace Pokemon3D.Screens
     {
         private readonly Effect _basicEffect;
 
-        private Dictionary<int, EffectTechnique> _effectsByLightingFlags;
+        private readonly Dictionary<int, EffectTechnique> _effectsByLightingFlags;
 
         private readonly EffectTechnique _shadowCasterTechnique;
-        private EffectTechnique _shadowCasterTransparentTechnique;
+        private readonly EffectTechnique _shadowCasterTransparentTechnique;
 
         private readonly EffectParameter _lightViewProjection;
         private readonly EffectParameter _world;

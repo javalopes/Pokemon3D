@@ -8,17 +8,11 @@ namespace Pokemon3D.FileSystem
     /// </summary>
     class i18nPathProvider : PathProvider
     {
-        const string i18nDirectory = "i18n";
+        const string I18NDirectory = "i18n";
         
         /// <summary>
         /// The lookup path for localization files.
         /// </summary>
-        public static string LookupPath
-        {
-            get 
-            {
-                return Path.Combine(new string[] { StartupPath, i18nDirectory });
-            }
-        }
+        public static string LookupPath => Path.Combine(new[] { StartupPath, I18NDirectory });
     }
 }

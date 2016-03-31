@@ -8,9 +8,10 @@ namespace Pokemon3D.GameModes.Maps.Generators
     {
         public virtual IEnumerable<Entity> Generate(EntitySystem entitySystem, EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 position)
         {
-            var list = new List<Entity>();
-            list.Add(entitySystem.CreateEntityFromDataModel(entityDefinition.Entity, entityPlacing, position));
-            return list;
+            return new List<Entity>
+            {
+                entitySystem.CreateEntityFromDataModel(entityDefinition.Entity, entityPlacing, position)
+            };
         }
     }
 }

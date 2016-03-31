@@ -18,7 +18,7 @@ namespace Pokemon3D.UI.Framework
         /// </summary>
         public bool Selected { get; protected set; }
 
-        public Control()
+        protected Control()
         {
             Selected = false;
         }

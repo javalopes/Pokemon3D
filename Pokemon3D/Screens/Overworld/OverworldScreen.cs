@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
 using Pokemon3D.GameModes.Maps;
-using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
 using System;
 using Pokemon3D.Screens.Transitions;
@@ -21,14 +20,15 @@ namespace Pokemon3D.Screens.Overworld
     class OverworldScreen : GameObject, Screen
     {
         private GameMode _gameMode;
+        // ReSharper disable NotAccessedField.Local
         private Map _currentMap;
-        private SceneRenderer _renderer;
+        // ReSharper restore NotAccessedField.Local
         private Player _player;
 
         private SpriteFont _debugSpriteFont;
         private bool _showRenderStatistics;
 
-        private bool _isLoaded = false;
+        private bool _isLoaded;
 
         public void OnOpening(object enterInformation)
         {
@@ -54,127 +54,130 @@ namespace Pokemon3D.Screens.Overworld
         {
             // creates a temporary save until we get full load/save management done.
 
-            var dataModel = new SaveFileModel();
-            dataModel.PlayerData = new PlayerModel();
-            dataModel.GameMode = "TestGM";
-            dataModel.Items = new InventoryItemModel[] 
+            var dataModel = new SaveFileModel
             {
-                new InventoryItemModel()
+                PlayerData = new PlayerModel(),
+                GameMode = "TestGM",
+                Items = new[]
                 {
-                    Amount = 2,
-                    Id = "Potion"
-                }
-            };
-            dataModel.Pokedexes = new PokedexSaveModel[]
-            {
-                new PokedexSaveModel()
-                {
-                    PokedexId = "National",
-                    Entries = new PokedexEntrySaveModel[]
+                    new InventoryItemModel
                     {
-                        new PokedexEntrySaveModel()
+                        Amount = 2,
+                        Id = "Potion"
+                    }
+                },
+                Pokedexes = new[]
+                {
+                    new PokedexSaveModel
+                    {
+                        PokedexId = "National",
+                        Entries = new[]
                         {
-                            EntryType = PokedexEntryType.Caught,
-                            Forms = new string[]
+                            new PokedexEntrySaveModel
                             {
-                                "Default",
-                                "Shiny"
-                            },
-                            Id = "Bulbasaur"
+                                EntryType = PokedexEntryType.Caught,
+                                Forms = new[]
+                                {
+                                    "Default",
+                                    "Shiny"
+                                },
+                                Id = "Bulbasaur"
+                            }
                         }
                     }
-                }
-            };
-            dataModel.Pokemon = new PokemonSaveModel[]
-            {
-                new PokemonSaveModel()
-                {
-                    Id = "Charizard",
-                    HP = 1,
-                    IVs = new PokemonStatSetModel()
-                    {
-                        HP = 21,
-                        Atk = 20,
-                        Def = 11,
-                        SpAtk = 15,
-                        SpDef = 30,
-                        Speed = 1
-                    },
-                    EVs = new PokemonStatSetModel()
-                    {
-                        HP = 50,
-                        Atk = 255,
-                        Def = 128,
-                        SpAtk = 255,
-                        SpDef = 255,
-                        Speed = 0
-                    },
-                    Experience = 10000
                 },
-                new PokemonSaveModel()
+                Pokemon = new[]
                 {
-                    Id = "Bulbasaur",
-                    HP = 5,
-                    IVs = new PokemonStatSetModel()
+                    new PokemonSaveModel
                     {
-                        HP = 10
+                        Id = "Charizard",
+                        HP = 1,
+                        IVs = new PokemonStatSetModel
+                        {
+                            HP = 21,
+                            Atk = 20,
+                            Def = 11,
+                            SpAtk = 15,
+                            SpDef = 30,
+                            Speed = 1
+                        },
+                        EVs = new PokemonStatSetModel
+                        {
+                            HP = 50,
+                            Atk = 255,
+                            Def = 128,
+                            SpAtk = 255,
+                            SpDef = 255,
+                            Speed = 0
+                        },
+                        Experience = 10000
                     },
-                    EVs = new PokemonStatSetModel()
+                    new PokemonSaveModel
                     {
-                        HP = 0
-                    }
-                },
-                new PokemonSaveModel()
-                {
-                    Id = "Charizard",
-                    HP = 12,
-                    IVs = new PokemonStatSetModel()
-                    {
-                        HP = 10
+                        Id = "Bulbasaur",
+                        HP = 5,
+                        IVs = new PokemonStatSetModel
+                        {
+                            HP = 10
+                        },
+                        EVs = new PokemonStatSetModel
+                        {
+                            HP = 0
+                        }
                     },
-                    EVs = new PokemonStatSetModel()
+                    new PokemonSaveModel
                     {
-                        HP = 0
+                        Id = "Charizard",
+                        HP = 12,
+                        IVs = new PokemonStatSetModel
+                        {
+                            HP = 10
+                        },
+                        EVs = new PokemonStatSetModel
+                        {
+                            HP = 0
+                        },
+                        IsShiny = true
                     },
-                    IsShiny = true
-                },new PokemonSaveModel()
-                {
-                    Id = "Bulbasaur",
-                    HP = 2,
-                    IVs = new PokemonStatSetModel()
+                    new PokemonSaveModel
                     {
-                        HP = 10
+                        Id = "Bulbasaur",
+                        HP = 2,
+                        IVs = new PokemonStatSetModel
+                        {
+                            HP = 10
+                        },
+                        EVs = new PokemonStatSetModel
+                        {
+                            HP = 0
+                        }
                     },
-                    EVs = new PokemonStatSetModel()
+                    new PokemonSaveModel
                     {
-                        HP = 0
-                    }
-                },
-                new PokemonSaveModel()
-                {
-                    Id = "Bulbasaur",
-                    HP = 11,
-                    IVs = new PokemonStatSetModel()
-                    {
-                        HP = 10
+                        Id = "Bulbasaur",
+                        HP = 11,
+                        IVs = new PokemonStatSetModel
+                        {
+                            HP = 10
+                        },
+                        EVs = new PokemonStatSetModel
+                        {
+                            HP = 0
+                        },
+                        IsShiny = true
                     },
-                    EVs = new PokemonStatSetModel()
+                    new PokemonSaveModel
                     {
-                        HP = 0
-                    },
-                    IsShiny = true
-                },
-                new PokemonSaveModel()
-                {
-                    Id = "Bulbasaur",
-                    HP = 8,
-                    IVs = new PokemonStatSetModel()
-                    {
-                        HP = 10
-                    },
-                    EVs = new PokemonStatSetModel()
-                    {
-                        HP = 0
+                        Id = "Bulbasaur",
+                        HP = 8,
+                        IVs = new PokemonStatSetModel
+                        {
+                            HP = 10
+                        },
+                        EVs = new PokemonStatSetModel
+                        {
+                            HP = 0
+                        }
                     }
                 }
             };
@@ -195,7 +198,7 @@ namespace Pokemon3D.Screens.Overworld
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.L))
             {
-                _renderer.EnablePostProcessing = !_renderer.EnablePostProcessing;
+                Game.Renderer.EnablePostProcessing = !Game.Renderer.EnablePostProcessing;
             }
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F12))
@@ -209,14 +212,7 @@ namespace Pokemon3D.Screens.Overworld
                 {
                     Game.NotificationBar.PushNotification(NotificationKind.Information, "Disabled God Mode");
                 }
-                if (_player.MovementMode == PlayerMovementMode.FirstPerson)
-                {
-                    _player.MovementMode = PlayerMovementMode.ThirdPerson;
-                }
-                else
-                {
-                    _player.MovementMode = PlayerMovementMode.FirstPerson;
-                }
+                _player.MovementMode = _player.MovementMode == PlayerMovementMode.FirstPerson ? PlayerMovementMode.ThirdPerson : PlayerMovementMode.FirstPerson;
             }
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.X) || Game.InputSystem.GamePad.IsButtonDownOnce(Buttons.X))
