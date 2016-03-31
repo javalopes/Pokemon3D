@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
-using Pokemon3D.GameModes.Maps;
 using Pokemon3D.Rendering.Compositor;
 using System;
 using Pokemon3D.Screens.Transitions;
@@ -11,19 +10,13 @@ using Pokemon3D.DataModel.Savegame;
 using Pokemon3D.DataModel.Savegame.Pokemon;
 using Pokemon3D.DataModel.Savegame.Inventory;
 using Pokemon3D.DataModel.Pokemon;
-using Pokemon3D.Screens.GameModeLoading;
 using Pokemon3D.Screens.MainMenu;
-using Pokemon3D.UI;
 
 namespace Pokemon3D.Screens.Overworld
 {
     class OverworldScreen : GameObject, Screen
     {
-        private GameMode _gameMode;
-        // ReSharper disable NotAccessedField.Local
-        private Map _currentMap;
-        // ReSharper restore NotAccessedField.Local
-        private Player _player;
+        private World _world;
 
         private SpriteFont _debugSpriteFont;
         private bool _showRenderStatistics;
@@ -34,13 +27,8 @@ namespace Pokemon3D.Screens.Overworld
         {
             if (!_isLoaded)
             {
-                _gameMode = Game.ActiveGameMode;
-
-                var loadingResult = enterInformation as GameModeLoadingResult;
-                if (loadingResult == null) throw new InvalidOperationException("Did not receive loaded data.");
-
-                _player = loadingResult.Player;
-                _currentMap = loadingResult.Map;
+                _world = enterInformation as World;
+                if (_world == null) throw new InvalidOperationException("Did not receive loaded data.");
 
                 _debugSpriteFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
 
@@ -183,12 +171,12 @@ namespace Pokemon3D.Screens.Overworld
             };
 
             Game.LoadedSave = new SaveGame(dataModel);
-            Game.LoadedSave.Load(_gameMode);
+            Game.LoadedSave.Load(Game.ActiveGameMode);
         }
 
         public void OnUpdate(float elapsedTime)
         {
-            _player.Update(elapsedTime);
+            _world.Update(elapsedTime);
             Game.EntitySystem.Update(elapsedTime);
 
             if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Escape))
@@ -206,32 +194,17 @@ namespace Pokemon3D.Screens.Overworld
                 _showRenderStatistics = !_showRenderStatistics;
             }
 
-            if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.V))
-            {
-                if (_player.MovementMode == PlayerMovementMode.GodMode)
-                {
-                    Game.NotificationBar.PushNotification(NotificationKind.Information, "Disabled God Mode");
-                }
-                _player.MovementMode = _player.MovementMode == PlayerMovementMode.FirstPerson ? PlayerMovementMode.ThirdPerson : PlayerMovementMode.FirstPerson;
-            }
-
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.X) || Game.InputSystem.GamePad.IsButtonDownOnce(Buttons.X))
             {
                 // Game.ScreenManager.PushScreen(typeof(OverlayScreen));
                 // Game.ScreenManager.PushScreen(typeof(TabletScreen));
                 // Game.ScreenManager.PushScreen(typeof(PokemonTableScreen));
             }
-
-            if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F10))
-            {
-                _player.MovementMode = PlayerMovementMode.GodMode;
-                Game.NotificationBar.PushNotification(NotificationKind.Information, "Enabled God Mode");
-            }
         }
 
         public void OnDraw(GameTime gameTime)
         {
-            Game.CollisionManager.Draw(_player.Camera);
+            Game.CollisionManager.Draw(_world.Player.Camera);
             if (_showRenderStatistics) DrawRenderStatsitics();
         }
 

@@ -2,16 +2,12 @@
 using Microsoft.Xna.Framework;
 using Pokemon3D.GameCore;
 using Pokemon3D.Screens.Transitions;
-using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.GUI;
-using System.Windows.Threading;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.DataModel.GameCore;
 using System.Collections.Generic;
-using Pokemon3D.GameModes.Maps;
-using Pokemon3D.Rendering;
-using Pokemon3D.DataModel.GameMode.Map;
+using Pokemon3D.GameModes;
 using Pokemon3D.Screens.Overworld;
 
 namespace Pokemon3D.Screens.GameModeLoading
@@ -26,17 +22,14 @@ namespace Pokemon3D.Screens.GameModeLoading
             { ShadowQuality.Large, 2048 }
         };
 
-        private Stopwatch _sw;
         private bool _loadingFinished;
         private Sprite _pokeBallSprite;
         private SpriteText _loadingText;
 
-        private GameModeLoadingResult _result;
+        private World _world;
 
         public void OnOpening(object enterInformation)
         {
-            _result = new GameModeLoadingResult();
-
             _pokeBallSprite = new Sprite(Game.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball))
             {
                 Position = new Vector2(Game.ScreenBounds.Width, Game.ScreenBounds.Height)*0.5f
@@ -47,15 +40,6 @@ namespace Pokemon3D.Screens.GameModeLoading
             _loadingText.HorizontalAlignment = HorizontalAlignment.Center;
             _loadingText.VerticalAlignment = VerticalAlignment.Top;
 
-            var gameModes = Game.GameModeManager.GetGameModeInfos();
-            Game.ActiveGameMode = Game.GameModeManager.CreateGameMode(gameModes.First(), Game);
-            _loadingFinished = false;
-            _sw = Stopwatch.StartNew();
-            Game.ActiveGameMode.PreloadAsync(ContinueLoadMap);
-        }
-
-        private void ContinueLoadMap()
-        {
             var renderer = Game.Renderer;
             renderer.AddPostProcessingStep(new HorizontalBlurPostProcessingStep());
             renderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
@@ -65,14 +49,12 @@ namespace Pokemon3D.Screens.GameModeLoading
             renderer.Light.DiffuseIntensity = 0.8f;
             renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
 
-            Game.ActiveGameMode.LoadMapAsync(Game.ActiveGameMode.GameModeInfo.StartMap, FinishedLoadingMapModel);
-        }
+            var gameModes = Game.GameModeManager.GetGameModeInfos();
+            Game.ActiveGameMode = Game.GameModeManager.CreateGameMode(gameModes.First(), Game);
 
-        private void FinishedLoadingMapModel(MapModel mapModel)
-        {
-            _result.Map = new Map(Game.ActiveGameMode, mapModel);
-            _result.Player = new Player(Game.EntitySystem);
-            _loadingFinished = true;
+            _loadingFinished = false;
+            _world = new World();
+            _world.StartNewGameAsync(() => _loadingFinished = true);
         }
 
         public void OnDraw(GameTime gameTime)
@@ -91,9 +73,7 @@ namespace Pokemon3D.Screens.GameModeLoading
 
             if (_loadingFinished)
             {
-                _sw.Stop();
-                Common.Diagnostics.GameLogger.Instance.Log(Common.Diagnostics.MessageType.Debug, "Loading time: " + _sw.ElapsedMilliseconds);
-                Game.ScreenManager.SetScreen(typeof(OverworldScreen), typeof(SlideTransition), _result);
+                Game.ScreenManager.SetScreen(typeof(OverworldScreen), typeof(SlideTransition), _world);
             }
         }
         

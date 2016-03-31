@@ -92,6 +92,7 @@
     <Compile Include="GameModes\Maps\NPC.cs" />
     <Compile Include="GameModes\Maps\Player.cs" />
     <Compile Include="GameModes\Maps\PlayerMovementMode.cs" />
+    <Compile Include="GameModes\World.cs" />
     <Compile Include="ResourceNames.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
