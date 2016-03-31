@@ -11,6 +11,7 @@ namespace Pokemon3D.GameModes.Maps
 {
     class EntitySystem : GameObject
     {
+        private readonly object _lockObject = new object();
         private readonly List<Entity> _entities;
         
         public EntityGeneratorSupplier EntityGeneratorSupplier { get; }
@@ -83,21 +84,33 @@ namespace Pokemon3D.GameModes.Maps
         public Entity CreateEntity(Entity parent = null)
         {
             var entity = new Entity();
-            parent?.AddChild(entity);
-            _entities.Add(entity);
+            lock(_lockObject)
+            {
+                parent?.AddChild(entity);
+                _entities.Add(entity);
+            }
             return entity;
         }
 
         public void RemoveEntity(Entity entity)
         {
-            _entities.Remove(entity);
+            lock (_lockObject)
+            {
+                _entities.Remove(entity);
+            }
         }
 
         public int EntityCount => _entities.Count;
 
         public void Update(float elapsedTime)
         {
-            _entities.ForEach(e => e.Update(elapsedTime));
+            lock (_lockObject)
+            {
+                for (var i = 0; i < _entities.Count; i++)
+                {
+                    _entities[i].Update(elapsedTime);
+                }
+            }
         }
     }
 }

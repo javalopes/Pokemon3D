@@ -142,12 +142,12 @@ namespace Pokemon3D.GameCore
         }
 
         protected override void Update(GameTime gameTime)
-        {
-            var elapsedSeconds = gameTime.ElapsedGameTime.Milliseconds * 0.001f;
-
+        { 
             base.Update(gameTime);
             InputSystem.Update();
 
+            var elapsedSeconds = gameTime.ElapsedGameTime.Milliseconds * 0.001f;
+            EntitySystem.Update(elapsedSeconds);
             if (!ScreenManager.Update(elapsedSeconds)) Exit();
             NotificationBar.Update(elapsedSeconds);
         }
