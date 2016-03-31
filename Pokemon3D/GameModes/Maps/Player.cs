@@ -64,6 +64,7 @@ namespace Pokemon3D.GameModes.Maps
                 Texture = Game.Content.Load<Texture2D>(ResourceNames.Textures.skybox_texture)
             }));
             cameraComponent.FarClipDistance = 50.0f;
+            Camera = cameraComponent.Camera;
 
             Speed = 2.0f;
             RotationSpeed = 2f;
@@ -101,7 +102,11 @@ namespace Pokemon3D.GameModes.Maps
             MovementMode = PlayerMovementMode.ThirdPerson;
             _cameraEntity.Position = _cameraTargetPosition;
 
-            var colliderComponent = new CollisionEntityComponent(_playerEntity, new Vector3(0.35f, 0.6f, 0.35f), new Vector3(0.0f, 0.3f, 0.0f));
+            var colliderComponent = new CollisionEntityComponent(_playerEntity, new Vector3(0.35f, 0.6f, 0.35f),
+                new Vector3(0.0f, 0.3f, 0.0f))
+            {
+                ResolvesPosition = true
+            };
             _playerEntity.AddComponent(colliderComponent);
 
             _playerEntity.Position = new Vector3(10,1,8 );

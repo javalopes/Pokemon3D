@@ -6,22 +6,20 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 {
     class CameraEntityComponent : EntityComponent
     {
-        private Camera _camera;
-
         public float NearClipDistance
         {
-            get { return _camera.NearClipDistance; }
-            set { _camera.NearClipDistance = value; }
+            get { return Camera.NearClipDistance; }
+            set { Camera.NearClipDistance = value; }
         }
         public float FarClipDistance
         {
-            get { return _camera.FarClipDistance; }
-            set { _camera.FarClipDistance = value; }
+            get { return Camera.FarClipDistance; }
+            set { Camera.FarClipDistance = value; }
         }
         public float FieldOfView
         {
-            get { return _camera.FieldOfView; }
-            set { _camera.FieldOfView = value; }
+            get { return Camera.FieldOfView; }
+            set { Camera.FieldOfView = value; }
         }
 
         public Matrix ViewMatrix { get; private set; }
@@ -30,26 +28,28 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 
         public Color? ClearColor
         {
-            get { return _camera.ClearColor; }
-            set { _camera.ClearColor = value; }
+            get { return Camera.ClearColor; }
+            set { Camera.ClearColor = value; }
         }
-        
+
+        public Camera Camera { get; private set; }
+
         public CameraEntityComponent(Entity parent, Skybox skybox) : base(parent)
         {
-            _camera = Parent.Game.Renderer.CreateCamera();
+            Camera = Parent.Game.Renderer.CreateCamera();
             NearClipDistance = 0.1f;
             FarClipDistance = 1000.0f;
             FieldOfView = MathHelper.PiOver4;
             ClearColor = Color.CornflowerBlue;
-            _camera.Skybox = skybox;
+            Camera.Skybox = skybox;
         }
 
         public override void Update(float elapsedTime)
         {
             base.Update(elapsedTime);
-            _camera.GlobalEulerAngles = Parent.GlobalEulerAngles;
-            _camera.GlobalPosition = Parent.GlobalPosition;
-            _camera.Update();
+            Camera.GlobalEulerAngles = Parent.GlobalEulerAngles;
+            Camera.GlobalPosition = Parent.GlobalPosition;
+            Camera.Update();
         }
     }
 }
