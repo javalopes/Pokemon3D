@@ -11,7 +11,6 @@ namespace Pokemon3D.Scripting.Types.Prototypes
     internal class Prototype : SProtoObject
     {
         internal string Name { get; }
-        internal bool IsAbstract { get; private set; }
         internal PrototypeMember Constructor { get; set; }
         internal Prototype Extends { get; private set; }
         /// <summary>
@@ -19,10 +18,27 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         /// </summary>
         internal Type MappedType { get; set; }
 
+        internal bool IsAbstract
+        {
+            get
+            {
+                if (MappedType != null)
+                    return MappedType.IsAbstract;
+
+                return _isAbstract;
+            }
+            private set
+            {
+                if (MappedType == null)
+                    _isAbstract = value;
+            }
+        }
+
         private Dictionary<string, PrototypeMember> _prototypeMembers = new Dictionary<string, PrototypeMember>();
         private bool _initializedStatic;
         private SFunction _staticConstructor;
         private ScriptProcessor _staticConstructorProcessor;
+        private bool _isAbstract = false;
 
         internal static bool IsPrototype(Type t)
         {
