@@ -100,16 +100,16 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                             var signatureMember = ((SString)arrayMember).Value;
                             switch (signatureMember)
                             {
-                                case "isReadOnly":
+                                case "readOnly":
                                     isReadOnly = true;
                                     break;
-                                case "isStatic":
+                                case "static":
                                     isStatic = true;
                                     break;
-                                case "isIndexerGet":
+                                case "indexerGet":
                                     isIndexerGet = true;
                                     break;
-                                case "isIndexerSet":
+                                case "indexerSet":
                                     isIndexerSet = true;
                                     break;
                             }
@@ -119,9 +119,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             }
 
             if ((isIndexerSet || isIndexerGet) && !(defaultValue is SFunction))
-            {
-
-            }
+                processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_GETTER_SETTER_NOT_A_FUNCTION);
 
             if (!ScriptProcessor.IsValidIdentifier(memberName))
                 processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
