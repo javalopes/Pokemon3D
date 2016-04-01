@@ -95,7 +95,7 @@ namespace Pokemon3D.Scripting.Adapters
             if (processor.Context.IsPrototype(typeName))
                 prototype = processor.Context.GetPrototype(typeName);
             else
-                prototype = TranslatePrototype(processor, objIn.GetType());
+                prototype = TranslatePrototype(processor, objIn.GetType(), objIn.GetType().Name);
 
             var obj = prototype.CreateInstance(processor, null, false);
 
@@ -145,9 +145,9 @@ namespace Pokemon3D.Scripting.Adapters
             return obj;
         }
 
-        internal static Prototype TranslatePrototype(ScriptProcessor processor, Type t)
+        internal static Prototype TranslatePrototype(ScriptProcessor processor, Type t, string name)
         {
-            var prototype = new Prototype(t.Name);
+            var prototype = new Prototype(name);
 
             object typeInstance = null;
             if (!t.IsAbstract)

@@ -27,9 +27,18 @@ namespace Pokemon3D.Scripting.Adapters
         /// <summary>
         /// Creates a <see cref="Prototype"/> from a .net <see cref="Type"/> and adds it to the context.
         /// </summary>
+        /// <param name="t">The type from which to create the prototype. The name of the type will be used for the Prototype's name.</param>
         public static void AddPrototype(ScriptProcessor processor, Type t)
         {
-            processor.Context.AddPrototype(ScriptInAdapter.TranslatePrototype(processor, t));
+            AddPrototype(processor, t, t.Name);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Prototype"/> from a .net <see cref="Type"/> and adds it to the context.
+        /// </summary>
+        public static void AddPrototype(ScriptProcessor processor, Type t, string name)
+        {
+            processor.Context.AddPrototype(ScriptInAdapter.TranslatePrototype(processor, t, name));
         }
 
         /// <summary>
