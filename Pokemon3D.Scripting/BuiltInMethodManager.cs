@@ -13,7 +13,13 @@ namespace Pokemon3D.Scripting
     /// <param name="processor">The script processor this call originates from.</param>
     /// <param name="This">The contextual "this" object.</param>
     /// <param name="parameters">Parameters for this method call.</param>
-    public delegate SObject DBuiltInMethod(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters);
+    public delegate SObject BuiltInMethod(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters);
+
+    /// <summary>
+    /// The delegate for a hardcoded method, with .Net native object types.
+    /// </summary>
+    /// <param name="parameters">Parameters for this method call.</param>
+    public delegate object DotNetBuiltInMethod(object[] parameters);
 
     /// <summary>
     /// Searches for and creates built in method delegates.
@@ -23,9 +29,9 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// Returns a list of methods with: Methodname, Method Attribute and Method Delegate.
         /// </summary>
-        internal static List<Tuple<string, BuiltInMethodAttribute, DBuiltInMethod>> GetMethods(Type t)
+        internal static List<Tuple<string, BuiltInMethodAttribute, BuiltInMethod>> GetMethods(Type t)
         {
-            var list = new List<Tuple<string, BuiltInMethodAttribute, DBuiltInMethod>>();
+            var list = new List<Tuple<string, BuiltInMethodAttribute, BuiltInMethod>>();
             bool isPrototype = Prototype.IsPrototype(t);
 
             var methods = t.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
@@ -41,11 +47,11 @@ namespace Pokemon3D.Scripting
 
                     if (!string.IsNullOrEmpty(attribute.MethodName))
                         usedMethodName = attribute.MethodName;
-                    
-                    list.Add(new Tuple<string, BuiltInMethodAttribute, DBuiltInMethod>(
+
+                    list.Add(new Tuple<string, BuiltInMethodAttribute, BuiltInMethod>(
                         usedMethodName,
                         attribute,
-                        (DBuiltInMethod)Delegate.CreateDelegate(typeof(DBuiltInMethod), method)
+                        (BuiltInMethod)Delegate.CreateDelegate(typeof(BuiltInMethod), method)
                         ));
                 }
             }

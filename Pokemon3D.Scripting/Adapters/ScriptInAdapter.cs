@@ -42,9 +42,9 @@ namespace Pokemon3D.Scripting.Adapters
             {
                 return TranslateArray(processor, (Array)objIn);
             }
-            else if (objIn is DBuiltInMethod)
+            else if (objIn is BuiltInMethod || objIn is DotNetBuiltInMethod)
             {
-                return TranslateFunction((DBuiltInMethod)objIn);
+                return TranslateFunction((Delegate)objIn);
             }
             else
             {
@@ -72,7 +72,7 @@ namespace Pokemon3D.Scripting.Adapters
             return processor.CreateBool(boolIn);
         }
 
-        private static SObject TranslateFunction(DBuiltInMethod methodIn)
+        private static SObject TranslateFunction(Delegate methodIn)
         {
             return new SFunction(methodIn);
         }
@@ -149,7 +149,11 @@ namespace Pokemon3D.Scripting.Adapters
         {
             var prototype = new Prototype(t.Name);
 
-            var typeInstance = Activator.CreateInstance(t);
+            object typeInstance = null;
+            if (!t.IsAbstract)
+            {
+                typeInstance = Activator.CreateInstance(t);
+            }
 
             FieldInfo[] fields = t
                 .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
@@ -225,14 +229,25 @@ namespace Pokemon3D.Scripting.Adapters
                     if (attr.IndexerGet && attr.IndexerSet)
                         throw new InvalidOperationException("The member function " + method.Name + " was marked both as an indexer set and indexer get. It can only be one at a time.");
 
-                    var methodDelegate = (DBuiltInMethod)Delegate.CreateDelegate(typeof(DBuiltInMethod), method);
+                    Delegate methodDelegate = null;
+
+                    if (method.GetParameters().Length == 1)
+                    {
+                        // a single parameter means the method is a DotNetBuiltInMethod.
+                        methodDelegate = (DotNetBuiltInMethod)Delegate.CreateDelegate(typeof(DotNetBuiltInMethod), method);
+                    }
+                    else if (method.GetParameters().Length == 4)
+                    {
+                        // four parameters means that the method is a valid BuiltInMethod.
+                        methodDelegate = (BuiltInMethod)Delegate.CreateDelegate(typeof(BuiltInMethod), method);
+                    }
 
                     if (attr.IndexerGet)
                         prototype.IndexerGetFunction = new SFunction(methodDelegate);
                     else if (attr.IndexerSet)
                         prototype.IndexerSetFunction = new SFunction(methodDelegate);
                     else
-                        prototype.AddMember(processor, new PrototypeMember(identifier, new SFunction(methodDelegate), false, true, false, false));
+                        prototype.AddMember(processor, new PrototypeMember(identifier, new SFunction(methodDelegate), method.IsStatic, true, false, false));
                 }
             }
 
