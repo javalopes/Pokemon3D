@@ -234,13 +234,17 @@ namespace Pokemon3D.Scripting
                 var cOp = ops[i];
 
                 ElementCapture captureRight = CaptureRight(exp, cOp + op.Length);
-                string elementRight = captureRight.Identifier;
-                SObject objRight = ToScriptObject(elementRight);
+                string elementRight = captureRight.Identifier.Trim();
 
-                string result = ObjectOperators.NotOperator(this, objRight);
+                if (!string.IsNullOrWhiteSpace(elementRight))
+                {
+                    SObject objRight = ToScriptObject(elementRight);
 
-                exp = exp.Remove(cOp, elementRight.Length + op.Length);
-                exp = exp.Insert(cOp, result);
+                    string result = ObjectOperators.NotOperator(this, objRight);
+
+                    exp = exp.Remove(cOp, elementRight.Length + op.Length);
+                    exp = exp.Insert(cOp, result);
+                }
             }
 
             return exp;
@@ -262,7 +266,7 @@ namespace Pokemon3D.Scripting
                 }
 
                 ElementCapture captureLeft = CaptureLeft(exp, cOp - 1);
-                string elementLeft = captureLeft.Identifier;
+                string elementLeft = captureLeft.Identifier.Trim();
 
                 if (!(op == "-" && elementLeft.Length == 0))
                 {
@@ -280,7 +284,7 @@ namespace Pokemon3D.Scripting
                     if (needRight)
                     {
                         captureRight = CaptureRight(exp, cOp + op.Length);
-                        elementRight = captureRight.Identifier;
+                        elementRight = captureRight.Identifier.Trim();
 
                         if (string.IsNullOrWhiteSpace(elementRight))
                             ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
@@ -390,7 +394,7 @@ namespace Pokemon3D.Scripting
         private SObject ToScriptObject(string exp)
         {
             exp = exp.Trim();
-            
+
             // This means it's either an indexer or an array
             if (exp.EndsWith("]"))
             {
