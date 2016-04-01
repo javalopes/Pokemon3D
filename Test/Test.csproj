@@ -66,9 +66,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="birdScript\Adapters\ScriptInAdapterTests.cs" />
-    <Compile Include="birdScript\Adapters\ScriptOutAdapterTests.cs" />
-    <Compile Include="birdScript\ScriptProcessorFactory.cs" />
+    <Compile Include="Pokemon3D.Scripting\Adapters\ScriptInAdapterTests.cs" />
+    <Compile Include="Pokemon3D.Scripting\Adapters\ScriptOutAdapterTests.cs" />
+    <Compile Include="Pokemon3D.Scripting\ScriptProcessorFactory.cs" />
     <Compile Include="Pokemon3D.Common\BoundingBoxExtensionTests.cs" />
     <Compile Include="Pokemon3D.Common\Line1DTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

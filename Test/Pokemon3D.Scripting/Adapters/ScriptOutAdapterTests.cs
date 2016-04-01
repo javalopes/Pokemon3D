@@ -3,7 +3,7 @@ using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
 using System;
 
-namespace Test.birdScript.Adapters
+namespace Test.Pokemon3D.Scripting.Adapters
 {
     [TestClass]
     public class ScriptOutAdapterTests
@@ -84,7 +84,7 @@ namespace Test.birdScript.Adapters
             });
 
             Assert.IsTrue(arrobj is SArray);
-            
+
             var obj = ScriptOutAdapter.Translate(arrobj);
 
             Assert.IsTrue(obj.GetType().IsArray);
