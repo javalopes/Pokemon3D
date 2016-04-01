@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Pokemon3D.Scripting
 {
-    class StatementProcessor
+    internal class StatementProcessor
     {
         internal static readonly string[] controlStatements = new string[] { "if", "else", "else if", "while", "for", "function", "class", "try", "catch", "finally" };
 
