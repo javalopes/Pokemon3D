@@ -32,7 +32,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         internal Prototype(string name)
         {
             Name = name;
-            
+
             var methods = BuiltInMethodManager.GetMethods(GetType());
             foreach (var methodData in methods)
             {
@@ -44,7 +44,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                     identifier = PROPERTY_GET_PREFIX + identifier;
                 else if (methodData.Item2.FunctionType == FunctionUsageType.PropertySetter)
                     identifier = PROPERTY_SET_PREFIX + identifier;
-                
+
                 _prototypeMembers.Add(identifier, new PrototypeMember(
                         identifier: identifier,
                         data: function,
@@ -238,7 +238,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             return _prototypeMembers.Where(x => !x.Value.IsStatic && x.Value.IsReadOnly && !x.Value.IsIndexerGet && !x.Value.IsIndexerSet).Select(x => x.Value);
         }
 
-        private PrototypeMember GetIndexerGetFunction()
+        internal PrototypeMember GetIndexerGetFunction()
         {
             foreach (var member in _prototypeMembers.Values)
             {
@@ -250,7 +250,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             return null;
         }
 
-        private PrototypeMember GetIndexerSetFunction()
+        internal PrototypeMember GetIndexerSetFunction()
         {
             foreach (var member in _prototypeMembers.Values)
             {
