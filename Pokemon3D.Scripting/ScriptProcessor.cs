@@ -372,6 +372,14 @@ namespace Pokemon3D.Scripting
             return exp;
         }
 
+        private string EvaluateLambda(string exp)
+        {
+            if (StringEscapeHelper.ContainsWithoutStrings(exp, "=>") && Regex.IsMatch(exp, REGEX_LAMBDA))
+                return BuildLambdaFunction(exp);
+            else
+                return exp;
+        }
+
         #endregion
 
         #region Helpers
@@ -382,7 +390,7 @@ namespace Pokemon3D.Scripting
         private SObject ToScriptObject(string exp)
         {
             exp = exp.Trim();
-
+            
             // This means it's either an indexer or an array
             if (exp.EndsWith("]"))
             {
@@ -699,6 +707,17 @@ namespace Pokemon3D.Scripting
                                         newExpression.Append(returnObject.ToScriptObject());
                                     }
                                 }
+                                else
+                                {
+                                    // check for lambda statement
+                                    // if this turns out to be a lambda statement, then the whole expression is this lambda statement.
+                                    // therefore, discard everything and just add the converted function code taken from the lambda statement.
+                                    string nonParenthesesCode = exp.Substring(index + 1).Trim();
+                                    if (nonParenthesesCode.StartsWith("=>"))
+                                    {
+                                        return BuildLambdaFunction(exp);
+                                    }
+                                }
 
                                 parenthesesStartIndex = -1;
                             }
@@ -753,7 +772,20 @@ namespace Pokemon3D.Scripting
 
             string code = lambdaCode.Remove(0, lambdaCode.IndexOf("=>") + 2).Trim();
 
-            return string.Format("function({0}){{return {1};}}", signatureBuilder.ToString(), code);
+            // code without a code block ({ ... }) are a single statement that is implied to follow a "return" statement.
+            // e.g. (a) => a + 1 -> function(a) { return a + 1; }
+            // code with a code block define the whole function body. This is to ensure compatibility with C#-like lambda statements.
+            // e.g. (a) => { return a + 1; } -> function(a) { return a + 1; }.
+            // these types of lambda statements are more or less useless because they are just skipping the "function" literal.
+
+            if (code.StartsWith("{") && code.EndsWith("}"))
+            {
+                return string.Format("function({0}){1}", signatureBuilder.ToString(), code);
+            }
+            else
+            {
+                return string.Format("function({0}){{return {1};}}", signatureBuilder.ToString(), code);
+            }
         }
 
         /// <summary>
