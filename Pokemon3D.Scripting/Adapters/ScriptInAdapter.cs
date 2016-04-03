@@ -15,6 +15,7 @@ namespace Pokemon3D.Scripting.Adapters
     {
         public static SObject Translate(ScriptProcessor processor, object objIn)
         {
+            // todo: C# 7: put a swtich statement type match instead of aweful if case blocks.
             if (objIn == null)
             {
                 return TranslateNull(processor);

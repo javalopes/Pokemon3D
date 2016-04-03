@@ -18,6 +18,7 @@ namespace Pokemon3D.Scripting.Adapters
         /// </summary>
         public static object Translate(SObject obj)
         {
+            // todo: C# 7: put a swtich statement type match instead of aweful if case blocks.
             if (obj is SBool)
             {
                 return ((SBool)obj).Value;

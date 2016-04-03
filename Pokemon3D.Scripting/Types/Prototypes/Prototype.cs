@@ -479,6 +479,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         private const string VAR_SIGNATURE_STATIC = "static";
         private const string VAR_SIGNATURE_READONLY = "readonly";
 
+        // TODO: C# 7: put proper Tuple handling in place.
+
         private static Tuple<PrototypeMember, string> ParseVarStatement(ScriptProcessor processor, ScriptStatement statement)
         {
             string code = statement.Code;
