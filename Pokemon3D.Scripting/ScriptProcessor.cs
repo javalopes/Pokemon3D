@@ -24,6 +24,7 @@ namespace Pokemon3D.Scripting
         }
 
         private const string IDENTIFIER_SEPARATORS = "-+*/=!%&|<>,";
+        private const string CALL_LITERAL = "call";
 
         /// <summary>
         /// The <see cref="Pokemon3D.Scripting.ErrorHandler"/> associated with this <see cref="ScriptProcessor"/>.
@@ -138,9 +139,11 @@ namespace Pokemon3D.Scripting
         {
             // The string must not be empty string, and start with a unicode letter.
             // Also, it cannot be a reserved keyword.
+            // "call" cannot be used as an identifier because it's the default identifier to call a method.
             return !(string.IsNullOrEmpty(identifier) ||
                 !char.IsLetter(identifier[0]) ||
-                ReservedKeywords.Contains(identifier));
+                ReservedKeywords.Contains(identifier) ||
+                identifier == CALL_LITERAL);
         }
 
         /// <summary>
@@ -1082,6 +1085,7 @@ namespace Pokemon3D.Scripting
             string exp = methodName;
             int index = exp.Length - 1;
             int argumentStartIndex = -1;
+            SObject This = owner;
 
             if (exp.EndsWith("()"))
             {
@@ -1130,6 +1134,11 @@ namespace Pokemon3D.Scripting
             argumentCode = argumentCode.Remove(argumentCode.Length - 1, 1).Trim();
             SObject[] parameters = ParseParameters(argumentCode);
 
+            if (methodName == CALL_LITERAL && owner is SFunction)
+            {
+                This = Context.This;
+            }
+
             // If it has an indexer, parse it again:
             if (index > 0 && exp[index] == ']')
             {
@@ -1137,7 +1146,7 @@ namespace Pokemon3D.Scripting
 
                 if (member is SVariable && ((SVariable)member).Data is SFunction)
                 {
-                    return owner.ExecuteMethod(this, ((SVariable)member).Identifier, owner, owner, parameters);
+                    return owner.ExecuteMethod(this, ((SVariable)member).Identifier, owner, This, parameters);
                 }
                 else
                 {
@@ -1146,7 +1155,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                return owner.ExecuteMethod(this, methodName, owner, owner, parameters);
+                return owner.ExecuteMethod(this, methodName, owner, This, parameters);
             }
         }
 

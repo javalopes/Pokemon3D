@@ -215,7 +215,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 if (Extends == null)
                     Extends = processor.Context.GetPrototype("Object");
 
-                var superInstance = Extends.CreateInstance(processor, null, false);
+                var superInstance = Extends.CreateInstance(processor, null, true);
                 obj.AddMember(MEMBER_NAME_SUPER, superInstance);
             }
 

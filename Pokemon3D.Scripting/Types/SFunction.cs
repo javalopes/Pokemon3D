@@ -42,7 +42,7 @@ namespace Pokemon3D.Scripting.Types
             string paramCode = sourceCode.Remove(0, "function".Length).Trim().Remove(0, 1); //Removes "function", then any spaces between "function" and "(", then removes "(".
             paramCode = paramCode.Remove(paramCode.IndexOf(")"));
 
-            _parameters = paramCode.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            _parameters = paramCode.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray();
 
             bool allIdentifiersValid = true;
             int i = 0;
