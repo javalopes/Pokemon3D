@@ -167,15 +167,15 @@ namespace Pokemon3D.Scripting
         /// </summary>
         internal SString CreateString(string value)
         {
-            return CreateString(value, true);
+            return CreateString(value, true, false);
         }
 
         /// <summary>
         /// Creates an instance of the string primitive, also setting the escaped status.
         /// </summary>
-        internal SString CreateString(string value, bool escaped)
+        internal SString CreateString(string value, bool escaped, bool interpolate)
         {
-            return SString.Factory(this, value, escaped);
+            return SString.Factory(this, value, escaped, interpolate);
         }
 
         /// <summary>
@@ -502,11 +502,15 @@ namespace Pokemon3D.Scripting
             }
             else if (exp.StartsWith("\"") && exp.EndsWith("\"") || exp.StartsWith("\'") && exp.EndsWith("\'"))
             {
-                returnObject = CreateString(exp.Remove(exp.Length - 1, 1).Remove(0, 1), true);
+                returnObject = CreateString(exp.Remove(exp.Length - 1, 1).Remove(0, 1), true, false);
+            }
+            else if (exp.StartsWith("$\"") && exp.EndsWith("\"") || exp.StartsWith("$\'") && exp.EndsWith("\'"))
+            {
+                returnObject = CreateString(exp.Remove(exp.Length - 1, 1).Remove(0, 2), true, true);
             }
             else if (exp.StartsWith("@\"") && exp.EndsWith("\"") || exp.StartsWith("@\'") && exp.EndsWith("\'"))
             {
-                returnObject = CreateString(exp.Remove(exp.Length - 1, 1).Remove(0, 2), false);
+                returnObject = CreateString(exp.Remove(exp.Length - 1, 1).Remove(0, 2), false, false);
             }
             else if (exp.StartsWith("{") && exp.EndsWith("}"))
             {

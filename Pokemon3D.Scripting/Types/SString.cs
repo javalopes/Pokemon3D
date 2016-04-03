@@ -69,6 +69,78 @@
             return val;
         }
 
+        private static string Interpolate(ScriptProcessor processor, string val)
+        {
+            // string interpolation
+            // replaces the following pattern: {variable}.
+            // {something} has to written as {{something}}.
+            // string interpolation can be turned on by putting a $ in front of the string literal.
+
+            if (val.Contains("{") && val.Contains("}"))
+            {
+                int searchOffset = 0;
+
+                while (val.IndexOf("{", searchOffset) > -1 && val.IndexOf("}", searchOffset) > -1)
+                {
+                    int startIndex = val.IndexOf("{", searchOffset);
+
+                    if (startIndex < val.Length - 2)
+                    {
+                        if (val[startIndex + 1] == '{')
+                        {
+                            val = val.Remove(startIndex + 1) + val.Remove(0, startIndex + 2);
+
+                            // find closing bracket and remove it:
+                            int level = 1;
+                            int i = startIndex + 1;
+                            bool foundClosing = false;
+                            while (!foundClosing && i < val.Length)
+                            {
+                                char token = val[i];
+
+                                switch (token)
+                                {
+                                    case '{':
+                                        level++;
+                                        break;
+                                    case '}':
+                                        level--;
+                                        if (level == 0)
+                                        {
+                                            val = val.Remove(i) + val.Remove(0, i + 1);
+                                            foundClosing = true;
+                                        }
+                                        break;
+                                }
+
+                                i++;
+                            }
+
+                            searchOffset = startIndex + 1;
+                        }
+                        else
+                        {
+                            int endIndex = val.IndexOf("}", startIndex);
+                            if (endIndex > -1)
+                            {
+                                string interpolationSequence = val.Substring(startIndex, endIndex - startIndex + 1);
+                                interpolationSequence = processor.ExecuteStatement(new ScriptStatement(interpolationSequence.Remove(interpolationSequence.Length - 1, 1).Remove(0, 1))).ToString(processor).Value;
+
+                                val = val.Remove(startIndex) + interpolationSequence + val.Remove(0, endIndex + 1);
+                                searchOffset = startIndex + interpolationSequence.Length;
+                            }
+                            else
+                            {
+                                searchOffset = startIndex + 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return val;
+        }
+
         /// <summary>
         /// The value of this instance.
         /// </summary>
@@ -84,24 +156,27 @@
         /// </summary>
         internal SString() { }
 
-        private SString(ScriptProcessor processor, string value, bool escaped)
+        private SString(ScriptProcessor processor, string value, bool escaped, bool interpolate)
         {
             Escaped = escaped;
-            
+
             if (escaped)
                 Value = Unescape(value);
             else
-                Value = value; 
+                Value = value;
+
+            if (interpolate)
+                Value = Interpolate(processor, Value);
         }
 
         /// <summary>
         /// Creates an instance of the <see cref="SString"/> class and sets an initial value.
         /// </summary>
-        internal static SString Factory(ScriptProcessor processor, string value, bool escaped)
+        internal static SString Factory(ScriptProcessor processor, string value, bool escaped, bool interpolate)
         {
-            return new SString(processor, value, escaped);
+            return new SString(processor, value, escaped, interpolate);
         }
-        
+
         internal override string ToScriptObject()
         {
             if (Prototype == null)
@@ -120,7 +195,7 @@
 
         internal override SString ToString(ScriptProcessor processor)
         {
-            return processor.CreateString(Value, Escaped);
+            return processor.CreateString(Value, Escaped, false);
         }
 
         internal override SBool ToBool(ScriptProcessor processor)
