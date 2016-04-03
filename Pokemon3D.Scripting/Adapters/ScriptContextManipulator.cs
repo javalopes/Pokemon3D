@@ -67,5 +67,45 @@ namespace Pokemon3D.Scripting.Adapters
         {
             return processor.Context.IsVariable(identifier);
         }
+
+        /// <summary>
+        /// Sets the callback for checking if an API class has a member.
+        /// </summary>
+        public static void SetCallbackHasMember(ScriptProcessor processor, DHasMember callback)
+        {
+            processor.Context.AddCallback(CallbackType.HasMember, callback);
+        }
+
+        /// <summary>
+        /// Sets the callback for getting a member of an API class.
+        /// </summary>
+        public static void SetCallbackGetMember(ScriptProcessor processor, DGetMember callback)
+        {
+            processor.Context.AddCallback(CallbackType.GetMember, callback);
+        }
+
+        /// <summary>
+        /// Sets the callback for setting a member of an API class.
+        /// </summary>
+        public static void SetCallbackSetMember(ScriptProcessor processor, DSetMember callback)
+        {
+            processor.Context.AddCallback(CallbackType.SetMember, callback);
+        }
+
+        /// <summary>
+        /// Sets the callback for executing a method of an API class.
+        /// </summary>
+        public static void SetCallbackExecuteMethod(ScriptProcessor processor, DExecuteMethod callback)
+        {
+            processor.Context.AddCallback(CallbackType.ExecuteMethod, callback);
+        }
+
+        /// <summary>
+        /// Sets the callback for getting the content of a script file.
+        /// </summary>
+        public static void SetCallbackScriptPipeline(ScriptProcessor processor, DScriptPipeline callback)
+        {
+            processor.Context.AddCallback(CallbackType.ScriptPipeline, callback);
+        }
     }
 }

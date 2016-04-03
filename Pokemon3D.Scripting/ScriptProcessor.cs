@@ -74,7 +74,7 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// The <see cref="ScriptContext"/> associated with this <see cref="ScriptProcessor"/>.
         /// </summary>
-        public ScriptContext Context { get; }
+        internal ScriptContext Context { get; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="ScriptProcessor"/>.
@@ -84,7 +84,7 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// Creates a new instance of the <see cref="ScriptProcessor"/> and sets a context.
         /// </summary>
-        public ScriptProcessor(ScriptContext context) : this(context, 0) { }
+        internal ScriptProcessor(ScriptContext context) : this(context, 0) { }
 
         /// <summary>
         /// Runs raw source code and returns the result.
