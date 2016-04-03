@@ -13,6 +13,17 @@ namespace Pokemon3D.Scripting.Adapters
     /// </summary>
     public static class ScriptInAdapter
     {
+        /// <summary>
+        /// Returns the "undefined" script object.
+        /// </summary>
+        public static SObject GetUndefined(ScriptProcessor processor)
+        {
+            return processor.Undefined;
+        }
+
+        /// <summary>
+        /// Translates a .Net object to a script object.
+        /// </summary>
         public static SObject Translate(ScriptProcessor processor, object objIn)
         {
             // todo: C# 7: put a swtich statement type match instead of aweful if case blocks.
