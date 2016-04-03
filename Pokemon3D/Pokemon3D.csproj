@@ -73,7 +73,6 @@
     <Compile Include="GameModes\Maps\EntityComponents\Components\CameraEntityComponent.cs" />
     <Compile Include="GameModes\Maps\EntityComponents\Components\CollisionEntityComponent.cs" />
     <Compile Include="GameModes\Maps\EntityComponents\Components\DataStorageEntityComponent.cs" />
-    <Compile Include="GameModes\Maps\EntityComponents\Components\FloorEntityComponent.cs" />
     <Compile Include="GameModes\Maps\EntityComponents\Components\ModelEntityComponent.cs" />
     <Compile Include="GameModes\Maps\EntityComponents\EntityComponent.cs" />
     <Compile Include="GameModes\Maps\EntityComponents\EntityComponentDataCreation.cs" />

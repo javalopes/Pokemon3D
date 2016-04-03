@@ -29,11 +29,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -182,11 +178,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -225,16 +217,12 @@
                 "Id": "Collisionbox",
                 "RenderMode": null,
                 "Components": [
-                    {
-                        "Id": "hasCollision"
-                    },
 					{
-						"Id" : "collisionsize",
-						"Data" : "0.8,1.0,0.2"
-					},
-					{
-						"Id" : "collisionoffset",
-						"Data" : "0.0,0.5,-0.15"
+						"Id": "Collision",
+						"Data" : [
+							{ "Key" : "CollisionSize", "Value" : "0.8,1.0,0.2" },
+							{ "Key" : "CollisionOffset", "Value" : "0.0,0.5,-0.15" },
+						]
 					}
                 ]
             },

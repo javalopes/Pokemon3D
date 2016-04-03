@@ -8,6 +8,11 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
         public Collider Collider { get; }
         public bool ResolvesPosition { get; set; }
 
+        public CollisionEntityComponent(EntityComponentDataCreationStruct structData) : base(structData)
+        {
+            Collider = Collider.CreateBoundingBox(GetData<Vector3>("CollisionSize"), GetData<Vector3>("CollisionOffset"));
+        }
+
         public CollisionEntityComponent(Entity parent, Vector3 collisionSize, Vector3 collisionOffset) : base(parent)
         {
             Collider = Collider.CreateBoundingBox(collisionSize, collisionOffset);

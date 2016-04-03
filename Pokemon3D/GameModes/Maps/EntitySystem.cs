@@ -62,13 +62,6 @@ namespace Pokemon3D.GameModes.Maps
                 entity.Position = position;
             }
 
-            if (entityModel.Components.Any(c =>EntityComponent.IDs.CollisionOffset.Equals(c.Id, System.StringComparison.OrdinalIgnoreCase)))
-            {
-                var size = TypeConverter.Convert<Vector3>(entityModel.Components.First(c => EntityComponent.IDs.CollisionSize.Equals(c.Id, System.StringComparison.OrdinalIgnoreCase)).Data);
-                var offset = TypeConverter.Convert<Vector3>(entityModel.Components.First(c => EntityComponent.IDs.CollisionOffset.Equals(c.Id, System.StringComparison.OrdinalIgnoreCase)).Data);
-                entity.AddComponent(new CollisionEntityComponent(entity, size, offset));
-            }
-
             foreach (var compModel in entityModel.Components)
             {
                 if (!entity.HasComponent(compModel.Id))

@@ -29,11 +29,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -111,11 +107,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -157,11 +149,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -203,11 +191,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -285,11 +269,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -331,11 +311,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -377,11 +353,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -400,16 +372,12 @@
                 "Id": "Collisionbox",
                 "RenderMode": null,
                 "Components": [
-                    {
-                        "Id": "hasCollision"
-                    },
 					{
-						"Id" : "collisionsize",
-						"Data" : "4,2,2"
-					},
-					{
-						"Id" : "collisionoffset",
-						"Data" : "1.5,1,-0.5"
+						"Id": "Collision",
+						"Data" : [
+							{ "Key" : "CollisionSize", "Value" : "4,2,2" },
+							{ "Key" : "CollisionOffset", "Value" : "1.5,1,-0.5" },
+						]
 					}
                 ]
             },

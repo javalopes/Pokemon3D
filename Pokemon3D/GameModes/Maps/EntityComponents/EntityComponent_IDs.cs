@@ -13,9 +13,7 @@
             public const string VisualModel = "visualmodel";
 
             // collision group:
-            public const string Collision = "hascollision";
-            public const string CollisionOffset = "collisionoffset";
-            public const string CollisionSize = "collisionsize";
+            public const string Collision = "Collision";
         }
     }
 }

@@ -6,22 +6,20 @@
 namespace Pokemon3D.DataModel.GameMode.Map.Entities
 {
     /// <summary>
-    /// A model for an additional component assigned to an entity.
+    /// Containing Data for entity component.
     /// </summary>
     [DataContract(Namespace = "")]
-    public class EntityComponentModel : DataModel<EntityComponentModel>
+    public class EntityComponentDataItem : DataModel<EntityComponentDataItem>
     {
         [DataMember(Order = 0)]
-        public string Id;
+        public string Key;
 
         [DataMember(Order = 1)]
-        public EntityComponentDataItem[] Data;
+        public string Value;
 
         public override object Clone()
         {
-            var entityComponent = (EntityComponentModel)MemberwiseClone();
-            entityComponent.Data = (EntityComponentDataItem[])Data.Clone();
-            return entityComponent;
+            return MemberwiseClone();
         }
     }
 }

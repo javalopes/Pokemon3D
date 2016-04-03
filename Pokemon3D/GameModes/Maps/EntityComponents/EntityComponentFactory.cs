@@ -1,4 +1,6 @@
-﻿using Pokemon3D.Common;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Pokemon3D.Common;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.GameModes.Maps.EntityComponents.Components;
 
@@ -16,7 +18,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
         /// </summary>
         public EntityComponent GetComponent(Entity parent, string name)
         {
-            return new DataStorageEntityComponent(parent, new EntityComponentDataCreationStruct()
+            return new DataStorageEntityComponent(new EntityComponentDataCreationStruct
             {
                 Name = name,
                 Parent = parent
@@ -30,23 +32,23 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
         {
             EntityComponent comp;
 
-            var parameters = new EntityComponentDataCreationStruct()
+            var parameters = new EntityComponentDataCreationStruct
             {
                 Parent = parent,
                 Data = dataModel.Data,
                 Name = dataModel.Id
             };
 
-            switch (dataModel.Id.ToLowerInvariant())
+            switch (dataModel.Id)
             {
-                case EntityComponent.IDs.Floor:
-                    comp = new FloorEntityComponent(parent, parameters);
+                case EntityComponent.IDs.Collision:
+                    comp = new CollisionEntityComponent(parameters);
                     break;
                 case EntityComponent.IDs.AnimateTextures:
-                    comp = new AnimateTexturesEntityComponent(parent, parameters);
+                    comp = new AnimateTexturesEntityComponent(parameters);
                     break;
                 default:
-                    comp = new DataStorageEntityComponent(parent, parameters);
+                    comp = new DataStorageEntityComponent(parameters);
                     break;
             }
 

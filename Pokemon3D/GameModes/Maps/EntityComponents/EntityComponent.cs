@@ -1,4 +1,5 @@
-﻿using Pokemon3D.GameCore;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Pokemon3D.Rendering;
 
 namespace Pokemon3D.GameModes.Maps.EntityComponents
@@ -16,17 +17,17 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
         /// <summary>
         /// The raw data of this component.
         /// </summary>
-        public string Data { get; set; }
+        public Dictionary<string,string> Data { get; set; }
 
         /// <summary>
         /// The owning parent <see cref="Entity"/> of this component.
         /// </summary>
         protected Entity Parent { get; }
 
-        protected EntityComponent(Entity parent, EntityComponentDataCreationStruct parameters)
+        protected EntityComponent(EntityComponentDataCreationStruct parameters)
         {
             Name = parameters.Name;
-            Data = parameters.Data;
+            Data = parameters.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             Parent = parameters.Parent;
         }
 
@@ -48,9 +49,9 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
         /// <summary>
         /// Converts the data string that came with the component data into the desired data type.
         /// </summary>
-        public T GetData<T>()
+        public T GetData<T>(string key)
         {
-            return TypeConverter.Convert<T>(Data);
+            return TypeConverter.Convert<T>(Data[key]);
         }
 
         public virtual void OnComponentAdded() { }

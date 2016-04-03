@@ -94,14 +94,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          },
-          {
-            "Id": "isFloor"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -482,14 +475,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          },
-          {
-            "Id": "isFloor"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -551,14 +537,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          },
-          {
-            "Id": "isFloor"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -852,14 +831,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          },
-          {
-            "Id": "isFloor"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -1095,14 +1067,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          },
-          {
-            "Id": "isFloor"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -1164,14 +1129,7 @@
           "ObstructCamera": false,
           "SeasonPalettes": [ ]
         },
-        "Components": [
-          {
-            "Id": "isstatic"
-          },
-          {
-            "Id": "isFloor"
-          }
-        ]
+        "Components": []
       },
       "Placing": [
         {
@@ -1411,16 +1369,12 @@
         },
         "Components": [
 			{
-				"Id": "hasCollision"
+				"Id": "Collision",
+				"Data" : [
+					{ "Key" : "CollisionSize", "Value" : "1,1,1" },
+					{ "Key" : "CollisionOffset", "Value" : "0,0.5,0" },
+				]
 			},
-		    {
-				"Id" : "collisionsize",
-				"Data" : "1,1,1"
-			},
-			{
-				"Id" : "collisionoffset",
-				"Data" : "0,0.5,0"
-			}
         ]
       },
       "Placing": [
@@ -1756,10 +1710,6 @@
           "SeasonPalettes": [ ]
         },
         "Components": [
-          {
-            "Id": "AnimateTextures",
-            "Data": "0.8"
-          }
         ]
       },
       "Placing": [

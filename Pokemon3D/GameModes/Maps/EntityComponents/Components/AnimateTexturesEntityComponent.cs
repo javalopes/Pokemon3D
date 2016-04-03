@@ -10,7 +10,7 @@
         float _animationDelay;
         int _textureIndex;
 
-        public AnimateTexturesEntityComponent(Entity parent, EntityComponentDataCreationStruct parameters) : base(parent, parameters)
+        public AnimateTexturesEntityComponent(EntityComponentDataCreationStruct parameters) : base( parameters)
         {
             SetInitialAnimationDelay();
             _textureIndex = 0;
@@ -18,7 +18,7 @@
 
         private void SetInitialAnimationDelay()
         {
-            _animationDelay = GetData<float>();
+            _animationDelay = GetData<float>("AnimationDelay");
         }
 
         public override void Update(float elapsedTime)

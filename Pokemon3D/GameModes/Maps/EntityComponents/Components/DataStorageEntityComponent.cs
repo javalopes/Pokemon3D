@@ -5,7 +5,7 @@
     /// </summary>
     class DataStorageEntityComponent : EntityComponent
     {
-        public DataStorageEntityComponent(Entity parent, EntityComponentDataCreationStruct parameters) : base(parent, parameters)
+        public DataStorageEntityComponent( EntityComponentDataCreationStruct parameters) : base(parameters)
         { }
 
         // Don't add any logic/additional members to this class.
