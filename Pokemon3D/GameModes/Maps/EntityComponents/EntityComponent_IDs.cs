@@ -8,12 +8,11 @@
         public static class IDs
         {
             // All IDs have to be lower case.
-            public const string Floor = "isfloor";
             public const string AnimateTextures = "animatetextures";
             public const string VisualModel = "visualmodel";
 
             // collision group:
-            public const string Collision = "Collision";
+            public const string Collision = "collision";
         }
     }
 }

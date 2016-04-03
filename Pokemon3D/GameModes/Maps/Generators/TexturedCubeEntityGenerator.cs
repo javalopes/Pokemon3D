@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using System.Collections.Generic;
@@ -16,213 +17,214 @@ namespace Pokemon3D.GameModes.Maps.Generators
             // This is an option, because often times, there is no bottom needed.
             // if there is only 1 texture, it gets put on all 6 sides.
 
-            int? textureEnumLength = entityDefinition?.Entity?.RenderMode?.Textures?.Length;
+            //int? textureEnumLength = entityDefinition?.Entity?.RenderMode?.Textures?.Length;
 
-            if (textureEnumLength.HasValue && (textureEnumLength.Value == 1 || textureEnumLength.Value == 5 || textureEnumLength.Value == 6))
-            {
-                TextureSourceModel[] textures = null;
+            //if (textureEnumLength.HasValue && (textureEnumLength.Value == 1 || textureEnumLength.Value == 5 || textureEnumLength.Value == 6))
+            //{
+            //    TextureSourceModel[] textures = null;
 
-                if (textureEnumLength.Value == 1)
-                {
-                    textures = new TextureSourceModel[]
-                    {
-                        entityDefinition.Entity.RenderMode.Textures[0],
-                        entityDefinition.Entity.RenderMode.Textures[0],
-                        entityDefinition.Entity.RenderMode.Textures[0],
-                        entityDefinition.Entity.RenderMode.Textures[0],
-                        entityDefinition.Entity.RenderMode.Textures[0],
-                        entityDefinition.Entity.RenderMode.Textures[0]
-                    };
-                }
-                else if (textureEnumLength.Value == 5)
-                {
-                    textures = new TextureSourceModel[]
-                    {
-                        entityDefinition.Entity.RenderMode.Textures[0],
-                        entityDefinition.Entity.RenderMode.Textures[1],
-                        entityDefinition.Entity.RenderMode.Textures[2],
-                        entityDefinition.Entity.RenderMode.Textures[3],
-                        entityDefinition.Entity.RenderMode.Textures[4]
-                    };
-                }
-                else if (textureEnumLength.Value == 6)
-                {
-                    textures = new TextureSourceModel[]
-                    {
-                        entityDefinition.Entity.RenderMode.Textures[0],
-                        entityDefinition.Entity.RenderMode.Textures[1],
-                        entityDefinition.Entity.RenderMode.Textures[2],
-                        entityDefinition.Entity.RenderMode.Textures[3],
-                        entityDefinition.Entity.RenderMode.Textures[4],
-                        entityDefinition.Entity.RenderMode.Textures[5]
-                    };
-                }
+            //    if (textureEnumLength.Value == 1)
+            //    {
+            //        textures = new TextureSourceModel[]
+            //        {
+            //            entityDefinition.Entity.RenderMode.Textures[0],
+            //            entityDefinition.Entity.RenderMode.Textures[0],
+            //            entityDefinition.Entity.RenderMode.Textures[0],
+            //            entityDefinition.Entity.RenderMode.Textures[0],
+            //            entityDefinition.Entity.RenderMode.Textures[0],
+            //            entityDefinition.Entity.RenderMode.Textures[0]
+            //        };
+            //    }
+            //    else if (textureEnumLength.Value == 5)
+            //    {
+            //        textures = new TextureSourceModel[]
+            //        {
+            //            entityDefinition.Entity.RenderMode.Textures[0],
+            //            entityDefinition.Entity.RenderMode.Textures[1],
+            //            entityDefinition.Entity.RenderMode.Textures[2],
+            //            entityDefinition.Entity.RenderMode.Textures[3],
+            //            entityDefinition.Entity.RenderMode.Textures[4]
+            //        };
+            //    }
+            //    else if (textureEnumLength.Value == 6)
+            //    {
+            //        textures = new TextureSourceModel[]
+            //        {
+            //            entityDefinition.Entity.RenderMode.Textures[0],
+            //            entityDefinition.Entity.RenderMode.Textures[1],
+            //            entityDefinition.Entity.RenderMode.Textures[2],
+            //            entityDefinition.Entity.RenderMode.Textures[3],
+            //            entityDefinition.Entity.RenderMode.Textures[4],
+            //            entityDefinition.Entity.RenderMode.Textures[5]
+            //        };
+            //    }
 
-                // Front side:
-                var frontEntityModel = entityDefinition.Entity.CloneModel();
-                var frontEntityPlacing = new EntityFieldPositionModel();
+            //    // Front side:
+            //    var frontEntityModel = entityDefinition.Entity.CloneModel();
+            //    var frontEntityPlacing = new EntityFieldPositionModel();
 
-                frontEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[0] };
-                frontEntityPlacing.CardinalRotation = true;
-                frontEntityPlacing.Rotation = new Vector3Model()
-                {
-                    X = 0,
-                    Y = 0,
-                    Z = 0
-                };
-                frontEntityPlacing.Scale = new Vector3Model()
-                {
-                    X = entityPlacing.Scale.X,
-                    Y = entityPlacing.Scale.Y,
-                    Z = 1
-                };
-                var frontEntityPosition = new Vector3()
-                {
-                    X = position.X,
-                    Y = position.Y,
-                    Z = position.Z + entityPlacing.Scale.Z / 2
-                };
+            //    frontEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[0] };
+            //    frontEntityPlacing.CardinalRotation = true;
+            //    frontEntityPlacing.Rotation = new Vector3Model()
+            //    {
+            //        X = 0,
+            //        Y = 0,
+            //        Z = 0
+            //    };
+            //    frontEntityPlacing.Scale = new Vector3Model()
+            //    {
+            //        X = entityPlacing.Scale.X,
+            //        Y = entityPlacing.Scale.Y,
+            //        Z = 1
+            //    };
+            //    var frontEntityPosition = new Vector3()
+            //    {
+            //        X = position.X,
+            //        Y = position.Y,
+            //        Z = position.Z + entityPlacing.Scale.Z / 2
+            //    };
 
-                yield return  entitySystem.CreateEntityFromDataModel(frontEntityModel, frontEntityPlacing, frontEntityPosition);
+            //    yield return  entitySystem.CreateEntityFromDataModel(frontEntityModel, frontEntityPlacing, frontEntityPosition);
 
-                // Back side:
-                var backEntityModel = entityDefinition.Entity.CloneModel();
-                var backEntityPlacing = new EntityFieldPositionModel();
+            //    // Back side:
+            //    var backEntityModel = entityDefinition.Entity.CloneModel();
+            //    var backEntityPlacing = new EntityFieldPositionModel();
 
-                backEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[1] };
-                backEntityPlacing.CardinalRotation = true;
-                backEntityPlacing.Rotation = new Vector3Model()
-                {
-                    X = 0,
-                    Y = 2,
-                    Z = 0
-                };
-                backEntityPlacing.Scale = new Vector3Model()
-                {
-                    X = entityPlacing.Scale.X,
-                    Y = entityPlacing.Scale.Y,
-                    Z = 1
-                };
-                var backEntityPosition = new Vector3()
-                {
-                    X = position.X,
-                    Y = position.Y,
-                    Z = position.Z - entityPlacing.Scale.Z / 2
-                };
+            //    backEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[1] };
+            //    backEntityPlacing.CardinalRotation = true;
+            //    backEntityPlacing.Rotation = new Vector3Model()
+            //    {
+            //        X = 0,
+            //        Y = 2,
+            //        Z = 0
+            //    };
+            //    backEntityPlacing.Scale = new Vector3Model()
+            //    {
+            //        X = entityPlacing.Scale.X,
+            //        Y = entityPlacing.Scale.Y,
+            //        Z = 1
+            //    };
+            //    var backEntityPosition = new Vector3()
+            //    {
+            //        X = position.X,
+            //        Y = position.Y,
+            //        Z = position.Z - entityPlacing.Scale.Z / 2
+            //    };
 
-                yield return entitySystem.CreateEntityFromDataModel(backEntityModel, backEntityPlacing, backEntityPosition);
+            //    yield return entitySystem.CreateEntityFromDataModel(backEntityModel, backEntityPlacing, backEntityPosition);
 
-                //Left side:
-                var leftEntityModel = entityDefinition.Entity.CloneModel();
-                var leftEntityPlacing = new EntityFieldPositionModel();
+            //    //Left side:
+            //    var leftEntityModel = entityDefinition.Entity.CloneModel();
+            //    var leftEntityPlacing = new EntityFieldPositionModel();
 
-                leftEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[2] };
-                leftEntityPlacing.CardinalRotation = true;
-                leftEntityPlacing.Rotation = new Vector3Model()
-                {
-                    X = 0,
-                    Y = 3,
-                    Z = 0
-                };
-                leftEntityPlacing.Scale = new Vector3Model()
-                {
-                    X = entityPlacing.Scale.X,
-                    Y = entityPlacing.Scale.Y,
-                    Z = 1
-                };
-                var leftEntityPosition = new Vector3()
-                {
-                    X = position.X - entityPlacing.Scale.X / 2,
-                    Y = position.Y,
-                    Z = position.Z
-                };
+            //    leftEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[2] };
+            //    leftEntityPlacing.CardinalRotation = true;
+            //    leftEntityPlacing.Rotation = new Vector3Model()
+            //    {
+            //        X = 0,
+            //        Y = 3,
+            //        Z = 0
+            //    };
+            //    leftEntityPlacing.Scale = new Vector3Model()
+            //    {
+            //        X = entityPlacing.Scale.X,
+            //        Y = entityPlacing.Scale.Y,
+            //        Z = 1
+            //    };
+            //    var leftEntityPosition = new Vector3()
+            //    {
+            //        X = position.X - entityPlacing.Scale.X / 2,
+            //        Y = position.Y,
+            //        Z = position.Z
+            //    };
 
-                yield return entitySystem.CreateEntityFromDataModel(leftEntityModel, leftEntityPlacing, leftEntityPosition);
+            //    yield return entitySystem.CreateEntityFromDataModel(leftEntityModel, leftEntityPlacing, leftEntityPosition);
 
-                //right side:
-                var rightEntityModel = entityDefinition.Entity.CloneModel();
-                var rightEntityPlacing = new EntityFieldPositionModel();
+            //    //right side:
+            //    var rightEntityModel = entityDefinition.Entity.CloneModel();
+            //    var rightEntityPlacing = new EntityFieldPositionModel();
 
-                rightEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[3] };
-                rightEntityPlacing.CardinalRotation = true;
-                rightEntityPlacing.Rotation = new Vector3Model()
-                {
-                    X = 0,
-                    Y = 1,
-                    Z = 0
-                };
-                rightEntityPlacing.Scale = new Vector3Model()
-                {
-                    X = entityPlacing.Scale.X,
-                    Y = entityPlacing.Scale.Y,
-                    Z = 1
-                };
-                var rightEntityPosition = new Vector3()
-                {
-                    X = position.X + entityPlacing.Scale.X / 2,
-                    Y = position.Y,
-                    Z = position.Z
-                };
+            //    rightEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[3] };
+            //    rightEntityPlacing.CardinalRotation = true;
+            //    rightEntityPlacing.Rotation = new Vector3Model()
+            //    {
+            //        X = 0,
+            //        Y = 1,
+            //        Z = 0
+            //    };
+            //    rightEntityPlacing.Scale = new Vector3Model()
+            //    {
+            //        X = entityPlacing.Scale.X,
+            //        Y = entityPlacing.Scale.Y,
+            //        Z = 1
+            //    };
+            //    var rightEntityPosition = new Vector3()
+            //    {
+            //        X = position.X + entityPlacing.Scale.X / 2,
+            //        Y = position.Y,
+            //        Z = position.Z
+            //    };
 
-                yield return entitySystem.CreateEntityFromDataModel(rightEntityModel, rightEntityPlacing, rightEntityPosition);
+            //    yield return entitySystem.CreateEntityFromDataModel(rightEntityModel, rightEntityPlacing, rightEntityPosition);
 
-                //top:
-                var topEntityModel = entityDefinition.Entity.CloneModel();
-                var topEntityPlacing = new EntityFieldPositionModel();
+            //    //top:
+            //    var topEntityModel = entityDefinition.Entity.CloneModel();
+            //    var topEntityPlacing = new EntityFieldPositionModel();
 
-                topEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[4] };
-                topEntityPlacing.CardinalRotation = true;
-                topEntityPlacing.Rotation = new Vector3Model()
-                {
-                    X = 3,
-                    Y = 0,
-                    Z = 0
-                };
-                topEntityPlacing.Scale = new Vector3Model()
-                {
-                    X = entityPlacing.Scale.X,
-                    Y = entityPlacing.Scale.Y,
-                    Z = 1
-                };
-                var topEntityPosition = new Vector3()
-                {
-                    X = position.X,
-                    Y = position.Y + entityPlacing.Scale.Y / 2,
-                    Z = position.Z
-                };
+            //    topEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[4] };
+            //    topEntityPlacing.CardinalRotation = true;
+            //    topEntityPlacing.Rotation = new Vector3Model()
+            //    {
+            //        X = 3,
+            //        Y = 0,
+            //        Z = 0
+            //    };
+            //    topEntityPlacing.Scale = new Vector3Model()
+            //    {
+            //        X = entityPlacing.Scale.X,
+            //        Y = entityPlacing.Scale.Y,
+            //        Z = 1
+            //    };
+            //    var topEntityPosition = new Vector3()
+            //    {
+            //        X = position.X,
+            //        Y = position.Y + entityPlacing.Scale.Y / 2,
+            //        Z = position.Z
+            //    };
 
-                yield return entitySystem.CreateEntityFromDataModel(topEntityModel, topEntityPlacing, topEntityPosition);
+            //    yield return entitySystem.CreateEntityFromDataModel(topEntityModel, topEntityPlacing, topEntityPosition);
 
-                //bottom:
-                if (textureEnumLength.Value != 5)
-                {
-                    var bottomEntityModel = entityDefinition.Entity.CloneModel();
-                    var bottomEntityPlacing = new EntityFieldPositionModel();
+            //    //bottom:
+            //    if (textureEnumLength.Value != 5)
+            //    {
+            //        var bottomEntityModel = entityDefinition.Entity.CloneModel();
+            //        var bottomEntityPlacing = new EntityFieldPositionModel();
 
-                    bottomEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[5] };
-                    bottomEntityPlacing.CardinalRotation = true;
-                    bottomEntityPlacing.Rotation = new Vector3Model()
-                    {
-                        X = 1,
-                        Y = 0,
-                        Z = 0
-                    };
-                    bottomEntityPlacing.Scale = new Vector3Model()
-                    {
-                        X = entityPlacing.Scale.X,
-                        Y = entityPlacing.Scale.Y,
-                        Z = 1
-                    };
-                    var bottomEntityPosition = new Vector3()
-                    {
-                        X = position.X,
-                        Y = position.Y - entityPlacing.Scale.Y / 2,
-                        Z = position.Z
-                    };
+            //        bottomEntityModel.RenderMode.Textures = new TextureSourceModel[] { textures[5] };
+            //        bottomEntityPlacing.CardinalRotation = true;
+            //        bottomEntityPlacing.Rotation = new Vector3Model()
+            //        {
+            //            X = 1,
+            //            Y = 0,
+            //            Z = 0
+            //        };
+            //        bottomEntityPlacing.Scale = new Vector3Model()
+            //        {
+            //            X = entityPlacing.Scale.X,
+            //            Y = entityPlacing.Scale.Y,
+            //            Z = 1
+            //        };
+            //        var bottomEntityPosition = new Vector3()
+            //        {
+            //            X = position.X,
+            //            Y = position.Y - entityPlacing.Scale.Y / 2,
+            //            Z = position.Z
+            //        };
 
-                    yield return entitySystem.CreateEntityFromDataModel(bottomEntityModel, bottomEntityPlacing, bottomEntityPosition);
-                }
-            }
+            //        yield return entitySystem.CreateEntityFromDataModel(bottomEntityModel, bottomEntityPlacing, bottomEntityPosition);
+            //    }
+            //}
+            throw new NotImplementedException();
         }
     }
 }

@@ -199,7 +199,8 @@ namespace Pokemon3D.GameModes
 
         public Mesh GetPrimitiveMesh(string primitiveName)
         {
-            return _meshPrimitivesByName[primitiveName];
+            Mesh mesh;
+            return _meshPrimitivesByName.TryGetValue(primitiveName, out mesh) ? mesh : null;
         }
 
         #region Dispose

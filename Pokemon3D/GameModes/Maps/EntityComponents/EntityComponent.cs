@@ -54,22 +54,58 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
             return TypeConverter.Convert<T>(Data[key]);
         }
 
+        /// <summary>
+        /// Gets a list of Data with starting text and indexing by number.
+        /// Therefore each DataElement-Key is checked, whether it starts with the <see cref="baseKey"/> name and ends with a number.
+        /// If this is the case, all these elements are ordered by the suffix number and return the values of them in the order.
+        /// </summary>
+        public T[] GetEnumeratedData<T>(string baseKey)
+        {
+            return Data.Where(d => IsBaseKeyWithNumberSuffix(d.Key, baseKey))
+                .Select(d => CreateSuffixOrderable(d.Key, d.Value, baseKey))
+                .OrderBy(d => d.Value)
+                .Select(d => TypeConverter.Convert<T>(d.Key))
+                .ToArray();
+        }
+
+        private static bool IsBaseKeyWithNumberSuffix(string fullKeyName, string baseKeyName)
+        {
+            if (fullKeyName == baseKeyName) return true;
+            return fullKeyName.StartsWith(baseKeyName) && HasIntegerSuffix(fullKeyName, baseKeyName);
+        }
+
+        private static bool HasIntegerSuffix(string fullKeyName, string baseKeyName)
+        {
+            int integer;
+            return int.TryParse(fullKeyName.Replace(baseKeyName, ""), out integer);
+        }
+
+        private static KeyValuePair<string, int> CreateSuffixOrderable(string fullKeyName, string valueOfFullKey, string baseKeyName)
+        {
+            return new KeyValuePair<string, int>(valueOfFullKey, GetIntegerSuffix(fullKeyName, baseKeyName));
+        }
+
+        private static int GetIntegerSuffix(string fullKeyName, string baseKeyName)
+        {
+            var suffixAsString = fullKeyName.Replace(baseKeyName, "");
+            return string.IsNullOrEmpty(suffixAsString) ? 0 : int.Parse(suffixAsString);
+        }
+
+        /// <summary>
+        /// Converts the data string that came with the component data into the desired data type. Returns default fullKeyName if not present.
+        /// </summary>
+        public T GetDataOrDefault<T>(string key, T defaultValue = default(T))
+        {
+            string value;
+            if (Data.TryGetValue(key, out value))
+            {
+                return TypeConverter.Convert<T>(value);
+            }
+            return defaultValue;
+        }
+
         public virtual void OnComponentAdded() { }
 
         public virtual void OnComponentRemove() { }
-
-        #region Behaviour
-
-        /// <summary>
-        /// Gets executed when the player interacts with the entity.
-        /// </summary>
-        public virtual void Click() { }
-
-        /// <summary>
-        /// The player is about to collide with the entity.
-        /// </summary>
-        public virtual FunctionResponse Collision() { return FunctionResponse.NoValue; }
-
-        #endregion
     }
 }

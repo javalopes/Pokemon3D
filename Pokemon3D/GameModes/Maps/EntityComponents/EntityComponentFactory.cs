@@ -7,16 +7,15 @@ using Pokemon3D.GameModes.Maps.EntityComponents.Components;
 namespace Pokemon3D.GameModes.Maps.EntityComponents
 {
     /// <summary>
-    /// A singleton factory to create <see cref="EntityComponent"/> instances.
+    /// Factory to create <see cref="EntityComponent"/> instances.
     /// </summary>
-    class EntityComponentFactory : Singleton<EntityComponentFactory>
+    static class EntityComponentFactory
     {
-        private EntityComponentFactory() { }
         
         /// <summary>
         /// Creates an empty <see cref="DataStorageEntityComponent"/> with the given name.
         /// </summary>
-        public EntityComponent GetComponent(Entity parent, string name)
+        public static EntityComponent GetComponent(Entity parent, string name)
         {
             return new DataStorageEntityComponent(new EntityComponentDataCreationStruct
             {
@@ -28,7 +27,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
         /// <summary>
         /// Creates a new instance of an <see cref="EntityComponent"/>.
         /// </summary>
-        public EntityComponent GetComponent(Entity parent, EntityComponentModel dataModel)
+        public static EntityComponent GetComponent(Entity parent, EntityComponentModel dataModel)
         {
             EntityComponent comp;
 
@@ -39,8 +38,11 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
                 Name = dataModel.Id
             };
 
-            switch (dataModel.Id)
+            switch (dataModel.Id.ToLowerInvariant())
             {
+                case EntityComponent.IDs.VisualModel:
+                    comp = new ModelEntityComponent(parameters);
+                    break;
                 case EntityComponent.IDs.Collision:
                     comp = new CollisionEntityComponent(parameters);
                     break;

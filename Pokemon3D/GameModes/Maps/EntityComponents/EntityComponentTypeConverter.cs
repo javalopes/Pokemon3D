@@ -23,11 +23,28 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
                     return (T)ToVector2(data);
                 case "Single":
                     return (T)ToSingle(data);
+                case "Rectangle":
+                    return (T) ToRectangle(data);
                 case "Int32[]":
                     return (T)ToArray<int>(data);
+                case "String":
+                    return (T)ToString(data);
+                case "Boolean":
+                    return (T) ToBoolean(data);
                 default:
                     return default(T);
             }
+        }
+
+        private static object ToBoolean(string data)
+        {
+            return bool.Parse(data);
+        }
+
+        private static object ToRectangle(string data)
+        {
+            var token = data.Split(',');
+            return new Rectangle(int.Parse(token[0]), int.Parse(token[1]), int.Parse(token[2]), int.Parse(token[3]));
         }
 
         private static object ToArray<T>(string data)
@@ -52,6 +69,11 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
             }
 
             return Vector3.Zero;
+        }
+
+        private static object ToString(string data)
+        {
+            return data;
         }
 
         private static object ToVector2(string data)

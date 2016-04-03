@@ -4,32 +4,33 @@
     {
       "Entity": {
         "Id": "HouseWall",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 48,
-                "Y": 32,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "WallQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components": [
+          {
+						"Id" : "VisualModel",
+						"Data" : [
+							{
+								"Key" : "MeshReference",
+								"Value" : "WallQuad"
+							},
+							{
+								"Key" : "Texture",
+								"Value" : "PalletTown.png"
+							},
+							{
+								"Key" : "Rectangle",
+								"Value" : "48,32,16,16"
+							},
+							{
+								"Key" : "Opacity",
+								"Value" : "1.0"
+							},
+							{
+								"Key" : "Shading",
+								"Value" : "1,1,1"
+							}
+						]
+					}
+        ]
       },
       "Placing": [
         {
@@ -82,32 +83,33 @@
 	{
       "Entity": {
         "Id": "HouseWindow",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 32,
-                "Y": 32,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "WallQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components": [
+          {
+						"Id" : "VisualModel",
+						"Data" : [
+							{
+								"Key" : "MeshReference",
+								"Value" : "WallQuad"
+							},
+							{
+								"Key" : "Texture",
+								"Value" : "PalletTown.png"
+							},
+							{
+								"Key" : "Rectangle",
+								"Value" : "32,32,16,16"
+							},
+							{
+								"Key" : "Opacity",
+								"Value" : "1.0"
+							},
+							{
+								"Key" : "Shading",
+								"Value" : "1,1,1"
+							}
+						]
+					}
+        ]
       },
       "Placing": [
         {
@@ -124,32 +126,33 @@
 	{
       "Entity": {
         "Id": "Door",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 0,
-                "Y": 32,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "WallQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components": [
+          {
+						"Id" : "VisualModel",
+						"Data" : [
+							{
+								"Key" : "MeshReference",
+								"Value" : "WallQuad"
+							},
+							{
+								"Key" : "Texture",
+								"Value" : "PalletTown.png"
+							},
+							{
+								"Key" : "Rectangle",
+								"Value" : "0,32,16,16"
+							},
+							{
+								"Key" : "Opacity",
+								"Value" : "1.0"
+							},
+							{
+								"Key" : "Shading",
+								"Value" : "1,1,1"
+							}
+						]
+					}
+        ]
       },
       "Placing": [
         {
@@ -166,32 +169,33 @@
 	{
       "Entity": {
         "Id": "HouseWall2",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 16,
-                "Y": 48,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "WallQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components": [
+          {
+						"Id" : "VisualModel",
+						"Data" : [
+							{
+								"Key" : "MeshReference",
+								"Value" : "WallQuad"
+							},
+							{
+								"Key" : "Texture",
+								"Value" : "PalletTown.png"
+							},
+							{
+								"Key" : "Rectangle",
+								"Value" : "16,48,16,16"
+							},
+							{
+								"Key" : "Opacity",
+								"Value" : "1.0"
+							},
+							{
+								"Key" : "Shading",
+								"Value" : "1,1,1"
+							}
+						]
+					}
+        ]
       },
       "Placing": [
         {
@@ -244,32 +248,33 @@
 	{
       "Entity": {
         "Id": "Window2",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 64,
-                "Y": 48,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "WallQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components": [
+          {
+						"Id" : "VisualModel",
+						"Data" : [
+							{
+								"Key" : "MeshReference",
+								"Value" : "WallQuad"
+							},
+							{
+								"Key" : "Texture",
+								"Value" : "PalletTown.png"
+							},
+							{
+								"Key" : "Rectangle",
+								"Value" : "64,48,16,16"
+							},
+							{
+								"Key" : "Opacity",
+								"Value" : "1.0"
+							},
+							{
+								"Key" : "Shading",
+								"Value" : "1,1,1"
+							}
+						]
+					}
+        ]
       },
       "Placing": [
         {
@@ -286,32 +291,33 @@
 	{
       "Entity": {
         "Id": "Window3",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 0,
-                "Y": 48,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "WallQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components": [
+          {
+						"Id" : "VisualModel",
+						"Data" : [
+							{
+								"Key" : "MeshReference",
+								"Value" : "WallQuad"
+							},
+							{
+								"Key" : "Texture",
+								"Value" : "PalletTown.png"
+							},
+							{
+								"Key" : "Rectangle",
+								"Value" : "0,48,16,16"
+							},
+							{
+								"Key" : "Opacity",
+								"Value" : "1.0"
+							},
+							{
+								"Key" : "Shading",
+								"Value" : "1,1,1"
+							}
+						]
+					}
+        ]
       },
       "Placing": [
         {
@@ -328,32 +334,33 @@
 	{
       "Entity": {
         "Id": "Roof",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 32,
-                "Y": 48,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "FloorQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components": [
+          {
+						"Id" : "VisualModel",
+						"Data" : [
+							{
+								"Key" : "MeshReference",
+								"Value" : "FloorQuad"
+							},
+							{
+								"Key" : "Texture",
+								"Value" : "PalletTown.png"
+							},
+							{
+								"Key" : "Rectangle",
+								"Value" : "32,48,16,16"
+							},
+							{
+								"Key" : "Opacity",
+								"Value" : "1.0"
+							},
+							{
+								"Key" : "Shading",
+								"Value" : "1,1,1"
+							}
+						]
+					}
+        ]
       },
       "Placing": [
         {
@@ -376,7 +383,7 @@
 						"Id": "Collision",
 						"Data" : [
 							{ "Key" : "CollisionSize", "Value" : "4,2,2" },
-							{ "Key" : "CollisionOffset", "Value" : "1.5,1,-0.5" },
+							{ "Key" : "CollisionOffset", "Value" : "1.5,1,-0.5" }
 						]
 					}
                 ]

@@ -17,22 +17,19 @@
   "Entities": [
      {
       "Entity": {
-        "Id": "Trees3D",
-        "RenderMode": {
-          "RenderMethod": "Model",
-          "PrimitiveModelId": "",
-          "ModelPath": "Pokecenter/Pokecenter.obj",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Id": "PokemonCenter",
+		"Visible" : true,
+		"Components" : [
+			{
+				"Id" : "VisualModel",
+				"Data" : [
+					{
+						"Key" : "MeshReference",
+						"Value" : "Pokecenter/Pokecenter.obj"
+					}
+				]
+			}
+		]
       },
       "Placing": [
         {
@@ -69,32 +66,25 @@
     {
       "Entity": {
         "Id": "Dirt1",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 16,
-                "Y": 0,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "FloorQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components" : [
+			{
+				"Id" : "VisualModel",
+				"Data" : [
+					{
+						"Key" : "MeshReference",
+						"Value" : "FloorQuad"
+					},
+					{
+            "Key" : "Texture",
+            "Value" : "PalletTown.png"
+					},
+					{
+						"Key" : "Rectangle",
+						"Value" : "16,0,16,16"
+					}
+				]
+			}
+		]
       },
       "Placing": [
         {
@@ -450,32 +440,25 @@
     {
       "Entity": {
         "Id": "Grass2",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 80,
-                "Y": 16,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "FloorQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components" : [
+			{
+				"Id" : "VisualModel",
+				"Data" : [
+					{
+						"Key" : "MeshReference",
+						"Value" : "FloorQuad"
+					},
+					{
+            "Key" : "Texture",
+            "Value" : "PalletTown.png"
+					},
+					{
+						"Key" : "Rectangle",
+						"Value" : "80,16,16,16"
+					}
+				]
+			}
+		]
       },
       "Placing": [
         {
@@ -512,32 +495,25 @@
     {
       "Entity": {
         "Id": "Grass",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 0,
-                "Y": 0,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "FloorQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components" : [
+			{
+				"Id" : "VisualModel",
+				"Data" : [
+					{
+						"Key" : "MeshReference",
+						"Value" : "FloorQuad"
+					},
+					{
+            "Key" : "Texture",
+            "Value" : "PalletTown.png"
+					},
+					{
+						"Key" : "Rectangle",
+						"Value" : "0,0,16,16"
+					}
+				]
+			}
+		]
       },
       "Placing": [
         {
@@ -806,32 +782,25 @@
     {
       "Entity": {
         "Id": "Dirt2",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 48,
-                "Y": 0,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "FloorQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components" : [
+			{
+				"Id" : "VisualModel",
+				"Data" : [
+					{
+						"Key" : "MeshReference",
+						"Value" : "FloorQuad"
+					},
+					{
+            "Key" : "Texture",
+            "Value" : "PalletTown.png"
+					},
+					{
+						"Key" : "Rectangle",
+						"Value" : "48,0,16,16"
+					}
+				]
+			}
+		]
       },
       "Placing": [
         {
@@ -1042,32 +1011,25 @@
     {
       "Entity": {
         "Id": "Water",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 16,
-                "Y": 16,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "FloorQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components" : [
+			{
+				"Id" : "VisualModel",
+				"Data" : [
+					{
+						"Key" : "MeshReference",
+						"Value" : "FloorQuad"
+					},
+					{
+            "Key" : "Texture",
+            "Value" : "PalletTown.png"
+					},
+					{
+						"Key" : "Rectangle",
+						"Value" : "16,16,16,16"
+					}
+				]
+			}
+		]
       },
       "Placing": [
         {
@@ -1104,32 +1066,25 @@
     {
       "Entity": {
         "Id": "Dirt3",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 32,
-                "Y": 0,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "FloorQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+         "Components" : [
+			{
+				"Id" : "VisualModel",
+				"Data" : [
+					{
+						"Key" : "MeshReference",
+						"Value" : "FloorQuad"
+					},
+					{
+            "Key" : "Texture",
+            "Value" : "PalletTown.png"
+					},
+					{
+						"Key" : "Rectangle",
+						"Value" : "32,0,16,16"
+					}
+				]
+			}
+		]
       },
       "Placing": [
         {
@@ -1340,42 +1295,40 @@
     {
       "Entity": {
         "Id": "Blocks",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 0,
-                "Y": 16,
-                "Width": 16,
-                "Height": 16
-              }
-            }
-          ],
-          "PrimitiveModelId": "Billboard",
-          "ModelPath": "",
-          "Visible": true,
-          "UseTransparency": true,
-		  "IsBillboard" : true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
         "Components": [
-			{
-				"Id": "Collision",
-				"Data" : [
-					{ "Key" : "CollisionSize", "Value" : "1,1,1" },
-					{ "Key" : "CollisionOffset", "Value" : "0,0.5,0" },
-				]
-			},
-        ]
+        {
+          "Id" : "VisualModel",
+          "Data" : [
+            {
+              "Key" : "MeshReference",
+              "Value" : "Billboard"
+            },
+            {
+              "Key" : "Texture",
+              "Value" : "PalletTown.png"
+            },
+            {
+              "Key" : "Rectangle",
+              "Value" : "0,16,16,16"
+            },
+            {
+              "Key" : "UseTransparency",
+              "Value" : "true"
+            },
+            {
+              "Key" : "IsBillboard",
+              "Value" : "true"
+            }
+          ]
+        },
+        {
+          "Id": "Collision",
+          "Data" : [
+            { "Key" : "CollisionSize", "Value" : "1,1,1" },
+            { "Key" : "CollisionOffset", "Value" : "0,0.5,0" }
+          ]
+        }
+      ]
       },
       "Placing": [
         {
@@ -1673,44 +1626,33 @@
     {
       "Entity": {
         "Id": "Flowers",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 64,
-                "Y": 32,
-                "Width": 8,
-                "Height": 8
-              }
-            },
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 64,
-                "Y": 40,
-                "Width": 8,
-                "Height": 8
-              }
-            }
-          ],
-          "PrimitiveModelId": "Billboard",
-          "ModelPath": "",
-          "Visible": true,
-          "UseTransparency": true,
-		  "IsBillboard" : true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
         "Components": [
-        ]
+          {
+            "Id" : "VisualModel",
+            "Data" : [
+              {
+                "Key" : "MeshReference",
+                "Value" : "Billboard"
+              },
+              {
+                "Key" : "Texture",
+                "Value" : "PalletTown.png"
+              },
+              {
+                "Key" : "Rectangle",
+                "Value" : "64,40,8,8"
+              },
+              {
+                "Key" : "UseTransparency",
+                "Value" : "true"
+              },
+              {
+                "Key" : "IsBillboard",
+                "Value" : "true"
+              }
+            ]
+          }
+      ]
       },
       "Placing": [
         {
@@ -1835,34 +1777,33 @@
     {
       "Entity": {
         "Id": "HighGrass",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "PalletTown.png",
-              "Rectangle": {
-                "X": 72,
-                "Y": 32,
-                "Width": 8,
-                "Height": 8
+        "Components": [
+          {
+            "Id" : "VisualModel",
+            "Data" : [
+              {
+                "Key" : "MeshReference",
+                "Value" : "Billboard"
+              },
+              {
+              "Key" : "Texture",
+              "Value" : "PalletTown.png"
+              },
+              {
+                "Key" : "Rectangle",
+                "Value" : "72,32,8,8"
+              },
+              {
+                "Key" : "UseTransparency",
+                "Value" : "true"
+              },
+              {
+                "Key" : "IsBillboard",
+                "Value" : "true"
               }
-            }
-          ],
-          "PrimitiveModelId": "Billboard",
-          "ModelPath": "",
-          "Visible": true,
-		  "IsBillboard" : true,
-          "UseTransparency": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+            ]
+          }
+        ]
       },
       "Placing": [
         {
@@ -1982,7 +1923,7 @@
           }
         }
       ]
-    },
+    }
   ],
   "Fragments": [
     {

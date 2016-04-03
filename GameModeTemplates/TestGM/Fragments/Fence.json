@@ -4,32 +4,33 @@
     {
       "Entity": {
         "Id": "PostSide",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "Sign.png",
-              "Rectangle": {
-                "X": 20,
-                "Y": 0,
-                "Width": 4,
-                "Height": 14
-              }
-            }
-          ],
-          "PrimitiveModelId": "WallQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components": [
+          {
+						"Id" : "VisualModel",
+						"Data" : [
+							{
+								"Key" : "MeshReference",
+								"Value" : "WallQuad"
+							},
+							{
+								"Key" : "Texture",
+								"Value" : "Sign.png"
+							},
+							{
+								"Key" : "Rectangle",
+								"Value" : "20,0,4,14"
+							},
+							{
+								"Key" : "Opacity",
+								"Value" : "1.0"
+							},
+							{
+								"Key" : "Shading",
+								"Value" : "1,1,1"
+							}
+						]
+					}
+        ]
       },
       "Placing": [
         {
@@ -153,32 +154,33 @@
     {
       "Entity": {
         "Id": "PostTop",
-        "RenderMode": {
-          "RenderMethod": "Primitive",
-          "Textures": [
-            {
-              "Source": "Sign.png",
-              "Rectangle": {
-                "X": 16,
-                "Y": 10,
-                "Width": 4,
-                "Height": 4
-              }
-            }
-          ],
-          "PrimitiveModelId": "WallQuad",
-          "ModelPath": "",
-          "Visible": true,
-          "Opacity": 1.0,
-          "Shading": {
-            "X": 1,
-            "Y": 1,
-            "Z": 1
-          },
-          "ObstructCamera": false,
-          "SeasonPalettes": [ ]
-        },
-        "Components": []
+        "Components": [
+          {
+						"Id" : "VisualModel",
+						"Data" : [
+							{
+								"Key" : "MeshReference",
+								"Value" : "WallQuad"
+							},
+							{
+								"Key" : "Texture",
+								"Value" : "Sign.png"
+							},
+							{
+								"Key" : "Rectangle",
+								"Value" : "16,10,4,4"
+							},
+							{
+								"Key" : "Opacity",
+								"Value" : "1.0"
+							},
+							{
+								"Key" : "Shading",
+								"Value" : "1,1,1"
+							}
+						]
+					}
+        ]
       },
       "Placing": [
         {
@@ -216,15 +218,33 @@
             "Entity": {
                 "Id": "Collisionbox",
                 "RenderMode": null,
-                "Components": [
-					{
-						"Id": "Collision",
-						"Data" : [
-							{ "Key" : "CollisionSize", "Value" : "0.8,1.0,0.2" },
-							{ "Key" : "CollisionOffset", "Value" : "0.0,0.5,-0.15" },
-						]
-					}
-                ]
+                "Components" : [
+                {
+                  "Id" : "VisualModel",
+                  "Data" : [
+                    {
+                      "Key" : "MeshReference",
+                      "Value" : "WallQuad"
+                    },
+                    {
+                      "Key" : "Texture",
+                      "Value" : "Sign.png"
+                    },
+                    {
+                      "Key" : "Rectangle",
+                      "Value" : "0,0,16,10"
+                    },
+                    {
+                      "Key" : "Opacity",
+                      "Value" : "1.0"
+                    },
+                    {
+                      "Key" : "Shading",
+                      "Value" : "1,1,1"
+                    }
+                  ]
+                }
+				       ]
             },
             "Placing": [
                 {

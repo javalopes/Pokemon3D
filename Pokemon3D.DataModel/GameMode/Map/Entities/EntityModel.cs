@@ -16,17 +16,13 @@ namespace Pokemon3D.DataModel.GameMode.Map.Entities
 
         [DataMember(Order = 1)]
         public string Generator;
-
-        [DataMember(Order = 2)]
-        public EntityRenderModeModel RenderMode;
         
-        [DataMember(Order = 3)]
+        [DataMember(Order = 2)]
         public EntityComponentModel[] Components;
 
         public override object Clone()
         {
             var clone = (EntityModel)MemberwiseClone();
-            clone.RenderMode = RenderMode.CloneModel();
             clone.Components = (EntityComponentModel[])Components.Clone();
             return clone;
         }

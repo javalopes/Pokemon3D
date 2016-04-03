@@ -114,7 +114,6 @@
     <Compile Include="GameMode\Map\MapFragmentImportModel.cs" />
     <Compile Include="GameMode\Map\MapFragmentModel.cs" />
     <Compile Include="GameMode\Map\Entities\EntityModel.cs" />
-    <Compile Include="GameMode\Map\Entities\EntityRenderModeModel.cs" />
     <Compile Include="GameMode\Map\Entities\EntitySeasonConfigurationModel.cs" />
     <Compile Include="GameMode\Map\Entities\RenderMethod.cs" />
     <Compile Include="GameMode\Map\MapEnvironmentModel.cs" />
