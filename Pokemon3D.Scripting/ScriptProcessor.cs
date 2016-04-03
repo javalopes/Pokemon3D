@@ -544,9 +544,9 @@ namespace Pokemon3D.Scripting
             {
                 returnObject = Context.CreateInstance(exp);
             }
-            else if (exp.StartsWith("$"))
+            else if (exp.StartsWith(ObjectBuffer.OBJ_PREFIX))
             {
-                string strId = exp.Remove(0, 1);
+                string strId = exp.Remove(0, ObjectBuffer.OBJ_PREFIX.Length);
                 int id = 0;
 
                 if (int.TryParse(strId, out id) && ObjectBuffer.HasObject(id))

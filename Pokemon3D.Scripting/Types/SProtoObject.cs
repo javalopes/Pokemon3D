@@ -174,7 +174,7 @@ namespace Pokemon3D.Scripting.Types
                 }
                 else
                 {
-                    return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_NOT_A_FUNCTION,  methodName );
+                    return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_NOT_A_FUNCTION, methodName);
                 }
             }
             else if (Prototype != null && Prototype.HasMember(processor, methodName))
@@ -187,13 +187,13 @@ namespace Pokemon3D.Scripting.Types
             }
             else
             {
-                return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_NOT_A_FUNCTION, methodName );
+                return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_NOT_A_FUNCTION, methodName);
             }
         }
 
         internal override string ToScriptObject()
         {
-            return "$" + ObjectBuffer.GetObjectId(this).ToString();
+            return ObjectBuffer.OBJ_PREFIX + ObjectBuffer.GetObjectId(this).ToString();
         }
 
         private const string FORMAT_SOURCE_MEMBER = "{0}:{1}";

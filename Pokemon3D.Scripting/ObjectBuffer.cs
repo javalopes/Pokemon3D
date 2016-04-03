@@ -7,10 +7,12 @@ namespace Pokemon3D.Scripting
     /// </summary>
     internal static class ObjectBuffer
     {
+        internal const string OBJ_PREFIX = "§";
+
         private static object _syncRoot = new object();
 
         private static List<object> _buffer = new List<object>();
-        
+
         internal static int GetObjectId(object obj)
         {
             int objId;

@@ -54,7 +54,7 @@
 
         internal override string ToScriptObject()
         {
-            return "$" + ObjectBuffer.GetObjectId(this).ToString();
+            return ObjectBuffer.OBJ_PREFIX + ObjectBuffer.GetObjectId(this).ToString();
         }
 
         #region Data proxy method overrides
