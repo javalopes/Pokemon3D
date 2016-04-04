@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Pokemon3D.Scripting
 {
-    class StatementProcessor
+    internal class StatementProcessor
     {
         internal static readonly string[] controlStatements = new string[] { "if", "else", "else if", "while", "for", "function", "class", "try", "catch", "finally" };
 
@@ -205,7 +205,7 @@ namespace Pokemon3D.Scripting
                 {
                     statement.Append(t);
                 }
-                
+
                 if (t == '\n')
                     lineNumberBuffer++;
 
@@ -219,7 +219,7 @@ namespace Pokemon3D.Scripting
                 processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_UNTERMINATED_COMMENT);
 
             if (isControlStatement)
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script" );
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
 
             // an executable statement not closed with ";" is getting added here:
             string leftOver = statement.ToString().Trim();
@@ -338,6 +338,8 @@ namespace Pokemon3D.Scripting
                 code = code.Replace("==", "--");
                 code = code.Replace("!=", "--");
                 code = code.Replace("=>", "--");
+                code = code.Replace("<=", "--");
+                code = code.Replace(">=", "--");
 
                 return StringEscapeHelper.ContainsWithoutStrings(code, "=");
             }

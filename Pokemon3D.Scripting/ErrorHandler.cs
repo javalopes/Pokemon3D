@@ -12,6 +12,7 @@ namespace Pokemon3D.Scripting
         public const string MESSAGE_TYPE_NOT_A_FUNCTION = "{0} is not a function";
         public const string MESSAGE_TYPE_ABSTRACT_NO_EXTENDS = "an abstract class must extend Object.";
         public const string MESSAGE_TYPE_ABSTRACT_NO_INSTANCE = "abstract prototypes cannot be instantiated";
+        public const string MESSAGE_TYPE_GETTER_SETTER_NOT_A_FUNCTION = "cannot set a non-function object as indexer getter or setter.";
 
         public const string MESSAGE_REFERENCE_NOT_DEFINED = "{0} is not defined";
         public const string MESSAGE_REFERENCE_NO_PROTOTYPE = "{0} is not defined or not a prototype";
@@ -100,7 +101,7 @@ namespace Pokemon3D.Scripting
         {
             string strErrorType = errorType.ToString();
             string formattedMessage = string.Format(message, messageArgs);
-            
+
             SObject errorObject = _processor.Context.CreateInstance("Error", new SObject[] { _processor.CreateString(formattedMessage), _processor.CreateString(errorType.ToString()), _processor.CreateNumber(_processor.GetLineNumber()) });
 
             return ThrowError(errorObject);

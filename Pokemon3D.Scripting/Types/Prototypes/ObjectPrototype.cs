@@ -83,15 +83,48 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 defaultValue = parameters[1];
             }
 
-            //if (parameters.Length > 2)
-            //{
+            bool isReadOnly = false;
+            bool isStatic = false;
+            bool isIndexerGet = false;
+            bool isIndexerSet = false;
 
-            //}
+            if (parameters.Length > 2)
+            {
+                SObject signature = parameters[2];
+                if (signature is SArray)
+                {
+                    foreach (var arrayMember in ((SArray)signature).ArrayMembers)
+                    {
+                        if (arrayMember is SString)
+                        {
+                            var signatureMember = ((SString)arrayMember).Value;
+                            switch (signatureMember)
+                            {
+                                case "readOnly":
+                                    isReadOnly = true;
+                                    break;
+                                case "static":
+                                    isStatic = true;
+                                    break;
+                                case "indexerGet":
+                                    isIndexerGet = true;
+                                    break;
+                                case "indexerSet":
+                                    isIndexerSet = true;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ((isIndexerSet || isIndexerGet) && !(defaultValue is SFunction))
+                processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_GETTER_SETTER_NOT_A_FUNCTION);
 
             if (!ScriptProcessor.IsValidIdentifier(memberName))
                 processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
 
-            prototype.AddMember(processor, new PrototypeMember(memberName, defaultValue));
+            prototype.AddMember(processor, new PrototypeMember(memberName, defaultValue, isStatic, isReadOnly, isIndexerGet, isIndexerSet));
 
             return processor.Undefined;
         }

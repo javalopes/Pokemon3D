@@ -11,7 +11,6 @@ namespace Pokemon3D.Scripting.Types.Prototypes
     internal class Prototype : SProtoObject
     {
         internal string Name { get; }
-        internal bool IsAbstract { get; private set; }
         internal PrototypeMember Constructor { get; set; }
         internal Prototype Extends { get; private set; }
         /// <summary>
@@ -19,10 +18,27 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         /// </summary>
         internal Type MappedType { get; set; }
 
+        internal bool IsAbstract
+        {
+            get
+            {
+                if (MappedType != null)
+                    return MappedType.IsAbstract;
+
+                return _isAbstract;
+            }
+            private set
+            {
+                if (MappedType == null)
+                    _isAbstract = value;
+            }
+        }
+
         private Dictionary<string, PrototypeMember> _prototypeMembers = new Dictionary<string, PrototypeMember>();
         private bool _initializedStatic;
         private SFunction _staticConstructor;
         private ScriptProcessor _staticConstructorProcessor;
+        private bool _isAbstract = false;
 
         internal static bool IsPrototype(Type t)
         {
@@ -32,7 +48,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         internal Prototype(string name)
         {
             Name = name;
-            
+
             var methods = BuiltInMethodManager.GetMethods(GetType());
             foreach (var methodData in methods)
             {
@@ -44,7 +60,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                     identifier = PROPERTY_GET_PREFIX + identifier;
                 else if (methodData.Item2.FunctionType == FunctionUsageType.PropertySetter)
                     identifier = PROPERTY_SET_PREFIX + identifier;
-                
+
                 _prototypeMembers.Add(identifier, new PrototypeMember(
                         identifier: identifier,
                         data: function,
@@ -199,7 +215,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 if (Extends == null)
                     Extends = processor.Context.GetPrototype("Object");
 
-                var superInstance = Extends.CreateInstance(processor, null, false);
+                var superInstance = Extends.CreateInstance(processor, null, true);
                 obj.AddMember(MEMBER_NAME_SUPER, superInstance);
             }
 
@@ -238,7 +254,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             return _prototypeMembers.Where(x => !x.Value.IsStatic && x.Value.IsReadOnly && !x.Value.IsIndexerGet && !x.Value.IsIndexerSet).Select(x => x.Value);
         }
 
-        private PrototypeMember GetIndexerGetFunction()
+        internal PrototypeMember GetIndexerGetFunction()
         {
             foreach (var member in _prototypeMembers.Values)
             {
@@ -250,7 +266,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             return null;
         }
 
-        private PrototypeMember GetIndexerSetFunction()
+        internal PrototypeMember GetIndexerSetFunction()
         {
             foreach (var member in _prototypeMembers.Values)
             {
@@ -462,6 +478,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
         private const string VAR_SIGNATURE_STATIC = "static";
         private const string VAR_SIGNATURE_READONLY = "readonly";
+
+        // TODO: C# 7: put proper Tuple handling in place.
 
         private static Tuple<PrototypeMember, string> ParseVarStatement(ScriptProcessor processor, ScriptStatement statement)
         {

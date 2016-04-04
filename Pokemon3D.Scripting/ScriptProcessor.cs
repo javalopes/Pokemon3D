@@ -24,6 +24,7 @@ namespace Pokemon3D.Scripting
         }
 
         private const string IDENTIFIER_SEPARATORS = "-+*/=!%&|<>,";
+        private const string CALL_LITERAL = "call";
 
         /// <summary>
         /// The <see cref="Pokemon3D.Scripting.ErrorHandler"/> associated with this <see cref="ScriptProcessor"/>.
@@ -73,7 +74,7 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// The <see cref="ScriptContext"/> associated with this <see cref="ScriptProcessor"/>.
         /// </summary>
-        public ScriptContext Context { get; }
+        internal ScriptContext Context { get; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="ScriptProcessor"/>.
@@ -83,7 +84,7 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// Creates a new instance of the <see cref="ScriptProcessor"/> and sets a context.
         /// </summary>
-        public ScriptProcessor(ScriptContext context) : this(context, 0) { }
+        internal ScriptProcessor(ScriptContext context) : this(context, 0) { }
 
         /// <summary>
         /// Runs raw source code and returns the result.
@@ -138,9 +139,11 @@ namespace Pokemon3D.Scripting
         {
             // The string must not be empty string, and start with a unicode letter.
             // Also, it cannot be a reserved keyword.
+            // "call" cannot be used as an identifier because it's the default identifier to call a method.
             return !(string.IsNullOrEmpty(identifier) ||
                 !char.IsLetter(identifier[0]) ||
-                ReservedKeywords.Contains(identifier));
+                ReservedKeywords.Contains(identifier) ||
+                identifier == CALL_LITERAL);
         }
 
         /// <summary>
@@ -164,15 +167,15 @@ namespace Pokemon3D.Scripting
         /// </summary>
         internal SString CreateString(string value)
         {
-            return CreateString(value, true);
+            return CreateString(value, true, false);
         }
 
         /// <summary>
         /// Creates an instance of the string primitive, also setting the escaped status.
         /// </summary>
-        internal SString CreateString(string value, bool escaped)
+        internal SString CreateString(string value, bool escaped, bool interpolate)
         {
-            return SString.Factory(this, value, escaped);
+            return SString.Factory(this, value, escaped, interpolate);
         }
 
         /// <summary>
@@ -234,13 +237,17 @@ namespace Pokemon3D.Scripting
                 var cOp = ops[i];
 
                 ElementCapture captureRight = CaptureRight(exp, cOp + op.Length);
-                string elementRight = captureRight.Identifier;
-                SObject objRight = ToScriptObject(elementRight);
+                string elementRight = captureRight.Identifier.Trim();
 
-                string result = ObjectOperators.NotOperator(this, objRight);
+                if (!string.IsNullOrWhiteSpace(elementRight))
+                {
+                    SObject objRight = ToScriptObject(elementRight);
 
-                exp = exp.Remove(cOp, elementRight.Length + op.Length);
-                exp = exp.Insert(cOp, result);
+                    string result = ObjectOperators.NotOperator(this, objRight);
+
+                    exp = exp.Remove(cOp, elementRight.Length + op.Length);
+                    exp = exp.Insert(cOp, result);
+                }
             }
 
             return exp;
@@ -262,7 +269,7 @@ namespace Pokemon3D.Scripting
                 }
 
                 ElementCapture captureLeft = CaptureLeft(exp, cOp - 1);
-                string elementLeft = captureLeft.Identifier;
+                string elementLeft = captureLeft.Identifier.Trim();
 
                 if (!(op == "-" && elementLeft.Length == 0))
                 {
@@ -280,7 +287,7 @@ namespace Pokemon3D.Scripting
                     if (needRight)
                     {
                         captureRight = CaptureRight(exp, cOp + op.Length);
-                        elementRight = captureRight.Identifier;
+                        elementRight = captureRight.Identifier.Trim();
 
                         if (string.IsNullOrWhiteSpace(elementRight))
                             ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
@@ -370,6 +377,14 @@ namespace Pokemon3D.Scripting
             }
 
             return exp;
+        }
+
+        private string EvaluateLambda(string exp)
+        {
+            if (StringEscapeHelper.ContainsWithoutStrings(exp, "=>") && Regex.IsMatch(exp, REGEX_LAMBDA))
+                return BuildLambdaFunction(exp);
+            else
+                return exp;
         }
 
         #endregion
@@ -487,11 +502,15 @@ namespace Pokemon3D.Scripting
             }
             else if (exp.StartsWith("\"") && exp.EndsWith("\"") || exp.StartsWith("\'") && exp.EndsWith("\'"))
             {
-                returnObject = CreateString(exp.Remove(exp.Length - 1, 1).Remove(0, 1), true);
+                returnObject = CreateString(exp.Remove(exp.Length - 1, 1).Remove(0, 1), true, false);
+            }
+            else if (exp.StartsWith("$\"") && exp.EndsWith("\"") || exp.StartsWith("$\'") && exp.EndsWith("\'"))
+            {
+                returnObject = CreateString(exp.Remove(exp.Length - 1, 1).Remove(0, 2), true, true);
             }
             else if (exp.StartsWith("@\"") && exp.EndsWith("\"") || exp.StartsWith("@\'") && exp.EndsWith("\'"))
             {
-                returnObject = CreateString(exp.Remove(exp.Length - 1, 1).Remove(0, 2), false);
+                returnObject = CreateString(exp.Remove(exp.Length - 1, 1).Remove(0, 2), false, false);
             }
             else if (exp.StartsWith("{") && exp.EndsWith("}"))
             {
@@ -525,9 +544,9 @@ namespace Pokemon3D.Scripting
             {
                 returnObject = Context.CreateInstance(exp);
             }
-            else if (exp.StartsWith("$"))
+            else if (exp.StartsWith(ObjectBuffer.OBJ_PREFIX))
             {
-                string strId = exp.Remove(0, 1);
+                string strId = exp.Remove(0, ObjectBuffer.OBJ_PREFIX.Length);
                 int id = 0;
 
                 if (int.TryParse(strId, out id) && ObjectBuffer.HasObject(id))
@@ -699,6 +718,17 @@ namespace Pokemon3D.Scripting
                                         newExpression.Append(returnObject.ToScriptObject());
                                     }
                                 }
+                                else
+                                {
+                                    // check for lambda statement
+                                    // if this turns out to be a lambda statement, then the whole expression is this lambda statement.
+                                    // therefore, discard everything and just add the converted function code taken from the lambda statement.
+                                    string nonParenthesesCode = exp.Substring(index + 1).Trim();
+                                    if (nonParenthesesCode.StartsWith("=>"))
+                                    {
+                                        return BuildLambdaFunction(exp);
+                                    }
+                                }
 
                                 parenthesesStartIndex = -1;
                             }
@@ -753,7 +783,20 @@ namespace Pokemon3D.Scripting
 
             string code = lambdaCode.Remove(0, lambdaCode.IndexOf("=>") + 2).Trim();
 
-            return string.Format("function({0}){{return {1};}}", signatureBuilder.ToString(), code);
+            // code without a code block ({ ... }) are a single statement that is implied to follow a "return" statement.
+            // e.g. (a) => a + 1 -> function(a) { return a + 1; }
+            // code with a code block define the whole function body. This is to ensure compatibility with C#-like lambda statements.
+            // e.g. (a) => { return a + 1; } -> function(a) { return a + 1; }.
+            // these types of lambda statements are more or less useless because they are just skipping the "function" literal.
+
+            if (code.StartsWith("{") && code.EndsWith("}"))
+            {
+                return string.Format("function({0}){1}", signatureBuilder.ToString(), code);
+            }
+            else
+            {
+                return string.Format("function({0}){{return {1};}}", signatureBuilder.ToString(), code);
+            }
         }
 
         /// <summary>
@@ -1046,6 +1089,7 @@ namespace Pokemon3D.Scripting
             string exp = methodName;
             int index = exp.Length - 1;
             int argumentStartIndex = -1;
+            SObject This = owner;
 
             if (exp.EndsWith("()"))
             {
@@ -1094,6 +1138,11 @@ namespace Pokemon3D.Scripting
             argumentCode = argumentCode.Remove(argumentCode.Length - 1, 1).Trim();
             SObject[] parameters = ParseParameters(argumentCode);
 
+            if (methodName == CALL_LITERAL && owner is SFunction)
+            {
+                This = Context.This;
+            }
+
             // If it has an indexer, parse it again:
             if (index > 0 && exp[index] == ']')
             {
@@ -1101,7 +1150,7 @@ namespace Pokemon3D.Scripting
 
                 if (member is SVariable && ((SVariable)member).Data is SFunction)
                 {
-                    return owner.ExecuteMethod(this, ((SVariable)member).Identifier, owner, owner, parameters);
+                    return owner.ExecuteMethod(this, ((SVariable)member).Identifier, owner, This, parameters);
                 }
                 else
                 {
@@ -1110,7 +1159,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                return owner.ExecuteMethod(this, methodName, owner, owner, parameters);
+                return owner.ExecuteMethod(this, methodName, owner, This, parameters);
             }
         }
 

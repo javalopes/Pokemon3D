@@ -84,6 +84,9 @@ namespace Pokemon3D.Scripting.Types
         {
             if (isIndexer && accessor.TypeOf() == LITERAL_TYPE_NUMBER)
             {
+                if (Prototype.GetIndexerGetFunction().ToFunction() != IndexerGetFunction)
+                    IndexerGetFunction = Prototype.GetIndexerGetFunction().ToFunction();
+
                 if (IndexerGetFunction != null)
                 {
                     return IndexerGetFunction.Call(processor, this, this, new SObject[] { accessor });
@@ -122,6 +125,12 @@ namespace Pokemon3D.Scripting.Types
 
         internal override void SetMember(ScriptProcessor processor, SObject accessor, bool isIndexer, SObject value)
         {
+            if (isIndexer)
+            {
+                if (Prototype.GetIndexerSetFunction().ToFunction() != IndexerSetFunction)
+                    IndexerSetFunction = Prototype.GetIndexerSetFunction().ToFunction();
+            }
+
             if (isIndexer && accessor.TypeOf() == LITERAL_TYPE_NUMBER && IndexerSetFunction != null)
             {
                 IndexerSetFunction.Call(processor, this, this, new SObject[] { accessor, value });
@@ -165,7 +174,7 @@ namespace Pokemon3D.Scripting.Types
                 }
                 else
                 {
-                    return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_NOT_A_FUNCTION,  methodName );
+                    return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_NOT_A_FUNCTION, methodName);
                 }
             }
             else if (Prototype != null && Prototype.HasMember(processor, methodName))
@@ -178,13 +187,13 @@ namespace Pokemon3D.Scripting.Types
             }
             else
             {
-                return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_NOT_A_FUNCTION, methodName );
+                return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_NOT_A_FUNCTION, methodName);
             }
         }
 
         internal override string ToScriptObject()
         {
-            return "$" + ObjectBuffer.GetObjectId(this).ToString();
+            return ObjectBuffer.OBJ_PREFIX + ObjectBuffer.GetObjectId(this).ToString();
         }
 
         private const string FORMAT_SOURCE_MEMBER = "{0}:{1}";

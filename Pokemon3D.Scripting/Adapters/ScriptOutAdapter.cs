@@ -18,6 +18,7 @@ namespace Pokemon3D.Scripting.Adapters
         /// </summary>
         public static object Translate(SObject obj)
         {
+            // todo: C# 7: put a swtich statement type match instead of aweful if case blocks.
             if (obj is SBool)
             {
                 return ((SBool)obj).Value;
@@ -73,7 +74,7 @@ namespace Pokemon3D.Scripting.Adapters
             {
                 string memberName = item.Key;
                 // Do not translate back the prototype and super instances:
-                if (memberName != SProtoObject.MEMBER_NAME_PROTOTYPE && 
+                if (memberName != SProtoObject.MEMBER_NAME_PROTOTYPE &&
                     memberName != SProtoObject.MEMBER_NAME_SUPER)
                 {
                     SObject memberContent = SObject.Unbox(item.Value);
@@ -88,6 +89,8 @@ namespace Pokemon3D.Scripting.Adapters
         {
             if (obj.Method != null)
                 return obj.Method;
+            else if (obj.DotNetMethod != null)
+                return obj.DotNetMethod;
             else
                 return obj.ToScriptSource();
         }

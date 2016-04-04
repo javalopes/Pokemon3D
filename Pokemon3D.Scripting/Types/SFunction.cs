@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Pokemon3D.Scripting.Types
 {
@@ -13,10 +14,17 @@ namespace Pokemon3D.Scripting.Types
         /// The code body of the function.
         /// </summary>
         public string Body { get; set; }
-        
+
         public FunctionUsageType FunctionUsage { get; set; }
 
-        public DBuiltInMethod Method { get; set; }
+        public BuiltInMethod Method { get; set; }
+
+        public DotNetBuiltInMethod DotNetMethod { get; set; }
+
+        private bool HasBuiltInMethod
+        {
+            get { return Method != null || DotNetMethod != null; }
+        }
 
         public SFunction(string body, string[] parameters)
         {
@@ -34,7 +42,7 @@ namespace Pokemon3D.Scripting.Types
             string paramCode = sourceCode.Remove(0, "function".Length).Trim().Remove(0, 1); //Removes "function", then any spaces between "function" and "(", then removes "(".
             paramCode = paramCode.Remove(paramCode.IndexOf(")"));
 
-            _parameters = paramCode.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            _parameters = paramCode.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray();
 
             bool allIdentifiersValid = true;
             int i = 0;
@@ -69,9 +77,23 @@ namespace Pokemon3D.Scripting.Types
         /// <summary>
         /// Initializes an instance with a built in method.
         /// </summary>
-        public SFunction(DBuiltInMethod method)
+        public SFunction(BuiltInMethod method)
+            : this((Delegate)method)
+        { }
+
+        /// <summary>
+        /// Initializes an instance with a built in method.
+        /// </summary>
+        public SFunction(Delegate method)
         {
-            Method = method;
+            if (method.GetType() == typeof(BuiltInMethod))
+            {
+                Method = (BuiltInMethod)method;
+            }
+            else if (method.GetType() == typeof(DotNetBuiltInMethod))
+            {
+                DotNetMethod = (DotNetBuiltInMethod)method;
+            }
         }
 
         internal override string TypeOf()
@@ -81,7 +103,7 @@ namespace Pokemon3D.Scripting.Types
 
         internal override double SizeOf()
         {
-            if (Method != null)
+            if (HasBuiltInMethod)
                 return 1;
             else
                 return Body.Length;
@@ -106,7 +128,7 @@ namespace Pokemon3D.Scripting.Types
             }
 
             string bodySource = "";
-            if (Method != null)
+            if (HasBuiltInMethod)
             {
                 bodySource = FUNCTION_NATIVE_CODE_SOURCE;
             }
@@ -120,7 +142,7 @@ namespace Pokemon3D.Scripting.Types
 
         internal override string ToScriptObject()
         {
-            return "$" + ObjectBuffer.GetObjectId(this).ToString();
+            return ObjectBuffer.OBJ_PREFIX + ObjectBuffer.GetObjectId(this).ToString();
         }
 
         internal override SObject ExecuteMethod(ScriptProcessor processor, string methodName, SObject caller, SObject This, SObject[] parameters)
@@ -140,9 +162,18 @@ namespace Pokemon3D.Scripting.Types
             ScriptProcessor functionProcessor = new ScriptProcessor(processor.Context, processor.GetLineNumber());
             SObject functionReturnObject;
 
-            if (Method != null)
+            if (HasBuiltInMethod)
             {
-                functionReturnObject = Method(functionProcessor, caller, This, parameters);
+                if (Method != null)
+                {
+                    functionReturnObject = Method(functionProcessor, caller, This, parameters);
+                }
+                else
+                {
+                    var dotNetParams = parameters.Select(p => Adapters.ScriptOutAdapter.Translate(p));
+                    var dotNetReturnObj = DotNetMethod(dotNetParams.ToArray());
+                    functionReturnObject = Adapters.ScriptInAdapter.Translate(processor, dotNetReturnObj);
+                }
             }
             else
             {
@@ -161,7 +192,7 @@ namespace Pokemon3D.Scripting.Types
                 functionProcessor.Context.This = This;
                 functionReturnObject = functionProcessor.Run(Body);
             }
-            
+
             return functionReturnObject;
         }
     }

@@ -3,7 +3,7 @@ using Pokemon3D.Scripting;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
 
-namespace Test.birdScript.Adapters
+namespace Test.Pokemon3D.Scripting.Adapters
 {
     [TestClass()]
     public class ScriptInAdapterTests

@@ -9,7 +9,7 @@ namespace Pokemon3D.Scripting
     /// <summary>
     /// Adds various context elements to a <see cref="ScriptProcessor"/> class instance.
     /// </summary>
-    public class ScriptContext
+    internal class ScriptContext
     {
         /// <summary>
         /// The parent context to this context. This context takes priority over its parent, if identifiers overlap.
@@ -27,66 +27,15 @@ namespace Pokemon3D.Scripting
         private Dictionary<string, Prototype> _prototypes = new Dictionary<string, Prototype>();
         private ScriptProcessor _processor;
 
-        #region Public interface
-
-        // Public ctor, do not initialize anything, this is getting done when the context is passed into a processor instance.
-        /// <summary>
-        /// Creates a new instance of the <see cref="ScriptContext"/> class.
-        /// </summary>
-        public ScriptContext()
-        {
-            This = new GlobalContextObject(this);
-        }
-
-        /// <summary>
-        /// Sets the callback for checking if an API class has a member.
-        /// </summary>
-        public void SetCallbackHasMember(DHasMember callback)
-        {
-            AddCallback(CallbackType.HasMember, callback);
-        }
-
-        /// <summary>
-        /// Sets the callback for getting a member of an API class.
-        /// </summary>
-        public void SetCallbackGetMember(DGetMember callback)
-        {
-            AddCallback(CallbackType.GetMember, callback);
-        }
-
-        /// <summary>
-        /// Sets the callback for setting a member of an API class.
-        /// </summary>
-        public void SetCallbackSetMember(DSetMember callback)
-        {
-            AddCallback(CallbackType.SetMember, callback);
-        }
-
-        /// <summary>
-        /// Sets the callback for executing a method of an API class.
-        /// </summary>
-        public void SetCallbackExecuteMethod(DExecuteMethod callback)
-        {
-            AddCallback(CallbackType.ExecuteMethod, callback);
-        }
-
-        /// <summary>
-        /// Sets the callback for getting the content of a script file.
-        /// </summary>
-        public void SetCallbackScriptPipeline(DScriptPipeline callback)
-        {
-            AddCallback(CallbackType.ScriptPipeline, callback);
-        }
-
-        #endregion
-
-        internal ScriptContext(ScriptProcessor processor, ScriptContext parent) : this()
+        internal ScriptContext(ScriptProcessor processor, ScriptContext parent)
         {
             _processor = processor;
             Parent = parent;
 
             if (parent != null)
                 This = parent.This;
+            else
+                This = new GlobalContextObject(this);
         }
 
         internal void Initialize()
@@ -108,7 +57,7 @@ namespace Pokemon3D.Scripting
             }
         }
 
-        private void AddCallback(CallbackType callbackType, Delegate callback)
+        internal void AddCallback(CallbackType callbackType, Delegate callback)
         {
             // Adds or replaces a delegate in the delegate list.
 

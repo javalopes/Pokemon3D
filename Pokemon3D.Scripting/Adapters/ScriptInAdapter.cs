@@ -13,8 +13,20 @@ namespace Pokemon3D.Scripting.Adapters
     /// </summary>
     public static class ScriptInAdapter
     {
+        /// <summary>
+        /// Returns the "undefined" script object.
+        /// </summary>
+        public static SObject GetUndefined(ScriptProcessor processor)
+        {
+            return processor.Undefined;
+        }
+
+        /// <summary>
+        /// Translates a .Net object to a script object.
+        /// </summary>
         public static SObject Translate(ScriptProcessor processor, object objIn)
         {
+            // todo: C# 7: put a swtich statement type match instead of aweful if case blocks.
             if (objIn == null)
             {
                 return TranslateNull(processor);
@@ -42,9 +54,9 @@ namespace Pokemon3D.Scripting.Adapters
             {
                 return TranslateArray(processor, (Array)objIn);
             }
-            else if (objIn is DBuiltInMethod)
+            else if (objIn is BuiltInMethod || objIn is DotNetBuiltInMethod)
             {
-                return TranslateFunction((DBuiltInMethod)objIn);
+                return TranslateFunction((Delegate)objIn);
             }
             else
             {
@@ -72,7 +84,7 @@ namespace Pokemon3D.Scripting.Adapters
             return processor.CreateBool(boolIn);
         }
 
-        private static SObject TranslateFunction(DBuiltInMethod methodIn)
+        private static SObject TranslateFunction(Delegate methodIn)
         {
             return new SFunction(methodIn);
         }
@@ -95,7 +107,7 @@ namespace Pokemon3D.Scripting.Adapters
             if (processor.Context.IsPrototype(typeName))
                 prototype = processor.Context.GetPrototype(typeName);
             else
-                prototype = TranslatePrototype(processor, objIn.GetType());
+                prototype = TranslatePrototype(processor, objIn.GetType(), objIn.GetType().Name);
 
             var obj = prototype.CreateInstance(processor, null, false);
 
@@ -145,11 +157,15 @@ namespace Pokemon3D.Scripting.Adapters
             return obj;
         }
 
-        internal static Prototype TranslatePrototype(ScriptProcessor processor, Type t)
+        internal static Prototype TranslatePrototype(ScriptProcessor processor, Type t, string name)
         {
-            var prototype = new Prototype(t.Name);
+            var prototype = new Prototype(name);
 
-            var typeInstance = Activator.CreateInstance(t);
+            object typeInstance = null;
+            if (!t.IsAbstract)
+            {
+                typeInstance = Activator.CreateInstance(t);
+            }
 
             FieldInfo[] fields = t
                 .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
@@ -225,14 +241,25 @@ namespace Pokemon3D.Scripting.Adapters
                     if (attr.IndexerGet && attr.IndexerSet)
                         throw new InvalidOperationException("The member function " + method.Name + " was marked both as an indexer set and indexer get. It can only be one at a time.");
 
-                    var methodDelegate = (DBuiltInMethod)Delegate.CreateDelegate(typeof(DBuiltInMethod), method);
+                    Delegate methodDelegate = null;
+
+                    if (method.GetParameters().Length == 1)
+                    {
+                        // a single parameter means the method is a DotNetBuiltInMethod.
+                        methodDelegate = (DotNetBuiltInMethod)Delegate.CreateDelegate(typeof(DotNetBuiltInMethod), method);
+                    }
+                    else if (method.GetParameters().Length == 4)
+                    {
+                        // four parameters means that the method is a valid BuiltInMethod.
+                        methodDelegate = (BuiltInMethod)Delegate.CreateDelegate(typeof(BuiltInMethod), method);
+                    }
 
                     if (attr.IndexerGet)
                         prototype.IndexerGetFunction = new SFunction(methodDelegate);
                     else if (attr.IndexerSet)
                         prototype.IndexerSetFunction = new SFunction(methodDelegate);
                     else
-                        prototype.AddMember(processor, new PrototypeMember(identifier, new SFunction(methodDelegate), false, true, false, false));
+                        prototype.AddMember(processor, new PrototypeMember(identifier, new SFunction(methodDelegate), method.IsStatic, true, false, false));
                 }
             }
 

@@ -731,6 +731,8 @@ namespace Pokemon3D.Scripting
                     exp = EvaluateOperator(exp, "<=");
                 if (exp.Contains(">="))
                     exp = EvaluateOperator(exp, ">=");
+                if (exp.Contains("=>"))
+                    exp = EvaluateLambda(exp);
                 if (exp.Contains("<"))
                     exp = EvaluateOperator(exp, "<");
                 if (exp.Contains(">"))

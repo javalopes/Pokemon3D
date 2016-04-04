@@ -33,7 +33,7 @@
         }
 
         /// <summary>
-        /// Converts the <see cref="Data"/> to an <see cref="SFunction"/>.
+        /// Casts the <see cref="Data"/> to an <see cref="SFunction"/>.
         /// </summary>
         internal SFunction ToFunction()
         {

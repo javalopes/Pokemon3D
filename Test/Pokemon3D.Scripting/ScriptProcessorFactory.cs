@@ -1,6 +1,6 @@
 ﻿using Pokemon3D.Scripting;
 
-namespace Test.birdScript
+namespace Test.Pokemon3D.Scripting
 {
     /// <summary>
     /// A factory to create <see cref="ScriptProcessor"/> instances.

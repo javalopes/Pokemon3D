@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Pokemon3D.Common.Shapes
 {
     /// <summary>
     /// Descriptes a rectangular plane.
     /// </summary>
-    public struct Plane : Shape, IEquatable<Plane>
+    public struct Plane2D : Shape, IEquatable<Plane2D>
     {
         private Rectangle _bounds;
 
         /// <summary>
-        /// Gets or sets the bounds of this <see cref="Plane"/>.
+        /// Gets or sets the bounds of this <see cref="Plane2D"/>.
         /// </summary>
         public Rectangle Bounds
         {
@@ -24,7 +20,7 @@ namespace Pokemon3D.Common.Shapes
         }
 
         /// <summary>
-        /// Gets or sets the location of this <see cref="Plane"/>.
+        /// Gets or sets the location of this <see cref="Plane2D"/>.
         /// </summary>
         public Point Location
         {
@@ -33,15 +29,20 @@ namespace Pokemon3D.Common.Shapes
         }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Plane"/> struct.
+        /// Creates a new instance of the <see cref="Plane2D"/> struct.
         /// </summary>
-        public Plane(Rectangle bounds)
+        public Plane2D(Rectangle bounds)
         {
             _bounds = bounds;
         }
 
+        public Plane2D(int x, int y, int width, int height)
+        {
+            _bounds = new Rectangle(x, y, width, height);
+        }
+
         /// <summary>
-        /// Returns the area of this <see cref="Plane"/>.
+        /// Returns the area of this <see cref="Plane2D"/>.
         /// </summary>
         public double GetArea()
         {
@@ -49,7 +50,7 @@ namespace Pokemon3D.Common.Shapes
         }
 
         /// <summary>
-        /// Checks if a this <see cref="Plane"/> contains a <see cref="Point"/>.
+        /// Checks if a this <see cref="Plane2D"/> contains a <see cref="Point"/>.
         /// </summary>
         public bool Contains(Point value)
         {
@@ -57,7 +58,7 @@ namespace Pokemon3D.Common.Shapes
         }
 
         /// <summary>
-        /// Checks if a this <see cref="Plane"/> contains a <see cref="Rectangle"/>.
+        /// Checks if a this <see cref="Plane2D"/> contains a <see cref="Rectangle"/>.
         /// </summary>
         public bool Contains(Rectangle value)
         {
@@ -65,7 +66,7 @@ namespace Pokemon3D.Common.Shapes
         }
 
         /// <summary>
-        /// Checks if a this <see cref="Plane"/> contains a <see cref="Vector2"/>.
+        /// Checks if a this <see cref="Plane2D"/> contains a <see cref="Vector2"/>.
         /// </summary>
         public bool Contains(Vector2 value)
         {
@@ -73,7 +74,7 @@ namespace Pokemon3D.Common.Shapes
         }
 
         /// <summary>
-        /// Checks if a this <see cref="Plane"/> contains the specified coordinates.
+        /// Checks if a this <see cref="Plane2D"/> contains the specified coordinates.
         /// </summary>
         public bool Contains(int x, int y)
         {
@@ -81,9 +82,9 @@ namespace Pokemon3D.Common.Shapes
         }
 
         /// <summary>
-        /// Compares whether the current instance is equal to specified <see cref="Plane"/>.
+        /// Compares whether the current instance is equal to specified <see cref="Plane2D"/>.
         /// </summary>
-        public bool Equals(Plane other)
+        public bool Equals(Plane2D other)
         {
             return _bounds.Equals(other._bounds);
         }
@@ -93,11 +94,11 @@ namespace Pokemon3D.Common.Shapes
         /// </summary>
         public override bool Equals(object obj)
         {
-            return obj is Plane ? Equals((Plane)obj) : false;
+            return obj is Plane2D ? Equals((Plane2D)obj) : false;
         }
 
         /// <summary>
-        /// Get the hash code of this <see cref="Plane"/>.
+        /// Get the hash code of this <see cref="Plane2D"/>.
         /// </summary>
         public override int GetHashCode()
         {
@@ -107,7 +108,7 @@ namespace Pokemon3D.Common.Shapes
         }
 
         /// <summary>
-        /// Returns a <see cref="string"/> representation of this <see cref="Plane"/>.
+        /// Returns a <see cref="string"/> representation of this <see cref="Plane2D"/>.
         /// </summary>
         public override string ToString()
         {
@@ -115,17 +116,17 @@ namespace Pokemon3D.Common.Shapes
         }
 
         /// <summary>
-        /// Compares whether two <see cref="Plane"/> instances are equal.
+        /// Compares whether two <see cref="Plane2D"/> instances are equal.
         /// </summary>
-        public static bool operator ==(Plane left, Plane right)
+        public static bool operator ==(Plane2D left, Plane2D right)
         {
             return left.Equals(right);
         }
 
         /// <summary>
-        /// Compares whether two <see cref="Plane"/> instances are not equal.
+        /// Compares whether two <see cref="Plane2D"/> instances are not equal.
         /// </summary>
-        public static bool operator !=(Plane left, Plane right)
+        public static bool operator !=(Plane2D left, Plane2D right)
         {
             return !left.Equals(right);
         }
