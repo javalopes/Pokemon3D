@@ -2,10 +2,8 @@
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes.Maps.EntityComponents;
-using Pokemon3D.GameModes.Maps.EntityComponents.Components;
 using Pokemon3D.GameModes.Maps.Generators;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Pokemon3D.GameModes.Maps
 {

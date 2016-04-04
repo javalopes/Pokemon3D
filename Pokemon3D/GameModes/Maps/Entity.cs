@@ -44,14 +44,17 @@ namespace Pokemon3D.GameModes.Maps
             Forward = Vector3.Forward;
             SetDirty();
         }
-        
+
         /// <summary>
         /// Entity update method to update all of the entity's components.
         /// </summary>
         public void Update(float elapsedTime)
         {
             HandleIsDirty();
-            for (int i = 0; i < _components.Count; i++) _components[i].Update(elapsedTime);
+            for (int i = 0; i < _components.Count; i++)
+            {
+                 if (_components[i].IsActive) _components[i].Update(elapsedTime);
+            }
         }
 
         public void RenderPreparations(Camera observer)
@@ -87,6 +90,10 @@ namespace Pokemon3D.GameModes.Maps
                 if (_isActive != value)
                 {
                     _isActive = value;
+                    for(var i = 0; i < _components.Count; i++)
+                    {
+                        _components[i].OnIsActiveChanged();
+                    }
                     for (var i = 0; i < _childNodes.Count; i++)
                     {
                         _childNodes[i].IsActive = _isActive;

@@ -82,6 +82,11 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
             IsBillboard = isBillboard;
         }
 
+        public override void OnIsActiveChanged()
+        {
+            _drawableElement.IsActive = IsActive;
+        }
+
         public void AddTextureRegion(Texture2D texture, Rectangle? region)
         {
             _regions.Add(new TextureRegion

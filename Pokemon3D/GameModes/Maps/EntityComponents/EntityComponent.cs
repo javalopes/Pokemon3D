@@ -9,6 +9,8 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
     /// </summary>
     partial class EntityComponent
     {
+        private bool _isActive;
+
         /// <summary>
         /// The original name of this component.
         /// </summary>
@@ -29,11 +31,26 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
             Name = parameters.Name;
             Data = parameters.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             Parent = parameters.Parent;
+            _isActive = true;
         }
 
         protected EntityComponent(Entity parent)
         {
             Parent = parent;
+            _isActive = true;
+        }
+
+        public bool IsActive
+        {
+            get { return Parent.IsActive && _isActive; }
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    OnIsActiveChanged();
+                }
+            }
         }
 
         /// <summary>
@@ -103,6 +120,8 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
             }
             return defaultValue;
         }
+
+        public virtual void OnIsActiveChanged() { }
 
         public virtual void OnComponentAdded() { }
 
