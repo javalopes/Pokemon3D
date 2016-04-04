@@ -70,7 +70,7 @@ namespace Pokemon3D.Rendering.Data
             device.SetVertexBuffer(_vertexBuffer);
             device.Indices = _indexBuffer;
 
-            device.DrawIndexedPrimitives(_primitiveType, 0, 0, VertexCount, 0, _primitiveCount);
+            device.DrawIndexedPrimitives(_primitiveType, 0, 0, _primitiveCount);
             RenderStatistics.Instance.DrawCalls++;
         }
 

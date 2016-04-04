@@ -15,12 +15,12 @@ namespace Pokemon3D.DataModel.GameMode.Map.Entities
         public string Id;
 
         [DataMember(Order = 1)]
-        public EntityComponentDataItem[] Data;
+        public EntityComponentDataItemModel[] Data;
 
         public override object Clone()
         {
             var entityComponent = (EntityComponentModel)MemberwiseClone();
-            entityComponent.Data = (EntityComponentDataItem[])Data.Clone();
+            entityComponent.Data = (EntityComponentDataItemModel[])Data.Clone();
             return entityComponent;
         }
     }

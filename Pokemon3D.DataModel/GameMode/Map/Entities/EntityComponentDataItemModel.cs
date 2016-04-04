@@ -9,7 +9,7 @@ namespace Pokemon3D.DataModel.GameMode.Map.Entities
     /// Containing Data for entity component.
     /// </summary>
     [DataContract(Namespace = "")]
-    public class EntityComponentDataItem : DataModel<EntityComponentDataItem>
+    public class EntityComponentDataItemModel : DataModel<EntityComponentDataItemModel>
     {
         [DataMember(Order = 0)]
         public string Key;

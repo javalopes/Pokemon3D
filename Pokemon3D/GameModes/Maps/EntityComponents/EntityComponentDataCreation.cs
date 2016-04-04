@@ -10,7 +10,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents
     struct EntityComponentDataCreationStruct
     {
         public string Name;
-        public EntityComponentDataItem[] Data;
+        public EntityComponentDataItemModel[] Data;
         public Entity Parent;
     }
 }
