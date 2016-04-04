@@ -23,6 +23,7 @@ namespace Pokemon3D.GameModes.Maps
         private MouseState _mouseState;
 
         private Vector3 _cameraTargetPosition = new Vector3(0, 1, 3);
+        private World _world;
 
         public float Speed { get; set; }
         public float RotationSpeed { get; set; }
@@ -42,9 +43,12 @@ namespace Pokemon3D.GameModes.Maps
             }
         }
 
-        public Player(EntitySystem entitySystem)
+        public Player(World world)
         {
-            _playerEntity = entitySystem.CreateEntity();
+            _world = world;
+            _playerEntity = Game.EntitySystem.CreateEntity();
+            _playerEntity.IsActive = false;
+            _world.AddEntityToActivate(_playerEntity);
 
             var mesh = new Mesh(Game.GraphicsDevice, Primitives.GenerateQuadForYBillboard());
             var diffuseTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
@@ -57,7 +61,10 @@ namespace Pokemon3D.GameModes.Maps
             };
             _modelEntityComponent = _playerEntity.AddComponent(new ModelEntityComponent(_playerEntity, mesh, material, true));
 
-            _cameraEntity = entitySystem.CreateEntity(_playerEntity);
+            _cameraEntity = Game.EntitySystem.CreateEntity(_playerEntity);
+            _cameraEntity.IsActive = false;
+            _world.AddEntityToActivate(_cameraEntity);
+
             var cameraComponent = _cameraEntity.AddComponent(new CameraEntityComponent(_cameraEntity, new Skybox(Game)
             {
                 Scale = 50,
@@ -99,7 +106,7 @@ namespace Pokemon3D.GameModes.Maps
                 diffuseTexture.GetTexcoordsFromPixelCoords(64, 64),
             }, t => _modelEntityComponent.Material.TexcoordOffset = t, true));
 
-            MovementMode = PlayerMovementMode.ThirdPerson;
+            _movementMode = PlayerMovementMode.ThirdPerson;
             _cameraEntity.Position = _cameraTargetPosition;
 
             var colliderComponent = new CollisionEntityComponent(_playerEntity, new Vector3(0.35f, 0.6f, 0.35f),
@@ -163,16 +170,6 @@ namespace Pokemon3D.GameModes.Maps
                     _cameraEntity.Position = new Vector3(_cameraEntity.Position.X, MathHelper.SmoothStep(_cameraEntity.Position.Y, _cameraTargetPosition.Y, 0.2f), _cameraEntity.Position.Z);
                 }
             }
-
-            //var collidingObjects = Game.CollisionManager.CheckCollision(Collider);
-            // if (collidingObjects.Length > 0)
-            //{
-            //    for(var i = 0; i < collidingObjects.Length; i++)
-            //    {
-            //        //SceneNode.Position = SceneNode.Position += collidingObjects[i].Axis;
-            //    }
-            //    //Collider.SetPosition(SceneNode.Position);
-            //}
         }
 
         private void DeactivateWalkingAnimation()

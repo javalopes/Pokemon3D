@@ -12,6 +12,7 @@ namespace Pokemon3D.Rendering
         public float FarClipDistance { get; set; }
         public float FieldOfView { get; set; }
         public Viewport Viewport { get; set; }
+        public bool IsActive { get; set; }
 
         public Matrix ViewMatrix { get; private set; }
         public Matrix ProjectionMatrix { get; private set; }
@@ -30,6 +31,7 @@ namespace Pokemon3D.Rendering
             FieldOfView = MathHelper.PiOver4;
             Frustum = new BoundingFrustum(Matrix.Identity);
             ClearColor = Color.CornflowerBlue;
+            IsActive = true;
         }
 
         public void Update()

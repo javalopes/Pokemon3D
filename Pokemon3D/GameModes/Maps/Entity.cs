@@ -4,8 +4,6 @@ using Pokemon3D.GameModes.Maps.EntityComponents;
 using Pokemon3D.Rendering;
 using System.Collections.Generic;
 using System.Linq;
-using Pokemon3D.Collisions;
-using System;
 using System.Collections.ObjectModel;
 
 namespace Pokemon3D.GameModes.Maps

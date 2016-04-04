@@ -126,7 +126,7 @@ namespace Pokemon3D.Rendering.Compositor
 
                 for (var i = 0; i < _allCameras.Count; i++)
                 {
-                    DrawSceneForCamera(_allCameras[i]);
+                    if (_allCameras[i].IsActive) DrawSceneForCamera(_allCameras[i]);
                 }
             }
 

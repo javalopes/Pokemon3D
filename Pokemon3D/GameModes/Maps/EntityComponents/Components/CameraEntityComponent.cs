@@ -42,6 +42,12 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
             FieldOfView = MathHelper.PiOver4;
             ClearColor = Color.CornflowerBlue;
             Camera.Skybox = skybox;
+            Camera.IsActive = Parent.IsActive;
+        }
+
+        public override void OnIsActiveChanged()
+        {
+            Camera.IsActive = IsActive;
         }
 
         public override void Update(float elapsedTime)

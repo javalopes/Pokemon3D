@@ -70,6 +70,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 
             SetTexture(0);
 
+            _drawableElement.IsActive = Parent.IsActive;
             _drawableElement.EndInitialzing();
         }
 

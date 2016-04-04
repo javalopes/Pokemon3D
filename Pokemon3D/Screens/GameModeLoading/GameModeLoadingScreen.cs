@@ -77,6 +77,7 @@ namespace Pokemon3D.Screens.GameModeLoading
 
             if (_loadingFinished)
             {
+                _world.ActivateNewEntities();
                 Game.ScreenManager.SetScreen(typeof(OverworldScreen), typeof(SlideTransition), _world);
             }
         }
