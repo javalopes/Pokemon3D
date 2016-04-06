@@ -21,17 +21,9 @@
             _animationDelay = GetData<float>("AnimationDelay");
         }
 
-        private ModelEntityComponent GetModelEntityComponent()
-        {
-            if (Parent.HasComponent<ModelEntityComponent>())
-                return Parent.GetComponent<ModelEntityComponent>();
-            else
-                return null;
-        }
-
         public override void Update(float elapsedTime)
         {
-            _modelComponent = GetModelEntityComponent();
+            _modelComponent = Parent.GetComponent<ModelEntityComponent>();
 
             if (_modelComponent != null)
             {
