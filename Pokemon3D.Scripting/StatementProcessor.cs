@@ -326,7 +326,7 @@ namespace Pokemon3D.Scripting
         /// </summary>
         private static bool IsAssignmentStatement(string code)
         {
-            if (!StringEscapeHelper.ContainsWithoutStrings(code, "="))
+            if (!code.Contains("=") && !StringEscapeHelper.ContainsWithoutStrings(code, "="))
             {
                 return false;
             }
