@@ -5,12 +5,12 @@
     /// </summary>
     class AnimateTexturesEntityComponent : EntityComponent
     {
-        private ModelEntityComponent _modelComponent;
+        private ModelEntityComponent _modelComponent = null;
 
         float _animationDelay;
         int _textureIndex;
 
-        public AnimateTexturesEntityComponent(EntityComponentDataCreationStruct parameters) : base( parameters)
+        public AnimateTexturesEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
             SetInitialAnimationDelay();
             _textureIndex = 0;
@@ -21,20 +21,38 @@
             _animationDelay = GetData<float>("AnimationDelay");
         }
 
+        private ModelEntityComponent GetModelEntityComponent()
+        {
+            if (Parent.HasComponent<ModelEntityComponent>())
+                return Parent.GetComponent<ModelEntityComponent>();
+            else
+                return null;
+        }
+
         public override void Update(float elapsedTime)
         {
-            _animationDelay -= elapsedTime;
-            if (_animationDelay <= 0f)
+            _modelComponent = GetModelEntityComponent();
+
+            if (_modelComponent != null)
             {
-                //todo: repair.
-                // Flip to next texture:
-                //if (++_textureIndex >= _modelComponent.TextureSources.Length) _textureIndex = 0;
+                _animationDelay -= elapsedTime;
+                if (_animationDelay <= 0f)
+                {
+                    _textureIndex++;
+                    if (_textureIndex >= _modelComponent.Regions.Count)
+                        _textureIndex = 0;
 
-                //if (_modelComponent == null) _modelComponent = Parent.GetComponent<ModelEntityComponent>(IDs.VisualModel);
-                //_modelComponent?.SetTexture(_textureIndex);
+                    _modelComponent.SetTexture(_textureIndex);
 
-                // Reset delay after flip:
+                    // Reset delay after flip:
+                    SetInitialAnimationDelay();
+                }
+            }
+            else
+            {
+                // when no model entity component is found, reset the animation parameters.
                 SetInitialAnimationDelay();
+                _textureIndex = 0;
             }
         }
     }

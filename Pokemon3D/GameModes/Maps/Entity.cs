@@ -51,7 +51,7 @@ namespace Pokemon3D.GameModes.Maps
             HandleIsDirty();
             for (int i = 0; i < _components.Count; i++)
             {
-                 if (_components[i].IsActive) _components[i].Update(elapsedTime);
+                if (_components[i].IsActive) _components[i].Update(elapsedTime);
             }
         }
 
@@ -88,7 +88,7 @@ namespace Pokemon3D.GameModes.Maps
                 if (_isActive != value)
                 {
                     _isActive = value;
-                    for(var i = 0; i < _components.Count; i++)
+                    for (var i = 0; i < _components.Count; i++)
                     {
                         _components[i].OnIsActiveChanged();
                     }
@@ -161,7 +161,7 @@ namespace Pokemon3D.GameModes.Maps
             }
             private set { _globalPosition = value; }
         }
-        
+
         public Vector3 Right
         {
             get
@@ -288,6 +288,11 @@ namespace Pokemon3D.GameModes.Maps
             return GetComponent(componentName) as T;
         }
 
+        public T GetComponent<T>() where T : EntityComponent
+        {
+            return _components.FirstOrDefault(c => c is T) as T;
+        }
+
         /// <summary>
         /// Returns if this <see cref="Entity"/> has a component of a specific name.
         /// </summary>
@@ -301,8 +306,13 @@ namespace Pokemon3D.GameModes.Maps
         /// </summary>
         public bool HasComponent<T>(string componentName) where T : EntityComponent
         {
-            return _components.Any(c => (c.Name ?? "").Equals(componentName, System.StringComparison.OrdinalIgnoreCase) 
+            return _components.Any(c => (c.Name ?? "").Equals(componentName, System.StringComparison.OrdinalIgnoreCase)
                                         && c is T);
+        }
+
+        public bool HasComponent<T>() where T : EntityComponent
+        {
+            return _components.Any(c => c is T);
         }
     }
 }

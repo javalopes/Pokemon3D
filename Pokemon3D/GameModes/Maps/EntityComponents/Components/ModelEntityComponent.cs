@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
@@ -9,16 +10,19 @@ using Pokemon3D.Rendering.Data;
 
 namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
 {
-    struct TextureRegion
-    {
-        public Texture2D Texture;
-        public Rectangle? Rectangle;
-    }
-
     class ModelEntityComponent : EntityComponent
     {
         private List<TextureRegion> _regions;
         private readonly DrawableElement _drawableElement;
+
+        public List<TextureRegion> Regions => _regions;
+        public Material Material => _drawableElement.Material;
+
+        private bool IsBillboard
+        {
+            get { return _drawableElement.IsBillboard; }
+            set { _drawableElement.IsBillboard = value; }
+        }
 
         public ModelEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
@@ -41,7 +45,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
                     var modelMesh = GameController.Instance.ActiveGameMode.GetModel(modelReference).First();
                     _drawableElement.Mesh = modelMesh.Mesh;
                     _drawableElement.Material = modelMesh.Material;
-                    
+
                 }
 
                 _drawableElement.Material.Color = new Color(GetDataOrDefault("Shading", Vector3.One));
@@ -58,7 +62,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
             var gameMode = Parent.Game.ActiveGameMode;
             if (textures.Length == 1)
             {
-                AddTextureRegion(gameMode.GetTexture(textures[0]), regions.Length == 0 ? (Rectangle?) null : regions[0]);
+                AddTextureRegion(gameMode.GetTexture(textures[0]), regions.Length == 0 ? (Rectangle?)null : regions[0]);
             }
             else
             {
@@ -88,21 +92,6 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
             _drawableElement.IsActive = IsActive;
         }
 
-        public void AddTextureRegion(Texture2D texture, Rectangle? region)
-        {
-            _regions.Add(new TextureRegion
-            {
-                Texture = texture,
-                Rectangle = region
-            });
-        }
-
-        public bool IsBillboard
-        {
-            get { return _drawableElement.IsBillboard; }
-            set { _drawableElement.IsBillboard = value; }
-        }
-
         public void SetTexture(int index)
         {
             if (index >= _regions.Count) return;
@@ -120,7 +109,7 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
                 _drawableElement.Material.TexcoordOffset = Vector2.Zero;
                 _drawableElement.Material.TexcoordScale = Vector2.One;
             }
-            
+
         }
 
         public override void Update(float elapsedTime)
@@ -151,6 +140,13 @@ namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
             }
         }
 
-        public Material Material => _drawableElement.Material;
+        private void AddTextureRegion(Texture2D texture, Rectangle? region)
+        {
+            _regions.Add(new TextureRegion
+            {
+                Texture = texture,
+                Rectangle = region
+            });
+        }
     }
 }
