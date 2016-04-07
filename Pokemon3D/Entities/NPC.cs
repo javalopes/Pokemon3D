@@ -6,7 +6,7 @@ using Pokemon3D.DataModel.GameMode.Map.NPCs;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 
-namespace Pokemon3D.GameModes.Maps
+namespace Pokemon3D.Entities
 {
     //class NPC : Entity
     //{

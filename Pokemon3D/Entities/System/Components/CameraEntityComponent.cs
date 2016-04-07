@@ -2,8 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering;
 
-namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
+namespace Pokemon3D.Entities.System.Components
 {
+    [JsonComponentId("camera")]
     class CameraEntityComponent : EntityComponent
     {
         public float NearClipDistance

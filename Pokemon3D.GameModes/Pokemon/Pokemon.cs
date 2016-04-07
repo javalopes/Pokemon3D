@@ -7,7 +7,7 @@ using Pokemon3D.Common;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Pokemon3D.GameModes.Pokemon
+namespace Pokemon3D.Entities.Pokemon
 {
     /// <summary>
     /// A Pokémon instance that holds the definition and save data of a Pokémon instance.

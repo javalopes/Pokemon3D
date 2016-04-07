@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Pokemon3D.DataModel;
 
-namespace Pokemon3D.GameModes.Pokemon
+namespace Pokemon3D.Entities.Pokemon
 {
     /// <summary>
     /// Used to create <see cref="Pokemon"/> instances.

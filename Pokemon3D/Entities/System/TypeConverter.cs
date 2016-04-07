@@ -3,7 +3,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 
-namespace Pokemon3D.GameModes.Maps.EntityComponents
+namespace Pokemon3D.Entities.System
 {
     /// <summary>
     /// Contains static methods to convert the string data of entity components to other data types.

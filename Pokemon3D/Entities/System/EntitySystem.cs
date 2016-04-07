@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
+using Pokemon3D.Entities.System.Generators;
 using Pokemon3D.GameCore;
-using Pokemon3D.GameModes.Maps.EntityComponents;
-using Pokemon3D.GameModes.Maps.Generators;
 using System.Collections.Generic;
 
-namespace Pokemon3D.GameModes.Maps
+namespace Pokemon3D.Entities.System
 {
     class EntitySystem : GameObject
     {

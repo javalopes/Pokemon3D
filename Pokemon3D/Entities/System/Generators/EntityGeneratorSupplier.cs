@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Pokemon3D.GameModes.Maps.Generators
+namespace Pokemon3D.Entities.System.Generators
 {
     class EntityGeneratorSupplier
     {

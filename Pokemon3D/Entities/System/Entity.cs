@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.GameCore;
-using Pokemon3D.GameModes.Maps.EntityComponents;
 using Pokemon3D.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
 
-namespace Pokemon3D.GameModes.Maps
+namespace Pokemon3D.Entities.System
 {
     /// <summary>
     /// Represents a functional part of a map.
@@ -277,7 +276,7 @@ namespace Pokemon3D.GameModes.Maps
         /// </summary>
         public EntityComponent GetComponent(string componentName)
         {
-            return _components.FirstOrDefault(c => c.Name.Equals(componentName, System.StringComparison.OrdinalIgnoreCase));
+            return _components.FirstOrDefault(c => c.Name.Equals(componentName, global::System.StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -298,7 +297,7 @@ namespace Pokemon3D.GameModes.Maps
         /// </summary>
         public bool HasComponent(string componentName)
         {
-            return _components.Any(c => (c.Name ?? "").Equals(componentName, System.StringComparison.OrdinalIgnoreCase));
+            return _components.Any(c => (c.Name ?? "").Equals(componentName, global::System.StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -306,7 +305,7 @@ namespace Pokemon3D.GameModes.Maps
         /// </summary>
         public bool HasComponent<T>(string componentName) where T : EntityComponent
         {
-            return _components.Any(c => (c.Name ?? "").Equals(componentName, System.StringComparison.OrdinalIgnoreCase)
+            return _components.Any(c => (c.Name ?? "").Equals(componentName, global::System.StringComparison.OrdinalIgnoreCase)
                                         && c is T);
         }
 

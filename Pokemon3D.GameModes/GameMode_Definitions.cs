@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Pokemon3D.GameModes
+namespace Pokemon3D.Entities
 {
     /// <summary>
     /// Contains definitions to reduce clutter in the main class file.

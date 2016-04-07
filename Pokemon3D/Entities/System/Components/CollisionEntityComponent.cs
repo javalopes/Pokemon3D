@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Collisions;
 
-namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
+namespace Pokemon3D.Entities.System.Components
 {
+    [JsonComponentId("collision")]
     class CollisionEntityComponent : EntityComponent
     {
         public Collider Collider { get; }

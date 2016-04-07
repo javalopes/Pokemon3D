@@ -1,8 +1,8 @@
 ﻿using Pokemon3D.DataModel;
 using Pokemon3D.DataModel.GameMode.Battle;
 using Pokemon3D.DataModel.GameMode.Definitions;
-using Pokemon3D.GameModes.Maps;
-using Pokemon3D.GameModes.Pokemon;
+using Pokemon3D.Entities.Maps;
+using Pokemon3D.Entities.Pokemon;
 using Pokemon3D.Rendering.Data;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using Pokemon3D.DataModel.GameMode.Pokemon;
 using Pokemon3D.DataModel.GameMode.Items;
 using Pokemon3D.DataModel.GameMode.Map;
 
-namespace Pokemon3D.GameModes
+namespace Pokemon3D.Entities
 {
     /// <summary>
     /// Contains methods and members that control a GameMode, a collection of maps, scripts and assets.

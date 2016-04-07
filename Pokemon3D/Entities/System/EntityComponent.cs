@@ -2,7 +2,7 @@
 using System.Linq;
 using Pokemon3D.Rendering;
 
-namespace Pokemon3D.GameModes.Maps.EntityComponents
+namespace Pokemon3D.Entities.System
 {
     /// <summary>
     /// A component of an <see cref="Entity"/>, responsible for the Entity's functionality.

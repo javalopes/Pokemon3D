@@ -2,11 +2,11 @@
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.GameCore;
-using Pokemon3D.GameModes.Maps;
 using Pokemon3D.UI;
 using System.Collections.Generic;
+using Pokemon3D.Entities.System;
 
-namespace Pokemon3D.GameModes
+namespace Pokemon3D.Entities
 {
     class World : GameObject
     {
