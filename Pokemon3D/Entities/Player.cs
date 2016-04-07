@@ -4,13 +4,14 @@ using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Animations;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.Common.Input;
+using Pokemon3D.Entities.System;
+using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
-using Pokemon3D.GameModes.Maps.EntityComponents.Components;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 using System;
 
-namespace Pokemon3D.GameModes.Maps
+namespace Pokemon3D.Entities
 {
     class Player : GameObject
     {

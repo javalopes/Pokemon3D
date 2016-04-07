@@ -4,7 +4,7 @@ using System.IO;
 using Pokemon3D.Common.DataHandling;
 using Pokemon3D.Common;
 
-namespace Pokemon3D.GameModes
+namespace Pokemon3D.Entities
 {
     /// <summary>
     /// A class to handle all loaded GameModes.

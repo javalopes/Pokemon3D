@@ -1635,11 +1635,19 @@
                 "Value" : "Billboard"
               },
               {
-                "Key" : "Texture",
+                "Key" : "Texture0",
                 "Value" : "PalletTown.png"
               },
               {
-                "Key" : "Rectangle",
+                "Key" : "Rectangle0",
+                "Value" : "64,32,8,8"
+              },
+			  {
+                "Key" : "Texture1",
+                "Value" : "PalletTown.png"
+              },
+              {
+                "Key" : "Rectangle1",
                 "Value" : "64,40,8,8"
               },
               {
@@ -1651,7 +1659,16 @@
                 "Value" : "true"
               }
             ]
-          }
+          },
+		  {
+			"Id" : "AnimatedTextures",
+            "Data" : [
+              {
+                "Key" : "AnimationDelay",
+                "Value" : "0.5"
+              },
+            ]
+		  }
       ]
       },
       "Placing": [

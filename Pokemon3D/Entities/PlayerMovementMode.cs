@@ -1,4 +1,4 @@
-namespace Pokemon3D.GameModes.Maps
+namespace Pokemon3D.Entities
 {
     enum PlayerMovementMode
     {

@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
+using Pokemon3D.Entities.System;
 using Pokemon3D.GameCore;
-using System.Linq;
-using Pokemon3D.GameModes.Maps.EntityComponents;
 
-namespace Pokemon3D.GameModes.Maps
+namespace Pokemon3D.Entities
 {
     class Map : GameObject
     {

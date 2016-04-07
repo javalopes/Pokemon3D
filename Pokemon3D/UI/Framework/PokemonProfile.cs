@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.GameModes.Pokemon;
-using Pokemon3D.GameModes;
+using Pokemon3D.Entities.Pokemon;
+using Pokemon3D.Entities;
 
 namespace Pokemon3D.UI.Framework
 {

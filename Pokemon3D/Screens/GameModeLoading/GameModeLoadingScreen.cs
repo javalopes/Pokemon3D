@@ -7,7 +7,7 @@ using Pokemon3D.Rendering.GUI;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.DataModel.GameCore;
 using System.Collections.Generic;
-using Pokemon3D.GameModes;
+using Pokemon3D.Entities;
 using Pokemon3D.Screens.Overworld;
 
 namespace Pokemon3D.Screens.GameModeLoading

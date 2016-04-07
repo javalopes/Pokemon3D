@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.GameCore;
-using Pokemon3D.GameModes;
+using Pokemon3D.Entities;
 using Pokemon3D.Rendering.Compositor;
 using System;
 using Pokemon3D.Screens.Transitions;

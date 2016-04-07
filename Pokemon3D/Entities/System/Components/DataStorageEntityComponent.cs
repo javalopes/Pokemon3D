@@ -1,4 +1,4 @@
-﻿namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
+﻿namespace Pokemon3D.Entities.System.Components
 {
     /// <summary>
     /// A component to store data in, the default component.

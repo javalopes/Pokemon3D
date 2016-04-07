@@ -3,8 +3,9 @@ using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using System.Collections.Generic;
+using Pokemon3D.Entities.Maps;
 
-namespace Pokemon3D.GameModes.Maps.Generators
+namespace Pokemon3D.Entities.System.Generators
 {
     class TexturedCubeEntityGenerator : SimpleEntityGenerator
     {

@@ -8,8 +8,9 @@ using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 
-namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
+namespace Pokemon3D.Entities.System.Components
 {
+    [JsonComponentId("visualmodel")]
     class ModelEntityComponent : EntityComponent
     {
         private List<TextureRegion> _regions;

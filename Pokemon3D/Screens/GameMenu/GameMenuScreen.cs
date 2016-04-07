@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.GameCore;
-using Pokemon3D.GameModes.Pokemon;
+using Pokemon3D.Entities.Pokemon;
 using Pokemon3D.UI.Framework;
 using System;
 

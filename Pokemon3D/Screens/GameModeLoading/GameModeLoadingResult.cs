@@ -1,6 +1,4 @@
-﻿using Pokemon3D.GameModes.Maps;
-using Pokemon3D.Rendering;
-using Pokemon3D.Rendering.Compositor;
+﻿using Pokemon3D.Entities;
 
 namespace Pokemon3D.Screens.GameModeLoading
 {

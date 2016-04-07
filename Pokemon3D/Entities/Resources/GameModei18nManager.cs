@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Pokemon3D.GameModes.Resources
+namespace Pokemon3D.Entities.Resources
 {
     class GameModei18nManager : TranslationManager
     {

@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Pokemon3D.DataModel.GameMode.Map.Entities;
+﻿using Pokemon3D.DataModel.GameMode.Map.Entities;
 
-namespace Pokemon3D.GameModes.Maps.EntityComponents
+namespace Pokemon3D.Entities.System
 {
     /// <summary>
     /// A helper struct to easily move construction parameters around.

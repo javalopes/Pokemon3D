@@ -2,7 +2,7 @@
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using System.Collections.Generic;
 
-namespace Pokemon3D.GameModes.Maps.Generators
+namespace Pokemon3D.Entities.System.Generators
 {
     class SimpleEntityGenerator : EntityGenerator
     {

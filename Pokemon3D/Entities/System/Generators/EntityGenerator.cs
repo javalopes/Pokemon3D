@@ -2,7 +2,7 @@
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using System.Collections.Generic;
 
-namespace Pokemon3D.GameModes.Maps.Generators
+namespace Pokemon3D.Entities.System.Generators
 {
     /// <summary>
     /// Classes to generate entities based on patterns from map files.

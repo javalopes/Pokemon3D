@@ -1,8 +1,9 @@
-﻿namespace Pokemon3D.GameModes.Maps.EntityComponents.Components
+﻿namespace Pokemon3D.Entities.System.Components
 {
     /// <summary>
     /// An entity component that flips through the entity's textures at a set interval.
     /// </summary>
+    [JsonComponentId("animatedtextures")]
     class AnimateTexturesEntityComponent : EntityComponent
     {
         private ModelEntityComponent _modelComponent = null;
