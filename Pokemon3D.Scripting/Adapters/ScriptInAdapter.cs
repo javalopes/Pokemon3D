@@ -50,6 +50,10 @@ namespace Pokemon3D.Scripting.Adapters
             {
                 return TranslateBool(processor, (bool)objIn);
             }
+            else if (objIn is Type)
+            {
+                return TranslatePrototype(processor, (Type)objIn);
+            }
             else if (objIn.GetType().IsArray)
             {
                 return TranslateArray(processor, (Array)objIn);
@@ -107,7 +111,7 @@ namespace Pokemon3D.Scripting.Adapters
             if (processor.Context.IsPrototype(typeName))
                 prototype = processor.Context.GetPrototype(typeName);
             else
-                prototype = TranslatePrototype(processor, objIn.GetType(), objIn.GetType().Name);
+                prototype = TranslatePrototype(processor, objIn.GetType());
 
             var obj = prototype.CreateInstance(processor, null, false);
 
@@ -157,8 +161,13 @@ namespace Pokemon3D.Scripting.Adapters
             return obj;
         }
 
-        internal static Prototype TranslatePrototype(ScriptProcessor processor, Type t, string name)
+        internal static Prototype TranslatePrototype(ScriptProcessor processor, Type t)
         {
+            string name = t.Name;
+            ScriptPrototypeAttribute customNameAttribute = t.GetCustomAttribute<ScriptPrototypeAttribute>();
+            if (customNameAttribute != null && !string.IsNullOrWhiteSpace(customNameAttribute.VariableName))
+                name = customNameAttribute.VariableName;
+
             var prototype = new Prototype(name);
 
             object typeInstance = null;

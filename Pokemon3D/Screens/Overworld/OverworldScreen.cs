@@ -195,9 +195,7 @@ namespace Pokemon3D.Screens.Overworld
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.X) || Game.InputSystem.GamePad.IsButtonDownOnce(Buttons.X))
             {
-                // Game.ScreenManager.PushScreen(typeof(OverlayScreen));
-                // Game.ScreenManager.PushScreen(typeof(TabletScreen));
-                // Game.ScreenManager.PushScreen(typeof(PokemonTableScreen));
+                Game.ScreenManager.SetScreen(typeof(GameMenu.GameMenuScreen));
             }
         }
 

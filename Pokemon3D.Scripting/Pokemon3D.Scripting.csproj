@@ -60,6 +60,7 @@
     <Compile Include="Adapters\ScriptInAdapter.cs" />
     <Compile Include="Adapters\ScriptMemberAttribute.cs" />
     <Compile Include="Adapters\ScriptOutAdapter.cs" />
+    <Compile Include="Adapters\ScriptPrototypeAttribute.cs" />
     <Compile Include="Adapters\ScriptVariableAttribute.cs" />
     <Compile Include="BuiltInMethodManager.cs" />
     <Compile Include="ErrorHandler.cs" />

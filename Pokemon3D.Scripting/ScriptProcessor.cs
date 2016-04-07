@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Pokemon3D.Scripting.Types.Prototypes;
 
 namespace Pokemon3D.Scripting
 {
@@ -69,12 +70,27 @@ namespace Pokemon3D.Scripting
         private bool _continueIssued = false;
         private bool _breakIssued = false;
 
-        #region Public interface
-
         /// <summary>
         /// The <see cref="ScriptContext"/> associated with this <see cref="ScriptProcessor"/>.
         /// </summary>
         internal ScriptContext Context { get; }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="ScriptProcessor"/> and sets a context.
+        /// </summary>
+        internal ScriptProcessor(ScriptContext context) : this(context, 0) { }
+
+        internal ScriptProcessor(ScriptContext context, int parentLineNumber)
+        {
+            _hasParent = true;
+            _parentLineNumber = parentLineNumber;
+            ErrorHandler = new ErrorHandler(this);
+
+            Context = new ScriptContext(this, context);
+            Context.Initialize();
+        }
+
+        #region Public interface
 
         /// <summary>
         /// Creates a new instance of the <see cref="ScriptProcessor"/>.
@@ -82,9 +98,17 @@ namespace Pokemon3D.Scripting
         public ScriptProcessor() : this(null, 0) { _hasParent = false; }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="ScriptProcessor"/> and sets a context.
+        /// Creates a new instance of the <see cref="ScriptProcessor"/> with defined prototypes.
         /// </summary>
-        internal ScriptProcessor(ScriptContext context) : this(context, 0) { }
+        /// <param name="inputPrototypes">An enumeration of prototypes.</param>
+        public ScriptProcessor(IEnumerable<SObject> inputPrototypes)
+            : this(null, 0)
+        {
+            _hasParent = false;
+
+            foreach (var inObj in inputPrototypes.Where(x => x is Prototype))
+                Context.AddPrototype((Prototype)inObj);
+        }
 
         /// <summary>
         /// Runs raw source code and returns the result.
@@ -118,16 +142,6 @@ namespace Pokemon3D.Scripting
         }
 
         #endregion
-
-        internal ScriptProcessor(ScriptContext context, int parentLineNumber)
-        {
-            _hasParent = true;
-            _parentLineNumber = parentLineNumber;
-            ErrorHandler = new ErrorHandler(this);
-
-            Context = new ScriptContext(this, context);
-            Context.Initialize();
-        }
 
         internal static readonly string[] ReservedKeywords = new string[] { "if", "else", "while", "for", "function", "class", "using", "var", "static", "new", "extends", "this", "super", "link", "readonly", "break", "continue", "indexer", "get", "set", "throw", "try", "catch", "finally", "property" };
 

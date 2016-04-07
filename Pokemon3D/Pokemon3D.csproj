@@ -98,6 +98,7 @@
       <DependentUpon>ResourceNames.tt</DependentUpon>
     </Compile>
     <Compile Include="Screens\GameMenu\GameMenuScreen.cs" />
+    <Compile Include="ScriptPipeline\Vector2.cs" />
     <Compile Include="UI\Framework\ColorTransition.cs" />
     <Compile Include="UI\Framework\Control.cs" />
     <Compile Include="UI\Framework\ControlBar.cs" />
@@ -168,6 +169,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
+    <Compile Include="ScriptPipeline\ScriptPipelineManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Content.mgcb" />
@@ -287,6 +289,10 @@
     <ProjectReference Include="..\Pokemon3D.Rendering\Pokemon3D.Rendering.csproj">
       <Project>{d3c6ea8f-1a82-4885-849e-d83747cd8ebc}</Project>
       <Name>Pokemon3D.Rendering</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Pokemon3D.Scripting\Pokemon3D.Scripting.csproj">
+      <Project>{7c228bb5-e710-4170-9c70-8a588040e405}</Project>
+      <Name>Pokemon3D.Scripting</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

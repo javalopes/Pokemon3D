@@ -17,13 +17,11 @@ namespace Pokemon3D.Screens.GameMenu
         }
 
         public void OnEarlyDraw(GameTime gameTime)
-        {        }
+        { }
 
-		public void OnLateDraw(GameTime gameTime)
+        public void OnLateDraw(GameTime gameTime)
         {
-			Game.SpriteBatch.Begin();
-
-
+            Game.SpriteBatch.Begin();
 
             _renderer.DrawShapeGradientFill(new Plane2D(0, 0, 100, 100), null, Color.White, Color.Black, true);
 
@@ -77,7 +75,7 @@ namespace Pokemon3D.Screens.GameMenu
 
             int width = Math.Min(_sheet.CurrentFrame.Width, 128);
             int height = Math.Min(_sheet.CurrentFrame.Height, 128);
-            
+
             _renderer.Batch.Draw(_sheet.CurrentFrame, new Rectangle((int)(16 + _position.X + (128 - width) / 2), (int)(16 + _position.Y + (128 - height) / 2), width, height), Color.White);
         }
 
