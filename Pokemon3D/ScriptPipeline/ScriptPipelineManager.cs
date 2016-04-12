@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace Pokemon3D.ScriptPipeline
 {
-    class ScriptPipelineManager
+    static class ScriptPipelineManager
     {
         private static List<SObject> _prototypeBuffer;
 

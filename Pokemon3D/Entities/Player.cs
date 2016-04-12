@@ -19,6 +19,7 @@ namespace Pokemon3D.Entities
         private readonly Entity _cameraEntity;
 
         private readonly ModelEntityComponent _modelEntityComponent;
+        private readonly CollisionEntityComponent _colliderComponent;
         private readonly Animator _figureAnimator;
         private PlayerMovementMode _movementMode;
         private MouseState _mouseState;
@@ -28,6 +29,14 @@ namespace Pokemon3D.Entities
 
         public float Speed { get; set; }
         public float RotationSpeed { get; set; }
+
+        public Vector3 Position
+        {
+            get { return _playerEntity.Position; }
+            set { _playerEntity.Position = value; }
+        }
+
+        public Collisions.Collider Collider => _colliderComponent.Collider;
 
         public Camera Camera { get; private set; }
 
@@ -76,7 +85,7 @@ namespace Pokemon3D.Entities
 
             Speed = 2.0f;
             RotationSpeed = 2f;
-            
+
             _figureAnimator = new Animator();
             _figureAnimator.AddAnimation("WalkForward", Animation.CreateDiscrete(0.65f, new[]
             {
@@ -110,14 +119,14 @@ namespace Pokemon3D.Entities
             _movementMode = PlayerMovementMode.ThirdPerson;
             _cameraEntity.Position = _cameraTargetPosition;
 
-            var colliderComponent = new CollisionEntityComponent(_playerEntity, new Vector3(0.35f, 0.6f, 0.35f),
+            _colliderComponent = new CollisionEntityComponent(_playerEntity, new Vector3(0.35f, 0.6f, 0.35f),
                 new Vector3(0.0f, 0.3f, 0.0f))
             {
                 ResolvesPosition = true
             };
-            _playerEntity.AddComponent(colliderComponent);
+            _playerEntity.AddComponent(_colliderComponent);
 
-            _playerEntity.Position = new Vector3(10,1,8 );
+            _playerEntity.Position = new Vector3(10, 1, 8);
         }
 
         public void Update(float elapsedTime)

@@ -2,7 +2,10 @@
 
 namespace Pokemon3D.Entities.System
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple =false, Inherited = false)]
+    /// <summary>
+    /// Add this attribute to any class that derives from <see cref="EntityComponent"/> to mark it with its name.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class JsonComponentIdAttribute : Attribute
     {
         public string Id { get; private set; }

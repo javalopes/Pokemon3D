@@ -11,12 +11,19 @@ using Pokemon3D.DataModel.Savegame.Pokemon;
 using Pokemon3D.DataModel.Savegame.Inventory;
 using Pokemon3D.DataModel.Pokemon;
 using Pokemon3D.Screens.MainMenu;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Pokemon3D.Screens.Overworld
 {
     class OverworldScreen : GameObject, Screen
     {
         private World _world;
+
+        public World ActiveWorld
+        {
+            get { return _world; }
+        }
 
         private SpriteFont _debugSpriteFont;
         private bool _showRenderStatistics;
@@ -177,6 +184,7 @@ namespace Pokemon3D.Screens.Overworld
         public void OnUpdate(float elapsedTime)
         {
             _world.Update(elapsedTime);
+            _uiElements.ForEach(e => { if (e.IsActive) e.OnUpdate(elapsedTime); });
 
             if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Escape))
             {
@@ -203,6 +211,15 @@ namespace Pokemon3D.Screens.Overworld
         {
             Game.CollisionManager.Draw(_world.Player.Camera);
             if (_showRenderStatistics) DrawRenderStatsitics();
+
+            if (_uiElements.Count > 0 && _uiElements.Any(e => e.IsActive))
+            {
+                Game.SpriteBatch.Begin();
+
+                _uiElements.ForEach(e => { if (e.IsActive) e.OnDraw(gameTime); });
+
+                Game.SpriteBatch.End();
+            }
         }
 
         public void OnEarlyDraw(GameTime gameTime)
@@ -241,5 +258,21 @@ namespace Pokemon3D.Screens.Overworld
         {
         }
 
+        #region overworld ui element handling:
+
+        private List<OverworldUIElement> _uiElements = new List<OverworldUIElement>();
+
+        public void AddUIElement(OverworldUIElement element)
+        {
+            _uiElements.Add(element);
+            element.Screen = this;
+        }
+
+        public void RemoveUIElement(OverworldUIElement element)
+        {
+            _uiElements.Remove(element);
+        }
+
+        #endregion
     }
 }

@@ -24,13 +24,13 @@ namespace Pokemon3D.Entities.System
                 case "Single":
                     return (T)ToSingle(data);
                 case "Rectangle":
-                    return (T) ToRectangle(data);
+                    return (T)ToRectangle(data);
                 case "Int32[]":
                     return (T)ToArray<int>(data);
                 case "String":
                     return (T)ToString(data);
                 case "Boolean":
-                    return (T) ToBoolean(data);
+                    return (T)ToBoolean(data);
                 default:
                     return default(T);
             }
@@ -50,7 +50,7 @@ namespace Pokemon3D.Entities.System
         private static object ToArray<T>(string data)
         {
             return data.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(Convert<string>).ToArray();
+                .Select(Convert<T>).ToArray();
         }
 
         private static object ToVector3(string data)

@@ -41,13 +41,13 @@ namespace Pokemon3D.Entities.System
             };
 
             Type componentType;
-            if(_componentsByType.TryGetValue(dataModel.Id.ToLowerInvariant(), out componentType))
+            if (_componentsByType.TryGetValue(dataModel.Id.ToLowerInvariant(), out componentType))
             {
                 return (EntityComponent)Activator.CreateInstance(componentType, parameters);
             }
 
+            // fallback entity component:
             return new DataStorageEntityComponent(parameters);
-
         }
 
         private static void EnsureComponentCreatorsAreLoaded()
@@ -60,7 +60,7 @@ namespace Pokemon3D.Entities.System
                                                                                        && !t.IsAbstract
                                                                                        && t.GetCustomAttributes<JsonComponentIdAttribute>().Any());
 
-                foreach(var type in entityComponentTypes)
+                foreach (var type in entityComponentTypes)
                 {
                     var id = type.GetCustomAttribute<JsonComponentIdAttribute>().Id;
                     _componentsByType.Add(id, type);

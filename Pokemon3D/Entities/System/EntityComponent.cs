@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 
 namespace Pokemon3D.Entities.System
@@ -7,7 +8,7 @@ namespace Pokemon3D.Entities.System
     /// <summary>
     /// A component of an <see cref="Entity"/>, responsible for the Entity's functionality.
     /// </summary>
-    partial class EntityComponent
+    partial class EntityComponent : GameObject
     {
         private bool _isActive;
 
@@ -19,7 +20,7 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// The raw data of this component.
         /// </summary>
-        public Dictionary<string,string> Data { get; set; }
+        public Dictionary<string, string> Data { get; set; }
 
         /// <summary>
         /// The owning parent <see cref="Entity"/> of this component.
