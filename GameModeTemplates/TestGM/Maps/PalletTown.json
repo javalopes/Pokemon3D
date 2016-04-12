@@ -1664,8 +1664,12 @@
 			"Id" : "AnimatedTextures",
             "Data" : [
               {
-                "Key" : "AnimationDelay",
-                "Value" : "0.5"
+                "Key" : "AnimationDuration",
+                "Value" : "1.0"
+              },
+			  {
+                "Key" : "FrameCount",
+                "Value" : "2"
               },
             ]
 		  }

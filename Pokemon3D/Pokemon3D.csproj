@@ -63,6 +63,7 @@
     <Compile Include="Collisions\Collider.cs" />
     <Compile Include="Collisions\ColliderType.cs" />
     <Compile Include="Collisions\CollisionManager.cs" />
+    <Compile Include="Entities\System\Components\AnimatorEntityComponent.cs" />
     <Compile Include="FileSystem\i18nPathProvider.cs" />
     <Compile Include="FileSystem\StaticPathProvider.cs" />
     <Compile Include="GameCore\GameConfiguration.cs" />

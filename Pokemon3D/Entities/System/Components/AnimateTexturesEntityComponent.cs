@@ -1,51 +1,37 @@
-﻿namespace Pokemon3D.Entities.System.Components
+﻿using Pokemon3D.Common.Animations;
+using System.Linq;
+using System;
+
+namespace Pokemon3D.Entities.System.Components
 {
     /// <summary>
     /// An entity component that flips through the entity's textures at a set interval.
     /// </summary>
     [JsonComponentId("animatedtextures")]
-    class AnimateTexturesEntityComponent : EntityComponent
+    class AnimateTexturesEntityComponent : AnimatorEntityComponent
     {
         private ModelEntityComponent _modelComponent = null;
-
-        float _animationDelay;
-        int _textureIndex;
+        private int _textureIndex;
 
         public AnimateTexturesEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
-            SetInitialAnimationDelay();
             _textureIndex = 0;
+
+            var animationDuration = GetData<float>("AnimationDuration");
+
+            var frameCount = GetData<int>("FrameCount");
+            var looping = GetDataOrDefault("Loop", true);
+
+            AddAnimation("Default", Animation.CreateDiscrete(animationDuration, Enumerable.Range(0, frameCount).ToArray(), OnUpdateAnimationFrame, looping));
+            PlayAnimation("Default");
         }
 
-        private void SetInitialAnimationDelay()
+        private void OnUpdateAnimationFrame(int textureIndex)
         {
-            _animationDelay = GetData<float>("AnimationDelay");
-        }
-
-        public override void Update(float elapsedTime)
-        {
-            _modelComponent = Parent.GetComponent<ModelEntityComponent>();
-
-            if (_modelComponent != null)
+            _modelComponent = _modelComponent ?? Parent.GetComponent<ModelEntityComponent>();
+            if (_modelComponent != null && textureIndex < _modelComponent.Regions.Count)
             {
-                _animationDelay -= elapsedTime;
-                if (_animationDelay <= 0f)
-                {
-                    _textureIndex++;
-                    if (_textureIndex >= _modelComponent.Regions.Count)
-                        _textureIndex = 0;
-
-                    _modelComponent.SetTexture(_textureIndex);
-
-                    // Reset delay after flip:
-                    SetInitialAnimationDelay();
-                }
-            }
-            else
-            {
-                // when no model entity component is found, reset the animation parameters.
-                SetInitialAnimationDelay();
-                _textureIndex = 0;
+                _modelComponent.SetTexture(textureIndex);
             }
         }
     }
