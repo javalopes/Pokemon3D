@@ -87,8 +87,6 @@ namespace Pokemon3D.Entities
             Speed = 2.0f;
             RotationSpeed = 2f;
 
-            _figureAnimator = new Animator();
-            _figureAnimator.AddAnimation("WalkForward", Animation.CreateDiscrete(0.65f, new[]
             var forward = Animation.CreateDiscrete(0.65f, new[]
             {
                 diffuseTexture.GetTexcoordsFromPixelCoords(0, 0),
