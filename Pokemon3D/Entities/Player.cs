@@ -21,6 +21,7 @@ namespace Pokemon3D.Entities
         private readonly ModelEntityComponent _modelEntityComponent;
         private readonly CollisionEntityComponent _colliderComponent;
         private readonly Animator _figureAnimator;
+
         private PlayerMovementMode _movementMode;
         private MouseState _mouseState;
 
@@ -88,33 +89,36 @@ namespace Pokemon3D.Entities
 
             _figureAnimator = new Animator();
             _figureAnimator.AddAnimation("WalkForward", Animation.CreateDiscrete(0.65f, new[]
+            var forward = Animation.CreateDiscrete(0.65f, new[]
             {
                 diffuseTexture.GetTexcoordsFromPixelCoords(0, 0),
                 diffuseTexture.GetTexcoordsFromPixelCoords(32, 0),
                 diffuseTexture.GetTexcoordsFromPixelCoords(0, 0),
                 diffuseTexture.GetTexcoordsFromPixelCoords(64, 0),
-            }, t => _modelEntityComponent.Material.TexcoordOffset = t, true));
-            _figureAnimator.AddAnimation("WalkLeft", Animation.CreateDiscrete(0.65f, new[]
+            }, t => _modelEntityComponent.Material.TexcoordOffset = t, true);
+            var left = Animation.CreateDiscrete(0.65f, new[]
             {
                 diffuseTexture.GetTexcoordsFromPixelCoords(0, 32),
                 diffuseTexture.GetTexcoordsFromPixelCoords(32, 32),
                 diffuseTexture.GetTexcoordsFromPixelCoords(0, 32),
                 diffuseTexture.GetTexcoordsFromPixelCoords(64, 32),
-            }, t => _modelEntityComponent.Material.TexcoordOffset = t, true));
-            _figureAnimator.AddAnimation("WalkRight", Animation.CreateDiscrete(0.65f, new[]
+            }, t => _modelEntityComponent.Material.TexcoordOffset = t, true);
+            var right = Animation.CreateDiscrete(0.65f, new[]
             {
                 diffuseTexture.GetTexcoordsFromPixelCoords(0, 96),
                 diffuseTexture.GetTexcoordsFromPixelCoords(32, 96),
                 diffuseTexture.GetTexcoordsFromPixelCoords(0, 96),
                 diffuseTexture.GetTexcoordsFromPixelCoords(64, 96),
-            }, t => _modelEntityComponent.Material.TexcoordOffset = t, true));
-            _figureAnimator.AddAnimation("WalkBackward", Animation.CreateDiscrete(0.65f, new[]
+            }, t => _modelEntityComponent.Material.TexcoordOffset = t, true);
+            var backward = Animation.CreateDiscrete(0.65f, new[]
             {
                 diffuseTexture.GetTexcoordsFromPixelCoords(0, 64),
                 diffuseTexture.GetTexcoordsFromPixelCoords(32, 64),
                 diffuseTexture.GetTexcoordsFromPixelCoords(0, 64),
                 diffuseTexture.GetTexcoordsFromPixelCoords(64, 64),
-            }, t => _modelEntityComponent.Material.TexcoordOffset = t, true));
+            }, t => _modelEntityComponent.Material.TexcoordOffset = t, true);
+
+            _playerEntity.AddComponent(new FigureMovementAnimationComponent(_playerEntity, forward, backward, left, right));
 
             _movementMode = PlayerMovementMode.ThirdPerson;
             _cameraEntity.Position = _cameraTargetPosition;
@@ -131,8 +135,6 @@ namespace Pokemon3D.Entities
 
         public void Update(float elapsedTime)
         {
-            _figureAnimator.Update(elapsedTime);
-
             var currentMouseState = Mouse.GetState();
 
             var movementDirection = Vector3.Zero;
@@ -182,15 +184,6 @@ namespace Pokemon3D.Entities
             }
         }
 
-        private void DeactivateWalkingAnimation()
-        {
-            if (_figureAnimator.CurrentAnimation != null)
-            {
-                _figureAnimator.Stop();
-                _modelEntityComponent.Material.TexcoordOffset = Vector2.Zero;
-            }
-        }
-
         private void HandleGodModeMovement(float elapsedTime, MouseState mouseState, Vector3 movementDirection)
         {
             var speedFactor = Game.InputSystem.Keyboard.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
@@ -217,7 +210,10 @@ namespace Pokemon3D.Entities
 
         private void HandleThirdPersonMovement(float elapsedTime, MouseState mouseState, Vector3 movementDirection)
         {
-            AnimateFigure(elapsedTime, movementDirection);
+            if (movementDirection.LengthSquared() > 0.0f)
+            {
+                _playerEntity.Translate(Vector3.Normalize(movementDirection) * Speed * elapsedTime);
+            }
 
             if (Game.InputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
             {
@@ -231,8 +227,6 @@ namespace Pokemon3D.Entities
 
         private void HandleFirstPersonMovement(float elapsedTime, MouseState mouseState, Vector3 movementDirection)
         {
-            AnimateFigure(elapsedTime, movementDirection);
-
             if (movementDirection.LengthSquared() > 0.0f)
             {
                 _playerEntity.Translate(Vector3.Normalize(movementDirection) * Speed * elapsedTime);
@@ -253,31 +247,6 @@ namespace Pokemon3D.Entities
             else if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Down))
             {
                 _cameraEntity.RotateX(-RotationSpeed * elapsedTime);
-            }
-        }
-
-        private void AnimateFigure(float elapsedTime, Vector3 movementDirection)
-        {
-            if (movementDirection.LengthSquared() > 0.0f)
-            {
-                _playerEntity.Translate(Vector3.Normalize(movementDirection) * Speed * elapsedTime);
-
-                if (movementDirection.X > 0.0f)
-                {
-                    _figureAnimator.SetAnimation("WalkRight");
-                }
-                else if (movementDirection.X < 0.0f)
-                {
-                    _figureAnimator.SetAnimation("WalkLeft");
-                }
-                else
-                {
-                    _figureAnimator.SetAnimation(movementDirection.Z > 0.0f ? "WalkForward" : "WalkBackward");
-                }
-            }
-            else
-            {
-                DeactivateWalkingAnimation();
             }
         }
 

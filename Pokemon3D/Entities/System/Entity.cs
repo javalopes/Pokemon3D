@@ -29,6 +29,7 @@ namespace Pokemon3D.Entities.System
         public Entity Parent { get; private set; }
         public ReadOnlyCollection<Entity> Children { get; private set; }
         public bool IsStatic { get; set; }
+        public Vector3 LastTranslation { get; private set; }
 
         public Entity()
         {
@@ -40,6 +41,7 @@ namespace Pokemon3D.Entities.System
             Up = Vector3.Up;
             Forward = Vector3.Forward;
             SetDirty();
+            LastTranslation = Vector3.Zero;
         }
 
         /// <summary>
@@ -52,6 +54,7 @@ namespace Pokemon3D.Entities.System
             {
                 if (_components[i].IsActive) _components[i].Update(elapsedTime);
             }
+            LastTranslation = Vector3.Zero;
         }
 
         public void RenderPreparations(Camera observer)
@@ -216,6 +219,7 @@ namespace Pokemon3D.Entities.System
 
         public void Translate(Vector3 translation)
         {
+            LastTranslation = translation;
             Position += Right * translation.X + Up * translation.Y + Forward * translation.Z;
             SetDirty();
         }
