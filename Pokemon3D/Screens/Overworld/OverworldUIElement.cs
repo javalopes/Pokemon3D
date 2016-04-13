@@ -10,12 +10,24 @@ namespace Pokemon3D.Screens.Overworld
 {
     abstract class OverworldUIElement : GameObject
     {
-        public bool IsActive { get; set; }
+        private bool _isActive = false;
+
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                _isActive = value;
+                ActiveStateChanged();
+            }
+        }
 
         public OverworldScreen Screen { get; set; }
 
         public abstract void Update(GameTime gameTime);
 
         public abstract void Draw(GameTime gameTime);
+
+        protected virtual void ActiveStateChanged() { }
     }
 }

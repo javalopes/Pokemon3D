@@ -34,6 +34,7 @@ namespace Pokemon3D.Entities.System.Components
 
             _collider = Collider.CreateBoundingBox(Parent.Scale, null);
             _uiElement = new InteractionPromptOverworldUIElement(Parent, _message);
+            _uiElement.InteractionStarted += InteractionHandler;
         }
 
         public override void Update(GameTime gameTime)
@@ -64,6 +65,11 @@ namespace Pokemon3D.Entities.System.Components
                     _uiElement.IsActive = false;
                 }
             }
+        }
+
+        private void InteractionHandler(InteractionPromptOverworldUIElement uiElement)
+        {
+            uiElement.Message = "It worked!";
         }
     }
 }
