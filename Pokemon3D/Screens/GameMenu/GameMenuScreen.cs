@@ -28,7 +28,7 @@ namespace Pokemon3D.Screens.GameMenu
             Game.SpriteBatch.End();
         }
 
-        public void OnUpdate(float elapsedTime)
+        public void OnUpdate(GameTime gameTime)
         {
 
         }

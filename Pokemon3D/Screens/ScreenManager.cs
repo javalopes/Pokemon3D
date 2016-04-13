@@ -33,7 +33,7 @@ namespace Pokemon3D.Screens
             _executingScreenTransition = false;
             _currentTransition = new BlendTransition();
 
-            _screensByType = GetImplementationsOf<Screen>().ToDictionary(s => s, s => (Screen) Activator.CreateInstance(s));
+            _screensByType = GetImplementationsOf<Screen>().ToDictionary(s => s, s => (Screen)Activator.CreateInstance(s));
             _screenTransitionsByType = GetImplementationsOf<ScreenTransition>().ToDictionary(s => s, s => (ScreenTransition)Activator.CreateInstance(s));
             _activeOverlays = new List<Screen>();
         }
@@ -41,7 +41,7 @@ namespace Pokemon3D.Screens
         private static IEnumerable<Type> GetImplementationsOf<T>()
         {
             return typeof(T).Assembly.GetTypes().Where(t => typeof(T).IsAssignableFrom(t) && !t.IsAbstract);
-        } 
+        }
 
         /// <summary>
         /// Sets the current screen to a new screen instance.
@@ -53,7 +53,7 @@ namespace Pokemon3D.Screens
             if (CurrentScreen != null)
             {
                 CurrentScreen.OnClosing();
-                foreach(var overlays in _activeOverlays) overlays.OnClosing();
+                foreach (var overlays in _activeOverlays) overlays.OnClosing();
             }
 
             _activeOverlays.Clear();
@@ -76,7 +76,7 @@ namespace Pokemon3D.Screens
             var overlay = _screensByType[screenType];
             overlay.OnOpening(enterInformation);
             _activeOverlays.Add(overlay);
-        } 
+        }
 
         /// <summary>
         /// Removes current topmost popup screen.
@@ -102,7 +102,7 @@ namespace Pokemon3D.Screens
             oldScreen.OnLateDraw(new GameTime());
 
             Game.GraphicsDevice.SetRenderTarget(_targetRenderTarget);
-            currentScreen.OnUpdate(0);
+            currentScreen.OnUpdate(new GameTime());
             currentScreen.OnEarlyDraw(new GameTime());
             currentScreen.OnLateDraw(new GameTime());
 
@@ -146,11 +146,11 @@ namespace Pokemon3D.Screens
         /// <summary>
         /// Updates the current screen.
         /// </summary>
-        public bool Update(float elapsedTime)
+        public bool Update(GameTime gameTime)
         {
             if (_executingScreenTransition)
             {
-                _currentTransition.Update(elapsedTime);
+                _currentTransition.Update(gameTime);
                 if (_currentTransition.IsFinished)
                 {
                     _executingScreenTransition = false;
@@ -160,11 +160,11 @@ namespace Pokemon3D.Screens
             {
                 if (_activeOverlays.Any())
                 {
-                    _activeOverlays.Last().OnUpdate(elapsedTime);
+                    _activeOverlays.Last().OnUpdate(gameTime);
                 }
                 else
                 {
-                    CurrentScreen?.OnUpdate(elapsedTime);
+                    CurrentScreen?.OnUpdate(gameTime);
                 }
             }
 

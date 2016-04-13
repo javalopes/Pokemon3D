@@ -1,4 +1,5 @@
-﻿using Pokemon3D.Common.Animations;
+﻿using Microsoft.Xna.Framework;
+using Pokemon3D.Common.Animations;
 
 namespace Pokemon3D.Entities.System.Components
 {
@@ -31,10 +32,10 @@ namespace Pokemon3D.Entities.System.Components
             _animator.Stop();
         }
 
-        public override void Update(float elapsedTime)
+        public override void Update(GameTime gameTime)
         {
-            _animator.Update(elapsedTime);
-            base.Update(elapsedTime);
+            _animator.Update(gameTime);
+            base.Update(gameTime);
         }
     }
 }

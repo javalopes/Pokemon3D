@@ -46,16 +46,16 @@ namespace Pokemon3D.UI
             }
         }
 
-        public void Update(float elapsedTime)
+        public void Update(GameTime gameTime)
         {
-            _notifications.ForEach(n => n.Update(elapsedTime));
+            _notifications.ForEach(n => n.Update(gameTime));
             _notifications.RemoveAll(n => n.IsFinished);
         }
 
         public void Draw()
         {
             if (!_notifications.Any()) return;
-            
+
             var elementHeight = _spriteFont.LineSpacing + 2 * ElementPadding;
 
             var startY = Game.ScreenBounds.Height - _notifications.Count * (elementHeight + ElementMargin);

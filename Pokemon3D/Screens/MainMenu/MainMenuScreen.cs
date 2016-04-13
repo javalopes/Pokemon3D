@@ -15,7 +15,7 @@ namespace Pokemon3D.Screens.MainMenu
 
         private readonly HexagonBackground _hexagons = new HexagonBackground();
         private readonly ControlBar _bar = new ControlBar();
-        
+
         public void OnOpening(object enterInformation)
         {
             Game.GraphicsDeviceManager.PreferMultiSampling = true;
@@ -58,7 +58,7 @@ namespace Pokemon3D.Screens.MainMenu
 
             _bar.AddEntry("Select", Buttons.A, Keys.Enter);
         }
-        
+
         private void HandleCloseDialogShown(ControlGroup sender)
         {
             _buttons.Active = false;
@@ -72,9 +72,9 @@ namespace Pokemon3D.Screens.MainMenu
         public void OnLateDraw(GameTime gameTime)
         {
             Game.GraphicsDevice.Clear(Color.LightGray);
-            
+
             _hexagons.Draw();
-            
+
             _bar.Draw();
 
             _buttons.Draw();
@@ -86,7 +86,7 @@ namespace Pokemon3D.Screens.MainMenu
         {
         }
 
-        public void OnUpdate(float elapsedTime)
+        public void OnUpdate(GameTime gameTime)
         {
             _closeDialog.Update();
             _buttons.Update();

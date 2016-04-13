@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
+using Pokemon3D.Common.Extensions;
 
 namespace Pokemon3D.Screens.Transitions
 {
@@ -22,10 +23,10 @@ namespace Pokemon3D.Screens.Transitions
 
         public bool IsFinished { get; private set; }
 
-        public void Update(float elapsedTimeSeconds)
+        public void Update(GameTime gameTime)
         {
             if (IsFinished) return;
-            _elapsedTime += elapsedTimeSeconds;
+            _elapsedTime += gameTime.GetSeconds();
 
             if (_elapsedTime >= _transitionTime)
             {
@@ -41,7 +42,7 @@ namespace Pokemon3D.Screens.Transitions
             Game.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
 
             Game.SpriteBatch.Draw(_target, Vector2.Zero, Color.White * alpha);
-            Game.SpriteBatch.Draw(_source, Vector2.Zero, Color.White * (1.0f-alpha));
+            Game.SpriteBatch.Draw(_source, Vector2.Zero, Color.White * (1.0f - alpha));
 
             Game.SpriteBatch.End();
         }

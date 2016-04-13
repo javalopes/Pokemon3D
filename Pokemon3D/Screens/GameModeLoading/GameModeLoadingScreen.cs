@@ -9,6 +9,7 @@ using Pokemon3D.DataModel.GameCore;
 using System.Collections.Generic;
 using Pokemon3D.Entities;
 using Pokemon3D.Screens.Overworld;
+using Pokemon3D.Common.Extensions;
 
 namespace Pokemon3D.Screens.GameModeLoading
 {
@@ -32,7 +33,7 @@ namespace Pokemon3D.Screens.GameModeLoading
         {
             _pokeBallSprite = new Sprite(Game.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball))
             {
-                Position = new Vector2(Game.ScreenBounds.Width, Game.ScreenBounds.Height)*0.5f
+                Position = new Vector2(Game.ScreenBounds.Width, Game.ScreenBounds.Height) * 0.5f
             };
 
             _loadingText = new SpriteText(Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont), "@Loading...");
@@ -71,9 +72,9 @@ namespace Pokemon3D.Screens.GameModeLoading
         {
         }
 
-        public void OnUpdate(float elapsedTime)
+        public void OnUpdate(GameTime gameTime)
         {
-            _pokeBallSprite.Rotation += elapsedTime * MathHelper.Pi;
+            _pokeBallSprite.Rotation += gameTime.GetSeconds() * MathHelper.Pi;
 
             if (_loadingFinished)
             {
@@ -81,7 +82,7 @@ namespace Pokemon3D.Screens.GameModeLoading
                 Game.ScreenManager.SetScreen(typeof(OverworldScreen), typeof(SlideTransition), _world);
             }
         }
-        
+
         public void OnClosing()
         {
 

@@ -21,7 +21,7 @@ namespace Pokemon3D.Screens
         /// <summary>
         /// Raises the Update event.
         /// </summary>
-        void OnUpdate(float elapsedTime);
+        void OnUpdate(GameTime gameTime);
 
         /// <summary>
         /// Raises the Closing event.

@@ -47,12 +47,12 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// Entity update method to update all of the entity's components.
         /// </summary>
-        public void Update(float elapsedTime)
+        public void Update(GameTime gameTime)
         {
             HandleIsDirty();
             for (int i = 0; i < _components.Count; i++)
             {
-                if (_components[i].IsActive) _components[i].Update(elapsedTime);
+                if (_components[i].IsActive) _components[i].Update(gameTime);
             }
             LastTranslation = Vector3.Zero;
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Screens.Transitions
 {
@@ -8,7 +9,7 @@ namespace Pokemon3D.Screens.Transitions
 
         bool IsFinished { get; }
 
-        void Update(float elapsedTimeSeconds);
+        void Update(GameTime gameTime);
 
         void Draw();
     }

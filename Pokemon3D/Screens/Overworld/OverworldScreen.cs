@@ -181,10 +181,10 @@ namespace Pokemon3D.Screens.Overworld
             Game.LoadedSave.Load(Game.ActiveGameMode);
         }
 
-        public void OnUpdate(float elapsedTime)
+        public void OnUpdate(GameTime gameTime)
         {
-            _world.Update(elapsedTime);
-            _uiElements.ForEach(e => { if (e.IsActive) e.OnUpdate(elapsedTime); });
+            _world.Update(gameTime);
+            _uiElements.ForEach(e => { if (e.IsActive) e.Update(gameTime); });
 
             if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Escape))
             {
@@ -216,7 +216,7 @@ namespace Pokemon3D.Screens.Overworld
             {
                 Game.SpriteBatch.Begin();
 
-                _uiElements.ForEach(e => { if (e.IsActive) e.OnDraw(gameTime); });
+                _uiElements.ForEach(e => { if (e.IsActive) e.Draw(gameTime); });
 
                 Game.SpriteBatch.End();
             }

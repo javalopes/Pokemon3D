@@ -131,7 +131,7 @@ namespace Pokemon3D.Entities
             _playerEntity.Position = new Vector3(10, 1, 8);
         }
 
-        public void Update(float elapsedTime)
+        public void Update(GameTime gameTime)
         {
             var currentMouseState = Mouse.GetState();
 
@@ -157,13 +157,13 @@ namespace Pokemon3D.Entities
             switch (MovementMode)
             {
                 case PlayerMovementMode.FirstPerson:
-                    HandleFirstPersonMovement(elapsedTime, currentMouseState, movementDirection);
+                    HandleFirstPersonMovement(gameTime.GetSeconds(), currentMouseState, movementDirection);
                     break;
                 case PlayerMovementMode.ThirdPerson:
-                    HandleThirdPersonMovement(elapsedTime, currentMouseState, movementDirection);
+                    HandleThirdPersonMovement(gameTime.GetSeconds(), currentMouseState, movementDirection);
                     break;
                 case PlayerMovementMode.GodMode:
-                    HandleGodModeMovement(elapsedTime, currentMouseState, movementDirection);
+                    HandleGodModeMovement(gameTime.GetSeconds(), currentMouseState, movementDirection);
                     break;
             }
 

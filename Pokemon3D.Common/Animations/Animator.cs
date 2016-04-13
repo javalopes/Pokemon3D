@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Pokemon3D.Common.Extensions;
 
 namespace Pokemon3D.Common.Animations
 {
@@ -83,7 +85,7 @@ namespace Pokemon3D.Common.Animations
         public void AddTransitionChain(string sourceName, string targetName, params string[] additionalTargets)
         {
             _transitions.Add(sourceName, targetName);
-            
+
             if (additionalTargets != null)
             {
                 var currentTarget = targetName;
@@ -103,12 +105,11 @@ namespace Pokemon3D.Common.Animations
         /// <summary>
         /// Updates Animator.
         /// </summary>
-        /// <param name="elapsedSeconds">elapsed time seconds since last call.</param>
-        public void Update(float elapsedSeconds)
+        public void Update(GameTime gameTime)
         {
             if (CurrentAnimation == null) return;
 
-            CurrentAnimation.Update(elapsedSeconds);
+            CurrentAnimation.Update(gameTime.GetSeconds());
             if (CurrentAnimation.IsFinished)
             {
                 if (CurrentAnimation.IsLoop)

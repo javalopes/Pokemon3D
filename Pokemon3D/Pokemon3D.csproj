@@ -98,6 +98,7 @@
       <DependentUpon>ResourceNames.tt</DependentUpon>
     </Compile>
     <Compile Include="Screens\GameMenu\GameMenuScreen.cs" />
+    <Compile Include="Screens\Overworld\InteractionPromptOverworldUIElement.cs" />
     <Compile Include="Screens\Overworld\OverworldUIElement.cs" />
     <Compile Include="ScriptPipeline\Vector2.cs" />
     <Compile Include="UI\Framework\ColorTransition.cs" />

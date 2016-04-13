@@ -31,9 +31,9 @@ namespace Pokemon3D.Entities.System.Components
             Parent.Game.CollisionManager.RemoveCollider(Collider);
         }
 
-        public override void Update(float elapsedTime)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(elapsedTime);
+            base.Update(gameTime);
             Collider.SetPosition(Parent.Position);
 
             if (ResolvesPosition)
@@ -47,7 +47,7 @@ namespace Pokemon3D.Entities.System.Components
                     }
                 }
             }
-            
+
         }
     }
 }

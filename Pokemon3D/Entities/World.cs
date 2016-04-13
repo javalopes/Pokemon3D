@@ -5,13 +5,14 @@ using Pokemon3D.GameCore;
 using Pokemon3D.UI;
 using System.Collections.Generic;
 using Pokemon3D.Entities.System;
+using Microsoft.Xna.Framework;
 
 namespace Pokemon3D.Entities
 {
     class World : GameObject
     {
         private Action _onFinished;
-        
+
         public Map ActiveMap { get; private set; }
         public Player Player { get; private set; }
 
@@ -42,16 +43,16 @@ namespace Pokemon3D.Entities
 
         public void ActivateNewEntities()
         {
-            foreach(var entity in _entitiesToActivate)
+            foreach (var entity in _entitiesToActivate)
             {
                 entity.IsActive = true;
             }
             _entitiesToActivate.Clear();
         }
 
-        public void Update(float elapsedTime)
+        public void Update(GameTime gameTime)
         {
-            Player.Update(elapsedTime);
+            Player.Update(gameTime);
 
             if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.V))
             {

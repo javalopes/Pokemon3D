@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 
@@ -57,7 +58,7 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// Updates this property's logic.
         /// </summary>
-        public virtual void Update(float elapsedTime) { }
+        public virtual void Update(GameTime gameTime) { }
 
         /// <summary>
         /// Prepares this entity component for the render.

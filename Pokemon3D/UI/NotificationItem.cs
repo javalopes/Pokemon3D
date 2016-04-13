@@ -19,7 +19,7 @@ namespace Pokemon3D.UI
             var transit = lifeTime*0.125f;
 
             _animator.AddAnimation("TransitIn", Animation.CreateDelta(transit, d => Alpha = MathHelper.SmoothStep(0.0f, 1.0f, d)));
-            _animator.AddAnimation("Visible", Animation.CreateWait(lifeTime - 2*transit));
+            _animator.AddAnimation("Visible", Animation.CreateWait(lifeTime - 2 * transit));
             _animator.AddAnimation("TransitOut", Animation.CreateDelta(transit, d => Alpha = MathHelper.SmoothStep(1.0f, 0.0f, d)));
             _animator.AddTransitionChain("TransitIn", "Visible", "TransitOut");
             _animator.SetAnimation("TransitIn");
@@ -28,9 +28,9 @@ namespace Pokemon3D.UI
         public NotificationKind NotificationKind { get; }
         public string Message { get; }
 
-        public void Update(float elapsedTime)
+        public void Update(GameTime gameTime)
         {
-            _animator.Update(elapsedTime);
+            _animator.Update(gameTime);
         }
 
         public bool IsFinished { get; private set; }

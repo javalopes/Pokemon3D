@@ -113,9 +113,9 @@ namespace Pokemon3D.Entities.System.Components
 
         }
 
-        public override void Update(float elapsedTime)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(elapsedTime);
+            base.Update(gameTime);
             _drawableElement.WorldMatrix = Parent.WorldMatrix;
             _drawableElement.Scale = Parent.Scale;
 

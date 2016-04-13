@@ -22,9 +22,9 @@ namespace Pokemon3D.Entities.System.Components
             AddAnimation(RightAnimation, right ?? forward);
         }
 
-        public override void Update(float elapsedTime)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(elapsedTime);
+            base.Update(gameTime);
 
             _modelEntityComponent = _modelEntityComponent ?? Parent.GetComponent<ModelEntityComponent>();
 

@@ -25,7 +25,7 @@ namespace Pokemon3D.Screens.Transitions
             IsFinished = false;
         }
 
-        public void Update(float elapsedTimeSeconds)
+        public void Update(GameTime gameTime)
         {
             if (IsFinished) return;
             if (_alpha >= 255)

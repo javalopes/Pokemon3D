@@ -10,7 +10,7 @@ namespace Pokemon3D.Entities.System
     {
         private readonly object _lockObject = new object();
         private readonly List<Entity> _entities;
-        
+
         public EntityGeneratorSupplier EntityGeneratorSupplier { get; }
 
         public EntitySystem()
@@ -66,7 +66,7 @@ namespace Pokemon3D.Entities.System
         public Entity CreateEntity(Entity parent = null)
         {
             var entity = new Entity();
-            lock(_lockObject)
+            lock (_lockObject)
             {
                 parent?.AddChild(entity);
                 _entities.Add(entity);
@@ -84,13 +84,13 @@ namespace Pokemon3D.Entities.System
 
         public int EntityCount => _entities.Count;
 
-        public void Update(float elapsedTime)
+        public void Update(GameTime gameTime)
         {
             lock (_lockObject)
             {
                 for (var i = 0; i < _entities.Count; i++)
                 {
-                    _entities[i].Update(elapsedTime);
+                    _entities[i].Update(gameTime);
                 }
             }
         }

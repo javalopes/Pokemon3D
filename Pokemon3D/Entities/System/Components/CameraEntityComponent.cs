@@ -51,9 +51,9 @@ namespace Pokemon3D.Entities.System.Components
             Camera.IsActive = IsActive;
         }
 
-        public override void Update(float elapsedTime)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(elapsedTime);
+            base.Update(gameTime);
             Camera.GlobalEulerAngles = Parent.GlobalEulerAngles;
             Camera.GlobalPosition = Parent.GlobalPosition;
             Camera.Update();
