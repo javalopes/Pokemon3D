@@ -67,6 +67,16 @@ namespace Pokemon3D.Entities.System.Components
             }
         }
 
+        public override void OnComponentRemove()
+        {
+            if (_addedUIElement)
+            {
+                var screen = Game.ScreenManager.CurrentScreen;
+                if (screen is OverworldScreen)
+                    ((OverworldScreen)screen).RemoveUIElement(_uiElement);
+            }
+        }
+
         private void InteractionHandler(InteractionPromptOverworldUIElement uiElement)
         {
             uiElement.Message = "It worked!";
