@@ -6,14 +6,14 @@ using Pokemon3D.Common.Extensions;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Entities.System;
 using Pokemon3D.Entities.System.Components;
-using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 using System;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities
 {
-    class Player : GameObject
+    class Player
     {
         private readonly Entity _playerEntity;
         private readonly Entity _cameraEntity;
@@ -57,12 +57,12 @@ namespace Pokemon3D.Entities
         public Player(World world)
         {
             _world = world;
-            _playerEntity = Game.EntitySystem.CreateEntity();
+            _playerEntity = GameInstance.EntitySystem.CreateEntity();
             _playerEntity.IsActive = false;
             _world.AddEntityToActivate(_playerEntity);
 
-            var mesh = new Mesh(Game.GraphicsDevice, Primitives.GenerateQuadForYBillboard());
-            var diffuseTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
+            var mesh = new Mesh(GameInstance.GraphicsDevice, Primitives.GenerateQuadForYBillboard());
+            var diffuseTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
             var material = new Material
             {
                 DiffuseTexture = diffuseTexture,
@@ -72,14 +72,14 @@ namespace Pokemon3D.Entities
             };
             _modelEntityComponent = _playerEntity.AddComponent(new ModelEntityComponent(_playerEntity, mesh, material, true));
 
-            _cameraEntity = Game.EntitySystem.CreateEntity(_playerEntity);
+            _cameraEntity = GameInstance.EntitySystem.CreateEntity(_playerEntity);
             _cameraEntity.IsActive = false;
             _world.AddEntityToActivate(_cameraEntity);
 
-            var cameraComponent = _cameraEntity.AddComponent(new CameraEntityComponent(_cameraEntity, new Skybox(Game)
+            var cameraComponent = _cameraEntity.AddComponent(new CameraEntityComponent(_cameraEntity, new Skybox(GameInstance)
             {
                 Scale = 50,
-                Texture = Game.Content.Load<Texture2D>(ResourceNames.Textures.skybox_texture)
+                Texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.skybox_texture)
             }));
             cameraComponent.FarClipDistance = 50.0f;
             Camera = cameraComponent.Camera;
@@ -136,20 +136,20 @@ namespace Pokemon3D.Entities
             var currentMouseState = Mouse.GetState();
 
             var movementDirection = Vector3.Zero;
-            if (Game.InputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
+            if (GameInstance.InputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.X = -1.0f;
             }
-            else if (Game.InputSystem.Right(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
+            else if (GameInstance.InputSystem.Right(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.X = 1.0f;
             }
 
-            if (Game.InputSystem.Up(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
+            if (GameInstance.InputSystem.Up(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.Z = 1.0f;
             }
-            else if (Game.InputSystem.Down(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
+            else if (GameInstance.InputSystem.Down(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
             {
                 movementDirection.Z = -1.0f;
             }
@@ -184,7 +184,7 @@ namespace Pokemon3D.Entities
 
         private void HandleGodModeMovement(float elapsedTime, MouseState mouseState, Vector3 movementDirection)
         {
-            var speedFactor = Game.InputSystem.Keyboard.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
+            var speedFactor = GameInstance.InputSystem.Keyboard.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
             var step = Speed * elapsedTime * speedFactor;
 
             if (_mouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Pressed)
@@ -200,7 +200,7 @@ namespace Pokemon3D.Entities
             {
                 _cameraEntity.Translate(Vector3.Normalize(movementDirection) * step);
             }
-            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Space))
+            if (GameInstance.InputSystem.Keyboard.IsKeyDown(Keys.Space))
             {
                 _cameraEntity.Position += Vector3.UnitY * step;
             }
@@ -213,11 +213,11 @@ namespace Pokemon3D.Entities
                 _playerEntity.Translate(Vector3.Normalize(movementDirection) * Speed * elapsedTime);
             }
 
-            if (Game.InputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
+            if (GameInstance.InputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
             {
                 _playerEntity.RotateY(RotationSpeed * elapsedTime);
             }
-            else if (Game.InputSystem.Right(InputDetectionType.HeldDown, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
+            else if (GameInstance.InputSystem.Right(InputDetectionType.HeldDown, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
             {
                 _playerEntity.RotateY(-RotationSpeed * elapsedTime);
             }
@@ -230,19 +230,19 @@ namespace Pokemon3D.Entities
                 _playerEntity.Translate(Vector3.Normalize(movementDirection) * Speed * elapsedTime);
             }
 
-            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Left))
+            if (GameInstance.InputSystem.Keyboard.IsKeyDown(Keys.Left))
             {
                 _playerEntity.RotateY(RotationSpeed * elapsedTime);
             }
-            else if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Right))
+            else if (GameInstance.InputSystem.Keyboard.IsKeyDown(Keys.Right))
             {
                 _playerEntity.RotateY(-RotationSpeed * elapsedTime);
             }
-            if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Up))
+            if (GameInstance.InputSystem.Keyboard.IsKeyDown(Keys.Up))
             {
                 _cameraEntity.RotateX(RotationSpeed * elapsedTime);
             }
-            else if (Game.InputSystem.Keyboard.IsKeyDown(Keys.Down))
+            else if (GameInstance.InputSystem.Keyboard.IsKeyDown(Keys.Down))
             {
                 _cameraEntity.RotateX(-RotationSpeed * elapsedTime);
             }

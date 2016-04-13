@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.Entities.System;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.Overworld
 {
@@ -27,7 +28,7 @@ namespace Pokemon3D.Screens.Overworld
             _owner = owner;
             Message = message;
 
-            _buttonChart = new Pie2D(Game.GraphicsDevice, 24, 0f, 20, Vector2.Zero, false);
+            _buttonChart = new Pie2D(GameInstance.GraphicsDevice, 24, 0f, 20, Vector2.Zero, false);
             _buttonChart.PrimaryColor = Color.Gray;
             _buttonChart.SecondaryColor = Color.Black;
             _buttonChart.ChartType = PieChartType.RadialFill;
@@ -42,25 +43,25 @@ namespace Pokemon3D.Screens.Overworld
             var position = camera.Viewport.Project(_owner.Position + new Vector3(0, 0.5f, 0), camera.ProjectionMatrix, camera.ViewMatrix, Matrix.Identity);
             var position2D = new Vector2(position.X, position.Y);
 
-            var font = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular);
+            var font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular);
             var fontSize = font.MeasureString(Message);
 
-            Game.ShapeRenderer.DrawRectangle(new Rectangle((int)(position2D.X - fontSize.X / 2f - 3), (int)(position2D.Y - 1), (int)fontSize.X + 6, 30), new Color(0, 0, 0, 180));
+            GameInstance.ShapeRenderer.DrawRectangle(new Rectangle((int)(position2D.X - fontSize.X / 2f - 3), (int)(position2D.Y - 1), (int)fontSize.X + 6, 30), new Color(0, 0, 0, 180));
 
-            Game.SpriteBatch.DrawString(font, Message, position2D + new Vector2(-(fontSize.X / 2f), 0), Color.White);
+            GameInstance.SpriteBatch.DrawString(font, Message, position2D + new Vector2(-(fontSize.X / 2f), 0), Color.White);
 
-            Game.ShapeRenderer.DrawShape(new Ellipse((int)position2D.X - 24, (int)position2D.Y + 28, 48, 48), new Color(0, 0, 0, 180));
+            GameInstance.ShapeRenderer.DrawShape(new Ellipse((int)position2D.X - 24, (int)position2D.Y + 28, 48, 48), new Color(0, 0, 0, 180));
 
             _buttonChart.Position = position2D + new Vector2(-24, 28);
-            _buttonChart.DrawBatched(Game.SpriteBatch);
+            _buttonChart.DrawBatched(GameInstance.SpriteBatch);
 
-            Game.ShapeRenderer.DrawShape(new Ellipse((int)position2D.X - 24 + 8, (int)position2D.Y + 28 + 8, 32, 32), new Color(64, 200, 64));
-            Game.SpriteBatch.Draw(Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A), new Rectangle((int)position2D.X - 24 + 8, (int)position2D.Y + 28 + 8, 32, 32), Color.White);
+            GameInstance.ShapeRenderer.DrawShape(new Ellipse((int)position2D.X - 24 + 8, (int)position2D.Y + 28 + 8, 32, 32), new Color(64, 200, 64));
+            GameInstance.SpriteBatch.Draw(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A), new Rectangle((int)position2D.X - 24 + 8, (int)position2D.Y + 28 + 8, 32, 32), Color.White);
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (Game.InputSystem.GamePad.IsButtonDown(Buttons.A))
+            if (GameInstance.InputSystem.GamePad.IsButtonDown(Buttons.A))
             {
                 _buttonPressed += 0.035f;
                 if (_buttonPressed >= 1f)

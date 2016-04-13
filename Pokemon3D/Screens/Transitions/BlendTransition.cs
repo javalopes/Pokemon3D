@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.GameCore;
 using Pokemon3D.Common.Extensions;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.Transitions
 {
-    class BlendTransition : GameObject, ScreenTransition
+    class BlendTransition : ScreenTransition
     {
         private Texture2D _source;
         private Texture2D _target;
@@ -39,12 +39,12 @@ namespace Pokemon3D.Screens.Transitions
         {
             var alpha = _elapsedTime/_transitionTime;
 
-            Game.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
+            GameInstance.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
 
-            Game.SpriteBatch.Draw(_target, Vector2.Zero, Color.White * alpha);
-            Game.SpriteBatch.Draw(_source, Vector2.Zero, Color.White * (1.0f - alpha));
+            GameInstance.SpriteBatch.Draw(_target, Vector2.Zero, Color.White * alpha);
+            GameInstance.SpriteBatch.Draw(_source, Vector2.Zero, Color.White * (1.0f - alpha));
 
-            Game.SpriteBatch.End();
+            GameInstance.SpriteBatch.End();
         }
     }
 }

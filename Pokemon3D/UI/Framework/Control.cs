@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.GameCore;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
     /// <summary>
     /// Represents a control that the user can interact with on a screen.
     /// </summary>
-    abstract class Control : GameObject
+    abstract class Control
     {
         /// <summary>
         /// The <see cref="ControlGroup"/> this control belongs to.
@@ -22,11 +22,11 @@ namespace Pokemon3D.UI.Framework
         {
             Selected = false;
         }
-        
+
         public virtual void Update()
         {
-            if (Game.InputSystem.Mouse.HasMoved)
-                if (GetBounds().Contains(Game.InputSystem.Mouse.Position))
+            if (GameInstance.InputSystem.Mouse.HasMoved)
+                if (GetBounds().Contains(GameInstance.InputSystem.Mouse.Position))
                     Select();
         }
 

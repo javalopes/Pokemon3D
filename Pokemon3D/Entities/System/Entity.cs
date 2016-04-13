@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ namespace Pokemon3D.Entities.System
     /// <summary>
     /// Represents a functional part of a map.
     /// </summary>
-    class Entity : GameObject
+    class Entity
     {
         private readonly List<EntityComponent> _components = new List<EntityComponent>();
         private readonly List<Entity> _childNodes;

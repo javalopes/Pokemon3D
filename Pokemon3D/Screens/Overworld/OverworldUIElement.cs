@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Pokemon3D.GameCore;
 
 namespace Pokemon3D.Screens.Overworld
 {
-    abstract class OverworldUIElement : GameObject
+    abstract class OverworldUIElement
     {
         private bool _isActive = false;
 

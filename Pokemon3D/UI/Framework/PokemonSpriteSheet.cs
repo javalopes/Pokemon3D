@@ -1,15 +1,15 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Pokemon3D.GameCore;
 using System.Collections.Generic;
 using System.Linq;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
     /// <summary>
     /// Manages a Pokémon sprite sheet.
     /// </summary>
-    class PokemonSpriteSheet : GameObject
+    class PokemonSpriteSheet
     {
         private const int FRAME_LENGTH = 2;
 
@@ -47,7 +47,7 @@ namespace Pokemon3D.UI.Framework
                             }
                             else
                             {
-                                Texture2D frame = new Texture2D(Game.GraphicsDevice, frameWidth, frameHeight);
+                                Texture2D frame = new Texture2D(GameInstance.GraphicsDevice, frameWidth, frameHeight);
                                 frame.SetData(frameData);
                                 frames.Add(frame);
                             }

@@ -7,6 +7,7 @@ using Pokemon3D.Common.Extensions;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities.System.Components
 {
@@ -27,7 +28,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public ModelEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
-            _drawableElement = Parent.Game.Renderer.CreateDrawableElement(true);
+            _drawableElement = GameInstance.Renderer.CreateDrawableElement(true);
             IsBillboard = GetDataOrDefault("IsBillboard", false);
 
             var modelReference = GetData<string>("MeshReference");
@@ -60,7 +61,7 @@ namespace Pokemon3D.Entities.System.Components
             var textures = GetEnumeratedData<string>("Texture");
             var regions = GetEnumeratedData<Rectangle>("Rectangle");
 
-            var gameMode = Parent.Game.ActiveGameMode;
+            var gameMode = GameInstance.ActiveGameMode;
             if (textures.Length == 1)
             {
                 AddTextureRegion(gameMode.GetTexture(textures[0]), regions.Length == 0 ? (Rectangle?)null : regions[0]);
@@ -81,7 +82,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public ModelEntityComponent(Entity parent, Mesh mesh, Material material, bool isBillboard) : base(parent)
         {
-            _drawableElement = parent.Game.Renderer.CreateDrawableElement(true);
+            _drawableElement = GameInstance.Renderer.CreateDrawableElement(true);
             _drawableElement.Material = material;
             _drawableElement.Mesh = mesh;
             _drawableElement.EndInitialzing();

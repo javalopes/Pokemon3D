@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.GameCore;
 using Pokemon3D.Common.Shapes;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
     /// <summary>
     /// Draws a projection of a texture on a 3D quad.
     /// </summary>
-    class TextureProjectionQuad : GameObject
+    class TextureProjectionQuad
     {
         private Vector3 _origin, _upperLeft, _lowerLeft, _upperRight, _lowerRight, _normal, _up, _left;
         private BasicEffect _quadEffect;
@@ -150,7 +150,7 @@ namespace Pokemon3D.UI.Framework
 
         private void SetupEffect()
         {
-            _quadEffect = new BasicEffect(Game.GraphicsDevice);
+            _quadEffect = new BasicEffect(GameInstance.GraphicsDevice);
             _quadEffect.TextureEnabled = true;
         }
 
@@ -172,27 +172,27 @@ namespace Pokemon3D.UI.Framework
                 }
                 if (_targetDirty)
                 {
-                    _target = new RenderTarget2D(Game.GraphicsDevice, _textureOutputWidth, _textureOutputHeight);
+                    _target = new RenderTarget2D(GameInstance.GraphicsDevice, _textureOutputWidth, _textureOutputHeight);
                     _targetDirty = false;
                 }
 
                 _quadEffect.World = World;
 
-                var prevTargets = Game.GraphicsDevice.GetRenderTargets();
-                Game.GraphicsDevice.SetRenderTarget(_target);
-                Game.GraphicsDevice.Clear(Color.Transparent);
+                var prevTargets = GameInstance.GraphicsDevice.GetRenderTargets();
+                GameInstance.GraphicsDevice.SetRenderTarget(_target);
+                GameInstance.GraphicsDevice.Clear(Color.Transparent);
 
                 foreach (EffectPass pass in _quadEffect.CurrentTechnique.Passes)
                 {
                     pass.Apply();
 
-                    Game.GraphicsDevice.DrawUserIndexedPrimitives(
+                    GameInstance.GraphicsDevice.DrawUserIndexedPrimitives(
                         PrimitiveType.TriangleList,
                         _vertices, 0, 4,
                         _indices, 0, 2);
                 }
 
-                Game.GraphicsDevice.SetRenderTargets(prevTargets);
+                GameInstance.GraphicsDevice.SetRenderTargets(prevTargets);
                 return _target;
             }
             else
@@ -244,15 +244,15 @@ namespace Pokemon3D.UI.Framework
 
         public Vector2 AdjustToScreen(Vector2 v)
         {
-            v.X = v.X * ((float)Game.ScreenBounds.Width / _textureOutputWidth);
-            v.Y = v.Y * ((float)Game.ScreenBounds.Height / _textureOutputHeight);
+            v.X = v.X * ((float)GameInstance.ScreenBounds.Width / _textureOutputWidth);
+            v.Y = v.Y * ((float)GameInstance.ScreenBounds.Height / _textureOutputHeight);
             return v;
         }
 
         public Point AdjustToScreen(Point p)
         {
-            p.X = (int)((float)p.X * ((float)Game.ScreenBounds.Width / _textureOutputWidth));
-            p.Y = (int)((float)p.Y * ((float)Game.ScreenBounds.Height / _textureOutputHeight));
+            p.X = (int)((float)p.X * ((float)GameInstance.ScreenBounds.Width / _textureOutputWidth));
+            p.Y = (int)((float)p.Y * ((float)GameInstance.ScreenBounds.Height / _textureOutputHeight));
             return p;
         }
 
@@ -264,7 +264,7 @@ namespace Pokemon3D.UI.Framework
 
         private Vector3 Project(Vector3 source, Matrix projection, Matrix view, Matrix world)
         {
-            var viewport = Game.GraphicsDevice.Viewport;
+            var viewport = GameInstance.GraphicsDevice.Viewport;
             int x = viewport.X;
             int y = viewport.Y;
             int width = TextureOutputWidth;

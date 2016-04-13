@@ -1,15 +1,7 @@
-﻿using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Collisions;
 using Pokemon3D.Screens.Overworld;
-using Microsoft.Xna.Framework;
-using Pokemon3D.Rendering;
-using Pokemon3D.Common.Shapes;
-using Microsoft.Xna.Framework.Graphics;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities.System.Components
 {
@@ -41,7 +33,7 @@ namespace Pokemon3D.Entities.System.Components
         {
             base.Update(gameTime);
 
-            var screen = Game.ScreenManager.CurrentScreen;
+            var screen = GameInstance.ScreenManager.CurrentScreen;
             if (screen is OverworldScreen)
             {
                 var overworldScreen = (OverworldScreen)screen;
@@ -71,7 +63,7 @@ namespace Pokemon3D.Entities.System.Components
         {
             if (_addedUIElement)
             {
-                var screen = Game.ScreenManager.CurrentScreen;
+                var screen = GameInstance.ScreenManager.CurrentScreen;
                 if (screen is OverworldScreen)
                     ((OverworldScreen)screen).RemoveUIElement(_uiElement);
             }

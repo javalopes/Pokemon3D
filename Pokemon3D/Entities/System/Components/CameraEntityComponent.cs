@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities.System.Components
 {
@@ -37,7 +38,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public CameraEntityComponent(Entity parent, Skybox skybox) : base(parent)
         {
-            Camera = Parent.Game.Renderer.CreateCamera();
+            Camera = GameInstance.Renderer.CreateCamera();
             NearClipDistance = 0.1f;
             FarClipDistance = 1000.0f;
             FieldOfView = MathHelper.PiOver4;

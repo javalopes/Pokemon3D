@@ -4,15 +4,16 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
 using Pokemon3D.Common.Shapes;
 using Microsoft.Xna.Framework;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
     /// <summary>
     /// Draws a bar to the bottom part of the screen that can display button functions for the current screen.
     /// </summary>
-    class ControlBar : GameObject
+    class ControlBar
     {
-        private class BarEntry : GameObject
+        private class BarEntry
         {
             public string Text { get; set; }
 
@@ -25,17 +26,17 @@ namespace Pokemon3D.UI.Framework
                 switch (GamePadButton)
                 {
                     case Buttons.Start:
-                        return Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_Menu);
+                        return GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_Menu);
                     case Buttons.A:
-                        return Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A);
+                        return GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A);
                     case Buttons.B:
-                        return Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_B);
+                        return GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_B);
                     case Buttons.X:
-                        return Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_X);
+                        return GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_X);
                     case Buttons.Y:
-                        return Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_Y);
+                        return GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_Y);
                 }
-                
+
                 return null;
             }
         }
@@ -48,9 +49,9 @@ namespace Pokemon3D.UI.Framework
 
         public ControlBar()
         {
-            _batch = new SpriteBatch(Game.GraphicsDevice);
+            _batch = new SpriteBatch(GameInstance.GraphicsDevice);
             _renderer = new ShapeRenderer(_batch);
-            _font = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
+            _font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
             _highlightColor = new Color(100, 193, 238);
         }
 
@@ -68,15 +69,15 @@ namespace Pokemon3D.UI.Framework
         {
             _batch.Begin();
 
-            _renderer.DrawRectangle(0, Game.ScreenBounds.Height - 64, Game.ScreenBounds.Width, 64, Color.White);
+            _renderer.DrawRectangle(0, GameInstance.ScreenBounds.Height - 64, GameInstance.ScreenBounds.Width, 64, Color.White);
 
             int offset = 11;
 
             foreach (var entry in _entries)
             {
-                if (Game.InputSystem.GamePad.IsConnected())
+                if (GameInstance.InputSystem.GamePad.IsConnected())
                 {
-                    _batch.Draw(entry.GetTexture(), new Rectangle(offset, Game.ScreenBounds.Height - 48, 32, 32), _highlightColor);
+                    _batch.Draw(entry.GetTexture(), new Rectangle(offset, GameInstance.ScreenBounds.Height - 48, 32, 32), _highlightColor);
                     offset += 32;
                 }
                 else
@@ -89,13 +90,13 @@ namespace Pokemon3D.UI.Framework
                         boxWidth = (int)(_font.MeasureString(displayString).X + 10);
                     }
 
-                    _renderer.DrawRectangle(new Rectangle(offset, Game.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor, filled: false);
-                    _batch.DrawString(_font, displayString, new Vector2(offset + 5, Game.ScreenBounds.Height - 48), _highlightColor);
+                    _renderer.DrawRectangle(new Rectangle(offset, GameInstance.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor, filled: false);
+                    _batch.DrawString(_font, displayString, new Vector2(offset + 5, GameInstance.ScreenBounds.Height - 48), _highlightColor);
 
                     offset += boxWidth;
                 }
 
-                _batch.DrawString(_font, entry.Text, new Vector2(offset + 10, Game.ScreenBounds.Height - 48), _highlightColor);
+                _batch.DrawString(_font, entry.Text, new Vector2(offset + 10, GameInstance.ScreenBounds.Height - 48), _highlightColor);
                 offset += 26 + (int)_font.MeasureString(entry.Text).X;
             }
 

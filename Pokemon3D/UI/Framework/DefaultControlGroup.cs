@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
@@ -36,29 +37,29 @@ namespace Pokemon3D.UI.Framework
 
         public DefaultControlGroup()
         {
-            _batch = new SpriteBatch(Game.GraphicsDevice);
+            _batch = new SpriteBatch(GameInstance.GraphicsDevice);
         }
 
         public override void Update()
         {
             if (Active)
             {
-                if (Game.InputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+                if (GameInstance.InputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     if (MoveUp != null)
                         MoveUp();
                     else if (Orientation.HasFlag(ControlGroupOrientation.Vertical))
                         MoveSelection(-1);
-                if (Game.InputSystem.Down(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+                if (GameInstance.InputSystem.Down(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     if (MoveDown != null)
                         MoveDown();
                     else if (Orientation.HasFlag(ControlGroupOrientation.Vertical))
                         MoveSelection(1);
-                if (Game.InputSystem.Left(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+                if (GameInstance.InputSystem.Left(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     if (MoveLeft != null)
                         MoveLeft();
                     else if (Orientation.HasFlag(ControlGroupOrientation.Horizontal))
                         MoveSelection(-1);
-                if (Game.InputSystem.Right(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+                if (GameInstance.InputSystem.Right(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     if (MoveRight != null)
                         MoveRight();
                     else if (Orientation.HasFlag(ControlGroupOrientation.Horizontal))

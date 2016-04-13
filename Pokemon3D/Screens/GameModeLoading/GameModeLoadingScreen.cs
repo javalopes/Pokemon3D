@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Microsoft.Xna.Framework;
-using Pokemon3D.GameCore;
 using Pokemon3D.Screens.Transitions;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.GUI;
@@ -10,10 +9,11 @@ using System.Collections.Generic;
 using Pokemon3D.Entities;
 using Pokemon3D.Screens.Overworld;
 using Pokemon3D.Common.Extensions;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.GameModeLoading
 {
-    class GameModeLoadingScreen : GameObject, Screen
+    class GameModeLoadingScreen : Screen
     {
         // todo: move this somewhere else...
         private static readonly Dictionary<ShadowQuality, int> ShadowMapSizeForQuality = new Dictionary<ShadowQuality, int>
@@ -31,17 +31,17 @@ namespace Pokemon3D.Screens.GameModeLoading
 
         public void OnOpening(object enterInformation)
         {
-            _pokeBallSprite = new Sprite(Game.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball))
+            _pokeBallSprite = new Sprite(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball))
             {
-                Position = new Vector2(Game.ScreenBounds.Width, Game.ScreenBounds.Height) * 0.5f
+                Position = new Vector2(GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height) * 0.5f
             };
 
-            _loadingText = new SpriteText(Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont), "@Loading...");
-            _loadingText.SetTargetRectangle(new Rectangle(0, 100, Game.ScreenBounds.Width, 100));
+            _loadingText = new SpriteText(GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont), "@Loading...");
+            _loadingText.SetTargetRectangle(new Rectangle(0, 100, GameInstance.ScreenBounds.Width, 100));
             _loadingText.HorizontalAlignment = HorizontalAlignment.Center;
             _loadingText.VerticalAlignment = VerticalAlignment.Top;
 
-            var renderer = Game.Renderer;
+            var renderer = GameInstance.Renderer;
             renderer.AddPostProcessingStep(new HorizontalBlurPostProcessingStep());
             renderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
             renderer.EnablePostProcessing = false;
@@ -50,8 +50,8 @@ namespace Pokemon3D.Screens.GameModeLoading
             renderer.Light.DiffuseIntensity = 0.8f;
             renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
 
-            var gameModes = Game.GameModeManager.GetGameModeInfos();
-            Game.ActiveGameMode = Game.GameModeManager.CreateGameMode(gameModes.First(), Game);
+            var gameModes = GameInstance.GameModeManager.GetGameModeInfos();
+            GameInstance.ActiveGameMode = GameInstance.GameModeManager.CreateGameMode(gameModes.First(), GameInstance);
 
             _loadingFinished = false;
             _world = new World();
@@ -60,12 +60,12 @@ namespace Pokemon3D.Screens.GameModeLoading
 
         public void OnLateDraw(GameTime gameTime)
         {
-            Game.GraphicsDevice.Clear(Color.Black);
+            GameInstance.GraphicsDevice.Clear(Color.Black);
 
-            Game.SpriteBatch.Begin();
-            _loadingText.Draw(Game.SpriteBatch);
-            _pokeBallSprite.Draw(Game.SpriteBatch);
-            Game.SpriteBatch.End();
+            GameInstance.SpriteBatch.Begin();
+            _loadingText.Draw(GameInstance.SpriteBatch);
+            _pokeBallSprite.Draw(GameInstance.SpriteBatch);
+            GameInstance.SpriteBatch.End();
         }
 
         public void OnEarlyDraw(GameTime gameTime)
@@ -79,7 +79,7 @@ namespace Pokemon3D.Screens.GameModeLoading
             if (_loadingFinished)
             {
                 _world.ActivateNewEntities();
-                Game.ScreenManager.SetScreen(typeof(OverworldScreen), typeof(SlideTransition), _world);
+                GameInstance.ScreenManager.SetScreen(typeof(OverworldScreen), typeof(SlideTransition), _world);
             }
         }
 

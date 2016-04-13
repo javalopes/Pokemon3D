@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
@@ -30,10 +31,10 @@ namespace Pokemon3D.UI.Framework
 
         public LeftSideCheckbox(string text, Vector2 position, Action<Control> onClick)
         {
-            _texture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
-            _backTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Checkbox_Back);
-            _markTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Checkbox_Mark);
-            _font = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
+            _backTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Checkbox_Back);
+            _markTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Checkbox_Mark);
+            _font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
             _position = position;
 
             Text = text;
@@ -62,8 +63,8 @@ namespace Pokemon3D.UI.Framework
 
             if (Selected && Group != null && Group.Active)
             {
-                if (Game.InputSystem.Accept(AcceptInputTypes.Buttons) ||
-                    GetBounds().Contains(Game.InputSystem.Mouse.Position) && Game.InputSystem.Accept(AcceptInputTypes.LeftClick))
+                if (GameInstance.InputSystem.Accept(AcceptInputTypes.Buttons) ||
+                    GetBounds().Contains(GameInstance.InputSystem.Mouse.Position) && GameInstance.InputSystem.Accept(AcceptInputTypes.LeftClick))
                 {
                     Checked = !Checked;
 

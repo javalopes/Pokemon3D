@@ -1,17 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.GameCore;
 using Pokemon3D.Screens.Transitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens
 {
     /// <summary>
     /// A component to manage open screens.
     /// </summary>
-    class ScreenManager : GameObject
+    class ScreenManager
     {
         private readonly RenderTarget2D _sourceRenderTarget;
         private readonly RenderTarget2D _targetRenderTarget;
@@ -27,9 +27,9 @@ namespace Pokemon3D.Screens
 
         public ScreenManager()
         {
-            var clientBounds = Game.Window.ClientBounds;
-            _sourceRenderTarget = new RenderTarget2D(Game.GraphicsDevice, clientBounds.Width, clientBounds.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
-            _targetRenderTarget = new RenderTarget2D(Game.GraphicsDevice, clientBounds.Width, clientBounds.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            var clientBounds = GameInstance.Window.ClientBounds;
+            _sourceRenderTarget = new RenderTarget2D(GameInstance.GraphicsDevice, clientBounds.Width, clientBounds.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            _targetRenderTarget = new RenderTarget2D(GameInstance.GraphicsDevice, clientBounds.Width, clientBounds.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
             _executingScreenTransition = false;
             _currentTransition = new BlendTransition();
 
@@ -95,18 +95,18 @@ namespace Pokemon3D.Screens
         private void PrerenderSourceAndTargetAndMakeTransition(Screen oldScreen, Screen currentScreen, Type transition)
         {
             _executingScreenTransition = true;
-            var currentRenderTarget = Game.GraphicsDevice.GetRenderTargets();
+            var currentRenderTarget = GameInstance.GraphicsDevice.GetRenderTargets();
 
-            Game.GraphicsDevice.SetRenderTarget(_sourceRenderTarget);
+            GameInstance.GraphicsDevice.SetRenderTarget(_sourceRenderTarget);
             oldScreen.OnEarlyDraw(new GameTime());
             oldScreen.OnLateDraw(new GameTime());
 
-            Game.GraphicsDevice.SetRenderTarget(_targetRenderTarget);
+            GameInstance.GraphicsDevice.SetRenderTarget(_targetRenderTarget);
             currentScreen.OnUpdate(new GameTime());
             currentScreen.OnEarlyDraw(new GameTime());
             currentScreen.OnLateDraw(new GameTime());
 
-            Game.GraphicsDevice.SetRenderTargets(currentRenderTarget);
+            GameInstance.GraphicsDevice.SetRenderTargets(currentRenderTarget);
             _currentTransition = _screenTransitionsByType[transition];
             _currentTransition.StartTransition(_sourceRenderTarget, _targetRenderTarget);
         }

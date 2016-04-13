@@ -92,6 +92,7 @@
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\PlayerMovementMode.cs" />
     <Compile Include="Entities\World.cs" />
+    <Compile Include="GameCore\GameProvider.cs" />
     <Compile Include="ResourceNames.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

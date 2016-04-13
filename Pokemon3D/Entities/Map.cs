@@ -2,11 +2,11 @@
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.Entities.System;
-using Pokemon3D.GameCore;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities
 {
-    class Map : GameObject
+    class Map
     {
         private readonly MapModel _mapModel;
         private World _world;
@@ -30,7 +30,7 @@ namespace Pokemon3D.Entities
             {
                 foreach (var fragmentImport in _mapModel.Fragments)
                 {
-                    Game.ActiveGameMode.MapFragmentManager.LoadFragmentAsync(fragmentImport.Id, l => FinishLoadingMapFragment(fragmentImport, l));
+                    GameInstance.ActiveGameMode.MapFragmentManager.LoadFragmentAsync(fragmentImport.Id, l => FinishLoadingMapFragment(fragmentImport, l));
                 }
             }
         }
@@ -55,7 +55,7 @@ namespace Pokemon3D.Entities
 
         private void CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position)
         {
-            var entity = Game.EntitySystem.CreateEntity();
+            var entity = GameInstance.EntitySystem.CreateEntity();
             entity.IsActive = false;
 
             foreach (var compModel in entityModel.Components)
@@ -101,7 +101,7 @@ namespace Pokemon3D.Entities
 
         private void PlaceEntities(EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 offset)
         {
-            var generator = Game.EntitySystem.EntityGeneratorSupplier.GetGenerator(entityDefinition.Entity.Generator);
+            var generator = GameInstance.EntitySystem.EntityGeneratorSupplier.GetGenerator(entityDefinition.Entity.Generator);
             for (var x = 1.0f; x <= entityPlacing.Size.X; x += entityPlacing.Steps.X)
             {
                 for (var y = 1.0f; y <= entityPlacing.Size.Y; y += entityPlacing.Steps.Y)

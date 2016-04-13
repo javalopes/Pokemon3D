@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Collisions;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities.System.Components
 {
@@ -22,13 +23,13 @@ namespace Pokemon3D.Entities.System.Components
         public override void OnComponentAdded()
         {
             base.OnComponentAdded();
-            Parent.Game.CollisionManager.AddCollider(Collider);
+            GameInstance.CollisionManager.AddCollider(Collider);
         }
 
         public override void OnComponentRemove()
         {
             base.OnComponentRemove();
-            Parent.Game.CollisionManager.RemoveCollider(Collider);
+            GameInstance.CollisionManager.RemoveCollider(Collider);
         }
 
         public override void Update(GameTime gameTime)
@@ -38,7 +39,7 @@ namespace Pokemon3D.Entities.System.Components
 
             if (ResolvesPosition)
             {
-                var collisionResult = Parent.Game.CollisionManager.CheckCollision(Collider);
+                var collisionResult = GameInstance.CollisionManager.CheckCollision(Collider);
                 if (collisionResult != null)
                 {
                     for (var i = 0; i < collisionResult.Length; i++)

@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.GameCore;
 using Microsoft.Xna.Framework;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.Common.Input;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework.Dialogs
 {
@@ -20,7 +20,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
         ColorTransition _colorStepper;
         ShapeRenderer _renderer;
 
-        private int _calculatedHeight; 
+        private int _calculatedHeight;
 
         private RenderTarget2D _target;
 
@@ -28,19 +28,19 @@ namespace Pokemon3D.UI.Framework.Dialogs
         {
             AddRange(buttons);
 
-            _batch = new SpriteBatch(Game.GraphicsDevice);
+            _batch = new SpriteBatch(GameInstance.GraphicsDevice);
             _renderer = new ShapeRenderer(_batch);
             _colorStepper = new ColorTransition(new Color(255, 255, 255, 0), 0.7f);
 
-            _titleFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
-            _textFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _titleFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
+            _textFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
 
             _title = title;
             _text = text;
 
             SetupLayout();
 
-            Game.WindowSizeChanged += HandleWindowSizeChanged;
+            GameInstance.WindowSizeChanged += HandleWindowSizeChanged;
         }
 
         private void HandleWindowSizeChanged(object sender, EventArgs e)
@@ -72,22 +72,22 @@ namespace Pokemon3D.UI.Framework.Dialogs
                 _calculatedHeight += textSpace;
             }
 
-            int startY = Game.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
+            int startY = GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
             foreach (var control in Controls)
             {
                 control.SetPosition(new Vector2(120, controlY + startY));
                 controlY += control.GetBounds().Height + 20;
             }
 
-            _target = new RenderTarget2D(Game.GraphicsDevice, Game.ScreenBounds.Width, Game.ScreenBounds.Height);
+            _target = new RenderTarget2D(GameInstance.GraphicsDevice, GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height);
         }
 
         public override void Draw(SamplerState samplerState = null, BlendState blendState = null)
         {
             if (Visible)
             {
-                Game.GraphicsDevice.SetRenderTarget(_target);
-                Game.GraphicsDevice.Clear(Color.Transparent);
+                GameInstance.GraphicsDevice.SetRenderTarget(_target);
+                GameInstance.GraphicsDevice.Clear(Color.Transparent);
 
                 _batch.Begin();
 
@@ -95,7 +95,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
 
                 _batch.End();
 
-                Game.GraphicsDevice.SetRenderTarget(null);
+                GameInstance.GraphicsDevice.SetRenderTarget(null);
 
                 _batch.Begin(blendState: BlendState.NonPremultiplied);
                 _batch.Draw(_target, Vector2.Zero, _colorStepper.Color);
@@ -105,10 +105,10 @@ namespace Pokemon3D.UI.Framework.Dialogs
 
         private void DrawDialog()
         {
-            int startY = Game.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
+            int startY = GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
 
-            _renderer.DrawRectangle(0, 0, Game.ScreenBounds.Width, Game.ScreenBounds.Height, new Color(255, 255, 255, 100));
-            _renderer.DrawRectangle(0, startY, Game.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
+            _renderer.DrawRectangle(0, 0, GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height, new Color(255, 255, 255, 100));
+            _renderer.DrawRectangle(0, startY, GameInstance.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
 
             _batch.DrawString(_titleFont, _title, new Vector2(100, startY + 20), Color.Black);
 
@@ -139,9 +139,9 @@ namespace Pokemon3D.UI.Framework.Dialogs
         {
             if (Active)
             {
-                if (Game.InputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+                if (GameInstance.InputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     MoveSelection(-1);
-                if (Game.InputSystem.Down(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+                if (GameInstance.InputSystem.Down(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
                     MoveSelection(1);
                 base.Update();
             }

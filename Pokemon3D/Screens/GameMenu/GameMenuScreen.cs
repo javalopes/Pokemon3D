@@ -4,16 +4,17 @@ using Pokemon3D.GameCore;
 using Pokemon3D.Entities.Pokemon;
 using Pokemon3D.UI.Framework;
 using System;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.GameMenu
 {
-    class GameMenuScreen : GameObject, Screen
+    class GameMenuScreen : Screen
     {
         private ShapeRenderer _renderer;
 
         public void OnOpening(object enterInformation)
         {
-            _renderer = new ShapeRenderer(Game.SpriteBatch);
+            _renderer = new ShapeRenderer(GameInstance.SpriteBatch);
         }
 
         public void OnEarlyDraw(GameTime gameTime)
@@ -21,11 +22,11 @@ namespace Pokemon3D.Screens.GameMenu
 
         public void OnLateDraw(GameTime gameTime)
         {
-            Game.SpriteBatch.Begin();
+            GameInstance.SpriteBatch.Begin();
 
             _renderer.DrawShapeGradientFill(new Plane2D(0, 0, 100, 100), null, Color.White, Color.Black, true);
 
-            Game.SpriteBatch.End();
+            GameInstance.SpriteBatch.End();
         }
 
         public void OnUpdate(GameTime gameTime)
@@ -39,7 +40,7 @@ namespace Pokemon3D.Screens.GameMenu
         }
     }
 
-    class PokemonProfile : GameObject
+    class PokemonProfile
     {
         private Pokemon _pokemon;
         private ShapeRenderer _renderer;
@@ -55,9 +56,9 @@ namespace Pokemon3D.Screens.GameMenu
             _renderer = renderer;
             _position = position;
             var dataModel = _pokemon.ActiveFormModel.FrontSpriteSheet;
-            _sheet = new PokemonSpriteSheet(Game.ActiveGameMode.GetTexture(dataModel.Source), dataModel.FrameSize.Width, dataModel.FrameSize.Height);
-            _pie = new Pie2D(Game.GraphicsDevice, 80, MathHelper.ToRadians(360), 40, _position, false);
-            _backPie = new Pie2D(Game.GraphicsDevice, 75, MathHelper.TwoPi, 40, new Vector2(5) + _position, false);
+            _sheet = new PokemonSpriteSheet(GameInstance.ActiveGameMode.GetTexture(dataModel.Source), dataModel.FrameSize.Width, dataModel.FrameSize.Height);
+            _pie = new Pie2D(GameInstance.GraphicsDevice, 80, MathHelper.ToRadians(360), 40, _position, false);
+            _backPie = new Pie2D(GameInstance.GraphicsDevice, 75, MathHelper.TwoPi, 40, new Vector2(5) + _position, false);
             _backPie.SecondaryColor = Color.Black;
             _backPie.ChartType = PieChartType.RadialFill;
 
@@ -69,8 +70,8 @@ namespace Pokemon3D.Screens.GameMenu
 
         public void Draw()
         {
-            _backPie.DrawBatched(Game.SpriteBatch);
-            _pie.DrawBatched(Game.SpriteBatch);
+            _backPie.DrawBatched(GameInstance.SpriteBatch);
+            _pie.DrawBatched(GameInstance.SpriteBatch);
             _renderer.DrawShape(new Ellipse((int)(24 + _position.X), (int)(24 + _position.Y), 112, 112), Color.LightBlue);
 
             int width = Math.Min(_sheet.CurrentFrame.Width, 128);

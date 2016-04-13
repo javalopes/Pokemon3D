@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
@@ -26,8 +27,8 @@ namespace Pokemon3D.UI.Framework
 
         public LeftSideButton(string text, Vector2 position, Action<Control> onClick)
         {
-            _texture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
-            _font = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
+            _font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
 
             Text = text;
             _position = position;
@@ -36,7 +37,7 @@ namespace Pokemon3D.UI.Framework
             _colorStepper = new ColorTransition(new Color(255, 255, 255), 0.5f);
             _offsetStepper = new OffsetTransition(0f, 0.5f);
         }
-        
+
         public override Rectangle GetBounds()
         {
             return new Rectangle((int)(_position.X + _offsetStepper.Offset), (int)_position.Y, 200, 38);
@@ -48,8 +49,8 @@ namespace Pokemon3D.UI.Framework
 
             if (_onClick != null && Selected && Group != null && Group.Active)
             {
-                if (Game.InputSystem.Accept(AcceptInputTypes.Buttons) ||
-                    GetBounds().Contains(Game.InputSystem.Mouse.Position) && Game.InputSystem.Accept(AcceptInputTypes.LeftClick))
+                if (GameInstance.InputSystem.Accept(AcceptInputTypes.Buttons) ||
+                    GetBounds().Contains(GameInstance.InputSystem.Mouse.Position) && GameInstance.InputSystem.Accept(AcceptInputTypes.LeftClick))
                 {
                     _onClick(this);
                 }

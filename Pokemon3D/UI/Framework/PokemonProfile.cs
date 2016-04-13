@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Entities.Pokemon;
 using Pokemon3D.Entities;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
@@ -35,8 +36,8 @@ namespace Pokemon3D.UI.Framework
             _position = position;
             _gameMode = gameMode;
 
-            _profileHPIndicatorTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Profile);
-            _profileBackTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Profile_Shadow);
+            _profileHPIndicatorTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Profile);
+            _profileBackTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Profile_Shadow);
 
             var dataModel = _pokemon.ActiveFormModel.FrontSpriteSheet;
             _sheet = new PokemonSpriteSheet(_gameMode.GetTexture(dataModel.Source), dataModel.FrameSize.Width, dataModel.FrameSize.Height);

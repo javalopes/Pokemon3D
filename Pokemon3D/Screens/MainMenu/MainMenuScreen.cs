@@ -1,14 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
-using Pokemon3D.GameCore;
 using Pokemon3D.Screens.Transitions;
 using Pokemon3D.UI.Framework;
 using Pokemon3D.UI.Framework.Dialogs;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Screens.GameModeLoading;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.MainMenu
 {
-    class MainMenuScreen : GameObject, Screen
+    class MainMenuScreen : Screen
     {
         private DefaultControlGroup _buttons;
         private SelectionDialog _closeDialog;
@@ -18,13 +18,13 @@ namespace Pokemon3D.Screens.MainMenu
 
         public void OnOpening(object enterInformation)
         {
-            Game.GraphicsDeviceManager.PreferMultiSampling = true;
-            Game.GraphicsDeviceManager.ApplyChanges();
+            GameInstance.GraphicsDeviceManager.PreferMultiSampling = true;
+            GameInstance.GraphicsDeviceManager.ApplyChanges();
 
             _buttons = new DefaultControlGroup();
             _buttons.Add(new LeftSideButton("Start new game", new Vector2(26, 45), b =>
             {
-                Game.ScreenManager.SetScreen(typeof(GameModeLoadingScreen), typeof(BlendTransition));
+                GameInstance.ScreenManager.SetScreen(typeof(GameModeLoadingScreen), typeof(BlendTransition));
             }));
             _buttons.Add(new LeftSideButton("Load game", new Vector2(26, 107), b =>
             {
@@ -46,7 +46,7 @@ namespace Pokemon3D.Screens.MainMenu
                 }),
                 new LeftSideButton("Yes", new Vector2(50, 100), b =>
                 {
-                    Game.ScreenManager.NotifyQuitGame();
+                    GameInstance.ScreenManager.NotifyQuitGame();
                 })
             });
 
@@ -71,7 +71,7 @@ namespace Pokemon3D.Screens.MainMenu
 
         public void OnLateDraw(GameTime gameTime)
         {
-            Game.GraphicsDevice.Clear(Color.LightGray);
+            GameInstance.GraphicsDevice.Clear(Color.LightGray);
 
             _hexagons.Draw();
 

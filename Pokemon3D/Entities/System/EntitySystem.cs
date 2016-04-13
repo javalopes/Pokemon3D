@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.Entities.System.Generators;
-using Pokemon3D.GameCore;
 using System.Collections.Generic;
 
 namespace Pokemon3D.Entities.System
 {
-    class EntitySystem : GameObject
+    class EntitySystem
     {
         private readonly object _lockObject = new object();
         private readonly List<Entity> _entities;

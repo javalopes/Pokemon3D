@@ -4,18 +4,19 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
     /// <summary>
     /// Displays a half-visible background filled with hexagons.
     /// </summary>
-    class HexagonBackground : GameObject
+    class HexagonBackground
     {
         private const int HEXAGON_WIDTH = 26;
         private const int HEXAGON_HEIGHT = 31;
         private const int HEXAGON_HEIGHT_HALF = 15;
-        
+
         private class Hexagon
         {
             private const int MIN_ALPHA = 150;
@@ -35,13 +36,13 @@ namespace Pokemon3D.UI.Framework
             public float Alpha { get; private set; }
 
             public bool Visible { get { return _delay == 0f; } }
-            
+
             public Hexagon(int x, int y, bool hasAnimation)
             {
                 _x = x;
                 _y = y;
                 _targetAlpha = Common.GlobalRandomProvider.Instance.Rnd.Next(MIN_ALPHA, MAX_ALPHA);
-                
+
                 if (hasAnimation)
                 {
                     _delay = y * DELAY_VERTICAL_OFFSET_MULTIPLIER;
@@ -109,9 +110,9 @@ namespace Pokemon3D.UI.Framework
 
         public HexagonBackground()
         {
-            Game.WindowSizeChanged += HandleWindowSizeChanged;
-            _hexagonTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Hexagon);
-            _batch = new SpriteBatch(Game.GraphicsDevice);
+            GameInstance.WindowSizeChanged += HandleWindowSizeChanged;
+            _hexagonTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Hexagon);
+            _batch = new SpriteBatch(GameInstance.GraphicsDevice);
             Generate(true);
         }
 
@@ -124,8 +125,8 @@ namespace Pokemon3D.UI.Framework
         {
             _hexagons.Clear();
 
-            for (int x = -1; x < Game.ScreenBounds.Width / HEXAGON_WIDTH + 1; x++)
-                for (int y = -1; y < Game.ScreenBounds.Height / HEXAGON_HEIGHT_HALF + 1; y++)
+            for (int x = -1; x < GameInstance.ScreenBounds.Width / HEXAGON_WIDTH + 1; x++)
+                for (int y = -1; y < GameInstance.ScreenBounds.Height / HEXAGON_HEIGHT_HALF + 1; y++)
                     _hexagons.Add(new Hexagon(x, y, hasAnimation));
         }
 
@@ -149,7 +150,7 @@ namespace Pokemon3D.UI.Framework
 
         public bool FinishedIntroAnimation
         {
-            get { return _hexagons.All(h => h.FinishedIntro); } 
+            get { return _hexagons.All(h => h.FinishedIntro); }
         }
     }
 }

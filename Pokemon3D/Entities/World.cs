@@ -1,15 +1,15 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.DataModel.GameMode.Map;
-using Pokemon3D.GameCore;
 using Pokemon3D.UI;
 using System.Collections.Generic;
 using Pokemon3D.Entities.System;
 using Microsoft.Xna.Framework;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities
 {
-    class World : GameObject
+    class World
     {
         private Action _onFinished;
 
@@ -21,12 +21,12 @@ namespace Pokemon3D.Entities
         public void StartNewGameAsync(Action onFinished)
         {
             _onFinished = onFinished;
-            Game.ActiveGameMode.PreloadAsync(ContinueLoadMap);
+            GameInstance.ActiveGameMode.PreloadAsync(ContinueLoadMap);
         }
 
         private void ContinueLoadMap()
         {
-            Game.ActiveGameMode.LoadMapAsync(Game.ActiveGameMode.GameModeInfo.StartMap, FinishedLoadingMapModel);
+            GameInstance.ActiveGameMode.LoadMapAsync(GameInstance.ActiveGameMode.GameModeInfo.StartMap, FinishedLoadingMapModel);
         }
 
         private void FinishedLoadingMapModel(MapModel mapModel)
@@ -54,19 +54,19 @@ namespace Pokemon3D.Entities
         {
             Player.Update(gameTime);
 
-            if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.V))
+            if (GameInstance.InputSystem.Keyboard.IsKeyDownOnce(Keys.V))
             {
                 if (Player.MovementMode == PlayerMovementMode.GodMode)
                 {
-                    Game.NotificationBar.PushNotification(NotificationKind.Information, "Disabled God Mode");
+                    GameInstance.NotificationBar.PushNotification(NotificationKind.Information, "Disabled God Mode");
                 }
                 Player.MovementMode = Player.MovementMode == PlayerMovementMode.FirstPerson ? PlayerMovementMode.ThirdPerson : PlayerMovementMode.FirstPerson;
             }
 
-            if (Game.InputSystem.Keyboard.IsKeyDownOnce(Keys.F10))
+            if (GameInstance.InputSystem.Keyboard.IsKeyDownOnce(Keys.F10))
             {
                 Player.MovementMode = PlayerMovementMode.GodMode;
-                Game.NotificationBar.PushNotification(NotificationKind.Information, "Enabled God Mode");
+                GameInstance.NotificationBar.PushNotification(NotificationKind.Information, "Enabled God Mode");
             }
         }
     }

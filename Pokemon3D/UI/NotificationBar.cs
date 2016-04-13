@@ -3,10 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
 using System.Collections.Generic;
 using System.Linq;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI
 {
-    class NotificationBar : GameObject
+    class NotificationBar
     {
         private const int ElementPadding = 5;
         private const int ElementMargin = 2;
@@ -32,9 +33,9 @@ namespace Pokemon3D.UI
             _maxNotifications = maxNotifications;
             _width = barWidth;
             _notificationTime = 2.0f;
-            _spriteFont = Game.Content.Load<SpriteFont>(ResourceNames.Fonts.NotificationFont);
+            _spriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NotificationFont);
             _backgroundColor = new Color(70, 70, 70);
-            _notificationIcons = Game.Content.Load<Texture2D>(ResourceNames.Textures.NotificationIcons);
+            _notificationIcons = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.NotificationIcons);
         }
 
         public void PushNotification(NotificationKind notificationKind, string message)
@@ -58,26 +59,26 @@ namespace Pokemon3D.UI
 
             var elementHeight = _spriteFont.LineSpacing + 2 * ElementPadding;
 
-            var startY = Game.ScreenBounds.Height - _notifications.Count * (elementHeight + ElementMargin);
-            var startX = (Game.ScreenBounds.Width - _width) /2;
+            var startY = GameInstance.ScreenBounds.Height - _notifications.Count * (elementHeight + ElementMargin);
+            var startX = (GameInstance.ScreenBounds.Width - _width) /2;
 
-            Game.SpriteBatch.Begin();
+            GameInstance.SpriteBatch.Begin();
             foreach (var notification in _notifications)
             {
-                Game.ShapeRenderer.DrawRectangle(startX, startY, _width, elementHeight, _backgroundColor * notification.Alpha);
+                GameInstance.ShapeRenderer.DrawRectangle(startX, startY, _width, elementHeight, _backgroundColor * notification.Alpha);
 
                 var currentX = startX + ElementMargin;
                 var sourceRectangle = _notificationRectangle[notification.NotificationKind];
                 var position = new Vector2(currentX, startY + (elementHeight-IconSize)/2);
-                Game.SpriteBatch.Draw(_notificationIcons, position, sourceRectangle, Color.White * notification.Alpha);
+                GameInstance.SpriteBatch.Draw(_notificationIcons, position, sourceRectangle, Color.White * notification.Alpha);
 
                 position = new Vector2(currentX + IconSize + ElementMargin, startY + ElementPadding);
-                Game.SpriteBatch.DrawString(_spriteFont, notification.Message, position, Color.White * notification.Alpha);
+                GameInstance.SpriteBatch.DrawString(_spriteFont, notification.Message, position, Color.White * notification.Alpha);
 
                 startY += elementHeight;
                 startY += ElementMargin;
             }
-            Game.SpriteBatch.End();
+            GameInstance.SpriteBatch.End();
         }
     }
 }

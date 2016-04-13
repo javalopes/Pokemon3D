@@ -1,15 +1,15 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.GameCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
     /// <summary>
     /// Groups together controls and manages them.
     /// </summary>
-    abstract class ControlGroup : GameObject
+    abstract class ControlGroup
     {
         private readonly List<Control> _controls;
 
@@ -122,7 +122,7 @@ namespace Pokemon3D.UI.Framework
 
         public virtual void Draw(SamplerState samplerState = null, BlendState blendState = null)
         {
-            InternalDraw(Game.SpriteBatch);
+            InternalDraw(GameInstance.SpriteBatch);
         }
 
         protected void InternalDraw(SpriteBatch spriteBatch)

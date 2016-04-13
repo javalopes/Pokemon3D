@@ -5,13 +5,14 @@ using Pokemon3D.DataModel.GameCore;
 using Pokemon3D.FileSystem;
 using System;
 using System.IO;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.GameCore
 {
     /// <summary>
     /// Contains the global settings of the game, loaded from the configuration.json file.
     /// </summary>
-    class GameConfiguration : GameObject
+    class GameConfiguration
     {
         private ConfigurationModel _dataModel;
 
@@ -44,7 +45,7 @@ namespace Pokemon3D.GameCore
                 Save();
             }
 
-            Game.Exiting += OnGameExiting;
+            GameInstance.Exiting += OnGameExiting;
 
             FileObserver.Instance.StartFileObserve(StaticPathProvider.ConfigFile, ReloadFile);
         }

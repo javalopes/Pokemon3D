@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 using Pokemon3D.Common;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Collisions
 {
-    class CollisionManager : GameObject
+    class CollisionManager
     {
         private readonly List<Collider> _allColliders;
         private readonly Mesh _boundingBoxMesh;
@@ -47,9 +47,9 @@ namespace Pokemon3D.Collisions
                 }
             };
 
-            _boundingBoxMesh = new Mesh(Game.GraphicsDevice, geometryBox, PrimitiveType.LineList, false);
+            _boundingBoxMesh = new Mesh(GameInstance.GraphicsDevice, geometryBox, PrimitiveType.LineList, false);
 
-            _lineDrawEffect = Game.Content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
+            _lineDrawEffect = GameInstance.Content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
             _worldViewProjection = _lineDrawEffect.Parameters["WorldViewProjection"];
             _lineTechnique = _lineDrawEffect.Techniques["LineDraw"];
         }
@@ -85,8 +85,8 @@ namespace Pokemon3D.Collisions
         {
             if (!DrawDebugShapes) return;
 
-            Game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            Game.GraphicsDevice.BlendState = BlendState.Opaque;
+            GameInstance.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            GameInstance.GraphicsDevice.BlendState = BlendState.Opaque;
 
             _lineDrawEffect.CurrentTechnique = _lineTechnique;
 
