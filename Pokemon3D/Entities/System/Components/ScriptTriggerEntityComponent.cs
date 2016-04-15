@@ -74,17 +74,7 @@ namespace Pokemon3D.Entities.System.Components
 
         private void InteractionHandler(InteractionPromptOverworldUIElement uiElement)
         {
-            var filePath = GameInstance.ActiveGameMode.GetScriptFilePath(_script);
-
-            if (File.Exists(filePath))
-            {
-                string source = File.ReadAllText(filePath);
-                ScriptPipeline.ScriptPipelineManager.RunScript(source);
-            }
-            else
-            {
-                GameLogger.Instance.Log(MessageType.Error, "Script with path \"" + _script + "\" not found.");
-            }
+            ScriptPipeline.ScriptPipelineManager.RunScript(_script);
         }
     }
 }

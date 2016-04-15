@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+using Pokemon3D.Common.Diagnostics;
 using Pokemon3D.Scripting;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
-using System.Reflection;
-using System.Threading;
-using Pokemon3D.Screens.Overworld;
 using Pokemon3D.ScriptPipeline.APIClasses;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.ScriptPipeline
 {
@@ -78,13 +78,22 @@ namespace Pokemon3D.ScriptPipeline
             return ScriptInAdapter.GetUndefined(processor);
         }
 
-        public static void RunScript(string source)
+        public static void RunScript(string scriptFile)
         {
             ThreadPool.QueueUserWorkItem(o =>
             {
-                ActiveProcessorCount++;
-                CreateProcessor().Run(source);
-                ActiveProcessorCount--;
+                try
+                {
+                    string source = Encoding.UTF8.GetString(GameInstance.ActiveGameMode.FileLoader.GetFile(GameInstance.ActiveGameMode.GetScriptFilePath(scriptFile)));
+
+                    ActiveProcessorCount++;
+                    CreateProcessor().Run(source);
+                    ActiveProcessorCount--;
+                }
+                catch (Exception)
+                {
+                    GameLogger.Instance.Log(MessageType.Error, "Failed to run script \"" + scriptFile + "\".");
+                }
             });
         }
     }
