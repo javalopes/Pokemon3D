@@ -13,9 +13,25 @@ namespace Pokemon3D.Common.Extensions
             var blue = value.Substring(6, 2);
 
             return new Color(int.Parse(alpha, NumberStyles.HexNumber),
-                             int.Parse( red, NumberStyles.HexNumber),
-                             int.Parse( green, NumberStyles.HexNumber),
-                             int.Parse( blue, NumberStyles.HexNumber));
+                             int.Parse(red, NumberStyles.HexNumber),
+                             int.Parse(green, NumberStyles.HexNumber),
+                             int.Parse(blue, NumberStyles.HexNumber));
+        }
+
+        public static Color Alpha(this Color color, byte alpha)
+        {
+            color.A = alpha;
+            return color;
+        }
+        public static Color Alpha(this Color color, int alpha)
+        {
+            color.A = (byte)alpha;
+            return color;
+        }
+        public static Color Alpha(this Color color, float alpha)
+        {
+            color.A = (byte)(alpha * 255);
+            return color;
         }
     }
 }

@@ -23,68 +23,49 @@
                   {
                       "Id" : "ScriptTrigger",
                       "Data" : [
-                          {
-                              "Key" : "Script",
-                              "Value" : "sign1.js"
-                          },
-                          {
-                              "Key" : "Trigger",
-                              "Value" : "Interaction"
-                          },
-                          {
-                              "Key" : "Message",
-                              "Value" : "Read sign"
-                          }
+                          { "Key" : "Script", "Value" : "sign1.js" },
+                          { "Key" : "Trigger", "Value" : "Interaction" },
+                          { "Key" : "Message", "Value" : "Read sign" }
                       ]
-                  },
-                    {
-                        "Id" : "VisualModel",
-                        "Data" : [
-                            {
-                                "Key" : "MeshReference",
-                                "Value" : "Billboard"
-                            },
-                            {
-                                "Key" : "Texture0",
-                                "Value" : "PalletTown.png"
-                            },
-                            {
-                                "Key" : "Rectangle0",
-                                "Value" : "64,32,2,2"
-                            }
-                        ]
-                    }
+                  }
               ]
           },
           "Placing" : [
               {
-                "Position" : {
-                    "X" : 3,
-                    "Y" : 0.5,
-                    "Z" : 5.5
-                },
-                "Size": {
-                    "X": 1,
-                    "Y": 1,
-                    "Z": 1
-                },
+                "Position" : { "X" : 3,"Y" : 0.1, "Z" : 5.5 },
+                "Size": { "X": 1, "Y": 1, "Z": 1 },
                 "Fill": true,
-                "Steps": {
-                    "X": 1,
-                    "Y": 1,
-                    "Z": 1
-                },
-                "Rotation": {
-                    "X": 0,
-                    "Y": 0,
-                    "Z": 0
-                },
+                "Steps": { "X": 1, "Y": 1, "Z": 1 },
+                "Rotation": { "X": 0, "Y": 0, "Z": 0 },
                 "CardinalRotation": false,
-                "Scale": {
-                    "X": 0.3,
-                    "Y": 0.3,
-                    "Z": 0.3
-                }
+                "Scale": { "X": 0.3, "Y": 0.3, "Z": 0.1 }
+              }
+          ]
+      },
+      {
+          "Entity" : {
+              "Id" : "Warp1",
+              "Visible" : true,
+              "Components" : [
+                  {
+                      "Id" : "ScriptTrigger",
+                      "Data" : [
+                          { "Key" : "Script", "Value" : "door1.js" },
+                          { "Key" : "Trigger", "Value" : "Interaction" },
+                          { "Key" : "Message", "Value" : "Enter house" }
+                      ]
+                  }
+              ]
+          },
+          "Placing" : [
+              {
+                "Position" : { "X" : 5,"Y" : 0.1, "Z" : 5.5 },
+                "Size": { "X": 1, "Y": 1, "Z": 1 },
+                "Fill": true,
+                "Steps": { "X": 1, "Y": 1, "Z": 1 },
+                "Rotation": { "X": 0, "Y": 0, "Z": 0 },
+                "CardinalRotation": false,
+                "Scale": { "X": 0.3, "Y": 0.3, "Z": 0.1 }
               }
           ]
       },

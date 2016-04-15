@@ -273,6 +273,11 @@ namespace Pokemon3D.Screens.Overworld
             _uiElements.Remove(element);
         }
 
+        public bool HasBlockingElements
+        {
+            get { return _uiElements.Any(e => e.IsActive && e.IsBlocking); }
+        }
+
         #endregion
     }
 }

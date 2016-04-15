@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Collisions;
 using Pokemon3D.Screens.Overworld;
+using System.Threading;
 using static Pokemon3D.GameCore.GameProvider;
+using System.IO;
+using Pokemon3D.Common.Diagnostics;
 
 namespace Pokemon3D.Entities.System.Components
 {
@@ -71,7 +74,17 @@ namespace Pokemon3D.Entities.System.Components
 
         private void InteractionHandler(InteractionPromptOverworldUIElement uiElement)
         {
-            uiElement.Message = "It worked!";
+            var filePath = GameInstance.ActiveGameMode.GetScriptFilePath(_script);
+
+            if (File.Exists(filePath))
+            {
+                string source = File.ReadAllText(filePath);
+                ScriptPipeline.ScriptPipelineManager.RunScript(source);
+            }
+            else
+            {
+                GameLogger.Instance.Log(MessageType.Error, "Script with path \"" + _script + "\" not found.");
+            }
         }
     }
 }

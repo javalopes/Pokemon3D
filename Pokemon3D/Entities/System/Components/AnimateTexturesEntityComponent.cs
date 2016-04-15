@@ -11,12 +11,9 @@ namespace Pokemon3D.Entities.System.Components
     class AnimateTexturesEntityComponent : AnimatorEntityComponent
     {
         private ModelEntityComponent _modelComponent = null;
-        private int _textureIndex;
 
         public AnimateTexturesEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
-            _textureIndex = 0;
-
             var animationDuration = GetData<float>("AnimationDuration");
 
             var frameCount = GetData<int>("FrameCount");

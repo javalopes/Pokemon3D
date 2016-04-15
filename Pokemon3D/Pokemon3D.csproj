@@ -100,7 +100,11 @@
     </Compile>
     <Compile Include="Screens\GameMenu\GameMenuScreen.cs" />
     <Compile Include="Screens\Overworld\InteractionPromptOverworldUIElement.cs" />
+    <Compile Include="Screens\Overworld\MessageOverworldUIElement.cs" />
     <Compile Include="Screens\Overworld\OverworldUIElement.cs" />
+    <Compile Include="ScriptPipeline\APIClasses\APIClass.cs" />
+    <Compile Include="ScriptPipeline\APIClasses\APIClassAttribute.cs" />
+    <Compile Include="ScriptPipeline\APIClasses\Message.cs" />
     <Compile Include="ScriptPipeline\Vector2.cs" />
     <Compile Include="UI\Framework\ColorTransition.cs" />
     <Compile Include="UI\Framework\Control.cs" />

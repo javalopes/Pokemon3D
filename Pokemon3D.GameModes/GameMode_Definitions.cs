@@ -13,12 +13,14 @@ namespace Pokemon3D.Entities
         private const string PATH_DATA_i18n = "i18n";
 
         private const string JSON_FILE_EXTENSION = ".json";
+        private const string JS_FILE_EXTENSION = ".js";
         private const string FILE_DATA_NATURES = "Natures";
         private const string FILE_DATA_TYPES = "Types";
         private const string FILE_DATA_PRIMITIVES = "Primitives";
         private const string FILE_DATA_POKEDEXES = "Pokedexes";
 
         private const string PATH_MAPS = "Maps";
+        private const string PATH_SCRIPTS = "Scripts";
         private const string PATH_FRAGMENTS = "Fragments";
         private const string PATH_DATA = "Data";
         private const string PATH_DATA_POKEMON = "Pokemon";
@@ -87,6 +89,18 @@ namespace Pokemon3D.Entities
         public string GetMapFilePath(string mapId)
         {
             return Path.Combine(GameModeInfo.DirectoryPath, PATH_MAPS, mapId + JSON_FILE_EXTENSION);
+        }
+
+        /// <summary>
+        /// Returns the path to a script file, relative to the GameMode's root folder.
+        /// </summary>
+        public string GetScriptFilePath(string scriptFileName)
+        {
+            // if the input file path has no file extension, add the default ".js" one.
+            if (!Path.HasExtension(scriptFileName))
+                scriptFileName += JS_FILE_EXTENSION;
+
+            return Path.Combine(GameModeInfo.DirectoryPath, PATH_SCRIPTS, scriptFileName);
         }
 
         /// <summary>

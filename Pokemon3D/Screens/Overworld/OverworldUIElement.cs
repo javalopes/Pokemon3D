@@ -11,6 +11,8 @@ namespace Pokemon3D.Screens.Overworld
     {
         private bool _isActive = false;
 
+        public abstract bool IsBlocking { get; }
+
         public bool IsActive
         {
             get { return _isActive; }

@@ -20,7 +20,6 @@ namespace Pokemon3D.Entities
 
         private readonly ModelEntityComponent _modelEntityComponent;
         private readonly CollisionEntityComponent _colliderComponent;
-        private readonly Animator _figureAnimator;
 
         private PlayerMovementMode _movementMode;
         private MouseState _mouseState;
