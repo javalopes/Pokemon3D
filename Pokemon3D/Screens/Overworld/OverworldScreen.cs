@@ -184,7 +184,9 @@ namespace Pokemon3D.Screens.Overworld
         public void OnUpdate(GameTime gameTime)
         {
             _world.Update(gameTime);
-            _uiElements.ForEach(e => { if (e.IsActive) e.Update(gameTime); });
+
+            lock (_uiElements)
+                _uiElements.ForEach(e => { if (e.IsActive) e.Update(gameTime); });
 
             if (GameInstance.InputSystem.Keyboard.IsKeyDown(Keys.Escape))
             {
@@ -216,7 +218,8 @@ namespace Pokemon3D.Screens.Overworld
             {
                 GameInstance.SpriteBatch.Begin();
 
-                _uiElements.ForEach(e => { if (e.IsActive) e.Draw(gameTime); });
+                lock (_uiElements)
+                    _uiElements.ForEach(e => { if (e.IsActive) e.Draw(gameTime); });
 
                 GameInstance.SpriteBatch.End();
             }
@@ -264,13 +267,15 @@ namespace Pokemon3D.Screens.Overworld
 
         public void AddUIElement(OverworldUIElement element)
         {
-            _uiElements.Add(element);
+            lock (_uiElements)
+                _uiElements.Add(element);
             element.Screen = this;
         }
 
         public void RemoveUIElement(OverworldUIElement element)
         {
-            _uiElements.Remove(element);
+            lock (_uiElements)
+                _uiElements.Remove(element);
         }
 
         public bool HasBlockingElements
