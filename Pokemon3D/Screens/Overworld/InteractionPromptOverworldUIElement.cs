@@ -35,7 +35,7 @@ namespace Pokemon3D.Screens.Overworld
             Message = message;
 
             _buttonChart = new Pie2D(GameInstance.GraphicsDevice, 24, 0f, 20, Vector2.Zero, false);
-            _buttonChart.PrimaryColor = Color.Gray;
+            _buttonChart.PrimaryColor = Color.LightGray;
             _buttonChart.SecondaryColor = Color.Black;
             _buttonChart.ChartType = PieChartType.RadialFill;
         }
