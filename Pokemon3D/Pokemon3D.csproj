@@ -105,6 +105,9 @@
     <Compile Include="ScriptPipeline\APIClasses\APIClass.cs" />
     <Compile Include="ScriptPipeline\APIClasses\APIClassAttribute.cs" />
     <Compile Include="ScriptPipeline\APIClasses\Message.cs" />
+    <Compile Include="ScriptPipeline\APIClasses\World.cs" />
+    <Compile Include="ScriptPipeline\Entity.cs" />
+    <Compile Include="ScriptPipeline\EntityComponent.cs" />
     <Compile Include="ScriptPipeline\Vector2.cs" />
     <Compile Include="UI\Framework\ColorTransition.cs" />
     <Compile Include="UI\Framework\Control.cs" />

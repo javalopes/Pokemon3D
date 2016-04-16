@@ -56,6 +56,7 @@ namespace Pokemon3D.Entities
         private void CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position)
         {
             var entity = GameInstance.EntitySystem.CreateEntity();
+            entity.Id = entityModel.Id;
             entity.IsActive = false;
 
             foreach (var compModel in entityModel.Components)

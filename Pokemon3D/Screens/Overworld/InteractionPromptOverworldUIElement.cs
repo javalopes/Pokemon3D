@@ -42,7 +42,8 @@ namespace Pokemon3D.Screens.Overworld
 
         public override void Draw(GameTime gameTime)
         {
-            if (!Screen.HasBlockingElements)
+            if (!Screen.HasBlockingElements &&
+                ScriptPipelineManager.ActiveProcessorCount == 0)
             {
                 var player = Screen.ActiveWorld.Player;
                 var camera = player.Camera;

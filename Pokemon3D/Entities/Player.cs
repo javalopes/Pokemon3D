@@ -127,7 +127,7 @@ namespace Pokemon3D.Entities
             };
             _playerEntity.AddComponent(_colliderComponent);
 
-            _playerEntity.Position = new Vector3(10, 1, 8);
+            _playerEntity.Position = new Vector3(5, 1, 8);
         }
 
         public void Update(GameTime gameTime)

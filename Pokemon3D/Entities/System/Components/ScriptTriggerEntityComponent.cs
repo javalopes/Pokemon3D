@@ -76,6 +76,16 @@ namespace Pokemon3D.Entities.System.Components
         {
             ScriptPipeline.ScriptPipelineManager.RunScript(_script);
         }
+
+        protected override void OnDataChanged(string key, string oldData, string newData)
+        {
+            switch (key)
+            {
+                case "Script":
+                    _script = newData;
+                    break;
+            }
+        }
     }
 }
 

@@ -29,6 +29,7 @@ namespace Pokemon3D.Entities.System
         public ReadOnlyCollection<Entity> Children { get; private set; }
         public bool IsStatic { get; set; }
         public Vector3 LastTranslation { get; private set; }
+        public string Id { get; set; }
 
         public Entity()
         {

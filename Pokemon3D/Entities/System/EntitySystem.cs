@@ -2,6 +2,7 @@
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.Entities.System.Generators;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Pokemon3D.Entities.System
 {
@@ -21,6 +22,8 @@ namespace Pokemon3D.Entities.System
         public Entity CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position)
         {
             var entity = CreateEntity();
+            entity.Id = entityModel.Id;
+
             foreach (var compModel in entityModel.Components)
             {
                 if (!entity.HasComponent(compModel.Id))
@@ -71,6 +74,11 @@ namespace Pokemon3D.Entities.System
                 _entities.Add(entity);
             }
             return entity;
+        }
+
+        public Entity GetEntity(string id)
+        {
+            return _entities.FirstOrDefault(e => e.Id == id);
         }
 
         public void RemoveEntity(Entity entity)

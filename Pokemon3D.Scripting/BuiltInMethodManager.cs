@@ -19,7 +19,7 @@ namespace Pokemon3D.Scripting
     /// The delegate for a hardcoded method, with .Net native object types.
     /// </summary>
     /// <param name="parameters">Parameters for this method call.</param>
-    public delegate object DotNetBuiltInMethod(object[] parameters);
+    public delegate object DotNetBuiltInMethod(object This, object[] parameters);
 
     /// <summary>
     /// Searches for and creates built in method delegates.

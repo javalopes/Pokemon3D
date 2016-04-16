@@ -11,9 +11,9 @@ namespace Pokemon3D.ScriptPipeline
     class Vector2Wrapper
     {
         [ScriptVariable]
-        public double X;
+        public double x;
 
         [ScriptVariable]
-        public double Y;
+        public double y;
     }
 }

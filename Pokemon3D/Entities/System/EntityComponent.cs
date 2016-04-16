@@ -12,15 +12,14 @@ namespace Pokemon3D.Entities.System
     {
         private bool _isActive;
 
+        // The raw data of this component.
+        private Dictionary<string, string> _data;
+
         /// <summary>
         /// The original name of this component.
         /// </summary>
         public string Name { get; private set; }
 
-        /// <summary>
-        /// The raw data of this component.
-        /// </summary>
-        public Dictionary<string, string> Data { get; set; }
 
         /// <summary>
         /// The owning parent <see cref="Entity"/> of this component.
@@ -30,7 +29,7 @@ namespace Pokemon3D.Entities.System
         protected EntityComponent(EntityComponentDataCreationStruct parameters)
         {
             Name = parameters.Name;
-            Data = parameters.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            _data = parameters.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             Parent = parameters.Parent;
             _isActive = true;
         }
@@ -69,7 +68,7 @@ namespace Pokemon3D.Entities.System
         /// </summary>
         public T GetData<T>(string key)
         {
-            return TypeConverter.Convert<T>(Data[key]);
+            return TypeConverter.Convert<T>(_data[key]);
         }
 
         /// <summary>
@@ -79,7 +78,7 @@ namespace Pokemon3D.Entities.System
         /// </summary>
         public T[] GetEnumeratedData<T>(string baseKey)
         {
-            return Data.Where(d => IsBaseKeyWithNumberSuffix(d.Key, baseKey))
+            return _data.Where(d => IsBaseKeyWithNumberSuffix(d.Key, baseKey))
                 .Select(d => CreateSuffixOrderable(d.Key, d.Value, baseKey))
                 .OrderBy(d => d.Value)
                 .Select(d => TypeConverter.Convert<T>(d.Key))
@@ -115,11 +114,31 @@ namespace Pokemon3D.Entities.System
         public T GetDataOrDefault<T>(string key, T defaultValue = default(T))
         {
             string value;
-            if (Data.TryGetValue(key, out value))
+            if (_data.TryGetValue(key, out value))
             {
                 return TypeConverter.Convert<T>(value);
             }
             return defaultValue;
+        }
+
+        /// <summary>
+        /// Sets a data value for a specific key for this component. If the key does not exist, a new data entry will be added.
+        /// </summary>
+        public void SetData(string key, string data)
+        {
+            if (_data.ContainsKey(key))
+            {
+                string oldData = _data[key];
+                _data[key] = data;
+
+                OnDataChanged(key, oldData, data);
+            }
+            else
+            {
+                _data.Add(key, data);
+
+                OnDataChanged(key, null, data);
+            }
         }
 
         public virtual void OnIsActiveChanged() { }
@@ -127,5 +146,7 @@ namespace Pokemon3D.Entities.System
         public virtual void OnComponentAdded() { }
 
         public virtual void OnComponentRemove() { }
+
+        protected virtual void OnDataChanged(string key, string oldData, string newData) { }
     }
 }

@@ -105,7 +105,13 @@ namespace Pokemon3D.Scripting.Adapters
 
         private static SObject TranslateObject(ScriptProcessor processor, object objIn)
         {
-            string typeName = objIn.GetType().Name;
+            var objType = objIn.GetType();
+
+            string typeName = objType.Name;
+            ScriptPrototypeAttribute customNameAttribute = objType.GetCustomAttribute<ScriptPrototypeAttribute>();
+            if (customNameAttribute != null && !string.IsNullOrWhiteSpace(customNameAttribute.VariableName))
+                typeName = customNameAttribute.VariableName;
+
             Prototype prototype = null;
 
             if (processor.Context.IsPrototype(typeName))
@@ -252,9 +258,9 @@ namespace Pokemon3D.Scripting.Adapters
 
                     Delegate methodDelegate = null;
 
-                    if (method.GetParameters().Length == 1)
+                    if (method.GetParameters().Length == 2)
                     {
-                        // a single parameter means the method is a DotNetBuiltInMethod.
+                        // two parameter means the method is a DotNetBuiltInMethod.
                         methodDelegate = (DotNetBuiltInMethod)Delegate.CreateDelegate(typeof(DotNetBuiltInMethod), method);
                     }
                     else if (method.GetParameters().Length == 4)

@@ -171,7 +171,7 @@ namespace Pokemon3D.Scripting.Types
                 else
                 {
                     var dotNetParams = parameters.Select(p => Adapters.ScriptOutAdapter.Translate(p));
-                    var dotNetReturnObj = DotNetMethod(dotNetParams.ToArray());
+                    var dotNetReturnObj = DotNetMethod(Adapters.ScriptOutAdapter.Translate(caller), dotNetParams.ToArray());
                     functionReturnObject = Adapters.ScriptInAdapter.Translate(processor, dotNetReturnObj);
                 }
             }
