@@ -80,16 +80,12 @@ namespace Pokemon3D.ScriptPipeline
 
         public static void RunScript(string scriptFile)
         {
+            ActiveProcessorCount++;
             ThreadPool.QueueUserWorkItem(o =>
             {
-                bool startedProcessor = false;
-
                 try
                 {
                     string source = Encoding.UTF8.GetString(GameInstance.ActiveGameMode.FileLoader.GetFile(GameInstance.ActiveGameMode.GetScriptFilePath(scriptFile)));
-
-                    ActiveProcessorCount++;
-                    startedProcessor = true;
 
                     var processor = CreateProcessor();
                     var result = processor.Run(source);
@@ -110,8 +106,7 @@ namespace Pokemon3D.ScriptPipeline
                     GameLogger.Instance.Log(MessageType.Error, $"Script execution failed at runtime. {ex.Type} ({scriptFile}, L{ex.Line}): {ex.Message}");
                 }
 
-                if (startedProcessor)
-                    ActiveProcessorCount--;
+                ActiveProcessorCount--;
             });
         }
     }

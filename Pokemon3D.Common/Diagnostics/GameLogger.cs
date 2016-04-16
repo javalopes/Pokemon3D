@@ -16,7 +16,7 @@ namespace Pokemon3D.Common.Diagnostics
         private const string ExceptionMessageFormat = "An exception occurred! Message: {0}; Type: {1}; Other details: {2}\r\n";
 
         private string _logFilePath;
-        
+
         private GameLogger()
         {
             Initialize();
@@ -52,10 +52,10 @@ namespace Pokemon3D.Common.Diagnostics
 
 #if DEBUG
             if (Debugger.IsAttached) Debug.Print(LoggerVsFormat, DateTime.Now.ToLongTimeString(), icon, message);
-            Console.WriteLine(LoggerVsFormat, DateTime.Now.ToLongTimeString(), icon, message);
+            else Console.WriteLine(LoggerVsFormat, DateTime.Now.ToLongTimeString(), icon, message);
 #endif
         }
-        
+
         /// <summary>
         /// Stores an exception message in the game's log file.
         /// </summary>
