@@ -90,12 +90,26 @@ namespace Pokemon3D.ScriptPipeline
 
                     ActiveProcessorCount++;
                     startedProcessor = true;
-                    CreateProcessor().Run(source);
+
+                    var processor = CreateProcessor();
+                    var result = processor.Run(source);
+
+                    if (ScriptContextManipulator.ThrownRuntimeError(processor))
+                    {
+                        var exObj = ScriptOutAdapter.Translate(result);
+                        if (exObj is ScriptRuntimeException)
+                            throw (ScriptRuntimeException)exObj;
+                    }
                 }
-                catch (Exception)
+                catch (ArgumentNullException)
                 {
                     GameLogger.Instance.Log(MessageType.Error, "Failed to run script \"" + scriptFile + "\".");
                 }
+                catch (ScriptRuntimeException ex)
+                {
+                    GameLogger.Instance.Log(MessageType.Error, $"Script execution failed at runtime. {ex.Type} ({scriptFile}, L{ex.Line}): {ex.Message}");
+                }
+
                 if (startedProcessor)
                     ActiveProcessorCount--;
             });

@@ -62,6 +62,10 @@ namespace Pokemon3D.Scripting.Adapters
             {
                 return TranslateFunction((Delegate)objIn);
             }
+            else if (objIn is ScriptRuntimeException)
+            {
+                return TranslateException((ScriptRuntimeException)objIn);
+            }
             else
             {
                 return TranslateObject(processor, objIn);
@@ -101,6 +105,11 @@ namespace Pokemon3D.Scripting.Adapters
                 elements.Add(Translate(processor, array.GetValue(i)));
 
             return processor.Context.CreateInstance("Array", elements.ToArray());
+        }
+
+        private static SObject TranslateException(ScriptRuntimeException exceptionIn)
+        {
+            return exceptionIn.ErrorObject;
         }
 
         private static SObject TranslateObject(ScriptProcessor processor, object objIn)

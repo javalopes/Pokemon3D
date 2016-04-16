@@ -99,5 +99,13 @@ namespace Pokemon3D.Scripting.Adapters
         {
             processor.Context.AddCallback(CallbackType.ScriptPipeline, callback);
         }
+
+        /// <summary>
+        /// Returns if the script processor has thrown a script runtime exception.
+        /// </summary>
+        public static bool ThrownRuntimeError(ScriptProcessor processor)
+        {
+            return processor.ErrorHandler.ThrownError;
+        }
     }
 }

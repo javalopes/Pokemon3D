@@ -47,6 +47,10 @@ namespace Pokemon3D.Scripting.Adapters
             {
                 return TranslateFunction((SFunction)obj);
             }
+            else if (obj is SError)
+            {
+                return TranslateError((SError)obj);
+            }
             else if (obj is SProtoObject && ((SProtoObject)obj).Prototype.MappedType != null)
             {
                 return Translate((SProtoObject)obj, ((SProtoObject)obj).Prototype.MappedType);
@@ -64,6 +68,11 @@ namespace Pokemon3D.Scripting.Adapters
         private static object TranslateArray(SArray obj)
         {
             return obj.ArrayMembers.Select(x => Translate(x)).ToArray();
+        }
+
+        private static object TranslateError(SError obj)
+        {
+            return new ScriptRuntimeException(obj);
         }
 
         private static object TranslateDynamic(SProtoObject obj)
