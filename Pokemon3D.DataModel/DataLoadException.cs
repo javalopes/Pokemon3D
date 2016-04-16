@@ -14,7 +14,7 @@ namespace Pokemon3D.DataModel
         /// <param name="jsonData">The data that the serializer was trying to load.</param>
         /// <param name="targetType">The target type.</param>
         public DataLoadException(Exception inner, string jsonData, Type targetType, DataType dataType)
-            : base("An exception occured trying to read data into an internal format. Please check that the input data is correct.", inner)
+            : base("An exception occurred trying to read data into an internal format. Please check that the input data is correct.", inner)
         {
             Data.Add("Target type", targetType.Name);
             Data.Add("Data type", dataType.ToString());
