@@ -49,7 +49,7 @@ namespace Pokemon3D.Common.Animations
         /// <param name="name">Name of animation</param>
         public void SetAnimation(string name)
         {
-            if (_currentAnimationName == name) return;
+            if (_currentAnimationName == name && CurrentAnimation != null && !CurrentAnimation.IsFinished) return;
             _currentAnimationName = name;
             CurrentAnimation = _animations[name];
             CurrentAnimation.Start();
