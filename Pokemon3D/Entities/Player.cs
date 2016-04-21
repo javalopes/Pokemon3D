@@ -56,7 +56,7 @@ namespace Pokemon3D.Entities
         public Player(World world)
         {
             _world = world;
-            _playerEntity = GameInstance.EntitySystem.CreateEntity();
+            _playerEntity = _world.EntitySystem.CreateEntity();
             _playerEntity.IsActive = false;
             _world.AddEntityToActivate(_playerEntity);
 
@@ -71,7 +71,7 @@ namespace Pokemon3D.Entities
             };
             _modelEntityComponent = _playerEntity.AddComponent(new ModelEntityComponent(_playerEntity, mesh, material, true));
 
-            _cameraEntity = GameInstance.EntitySystem.CreateEntity(_playerEntity);
+            _cameraEntity = _world.EntitySystem.CreateEntity(_playerEntity);
             _cameraEntity.IsActive = false;
             _world.AddEntityToActivate(_cameraEntity);
 

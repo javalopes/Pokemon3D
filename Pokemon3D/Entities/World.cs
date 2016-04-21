@@ -16,7 +16,14 @@ namespace Pokemon3D.Entities
         public Map ActiveMap { get; private set; }
         public Player Player { get; private set; }
 
+        public EntitySystem EntitySystem { get; private set; }
+
         private List<Entity> _entitiesToActivate = new List<Entity>();
+
+        public World()
+        {
+            EntitySystem = new EntitySystem();
+        }
 
         public void StartNewGameAsync(Action onFinished)
         {
@@ -52,6 +59,7 @@ namespace Pokemon3D.Entities
 
         public void Update(GameTime gameTime)
         {
+            EntitySystem.Update(gameTime);
             Player.Update(gameTime);
 
             if (GameInstance.InputSystem.Keyboard.IsKeyDownOnce(Keys.V))

@@ -41,7 +41,7 @@ namespace Pokemon3D.GameCore
         /// <summary>If the debug mode is currently active.</summary>
         public const bool IS_DEBUG_ACTIVE = true;
 
-        public SceneRenderer Renderer { get; private set; }
+        public SceneRenderer SceneRenderer { get; private set; }
         public GraphicsDeviceManager GraphicsDeviceManager { get; private set; }
         public ScreenManager ScreenManager { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
@@ -51,7 +51,6 @@ namespace Pokemon3D.GameCore
         public TranslationProvider TranslationProvider { get; private set; }
         public NotificationBar NotificationBar { get; private set; }
         public CollisionManager CollisionManager { get; private set; }
-        public EntitySystem EntitySystem { get; private set; }
 
         public event System.EventHandler WindowSizeChanged;
         private Rectangle _currentScreenBounds;
@@ -107,8 +106,7 @@ namespace Pokemon3D.GameCore
                 ShadowMapSize = 512 // todo: reenable
             };
 
-            Renderer = SceneRendererFactory.Create(this, new WindowsSceneEffect(Content), renderSettings);
-            EntitySystem = new EntitySystem();
+            SceneRenderer = SceneRendererFactory.Create(this, new WindowsSceneEffect(Content), renderSettings);
             GameModeManager = new GameModeManager();
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             InputSystem = new InputSystem();
@@ -146,7 +144,6 @@ namespace Pokemon3D.GameCore
             base.Update(gameTime);
             InputSystem.Update();
 
-            EntitySystem.Update(gameTime);
             if (!ScreenManager.Update(gameTime)) Exit();
             NotificationBar.Update(gameTime);
         }
@@ -154,7 +151,7 @@ namespace Pokemon3D.GameCore
         protected override void Draw(GameTime gameTime)
         {
             ScreenManager.OnEarlyDraw(gameTime);
-            Renderer.Draw();
+            SceneRenderer.Draw();
             ScreenManager.OnLateDraw(gameTime);
             NotificationBar.Draw();
             base.Draw(gameTime);

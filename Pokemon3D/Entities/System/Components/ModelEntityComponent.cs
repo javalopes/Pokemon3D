@@ -28,7 +28,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public ModelEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
-            _drawableElement = GameInstance.Renderer.CreateDrawableElement(true);
+            _drawableElement = GameInstance.SceneRenderer.CreateDrawableElement(true);
             IsBillboard = GetDataOrDefault("IsBillboard", false);
 
             var modelReference = GetData<string>("MeshReference");
@@ -82,7 +82,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public ModelEntityComponent(Entity parent, Mesh mesh, Material material, bool isBillboard) : base(parent)
         {
-            _drawableElement = GameInstance.Renderer.CreateDrawableElement(true);
+            _drawableElement = GameInstance.SceneRenderer.CreateDrawableElement(true);
             _drawableElement.Material = material;
             _drawableElement.Mesh = mesh;
             _drawableElement.EndInitialzing();

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Pokemon3D.Screens.Overworld;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Entities.System;
+using Pokemon3D.Screens;
 
 namespace Pokemon3D.ScriptPipeline
 {
@@ -30,7 +31,17 @@ namespace Pokemon3D.ScriptPipeline
 
         public Entity GetEntity()
         {
-            return GameCore.GameController.Instance.EntitySystem.GetEntity(id);
+            // attempt to get world instance from world container screen:
+            var screen = GameCore.GameController.Instance.ScreenManager.CurrentScreen;
+            if (screen is WorldContainer)
+            {
+                var world = ((WorldContainer)screen).ActiveWorld;
+                return world.EntitySystem.GetEntity(id);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

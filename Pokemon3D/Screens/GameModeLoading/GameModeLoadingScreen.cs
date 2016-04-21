@@ -41,7 +41,7 @@ namespace Pokemon3D.Screens.GameModeLoading
             _loadingText.HorizontalAlignment = HorizontalAlignment.Center;
             _loadingText.VerticalAlignment = VerticalAlignment.Top;
 
-            var renderer = GameInstance.Renderer;
+            var renderer = GameInstance.SceneRenderer;
             renderer.AddPostProcessingStep(new HorizontalBlurPostProcessingStep());
             renderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
             renderer.EnablePostProcessing = false;

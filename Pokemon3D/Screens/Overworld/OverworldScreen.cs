@@ -16,7 +16,7 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.Overworld
 {
-    class OverworldScreen : Screen
+    class OverworldScreen : Screen, WorldContainer
     {
         private World _world;
 
@@ -195,7 +195,7 @@ namespace Pokemon3D.Screens.Overworld
 
             if (GameInstance.InputSystem.Keyboard.IsKeyDownOnce(Keys.L))
             {
-                GameInstance.Renderer.EnablePostProcessing = !GameInstance.Renderer.EnablePostProcessing;
+                GameInstance.SceneRenderer.EnablePostProcessing = !GameInstance.SceneRenderer.EnablePostProcessing;
             }
 
             if (GameInstance.InputSystem.Keyboard.IsKeyDownOnce(Keys.F12))

@@ -55,7 +55,7 @@ namespace Pokemon3D.Entities
 
         private void CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position)
         {
-            var entity = GameInstance.EntitySystem.CreateEntity();
+            var entity = _world.EntitySystem.CreateEntity();
             entity.Id = entityModel.Id;
             entity.IsActive = false;
 
@@ -102,7 +102,7 @@ namespace Pokemon3D.Entities
 
         private void PlaceEntities(EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 offset)
         {
-            var generator = GameInstance.EntitySystem.EntityGeneratorSupplier.GetGenerator(entityDefinition.Entity.Generator);
+            var generator = _world.EntitySystem.EntityGeneratorSupplier.GetGenerator(entityDefinition.Entity.Generator);
             for (var x = 1.0f; x <= entityPlacing.Size.X; x += entityPlacing.Steps.X)
             {
                 for (var y = 1.0f; y <= entityPlacing.Size.Y; y += entityPlacing.Steps.Y)

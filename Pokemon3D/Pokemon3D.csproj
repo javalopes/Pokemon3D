@@ -102,6 +102,7 @@
     <Compile Include="Screens\Overworld\InteractionPromptOverworldUIElement.cs" />
     <Compile Include="Screens\Overworld\MessageOverworldUIElement.cs" />
     <Compile Include="Screens\Overworld\OverworldUIElement.cs" />
+    <Compile Include="Screens\WorldContainer.cs" />
     <Compile Include="ScriptPipeline\APIClasses\APIClass.cs" />
     <Compile Include="ScriptPipeline\APIClasses\APIClassAttribute.cs" />
     <Compile Include="ScriptPipeline\APIClasses\Message.cs" />
