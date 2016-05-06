@@ -14,7 +14,6 @@ namespace Pokemon3D.Collisions
         private readonly Mesh _boundingBoxMesh;
         private readonly List<CollisionResult> _colliderList = new List<CollisionResult>();
 
-
         private readonly Effect _lineDrawEffect;
         private readonly EffectParameter _worldViewProjection;
         private readonly EffectTechnique _lineTechnique;
@@ -52,6 +51,13 @@ namespace Pokemon3D.Collisions
             _lineDrawEffect = GameInstance.Content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
             _worldViewProjection = _lineDrawEffect.Parameters["WorldViewProjection"];
             _lineTechnique = _lineDrawEffect.Techniques["LineDraw"];
+        }
+
+        public Collider CreateBoundingBox(Vector3 size, Vector3? centerOffset = null, bool isTrigger = false)
+        {
+            var collider = new Collider(size, centerOffset, isTrigger);
+            AddCollider(collider);
+            return collider;
         }
 
         public void AddCollider(Collider collider)

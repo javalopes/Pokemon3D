@@ -15,6 +15,11 @@ namespace Pokemon3D.Collisions
         private BoundingBox _boundingBox;
 
         /// <summary>
+        /// Will be called when the collider enters a trigger zone.
+        /// </summary>
+        public Action<Collider> OnTriggerEnter;
+
+        /// <summary>
         /// Offset from Center for positioning collider to model.
         /// </summary>
         public Vector3 OffsetToCenter
@@ -26,6 +31,11 @@ namespace Pokemon3D.Collisions
                 UpdateBoundings();
             }
         }
+
+        /// <summary>
+        /// This collider can be hit and does not through away but notify.
+        /// </summary>
+        public bool IsTrigger { get; private set; }
 
         /// <summary>
         /// Which collision shape it is.
@@ -46,17 +56,15 @@ namespace Pokemon3D.Collisions
         /// </summary>
         /// <param name="size">size of Bounding Box</param>
         /// <param name="centerOffset">Offset from center of object</param>
-        /// <returns>Collider</returns>
-        public static Collider CreateBoundingBox(Vector3 size, Vector3? centerOffset = null)
+        /// <param name="isTrigger"></param>
+        public Collider(Vector3 size, Vector3? centerOffset = null, bool isTrigger = false)
         {
-            return new Collider
-            {
-                OffsetToCenter = centerOffset.GetValueOrDefault(Vector3.Zero),
-                Type = ColliderType.BoundingBox,
-                BoundingBox = new BoundingBox(-size*0.5f, size*0.5f)
-            };
+            IsTrigger = isTrigger;
+            OffsetToCenter = centerOffset.GetValueOrDefault(Vector3.Zero);
+            Type = ColliderType.BoundingBox;
+            BoundingBox = new BoundingBox(-size*0.5f, size*0.5f);
         }
-
+        
         /// <summary>
         /// Sets position of Collider.
         /// </summary>

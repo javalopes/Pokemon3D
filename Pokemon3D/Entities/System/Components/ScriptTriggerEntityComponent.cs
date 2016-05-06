@@ -27,7 +27,7 @@ namespace Pokemon3D.Entities.System.Components
             _trigger = GetDataOrDefault("Trigger", "Interaction");
             _message = GetDataOrDefault("Message", "Interact");
 
-            _collider = Collider.CreateBoundingBox(Parent.Scale, null);
+            _collider = GameInstance.CollisionManager.CreateBoundingBox(Parent.Scale);
             _uiElement = new InteractionPromptOverworldUIElement(Parent, _message);
             _uiElement.InteractionStarted += InteractionHandler;
         }

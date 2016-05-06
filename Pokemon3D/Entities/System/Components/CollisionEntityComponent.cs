@@ -12,12 +12,12 @@ namespace Pokemon3D.Entities.System.Components
 
         public CollisionEntityComponent(EntityComponentDataCreationStruct structData) : base(structData)
         {
-            Collider = Collider.CreateBoundingBox(GetData<Vector3>("CollisionSize"), GetData<Vector3>("CollisionOffset"));
+            Collider = GameInstance.CollisionManager.CreateBoundingBox(GetData<Vector3>("CollisionSize"), GetData<Vector3>("CollisionOffset"));
         }
 
         public CollisionEntityComponent(Entity parent, Vector3 collisionSize, Vector3 collisionOffset) : base(parent)
         {
-            Collider = Collider.CreateBoundingBox(collisionSize, collisionOffset);
+            Collider = GameInstance.CollisionManager.CreateBoundingBox(collisionSize, collisionOffset);
         }
 
         public override void OnComponentAdded()
