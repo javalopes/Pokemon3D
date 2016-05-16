@@ -10,6 +10,8 @@ namespace Pokemon3D.Collisions
 {
     class CollisionManager
     {
+        private readonly object _lockObject = new object();
+
         private readonly List<Collider> _allColliders;
         private readonly List<Collider> _allTriggers; 
         private readonly List<Collider> _allTriggersAndColliders;
@@ -60,54 +62,63 @@ namespace Pokemon3D.Collisions
 
         public void Add(Collider collider)
         {
-            _allTriggersAndColliders.Add(collider);
+            lock (_lockObject)
+            {
+                _allTriggersAndColliders.Add(collider);
 
-            if (collider.IsTrigger)
-            {
-                _allTriggers.Add(collider);
-            }
-            else
-            {
-                _allColliders.Add(collider);
+                if (collider.IsTrigger)
+                {
+                    _allTriggers.Add(collider);
+                }
+                else
+                {
+                    _allColliders.Add(collider);
+                }
             }
         }
 
         public CollisionResult[] CheckCollision(Collider collider)
         {
-            _colliderList.Clear();
-            foreach (var possibleCollider in _allColliders)
+            lock (_lockObject)
             {
-                if (collider == possibleCollider) continue;
-
-                var result = possibleCollider.CheckCollision(collider);
-                if (result.Collides)
+                _colliderList.Clear();
+                foreach (var possibleCollider in _allColliders)
                 {
-                    _colliderList.Add(result);
-                }
-            }
+                    if (collider == possibleCollider) continue;
 
-            return _colliderList.ToArray();
+                    var result = possibleCollider.CheckCollision(collider);
+                    if (result.Collides)
+                    {
+                        _colliderList.Add(result);
+                    }
+                }
+
+                return _colliderList.ToArray();
+            }
         }
 
         public void Update()
         {
-            foreach (var trigger in _allTriggers)
+            lock (_lockObject)
             {
-                foreach (var collidingPartner in _allTriggersAndColliders)
+                foreach (var trigger in _allTriggers)
                 {
-                    if (trigger == collidingPartner) continue;
-
-                    if (trigger.Intersects(collidingPartner))
+                    foreach (var collidingPartner in _allTriggersAndColliders)
                     {
-                        trigger.HandleTrigger(collidingPartner);
-                        collidingPartner.HandleTrigger(trigger);
+                        if (trigger == collidingPartner) continue;
+
+                        if (trigger.Intersects(collidingPartner))
+                        {
+                            trigger.HandleTrigger(collidingPartner);
+                            collidingPartner.HandleTrigger(trigger);
+                        }
                     }
                 }
-            }
 
-            foreach (var collider in _allTriggersAndColliders)
-            {
-                collider.HandleUntouched();
+                foreach (var collider in _allTriggersAndColliders)
+                {
+                    collider.HandleUntouched();
+                }
             }
         }
 
@@ -120,14 +131,17 @@ namespace Pokemon3D.Collisions
 
             _lineDrawEffect.CurrentTechnique = _lineTechnique;
 
-            for (var i = 0; i < _allColliders.Count; i++)
+            lock (_lockObject)
             {
-                var collider = _allColliders[i];
-                switch (collider.Type)
+                for (var i = 0; i < _allColliders.Count; i++)
                 {
-                    case ColliderType.BoundingBox:
-                        DrawBoundingBox(observer, collider);
-                        break;
+                    var collider = _allColliders[i];
+                    switch (collider.Type)
+                    {
+                        case ColliderType.BoundingBox:
+                            DrawBoundingBox(observer, collider);
+                            break;
+                    }
                 }
             }
         }

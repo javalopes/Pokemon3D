@@ -109,7 +109,7 @@ namespace Pokemon3D.Collisions
         {
             if (_lastFrameTouched.Count == 0) return;
 
-            var untoched = _lastFrameTouched.Except(_currentFrameTouched);
+            var untoched = _lastFrameTouched.Except(_currentFrameTouched).ToArray();
             foreach (var untouchedCollider in untoched)
             {
                 OnTriggerLeave?.Invoke(untouchedCollider);

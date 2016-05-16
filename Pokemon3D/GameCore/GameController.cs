@@ -16,7 +16,6 @@ using Pokemon3D.Screens;
 using Pokemon3D.Screens.MainMenu;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
-using Pokemon3D.Entities.System;
 
 namespace Pokemon3D.GameCore
 {
@@ -146,6 +145,8 @@ namespace Pokemon3D.GameCore
             CollisionManager.Update();
 
             if (!ScreenManager.Update(gameTime)) Exit();
+
+            
             NotificationBar.Update(gameTime);
         }
 

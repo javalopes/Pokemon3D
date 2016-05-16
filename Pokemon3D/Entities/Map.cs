@@ -59,14 +59,6 @@ namespace Pokemon3D.Entities
             entity.Id = entityModel.Id;
             entity.IsActive = false;
 
-            foreach (var compModel in entityModel.Components)
-            {
-                if (!entity.HasComponent(compModel.Id))
-                {
-                    entity.AddComponent(EntityComponentFactory.GetComponent(entity, compModel));
-                }
-            }
-
             entity.Scale = entityPlacing.Scale?.GetVector3() ?? Vector3.One;
 
             if (entityPlacing.Rotation != null)
@@ -96,6 +88,14 @@ namespace Pokemon3D.Entities
             }
 
             entity.Position = position;
+
+            foreach (var compModel in entityModel.Components)
+            {
+                if (!entity.HasComponent(compModel.Id))
+                {
+                    entity.AddComponent(EntityComponentFactory.GetComponent(entity, compModel));
+                }
+            }
 
             _world.AddEntityToActivate(entity);
         }

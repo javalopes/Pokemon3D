@@ -1,10 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Pokemon3D.Collisions;
 using Pokemon3D.Screens.Overworld;
-using System.Threading;
 using static Pokemon3D.GameCore.GameProvider;
-using System.IO;
-using Pokemon3D.Common.Diagnostics;
 
 namespace Pokemon3D.Entities.System.Components
 {
@@ -27,41 +25,39 @@ namespace Pokemon3D.Entities.System.Components
             _trigger = GetDataOrDefault("Trigger", "Interaction");
             _message = GetDataOrDefault("Message", "Interact");
 
-            _collider = new Collider(Parent.Scale);
+            _collider = new Collider(Parent.Scale, isTrigger: true);
+            _collider.SetPosition(Parent.GlobalPosition);
             GameInstance.CollisionManager.Add(_collider);
+            _collider.OnTriggerEnter = OnTriggerEnter;
+            _collider.OnTriggerLeave = OnTriggerLeave;
 
             _uiElement = new InteractionPromptOverworldUIElement(Parent, _message);
             _uiElement.InteractionStarted += InteractionHandler;
         }
 
+        private void OnTriggerLeave(Collider collider)
+        {
+            if (GameInstance.ScreenManager.CurrentScreen is OverworldScreen)
+            {
+                _uiElement.IsActive = false;
+            }
+        }
+
+        private void OnTriggerEnter(Collider collider)
+        {
+            if (!(GameInstance.ScreenManager.CurrentScreen is OverworldScreen)) return;
+
+            var overworldScreen = (OverworldScreen)GameInstance.ScreenManager.CurrentScreen;
+
+            overworldScreen.AddUIElement(_uiElement);
+            _uiElement.IsActive = true;
+            _uiElement.Message = _message;
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
-            var screen = GameInstance.ScreenManager.CurrentScreen;
-            if (screen is OverworldScreen)
-            {
-                var overworldScreen = (OverworldScreen)screen;
-                var player = overworldScreen.ActiveWorld.Player;
-                var camera = player.Camera;
-
-                _collider.SetPosition(Parent.Position);
-                var collisionResult =  _collider.CheckCollision(player.Collider);
-                if (collisionResult.Collides)
-                {
-                    if (!_addedUIElement)
-                    {
-                        overworldScreen.AddUIElement(_uiElement);
-                        _addedUIElement = true;
-                    }
-                    _uiElement.IsActive = true;
-                    _uiElement.Message = _message;
-                }
-                else
-                {
-                    _uiElement.IsActive = false;
-                }
-            }
+            _collider.SetPosition(Parent.Position);
         }
 
         public override void OnComponentRemove()
