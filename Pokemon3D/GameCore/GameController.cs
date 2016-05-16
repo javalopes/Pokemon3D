@@ -143,6 +143,7 @@ namespace Pokemon3D.GameCore
         {
             base.Update(gameTime);
             InputSystem.Update();
+            CollisionManager.Update();
 
             if (!ScreenManager.Update(gameTime)) Exit();
             NotificationBar.Update(gameTime);

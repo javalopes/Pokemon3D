@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Pokemon3D.Common;
 using Pokemon3D.Common.Extensions;
@@ -14,10 +16,18 @@ namespace Pokemon3D.Collisions
         private Vector3 _offsetToCenter;
         private BoundingBox _boundingBox;
 
+        private readonly List<Collider> _lastFrameTouched = new List<Collider>(); 
+        private readonly List<Collider> _currentFrameTouched = new List<Collider>(); 
+
         /// <summary>
         /// Will be called when the collider enters a trigger zone.
         /// </summary>
         public Action<Collider> OnTriggerEnter;
+
+        /// <summary>
+        /// Will be called when the collider leaves the trigger zone.
+        /// </summary>
+        public Action<Collider> OnTriggerLeave;
 
         /// <summary>
         /// Offset from Center for positioning collider to model.
@@ -85,6 +95,30 @@ namespace Pokemon3D.Collisions
             UpdateBoundings();
         }
 
+        public void HandleTrigger(Collider other)
+        {
+            _currentFrameTouched.Add(other);
+            if (!_lastFrameTouched.Contains(other))
+            {
+                OnTriggerEnter?.Invoke(other);
+                _lastFrameTouched.Add(other);
+            }
+        }
+
+        public void HandleUntouched()
+        {
+            if (_lastFrameTouched.Count == 0) return;
+
+            var untoched = _lastFrameTouched.Except(_currentFrameTouched);
+            foreach (var untouchedCollider in untoched)
+            {
+                OnTriggerLeave?.Invoke(untouchedCollider);
+                _lastFrameTouched.Remove(untouchedCollider);
+            }
+
+            _currentFrameTouched.Clear();
+        }
+
         /// <summary>
         /// Checks collision to another object.
         /// </summary>
@@ -93,6 +127,11 @@ namespace Pokemon3D.Collisions
         public CollisionResult CheckCollision(Collider other)
         {
             return BoundingBox.CollidesWithSat(other.BoundingBox);
+        }
+
+        public bool Intersects(Collider other)
+        {
+            return BoundingBox.Intersects(other.BoundingBox);
         }
 
         private void UpdateBoundings()

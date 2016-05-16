@@ -15,10 +15,10 @@ namespace Pokemon3D.Entities.System.Components
         private string _trigger;
         private string _message;
 
-        private InteractionPromptOverworldUIElement _uiElement;
+        private readonly InteractionPromptOverworldUIElement _uiElement;
         private bool _addedUIElement = false;
 
-        private Collider _collider;
+        private readonly Collider _collider;
 
         public ScriptTriggerEntityComponent(EntityComponentDataCreationStruct parameters)
             : base(parameters)
@@ -27,7 +27,9 @@ namespace Pokemon3D.Entities.System.Components
             _trigger = GetDataOrDefault("Trigger", "Interaction");
             _message = GetDataOrDefault("Message", "Interact");
 
-            _collider = GameInstance.CollisionManager.CreateBoundingBox(Parent.Scale);
+            _collider = new Collider(Parent.Scale);
+            GameInstance.CollisionManager.Add(_collider);
+
             _uiElement = new InteractionPromptOverworldUIElement(Parent, _message);
             _uiElement.InteractionStarted += InteractionHandler;
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Pokemon3D.Collisions;
 using static Pokemon3D.GameCore.GameProvider;
 
@@ -12,24 +13,23 @@ namespace Pokemon3D.Entities.System.Components
 
         public CollisionEntityComponent(EntityComponentDataCreationStruct structData) : base(structData)
         {
-            Collider = GameInstance.CollisionManager.CreateBoundingBox(GetData<Vector3>("CollisionSize"), GetData<Vector3>("CollisionOffset"));
+            Collider = new Collider(GetData<Vector3>("CollisionSize"), GetData<Vector3>("CollisionOffset"));
         }
 
         public CollisionEntityComponent(Entity parent, Vector3 collisionSize, Vector3 collisionOffset) : base(parent)
         {
-            Collider = GameInstance.CollisionManager.CreateBoundingBox(collisionSize, collisionOffset);
+            Collider = new Collider(collisionSize, collisionOffset);
         }
 
         public override void OnComponentAdded()
         {
             base.OnComponentAdded();
-            GameInstance.CollisionManager.AddCollider(Collider);
+            GameInstance.CollisionManager.Add(Collider);
         }
 
         public override void OnComponentRemove()
         {
-            base.OnComponentRemove();
-            GameInstance.CollisionManager.RemoveCollider(Collider);
+            throw new NotImplementedException("Needs to be handled properly.");
         }
 
         public override void Update(GameTime gameTime)
@@ -37,18 +37,15 @@ namespace Pokemon3D.Entities.System.Components
             base.Update(gameTime);
             Collider.SetPosition(Parent.Position);
 
-            if (ResolvesPosition)
+            if (!ResolvesPosition) return;
+            var collisionResult = GameInstance.CollisionManager.CheckCollision(Collider);
+            if (collisionResult != null)
             {
-                var collisionResult = GameInstance.CollisionManager.CheckCollision(Collider);
-                if (collisionResult != null)
+                for (var i = 0; i < collisionResult.Length; i++)
                 {
-                    for (var i = 0; i < collisionResult.Length; i++)
-                    {
-                        if (collisionResult[i].Collides) Parent.Position = Parent.Position + collisionResult[i].Axis;
-                    }
+                    if (collisionResult[i].Collides) Parent.Position = Parent.Position + collisionResult[i].Axis;
                 }
             }
-
         }
     }
 }

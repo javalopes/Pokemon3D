@@ -11,6 +11,9 @@ namespace Pokemon3D.Collisions
     class CollisionManager
     {
         private readonly List<Collider> _allColliders;
+        private readonly List<Collider> _allTriggers; 
+        private readonly List<Collider> _allTriggersAndColliders;
+
         private readonly Mesh _boundingBoxMesh;
         private readonly List<CollisionResult> _colliderList = new List<CollisionResult>();
 
@@ -23,6 +26,8 @@ namespace Pokemon3D.Collisions
         public CollisionManager()
         {
             _allColliders = new List<Collider>();
+            _allTriggers = new List<Collider>();
+            _allTriggersAndColliders = new List<Collider>();
 
             var geometryBox = new GeometryData
             {
@@ -53,21 +58,18 @@ namespace Pokemon3D.Collisions
             _lineTechnique = _lineDrawEffect.Techniques["LineDraw"];
         }
 
-        public Collider CreateBoundingBox(Vector3 size, Vector3? centerOffset = null, bool isTrigger = false)
+        public void Add(Collider collider)
         {
-            var collider = new Collider(size, centerOffset, isTrigger);
-            AddCollider(collider);
-            return collider;
-        }
+            _allTriggersAndColliders.Add(collider);
 
-        public void AddCollider(Collider collider)
-        {
-            _allColliders.Add(collider);
-        }
-
-        public void RemoveCollider(Collider collider)
-        {
-            _allColliders.Remove(collider);
+            if (collider.IsTrigger)
+            {
+                _allTriggers.Add(collider);
+            }
+            else
+            {
+                _allColliders.Add(collider);
+            }
         }
 
         public CollisionResult[] CheckCollision(Collider collider)
@@ -85,6 +87,28 @@ namespace Pokemon3D.Collisions
             }
 
             return _colliderList.ToArray();
+        }
+
+        public void Update()
+        {
+            foreach (var trigger in _allTriggers)
+            {
+                foreach (var collidingPartner in _allTriggersAndColliders)
+                {
+                    if (trigger == collidingPartner) continue;
+
+                    if (trigger.Intersects(collidingPartner))
+                    {
+                        trigger.HandleTrigger(collidingPartner);
+                        collidingPartner.HandleTrigger(trigger);
+                    }
+                }
+            }
+
+            foreach (var collider in _allTriggersAndColliders)
+            {
+                collider.HandleUntouched();
+            }
         }
 
         public void Draw(Camera observer)
