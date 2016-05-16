@@ -42,6 +42,8 @@ namespace Pokemon3D.Collisions
             }
         }
 
+        public string Tag { get; set; }
+
         /// <summary>
         /// This collider can be hit and does not through away but notify.
         /// </summary>
@@ -50,7 +52,7 @@ namespace Pokemon3D.Collisions
         /// <summary>
         /// Which collision shape it is.
         /// </summary>
-        public ColliderType Type { get; private set; }
+        public ColliderType Type { get; }
 
         /// <summary>
         /// Corresponding BoundingBox when <see cref="Type"/> is set to box

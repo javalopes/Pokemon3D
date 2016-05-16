@@ -16,9 +16,9 @@ namespace Pokemon3D.Entities.System.Components
             Collider = new Collider(GetData<Vector3>("CollisionSize"), GetData<Vector3>("CollisionOffset"));
         }
 
-        public CollisionEntityComponent(Entity parent, Vector3 collisionSize, Vector3 collisionOffset) : base(parent)
+        public CollisionEntityComponent(Entity parent, Vector3 collisionSize, Vector3 collisionOffset, string tag) : base(parent)
         {
-            Collider = new Collider(collisionSize, collisionOffset);
+            Collider = new Collider(collisionSize, collisionOffset) {Tag = tag};
         }
 
         public override void OnComponentAdded()

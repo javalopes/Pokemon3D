@@ -37,15 +37,16 @@ namespace Pokemon3D.Entities.System.Components
 
         private void OnTriggerLeave(Collider collider)
         {
-            if (GameInstance.ScreenManager.CurrentScreen is OverworldScreen)
-            {
-                _uiElement.IsActive = false;
-            }
+            if (collider.Tag != "Player") return;
+            if (!(GameInstance.ScreenManager.CurrentScreen is OverworldScreen)) return;
+            _uiElement.IsActive = false;
         }
 
         private void OnTriggerEnter(Collider collider)
         {
             if (!(GameInstance.ScreenManager.CurrentScreen is OverworldScreen)) return;
+
+            if (collider.Tag != "Player") return;
 
             var overworldScreen = (OverworldScreen)GameInstance.ScreenManager.CurrentScreen;
 

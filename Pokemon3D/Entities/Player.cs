@@ -19,13 +19,11 @@ namespace Pokemon3D.Entities
         private readonly Entity _cameraEntity;
 
         private readonly ModelEntityComponent _modelEntityComponent;
-        private readonly CollisionEntityComponent _colliderComponent;
 
         private PlayerMovementMode _movementMode;
         private MouseState _mouseState;
 
         private Vector3 _cameraTargetPosition = new Vector3(0, 1, 3);
-        private World _world;
 
         public float Speed { get; set; }
         public float RotationSpeed { get; set; }
@@ -35,8 +33,6 @@ namespace Pokemon3D.Entities
             get { return _playerEntity.Position; }
             set { _playerEntity.Position = value; }
         }
-
-        public Collisions.Collider Collider => _colliderComponent.Collider;
 
         public Camera Camera { get; private set; }
 
@@ -55,10 +51,9 @@ namespace Pokemon3D.Entities
 
         public Player(World world)
         {
-            _world = world;
-            _playerEntity = _world.EntitySystem.CreateEntity();
+            _playerEntity = world.EntitySystem.CreateEntity();
             _playerEntity.IsActive = false;
-            _world.AddEntityToActivate(_playerEntity);
+            world.AddEntityToActivate(_playerEntity);
 
             var mesh = new Mesh(GameInstance.GraphicsDevice, Primitives.GenerateQuadForYBillboard());
             var diffuseTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
@@ -71,9 +66,9 @@ namespace Pokemon3D.Entities
             };
             _modelEntityComponent = _playerEntity.AddComponent(new ModelEntityComponent(_playerEntity, mesh, material, true));
 
-            _cameraEntity = _world.EntitySystem.CreateEntity(_playerEntity);
+            _cameraEntity = world.EntitySystem.CreateEntity(_playerEntity);
             _cameraEntity.IsActive = false;
-            _world.AddEntityToActivate(_cameraEntity);
+            world.AddEntityToActivate(_cameraEntity);
 
             var cameraComponent = _cameraEntity.AddComponent(new CameraEntityComponent(_cameraEntity, new Skybox(GameInstance)
             {
@@ -120,12 +115,12 @@ namespace Pokemon3D.Entities
             _movementMode = PlayerMovementMode.ThirdPerson;
             _cameraEntity.Position = _cameraTargetPosition;
 
-            _colliderComponent = new CollisionEntityComponent(_playerEntity, new Vector3(0.35f, 0.6f, 0.35f),
-                new Vector3(0.0f, 0.3f, 0.0f))
+            var colliderComponent = new CollisionEntityComponent(_playerEntity, new Vector3(0.35f, 0.6f, 0.35f),
+                new Vector3(0.0f, 0.3f, 0.0f), "Player")
             {
-                ResolvesPosition = true
+                ResolvesPosition = true,
             };
-            _playerEntity.AddComponent(_colliderComponent);
+            _playerEntity.AddComponent(colliderComponent);
 
             _playerEntity.Position = new Vector3(5, 1, 8);
         }
