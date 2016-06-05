@@ -3,6 +3,7 @@ using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.Entities.System.Generators;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.RightsManagement;
 
 namespace Pokemon3D.Entities.System
 {
@@ -10,18 +11,20 @@ namespace Pokemon3D.Entities.System
     {
         private readonly object _lockObject = new object();
         private readonly List<Entity> _entities;
+        private readonly List<Entity> _entitiesToInitialize;
 
         public EntityGeneratorSupplier EntityGeneratorSupplier { get; }
 
         public EntitySystem()
         {
             _entities = new List<Entity>();
+            _entitiesToInitialize = new List<Entity>();
             EntityGeneratorSupplier = new EntityGeneratorSupplier();
         }
 
-        public Entity CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position)
+        public Entity CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position, bool isInitializing = false)
         {
-            var entity = CreateEntity();
+            var entity = CreateEntity(isInitializing);
             entity.Id = entityModel.Id;
 
             foreach (var compModel in entityModel.Components)
@@ -65,20 +68,55 @@ namespace Pokemon3D.Entities.System
             return entity;
         }
 
-        public Entity CreateEntity(Entity parent = null)
+        public Entity CreateEntity(bool isInitializing = false)
         {
-            var entity = new Entity();
+            Entity entity;
             lock (_lockObject)
             {
-                parent?.AddChild(entity);
-                _entities.Add(entity);
+                entity = new Entity(isInitializing, OnEntityInitialized);
+
+                if (entity.IsInitializing)
+                {
+                    _entitiesToInitialize.Add(entity);
+                }
+                else
+                {
+                    _entities.Add(entity);
+                }
             }
             return entity;
         }
 
+        public void InitializeAllPendingEntities()
+        {
+            lock (_lockObject)
+            {
+                for (var i = 0; i < _entitiesToInitialize.Count; i++)
+                {
+                    var entity = _entitiesToInitialize[i];
+                    entity.EndInitializing(true);
+                    _entities.Add(entity);
+                }
+                _entitiesToInitialize.Clear();
+            }
+        }
+
+        private void OnEntityInitialized(Entity entity)
+        {
+            lock (_lockObject)
+            {
+                if (_entitiesToInitialize.Remove(entity)) _entities.Add(entity);
+            }
+        }
+
         public Entity GetEntity(string id)
         {
-            return _entities.FirstOrDefault(e => e.Id == id);
+            Entity entity;
+            lock (_lockObject)
+            {
+                entity = _entities.FirstOrDefault(e => e.Id == id);
+            }
+            return entity;
         }
 
         public void RemoveEntity(Entity entity)
@@ -88,8 +126,6 @@ namespace Pokemon3D.Entities.System
                 _entities.Remove(entity);
             }
         }
-
-        public int EntityCount => _entities.Count;
 
         public void Update(GameTime gameTime)
         {

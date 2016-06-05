@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.UI;
-using System.Collections.Generic;
 using Pokemon3D.Entities.System;
 using Microsoft.Xna.Framework;
 using static Pokemon3D.GameCore.GameProvider;
@@ -15,11 +14,8 @@ namespace Pokemon3D.Entities
 
         public Map ActiveMap { get; private set; }
         public Player Player { get; private set; }
-
-        public EntitySystem EntitySystem { get; private set; }
-
-        private List<Entity> _entitiesToActivate = new List<Entity>();
-
+        public EntitySystem EntitySystem { get; }
+        
         public World()
         {
             EntitySystem = new EntitySystem();
@@ -38,23 +34,13 @@ namespace Pokemon3D.Entities
 
         private void FinishedLoadingMapModel(MapModel mapModel)
         {
-            ActiveMap = new Map(this, mapModel);
+            ActiveMap = new Map(this, mapModel, _onFinished);
             Player = new Player(this);
-            _onFinished();
-        }
-
-        public void AddEntityToActivate(Entity entity)
-        {
-            _entitiesToActivate.Add(entity);
         }
 
         public void ActivateNewEntities()
         {
-            foreach (var entity in _entitiesToActivate)
-            {
-                entity.IsActive = true;
-            }
-            _entitiesToActivate.Clear();
+            EntitySystem.InitializeAllPendingEntities();
         }
 
         public void Update(GameTime gameTime)

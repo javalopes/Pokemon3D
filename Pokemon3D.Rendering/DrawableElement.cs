@@ -28,7 +28,7 @@ namespace Pokemon3D.Rendering
         public DrawableElement(bool initializing = false, Action<DrawableElement> onEndInitializing = null)
         {
             IsInitializing = initializing;
-            if (initializing) _onEndInitializing = onEndInitializing;
+            _onEndInitializing = onEndInitializing;
             IsActive = true;
             Scale = Vector3.One;
         }

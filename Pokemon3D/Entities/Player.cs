@@ -51,9 +51,7 @@ namespace Pokemon3D.Entities
 
         public Player(World world)
         {
-            _playerEntity = world.EntitySystem.CreateEntity();
-            _playerEntity.IsActive = false;
-            world.AddEntityToActivate(_playerEntity);
+            _playerEntity = world.EntitySystem.CreateEntity(true);
 
             var mesh = new Mesh(GameInstance.GraphicsDevice, Primitives.GenerateQuadForYBillboard());
             var diffuseTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
@@ -66,9 +64,8 @@ namespace Pokemon3D.Entities
             };
             _modelEntityComponent = _playerEntity.AddComponent(new ModelEntityComponent(_playerEntity, mesh, material, true));
 
-            _cameraEntity = world.EntitySystem.CreateEntity(_playerEntity);
-            _cameraEntity.IsActive = false;
-            world.AddEntityToActivate(_cameraEntity);
+            _cameraEntity = world.EntitySystem.CreateEntity();
+            _cameraEntity.SetParent(_playerEntity);
 
             var cameraComponent = _cameraEntity.AddComponent(new CameraEntityComponent(_cameraEntity, new Skybox(GameInstance)
             {

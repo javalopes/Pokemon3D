@@ -14,7 +14,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public FigureMovementAnimationComponent(Entity parent, Animation forward, Animation backward, Animation left, Animation right) : base(parent)
         {
-            if (forward == null) throw new ArgumentNullException("forward");
+            if (forward == null) throw new ArgumentNullException(nameof(forward));
 
             AddAnimation(ForwardAnimation, forward);
             AddAnimation(BackwardAnimation, backward ?? forward);

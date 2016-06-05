@@ -25,6 +25,13 @@ namespace Pokemon3D.Entities.System.Components
         {
             base.OnComponentAdded();
 
+            if (Parent.IsInitializing) return;
+            Collider.SetPosition(Parent.GlobalPosition);
+            GameInstance.CollisionManager.Add(Collider);
+        }
+
+        public override void OnInitialized()
+        {
             Collider.SetPosition(Parent.GlobalPosition);
             GameInstance.CollisionManager.Add(Collider);
         }

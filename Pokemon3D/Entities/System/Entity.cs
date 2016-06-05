@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Pokemon3D.Rendering;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,14 +25,45 @@ namespace Pokemon3D.Entities.System
         private Vector3 _up;
         private Vector3 _forward;
         private bool _isActive;
+        private readonly Action<Entity> _onIsInitialized;
 
+        /// <summary>
+        /// Parent Entity. Inherits transformation.
+        /// </summary>
         public Entity Parent { get; private set; }
+
+        /// <summary>
+        /// All child entities which inherits transformation from this entity.
+        /// </summary>
         public ReadOnlyCollection<Entity> Children { get; private set; }
+
+        /// <summary>
+        /// This entity is not able to move after creation.
+        /// </summary>
         public bool IsStatic { get; set; }
+
+        /// <summary>
+        /// Last Transformation offset since update.
+        /// </summary>
         public Vector3 LastTranslation { get; private set; }
+
+        /// <summary>
+        /// Identification of entity.
+        /// </summary>
         public string Id { get; set; }
 
-        public Entity()
+        /// <summary>
+        /// If the entity is created in initializing mode.
+        /// When creating an entity from a background thread this should be true until the whole entity is loaded.
+        /// </summary>
+        public bool IsInitializing { get; private set; }
+
+        /// <summary>
+        /// Creates an new entity. Should only be called internally by the <see cref="EntitySystem"/>
+        /// </summary>
+        /// <param name="isInitializing">If this entity is created in the initializing mode.</param>
+        /// <param name="onIsInitialized">Action called when entity is initialized.</param>
+        public Entity(bool isInitializing = false, Action<Entity> onIsInitialized = null)
         {
             _isActive = true;
             _childNodes = new List<Entity>();
@@ -42,6 +74,8 @@ namespace Pokemon3D.Entities.System
             Forward = Vector3.Forward;
             SetDirty();
             LastTranslation = Vector3.Zero;
+            IsInitializing = isInitializing;
+            _onIsInitialized = onIsInitialized;
         }
 
         /// <summary>
@@ -57,11 +91,25 @@ namespace Pokemon3D.Entities.System
             LastTranslation = Vector3.Zero;
         }
 
-        public void RenderPreparations(Camera observer)
+        public void EndInitializing(bool suppressInvoke = false)
         {
-            for (int i = 0; i < _components.Count; i++) _components[i].RenderPreparations(observer);
-        }
+            if (!IsInitializing) return;
+            IsInitializing = true;
 
+            foreach (var component in _components)
+            {
+                component.OnInitialized();
+            }
+
+            if (!suppressInvoke) _onIsInitialized?.Invoke(this);
+        }
+        
+        /// <summary>
+        /// Adds an component to the entity.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component"></param>
+        /// <returns></returns>
         public T AddComponent<T>(T component) where T : EntityComponent
         {
             if (!HasComponent(component.Name))
@@ -72,6 +120,10 @@ namespace Pokemon3D.Entities.System
             return component;
         }
 
+        /// <summary>
+        /// Removes a component of the entity by name.
+        /// </summary>
+        /// <param name="componentName"></param>
         public void RemoveComponent(string componentName)
         {
             if (HasComponent(componentName))
@@ -82,6 +134,9 @@ namespace Pokemon3D.Entities.System
             }
         }
 
+        /// <summary>
+        /// Allows to activate or deactivate entity. This is also notified to children.
+        /// </summary>
         public bool IsActive
         {
             get { return _isActive; }
@@ -103,6 +158,9 @@ namespace Pokemon3D.Entities.System
             }
         }
 
+        /// <summary>
+        /// Gets or sets the scale of the entity.
+        /// </summary>
         public Vector3 Scale
         {
             get
@@ -117,6 +175,9 @@ namespace Pokemon3D.Entities.System
             }
         }
 
+        /// <summary>
+        /// Gets or sets the roation angles of the entity.
+        /// </summary>
         public Vector3 EulerAngles
         {
             get
@@ -131,6 +192,9 @@ namespace Pokemon3D.Entities.System
             }
         }
 
+        /// <summary>
+        /// Computed global euler angles derived from parent.
+        /// </summary>
         public Vector3 GlobalEulerAngles
         {
             get
@@ -140,6 +204,9 @@ namespace Pokemon3D.Entities.System
             }
         }
 
+        /// <summary>
+        /// Gets or sets the position of the entity.
+        /// </summary>
         public Vector3 Position
         {
             get
@@ -154,6 +221,9 @@ namespace Pokemon3D.Entities.System
             }
         }
 
+        /// <summary>
+        /// Computed global position derived from parent.
+        /// </summary>
         public Vector3 GlobalPosition
         {
             get
@@ -164,6 +234,9 @@ namespace Pokemon3D.Entities.System
             private set { _globalPosition = value; }
         }
 
+        /// <summary>
+        /// Unit-Vector pointing to right of entity regarding to rotation.
+        /// </summary>
         public Vector3 Right
         {
             get
@@ -174,6 +247,9 @@ namespace Pokemon3D.Entities.System
             private set { _right = value; }
         }
 
+        /// <summary>
+        /// Unit-Vector pointing to up of entity regarding to rotation.
+        /// </summary>
         public Vector3 Up
         {
             get
@@ -184,6 +260,9 @@ namespace Pokemon3D.Entities.System
             private set { _up = value; }
         }
 
+        /// <summary>
+        /// Unit-Vector pointing forward of entity regarding to rotation.
+        /// </summary>
         public Vector3 Forward
         {
             get
@@ -194,6 +273,10 @@ namespace Pokemon3D.Entities.System
             private set { _forward = value; }
         }
 
+        /// <summary>
+        /// Sets the parent of this entity. old entity will remove it.
+        /// </summary>
+        /// <param name="parent">Parent. Can be null to unset parent.</param>
         public void SetParent(Entity parent)
         {
             if (parent == Parent) return;
@@ -202,13 +285,23 @@ namespace Pokemon3D.Entities.System
             SetDirty();
         }
 
+        /// <summary>
+        /// Adds a child entity to this entity.
+        /// </summary>
+        /// <param name="childElement">Child to add.</param>
         public void AddChild(Entity childElement)
         {
+            if (childElement == null) throw new ArgumentNullException(nameof(childElement));
+
             childElement.Parent?.RemoveChild(childElement);
             _childNodes.Add(childElement);
             childElement.Parent = this;
         }
 
+        /// <summary>
+        /// Removes a child from the entity.
+        /// </summary>
+        /// <param name="childElement"></param>
         public void RemoveChild(Entity childElement)
         {
             if (_childNodes.Remove(childElement))
@@ -217,6 +310,10 @@ namespace Pokemon3D.Entities.System
             }
         }
 
+        /// <summary>
+        /// Translate the entity with rotation aware around XYZ axis.
+        /// </summary>
+        /// <param name="translation"></param>
         public void Translate(Vector3 translation)
         {
             LastTranslation = translation;
@@ -224,18 +321,30 @@ namespace Pokemon3D.Entities.System
             SetDirty();
         }
 
+        /// <summary>
+        /// Rotates around <see cref="Right"/>
+        /// </summary>
+        /// <param name="angle"></param>
         public void RotateX(float angle)
         {
             EulerAngles += new Vector3(angle, 0, 0);
             SetDirty();
         }
 
+        /// <summary>
+        /// Rotates around <see cref="Up"/>
+        /// </summary>
+        /// <param name="angle"></param>
         public void RotateY(float angle)
         {
             EulerAngles += new Vector3(0, angle, 0);
             SetDirty();
         }
 
+        /// <summary>
+        /// Rotates around <see cref="Forward"/>
+        /// </summary>
+        /// <param name="angle"></param>
         public void RotateZ(float angle)
         {
             EulerAngles += new Vector3(0, 0, angle);
@@ -273,6 +382,9 @@ namespace Pokemon3D.Entities.System
             _isDirty = false;
         }
 
+        /// <summary>
+        /// Entity world matrix.
+        /// </summary>
         public Matrix WorldMatrix { get; private set; }
 
         /// <summary>
@@ -280,7 +392,7 @@ namespace Pokemon3D.Entities.System
         /// </summary>
         public EntityComponent GetComponent(string componentName)
         {
-            return _components.FirstOrDefault(c => c.Name.Equals(componentName, global::System.StringComparison.OrdinalIgnoreCase));
+            return _components.FirstOrDefault(c => c.Name.Equals(componentName, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -301,7 +413,7 @@ namespace Pokemon3D.Entities.System
         /// </summary>
         public bool HasComponent(string componentName)
         {
-            return _components.Any(c => (c.Name ?? "").Equals(componentName, global::System.StringComparison.OrdinalIgnoreCase));
+            return _components.Any(c => (c.Name ?? "").Equals(componentName, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -309,7 +421,7 @@ namespace Pokemon3D.Entities.System
         /// </summary>
         public bool HasComponent<T>(string componentName) where T : EntityComponent
         {
-            return _components.Any(c => (c.Name ?? "").Equals(componentName, global::System.StringComparison.OrdinalIgnoreCase)
+            return _components.Any(c => (c.Name ?? "").Equals(componentName, StringComparison.OrdinalIgnoreCase)
                                         && c is T);
         }
 

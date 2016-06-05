@@ -14,7 +14,7 @@ namespace Pokemon3D.Entities.System.Components
     [JsonComponentId("visualmodel")]
     class ModelEntityComponent : EntityComponent
     {
-        private List<TextureRegion> _regions;
+        private readonly List<TextureRegion> _regions;
         private readonly DrawableElement _drawableElement;
 
         public List<TextureRegion> Regions => _regions;
@@ -77,7 +77,7 @@ namespace Pokemon3D.Entities.System.Components
             SetTexture(0);
 
             _drawableElement.IsActive = Parent.IsActive;
-            _drawableElement.EndInitialzing();
+            if (!Parent.IsInitializing) _drawableElement.EndInitialzing();
         }
 
         public ModelEntityComponent(Entity parent, Mesh mesh, Material material, bool isBillboard) : base(parent)
@@ -85,13 +85,17 @@ namespace Pokemon3D.Entities.System.Components
             _drawableElement = GameInstance.SceneRenderer.CreateDrawableElement(true);
             _drawableElement.Material = material;
             _drawableElement.Mesh = mesh;
-            _drawableElement.EndInitialzing();
             IsBillboard = isBillboard;
         }
 
         public override void OnIsActiveChanged()
         {
             _drawableElement.IsActive = IsActive;
+        }
+
+        public override void OnInitialized()
+        {
+            _drawableElement.EndInitialzing();
         }
 
         public void SetTexture(int index)
@@ -111,7 +115,6 @@ namespace Pokemon3D.Entities.System.Components
                 _drawableElement.Material.TexcoordOffset = Vector2.Zero;
                 _drawableElement.Material.TexcoordScale = Vector2.One;
             }
-
         }
 
         public override void Update(GameTime gameTime)

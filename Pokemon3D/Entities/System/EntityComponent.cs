@@ -8,19 +8,20 @@ namespace Pokemon3D.Entities.System
     /// <summary>
     /// A component of an <see cref="Entity"/>, responsible for the Entity's functionality.
     /// </summary>
-    partial class EntityComponent
+    class EntityComponent
     {
         private bool _isActive;
 
-        // The raw data of this component.
-        private Dictionary<string, string> _data;
+        /// <summary>
+        /// Entity data as dictionary.
+        /// </summary>
+        private readonly Dictionary<string, string> _data ;
 
         /// <summary>
         /// The original name of this component.
         /// </summary>
         public string Name { get; private set; }
-
-
+        
         /// <summary>
         /// The owning parent <see cref="Entity"/> of this component.
         /// </summary>
@@ -57,11 +58,6 @@ namespace Pokemon3D.Entities.System
         /// Updates this property's logic.
         /// </summary>
         public virtual void Update(GameTime gameTime) { }
-
-        /// <summary>
-        /// Prepares this entity component for the render.
-        /// </summary>
-        public virtual void RenderPreparations(Camera observer) { }
 
         /// <summary>
         /// Converts the data string that came with the component data into the desired data type.
@@ -128,15 +124,13 @@ namespace Pokemon3D.Entities.System
         {
             if (_data.ContainsKey(key))
             {
-                string oldData = _data[key];
+                var oldData = _data[key];
                 _data[key] = data;
-
                 OnDataChanged(key, oldData, data);
             }
             else
             {
                 _data.Add(key, data);
-
                 OnDataChanged(key, null, data);
             }
         }
@@ -146,6 +140,10 @@ namespace Pokemon3D.Entities.System
         public virtual void OnComponentAdded() { }
 
         public virtual void OnComponentRemove() { }
+
+        public virtual void OnInitialized()
+        {
+        }
 
         protected virtual void OnDataChanged(string key, string oldData, string newData) { }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.Entities.System;
@@ -8,13 +9,15 @@ namespace Pokemon3D.Entities
 {
     class Map
     {
+        private readonly Action _onFinished;
         private readonly MapModel _mapModel;
-        private World _world;
+        private readonly World _world;
 
-        public Map(World world, MapModel mapModel)
+        public Map(World world, MapModel mapModel, Action onFinished)
         {
             _world = world;
             _mapModel = mapModel;
+            _onFinished = onFinished;
 
             if (_mapModel.Entities != null)
             {
@@ -30,7 +33,8 @@ namespace Pokemon3D.Entities
             {
                 foreach (var fragmentImport in _mapModel.Fragments)
                 {
-                    GameInstance.ActiveGameMode.MapFragmentManager.LoadFragmentAsync(fragmentImport.Id, l => FinishLoadingMapFragment(fragmentImport, l));
+                    GameInstance.ActiveGameMode.MapFragmentManager.LoadFragmentAsync(fragmentImport.Id,
+                        l => FinishLoadingMapFragment(fragmentImport, l));
                 }
             }
         }
@@ -51,13 +55,13 @@ namespace Pokemon3D.Entities
                     }
                 }
             }
+            _onFinished.Invoke();
         }
 
         private void CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position)
         {
-            var entity = _world.EntitySystem.CreateEntity();
+            var entity = _world.EntitySystem.CreateEntity(true);
             entity.Id = entityModel.Id;
-            entity.IsActive = false;
 
             entity.Scale = entityPlacing.Scale?.GetVector3() ?? Vector3.One;
 
@@ -96,13 +100,10 @@ namespace Pokemon3D.Entities
                     entity.AddComponent(EntityComponentFactory.GetComponent(entity, compModel));
                 }
             }
-
-            _world.AddEntityToActivate(entity);
         }
 
         private void PlaceEntities(EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 offset)
         {
-            var generator = _world.EntitySystem.EntityGeneratorSupplier.GetGenerator(entityDefinition.Entity.Generator);
             for (var x = 1.0f; x <= entityPlacing.Size.X; x += entityPlacing.Steps.X)
             {
                 for (var y = 1.0f; y <= entityPlacing.Size.Y; y += entityPlacing.Steps.Y)
