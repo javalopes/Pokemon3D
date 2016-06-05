@@ -41,6 +41,9 @@ namespace Pokemon3D.Entities.System
             _isActive = true;
         }
 
+        /// <summary>
+        /// Sets active state of component.
+        /// </summary>
         public bool IsActive
         {
             get { return Parent.IsActive && _isActive; }
@@ -135,12 +138,25 @@ namespace Pokemon3D.Entities.System
             }
         }
 
+        /// <summary>
+        /// Is called when the activation state has changed.
+        /// </summary>
         public virtual void OnIsActiveChanged() { }
 
+        /// <summary>
+        /// Is called when the component has been added.
+        /// IMPORTANT: When Entity is in initializing mode, defer intialization to OnInitialized()
+        /// </summary>
         public virtual void OnComponentAdded() { }
 
+        /// <summary>
+        /// Called when the component has been removed.
+        /// </summary>
         public virtual void OnComponentRemove() { }
 
+        /// <summary>
+        /// Is called when the entity has been created in initializing mode and is now read to initialize properly.
+        /// </summary>
         public virtual void OnInitialized()
         {
         }
