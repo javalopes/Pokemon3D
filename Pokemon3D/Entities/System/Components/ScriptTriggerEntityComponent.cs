@@ -46,7 +46,7 @@ namespace Pokemon3D.Entities.System.Components
 
             var overworldScreen = (OverworldScreen)GameInstance.ScreenManager.CurrentScreen;
 
-            overworldScreen.AddUIElement(_uiElement);
+            overworldScreen.AddUiElement(_uiElement);
             _uiElement.IsActive = true;
             _uiElement.Message = _message;
         }
@@ -62,7 +62,7 @@ namespace Pokemon3D.Entities.System.Components
             if (_addedUIElement)
             {
                 var screen = GameInstance.ScreenManager.CurrentScreen;
-                if (screen is OverworldScreen) ((OverworldScreen)screen).RemoveUIElement(_uiElement);
+                if (screen is OverworldScreen) ((OverworldScreen)screen).RemoveUiElement(_uiElement);
             }
         }
 

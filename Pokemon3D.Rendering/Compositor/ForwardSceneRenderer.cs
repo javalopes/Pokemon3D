@@ -3,7 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework.Input;
+
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace Pokemon3D.Rendering.Compositor
@@ -132,10 +135,6 @@ namespace Pokemon3D.Rendering.Compositor
 
             DoPostProcessing();
             RenderStatistics.Instance.EndFrame();
-
-#if DEBUG_RENDERING
-            if (RenderSettings.EnableShadows) DrawDebugShadowMap(GameContext.SpriteBatch, new Rectangle(0,0,128,128));
-#endif
         }
         
         public RenderSettings RenderSettings { get; }
@@ -340,7 +339,11 @@ namespace Pokemon3D.Rendering.Compositor
         /// </summary>
         public Light Light { get; set; }
 
-
+        public void LateDebugDraw3D()
+        {
+            if (RenderSettings.EnableShadows) DrawDebugShadowMap(GameContext.SpriteBatch, new Rectangle(0, 0, 128, 128));
+        }
+        
         public void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize)
         {
             foreach (var camera in _allCameras)

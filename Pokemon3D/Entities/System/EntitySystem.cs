@@ -3,7 +3,6 @@ using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.Entities.System.Generators;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.RightsManagement;
 
 namespace Pokemon3D.Entities.System
 {

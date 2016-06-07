@@ -27,6 +27,8 @@ namespace Pokemon3D.Rendering
         /// <summary>
         /// Currently single light just supported.
         /// </summary>
-        Light Light { get; set; }  
+        Light Light { get; set; }
+
+        void LateDebugDraw3D();
     }
 }

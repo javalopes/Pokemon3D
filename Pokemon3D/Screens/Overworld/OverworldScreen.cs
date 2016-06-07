@@ -18,12 +18,7 @@ namespace Pokemon3D.Screens.Overworld
 {
     class OverworldScreen : Screen, WorldContainer
     {
-        private World _world;
-
-        public World ActiveWorld
-        {
-            get { return _world; }
-        }
+        public World ActiveWorld { get; private set; }
 
         private SpriteFont _debugSpriteFont;
         private bool _showRenderStatistics;
@@ -34,8 +29,8 @@ namespace Pokemon3D.Screens.Overworld
         {
             if (!_isLoaded)
             {
-                _world = enterInformation as World;
-                if (_world == null) throw new InvalidOperationException("Did not receive loaded data.");
+                ActiveWorld = enterInformation as World;
+                if (ActiveWorld == null) throw new InvalidOperationException("Did not receive loaded data.");
 
                 _debugSpriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
 
@@ -183,7 +178,7 @@ namespace Pokemon3D.Screens.Overworld
 
         public void OnUpdate(GameTime gameTime)
         {
-            _world.Update(gameTime);
+            ActiveWorld.Update(gameTime);
 
             lock (_uiElements)
                 _uiElements.ForEach(e => { if (e.IsActive) e.Update(gameTime); });
@@ -211,18 +206,30 @@ namespace Pokemon3D.Screens.Overworld
 
         public void OnLateDraw(GameTime gameTime)
         {
-            GameInstance.CollisionManager.Draw(_world.Player.Camera);
+            GameInstance.CollisionManager.Draw(ActiveWorld.Player.Camera);
             if (_showRenderStatistics) DrawRenderStatsitics();
 
-            if (_uiElements.Count > 0 && _uiElements.Any(e => e.IsActive))
+            bool anyActive;
+            lock (_uiElements)
+            {
+                anyActive = _uiElements.Count > 0 && _uiElements.Any(e => e.IsActive);
+            }
+
+            if (anyActive)
             {
                 GameInstance.SpriteBatch.Begin();
 
                 lock (_uiElements)
+                {
                     _uiElements.ForEach(e => { if (e.IsActive) e.Draw(gameTime); });
-
+                }
+                
                 GameInstance.SpriteBatch.End();
             }
+
+#if DEBUG_RENDERING
+            GameInstance.SceneRenderer.LateDebugDraw3D();
+#endif
         }
 
         public void OnEarlyDraw(GameTime gameTime)
@@ -235,10 +242,10 @@ namespace Pokemon3D.Screens.Overworld
 
             const int spacing = 5;
             var elementHeight = _debugSpriteFont.LineSpacing + spacing;
-            var height = elementHeight * 4 + spacing;
+            var height = elementHeight * 2 + spacing;
             const int width = 180;
 
-            var startPosition = new Vector2(GameInstance.ScreenBounds.Width - width, GameInstance.ScreenBounds.Height - height);
+            var startPosition = new Vector2(0,0);
 
             GameInstance.SpriteBatch.Begin();
             GameInstance.ShapeRenderer.DrawRectangle((int)startPosition.X,
@@ -249,11 +256,9 @@ namespace Pokemon3D.Screens.Overworld
 
             startPosition.X += spacing;
             startPosition.Y += spacing;
-            GameInstance.SpriteBatch.DrawString(_debugSpriteFont,
-                string.Format("Average DrawTime[ms]: {0:0.00}", renderStatistics.AverageDrawTime), startPosition, Color.White);
+            GameInstance.SpriteBatch.DrawString(_debugSpriteFont, $"Average DrawTime[ms]: {renderStatistics.AverageDrawTime:0.00}", startPosition, Color.White);
             startPosition.Y += elementHeight;
-            GameInstance.SpriteBatch.DrawString(_debugSpriteFont, string.Format("Total Drawcalls: {0}", renderStatistics.DrawCalls),
-                startPosition, Color.White);
+            GameInstance.SpriteBatch.DrawString(_debugSpriteFont, $"Total Drawcalls: {renderStatistics.DrawCalls}", startPosition, Color.White);
             GameInstance.SpriteBatch.End();
         }
 
@@ -263,24 +268,28 @@ namespace Pokemon3D.Screens.Overworld
 
         #region overworld ui element handling:
 
-        private List<OverworldUIElement> _uiElements = new List<OverworldUIElement>();
+        private readonly List<OverworldUIElement> _uiElements = new List<OverworldUIElement>();
 
-        public void AddUIElement(OverworldUIElement element)
+        public void AddUiElement(OverworldUIElement element)
         {
-            lock (_uiElements)
-                _uiElements.Add(element);
+            lock (_uiElements) _uiElements.Add(element);
             element.Screen = this;
         }
 
-        public void RemoveUIElement(OverworldUIElement element)
+        public void RemoveUiElement(OverworldUIElement element)
         {
-            lock (_uiElements)
-                _uiElements.Remove(element);
+            lock (_uiElements) _uiElements.Remove(element);
         }
 
         public bool HasBlockingElements
         {
-            get { return _uiElements.Any(e => e.IsActive && e.IsBlocking); }
+            get
+            {
+                lock (_uiElements)
+                {
+                    return _uiElements.Any(e => e.IsActive && e.IsBlocking);
+                }
+            }
         }
 
         #endregion

@@ -129,6 +129,7 @@ namespace Pokemon3D.Collisions
             GameInstance.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GameInstance.GraphicsDevice.BlendState = BlendState.Opaque;
 
+            var oldTechnique = _lineDrawEffect.CurrentTechnique;
             _lineDrawEffect.CurrentTechnique = _lineTechnique;
 
             lock (_lockObject)
@@ -144,6 +145,8 @@ namespace Pokemon3D.Collisions
                     }
                 }
             }
+
+            _lineDrawEffect.CurrentTechnique = oldTechnique;
         }
 
         private void DrawBoundingBox(Camera observer, Collider collider)

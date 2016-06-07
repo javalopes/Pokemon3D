@@ -19,12 +19,12 @@ namespace Pokemon3D.ScriptPipeline.APIClasses
                 OverworldScreen screen = (OverworldScreen)GameCore.GameProvider.GameInstance.ScreenManager.CurrentScreen;
                 MessageOverworldUIElement uiElement = new MessageOverworldUIElement(text);
 
-                screen.AddUIElement(uiElement);
+                screen.AddUiElement(uiElement);
                 uiElement.IsActive = true;
 
                 BlockThreadUntilCondition(() => !uiElement.IsActive);
 
-                screen.RemoveUIElement(uiElement);
+                screen.RemoveUiElement(uiElement);
             }
 
             return ScriptInAdapter.GetUndefined(processor);

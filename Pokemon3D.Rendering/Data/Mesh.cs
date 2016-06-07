@@ -13,7 +13,7 @@ namespace Pokemon3D.Rendering.Data
         private readonly PrimitiveType _primitiveType;
         private VertexBuffer _vertexBuffer;
         private IndexBuffer _indexBuffer;
-        private int _primitiveCount;
+        private readonly int _primitiveCount;
 
         public int VertexCount { get; }
         public int IndexCount { get; }
