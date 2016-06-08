@@ -102,7 +102,7 @@ namespace Pokemon3D.GameCore
             {
                 EnableShadows = GameConfig.ShadowsEnabled,
                 EnableSoftShadows = GameConfig.SoftShadows,
-                ShadowMapSize = 512 // todo: reenable
+                ShadowMapSize = 1024 // todo: reenable
             };
 
             SceneRenderer = SceneRendererFactory.Create(this, new WindowsSceneEffect(Content), renderSettings);

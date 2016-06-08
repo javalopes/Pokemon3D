@@ -119,30 +119,31 @@ float CalculateShadowFactorPCF(float4 lightPosition)
 	if ((saturate(projectedTexCoords).x == projectedTexCoords.x) && (saturate(projectedTexCoords).y == projectedTexCoords.y))
 	{
 		float realDistance = lightPosition.z / lightPosition.w;
-		float2 currentTexcoords;
+		float2 currentTexcoords = projectedTexCoords;
 		float depthStoredInShadowMap;
 
-		[unroll]
-		for (int i = -range; i <= range; i++)
+		if ((realDistance - 2.0f*ShadowScale) > tex2D(ShadowMapSampler, currentTexcoords).x)
 		{
 			[unroll]
-			for (int j = -range; j <= range; j++)
+			for (int i = -range; i <= range; i++)
 			{
-				currentTexcoords = projectedTexCoords;
-				currentTexcoords[0] += (i * ShadowScale);
-				currentTexcoords[1] += (j * ShadowScale);
-
-				depthStoredInShadowMap = tex2D(ShadowMapSampler, currentTexcoords).x;
-
-				if ((realDistance -12.0f*ShadowScale) > depthStoredInShadowMap)
+				[unroll]
+				for (int j = -range; j <= range; j++)
 				{
-					inShadowCount--;
+					currentTexcoords = projectedTexCoords;
+					currentTexcoords[0] += (i * ShadowScale);
+					currentTexcoords[1] += (j * ShadowScale);
+
+					if ((realDistance - 2.0f*ShadowScale) > tex2D(ShadowMapSampler, currentTexcoords).x)
+					{
+						inShadowCount--;
+					}
 				}
 			}
 		}
 	}
 
-	return 0.5f + (inShadowCount / samples);
+	return 0.5f + (inShadowCount / samples) * 0.5f;
 }
 
 //Modulates two colors and preserves alpha value from source color. this is important for transparent objects.

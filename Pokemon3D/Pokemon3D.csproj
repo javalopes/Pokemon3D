@@ -134,7 +134,6 @@
     <Compile Include="UI\NotificationBar.cs" />
     <Compile Include="UI\NotificationItem.cs" />
     <Compile Include="UI\NotificationKind.cs" />
-    <Compile Include="Screens\GameModeLoading\GameModeLoadingResult.cs" />
     <Compile Include="Screens\GameModeLoading\GameModeLoadingScreen.cs" />
     <Compile Include="Screens\MainMenu\MainMenuScreen.cs" />
     <Compile Include="Screens\Overworld\OverworldScreen.cs" />

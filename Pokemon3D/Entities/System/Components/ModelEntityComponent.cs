@@ -129,26 +129,27 @@ namespace Pokemon3D.Entities.System.Components
             base.Update(gameTime);
             _drawableElement.WorldMatrix = Parent.WorldMatrix;
             _drawableElement.Scale = Parent.Scale;
+            _drawableElement.GlobalPosition = Parent.GlobalPosition;
 
             if (_drawableElement.Mesh != null)
             {
-                var box = _drawableElement.Mesh.LocalBounds;
-                box.Min = box.Min * Parent.Scale;
-                box.Max = box.Max * Parent.Scale;
-
                 if (IsBillboard)
                 {
+                    var box = _drawableElement.Mesh.LocalBounds;
+                    box.Min = box.Min * Parent.Scale;
+                    box.Max = box.Max * Parent.Scale;
                     box.Min.X = MathHelper.Min(box.Min.X, box.Min.Z);
                     box.Min.Z = box.Min.X;
                     box.Max.X = MathHelper.Max(box.Max.X, box.Max.Z);
                     box.Max.Z = box.Max.X;
+                    box.Min += Parent.GlobalPosition;
+                    box.Max += Parent.GlobalPosition;
+                    _drawableElement.BoundingBox = box;
                 }
-
-                box.Min += Parent.GlobalPosition;
-                box.Max += Parent.GlobalPosition;
-
-                _drawableElement.BoundingBox = box;
-                _drawableElement.GlobalPosition = Parent.GlobalPosition;
+                else
+                {
+                    _drawableElement.UpdateBounds();
+                }
             }
         }
 

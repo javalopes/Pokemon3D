@@ -15,13 +15,6 @@ namespace Pokemon3D.Screens.GameModeLoading
 {
     class GameModeLoadingScreen : Screen
     {
-        // todo: move this somewhere else...
-        private static readonly Dictionary<ShadowQuality, int> ShadowMapSizeForQuality = new Dictionary<ShadowQuality, int>
-        {
-            { ShadowQuality.Small, 512 },
-            { ShadowQuality.Medium, 1024 },
-            { ShadowQuality.Large, 2048 }
-        };
 
         private bool _loadingFinished;
         private Sprite _pokeBallSprite;

@@ -33,6 +33,14 @@ namespace Pokemon3D.Rendering
             Scale = Vector3.One;
         }
 
+        public void UpdateBounds()
+        {
+            var bounds = Mesh.LocalBounds;
+            var point1 = Vector3.Transform(bounds.Min, WorldMatrix);
+            var point2 = Vector3.Transform(bounds.Max, WorldMatrix);
+            BoundingBox = BoundingBox.CreateFromPoints(new[] { point1, point2 });
+        }
+
         public void EndInitialzing()
         {
             if (!IsInitializing) throw new ApplicationException("DrawableElement is not initializing");
