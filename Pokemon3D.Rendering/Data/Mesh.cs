@@ -19,6 +19,7 @@ namespace Pokemon3D.Rendering.Data
         public int IndexCount { get; }
         public GeometryData GeometryData { get; }
         public BoundingBox LocalBounds { get; private set; }
+        public bool PreventDrawCallCount { get; set; }
 
         public Mesh(GraphicsDevice device, GeometryData data, PrimitiveType primitiveType = PrimitiveType.TriangleList, bool holdGeometryData = true)
         {
@@ -71,7 +72,7 @@ namespace Pokemon3D.Rendering.Data
             device.Indices = _indexBuffer;
 
             device.DrawIndexedPrimitives(_primitiveType, 0, 0, _primitiveCount);
-            RenderStatistics.Instance.DrawCalls++;
+            if (!PreventDrawCallCount) RenderStatistics.Instance.DrawCalls++;
         }
 
         internal Mesh Clone()

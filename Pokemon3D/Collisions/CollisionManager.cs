@@ -53,7 +53,10 @@ namespace Pokemon3D.Collisions
                 }
             };
 
-            _boundingBoxMesh = new Mesh(GameInstance.GraphicsDevice, geometryBox, PrimitiveType.LineList, false);
+            _boundingBoxMesh = new Mesh(GameInstance.GraphicsDevice, geometryBox, PrimitiveType.LineList, false)
+            {
+                PreventDrawCallCount = true
+            };
 
             _lineDrawEffect = GameInstance.Content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
             _worldViewProjection = _lineDrawEffect.Parameters["WorldViewProjection"];

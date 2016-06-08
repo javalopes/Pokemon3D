@@ -120,6 +120,7 @@
     {
       "Entity": {
         "Id": "Dirt1",
+		"IsStatic" : true,
         "Components" : [
 			{
 				"Id" : "VisualModel",
@@ -494,6 +495,7 @@
     {
       "Entity": {
         "Id": "Grass2",
+		"IsStatic" : true,
         "Components" : [
 			{
 				"Id" : "VisualModel",
@@ -549,6 +551,7 @@
     {
       "Entity": {
         "Id": "Grass",
+		"IsStatic" : true,
         "Components" : [
 			{
 				"Id" : "VisualModel",
@@ -836,6 +839,7 @@
     {
       "Entity": {
         "Id": "Dirt2",
+		"IsStatic" : true,
         "Components" : [
 			{
 				"Id" : "VisualModel",
@@ -1065,6 +1069,7 @@
     {
       "Entity": {
         "Id": "Water",
+		"IsStatic" : true,
         "Components" : [
 			{
 				"Id" : "VisualModel",
@@ -1120,6 +1125,7 @@
     {
       "Entity": {
         "Id": "Dirt3",
+		"IsStatic" : true,
          "Components" : [
 			{
 				"Id" : "VisualModel",
