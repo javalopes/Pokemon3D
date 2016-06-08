@@ -1,6 +1,8 @@
 ﻿#if WINDOWS
 
 using System;
+using System.Windows.Forms;
+using Pokemon3D.Common.Diagnostics;
 
 namespace Pokemon3D.GameCore
 {
@@ -9,10 +11,18 @@ namespace Pokemon3D.GameCore
         [STAThread]
         static void Main()
         {
-            //Just running the game here currently:
-            using (GameController game = new GameController())
+            try
             {
-                game.Run();
+                using (var game = new GameController())
+                {
+                    game.Run();
+                }
+            }
+            catch (Exception ex)
+            {
+                GameLogger.Instance.Log(ex);
+                MessageBox.Show("An unhandled exception occurred. Send the log file to the developers.",
+                    "Unhandled exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }

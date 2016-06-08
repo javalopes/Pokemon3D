@@ -99,6 +99,7 @@
       <DependentUpon>ResourceNames.tt</DependentUpon>
     </Compile>
     <Compile Include="Screens\GameMenu\GameMenuScreen.cs" />
+    <Compile Include="Screens\GameMenu\IntroScreen.cs" />
     <Compile Include="Screens\Overworld\InteractionPromptOverworldUIElement.cs" />
     <Compile Include="Screens\Overworld\MessageOverworldUIElement.cs" />
     <Compile Include="Screens\Overworld\OverworldUIElement.cs" />
