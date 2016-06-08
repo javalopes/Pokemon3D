@@ -26,6 +26,7 @@ namespace Pokemon3D.Entities.System
         private Vector3 _forward;
         private bool _isActive;
         private readonly Action<Entity> _onIsInitialized;
+        private Matrix _worldMatrix;
 
         /// <summary>
         /// Parent Entity. Inherits transformation.
@@ -370,9 +371,9 @@ namespace Pokemon3D.Entities.System
                                    Matrix.CreateTranslation(_position);
 
             Parent?.HandleIsDirty();
-            WorldMatrix = Parent == null ? localWorldMatrix : localWorldMatrix * Parent.WorldMatrix;
+            _worldMatrix = Parent == null ? localWorldMatrix : localWorldMatrix * Parent.WorldMatrix;
 
-            GlobalPosition = Parent != null ? new Vector3(WorldMatrix.M41, WorldMatrix.M42, WorldMatrix.M43) : _position;
+            GlobalPosition = Parent != null ? new Vector3(_worldMatrix.M41, _worldMatrix.M42, _worldMatrix.M43) : _position;
 
             var rotationMatrix = Matrix.CreateFromYawPitchRoll(_globalEulerAngles.Y, _globalEulerAngles.X, _globalEulerAngles.Z);
             _right = Vector3.TransformNormal(Vector3.Right, rotationMatrix);
@@ -382,10 +383,27 @@ namespace Pokemon3D.Entities.System
             _isDirty = false;
         }
 
+        public void OnRemoved()
+        {
+            for (var i = 0; i < _components.Count; i++)
+            {
+                _components[i].OnComponentRemove();
+            }
+            _components.Clear();
+        }
+
         /// <summary>
         /// Entity world matrix.
         /// </summary>
-        public Matrix WorldMatrix { get; private set; }
+        public Matrix WorldMatrix
+        {
+            get
+            {
+                HandleIsDirty();
+                return _worldMatrix;
+            }
+            private set { _worldMatrix = value; }
+        }
 
         /// <summary>
         /// Returns a component of this <see cref="Entity"/>.
@@ -429,5 +447,7 @@ namespace Pokemon3D.Entities.System
         {
             return _components.Any(c => c is T);
         }
+
+        public int ComponentCount => _components.Count;
     }
 }

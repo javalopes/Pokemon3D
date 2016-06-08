@@ -308,6 +308,14 @@ namespace Pokemon3D.Rendering.Compositor
             return drawableElement;
         }
 
+        public void RemoveDrawableElement(DrawableElement element)
+        {
+            lock (_lockObject)
+            {
+                if (!_initializingDrawables.Remove(element)) _allDrawables.Remove(element);
+            }
+        }
+
         private void OnEndInitializing(DrawableElement element)
         {
             lock (_lockObject)

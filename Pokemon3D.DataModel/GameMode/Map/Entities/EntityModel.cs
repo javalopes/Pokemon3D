@@ -20,6 +20,9 @@ namespace Pokemon3D.DataModel.GameMode.Map.Entities
         [DataMember(Order = 2)]
         public EntityComponentModel[] Components;
 
+        [DataMember(Order = 3)]
+        public bool IsStatic;
+
         public override object Clone()
         {
             var clone = (EntityModel)MemberwiseClone();

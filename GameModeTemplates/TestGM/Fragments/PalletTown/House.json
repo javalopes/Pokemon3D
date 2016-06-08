@@ -4,6 +4,7 @@
     {
       "Entity": {
         "Id": "HouseWall",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -83,6 +84,7 @@
 	{
       "Entity": {
         "Id": "HouseWindow",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -126,6 +128,7 @@
 	{
       "Entity": {
         "Id": "Door",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -169,6 +172,7 @@
 	{
       "Entity": {
         "Id": "HouseWall2",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -248,6 +252,7 @@
 	{
       "Entity": {
         "Id": "Window2",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -291,6 +296,7 @@
 	{
       "Entity": {
         "Id": "Window3",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -334,6 +340,7 @@
 	{
       "Entity": {
         "Id": "Roof",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
@@ -43,6 +44,8 @@ namespace Pokemon3D.Entities
         {
             var positions = importModel.Positions;
 
+            var entitiesToMerge = new List<Entity>();
+
             foreach (var position in positions)
             {
                 var fragmentOffset = position.GetVector3();
@@ -51,17 +54,21 @@ namespace Pokemon3D.Entities
                 {
                     foreach (var entityPlacing in entityDefinition.Placing)
                     {
-                        PlaceEntities(entityDefinition, entityPlacing, fragmentOffset);
+                        entitiesToMerge.AddRange(PlaceEntities(entityDefinition, entityPlacing, fragmentOffset));
                     }
                 }
+
+                _world.EntitySystem.MergeStaticVisualEntities(entitiesToMerge);
+                entitiesToMerge.Clear();
             }
             _onFinished.Invoke();
         }
 
-        private void CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position)
+        private Entity CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position)
         {
             var entity = _world.EntitySystem.CreateEntity(true);
             entity.Id = entityModel.Id;
+            entity.IsStatic = entityModel.IsStatic;
 
             entity.Scale = entityPlacing.Scale?.GetVector3() ?? Vector3.One;
 
@@ -100,10 +107,13 @@ namespace Pokemon3D.Entities
                     entity.AddComponent(EntityComponentFactory.GetComponent(entity, compModel));
                 }
             }
+
+            return entity;
         }
 
-        private void PlaceEntities(EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 offset)
+        private List<Entity> PlaceEntities(EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 offset)
         {
+            var entities = new List<Entity>();
             for (var x = 1.0f; x <= entityPlacing.Size.X; x += entityPlacing.Steps.X)
             {
                 for (var y = 1.0f; y <= entityPlacing.Size.Y; y += entityPlacing.Steps.Y)
@@ -112,10 +122,11 @@ namespace Pokemon3D.Entities
                     {
                         var position = entityPlacing.Position.GetVector3() + new Vector3(x, y, z) + offset;
 
-                        CreateEntityFromDataModel(entityDefinition.Entity, entityPlacing, position);
+                        entities.Add(CreateEntityFromDataModel(entityDefinition.Entity, entityPlacing, position));
                     }
                 }
             }
+            return entities;
         }
 
     }

@@ -1,8 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.Entities.System.Generators;
 using System.Collections.Generic;
 using System.Linq;
+using Assimp;
+using Pokemon3D.Entities.System.Components;
+using Pokemon3D.GameCore;
+using Pokemon3D.Rendering.Data;
+using PrimitiveType = Microsoft.Xna.Framework.Graphics.PrimitiveType;
 
 namespace Pokemon3D.Entities.System
 {
@@ -122,7 +128,11 @@ namespace Pokemon3D.Entities.System
         {
             lock (_lockObject)
             {
-                _entities.Remove(entity);
+                if (!_entitiesToInitialize.Remove(entity))
+                {
+                    _entities.Remove(entity);
+                }
+                entity.OnRemoved();
             }
         }
 
@@ -135,6 +145,48 @@ namespace Pokemon3D.Entities.System
                     _entities[i].Update(gameTime);
                 }
             }
+        }
+
+        public void MergeStaticVisualEntities(IList<Entity> entitiesToMerge)
+        {
+            var entitiesByCategory = entitiesToMerge.Where(
+                e => e.IsStatic && e.ComponentCount == 1 && e.HasComponent<ModelEntityComponent>())
+                .GroupBy(e => e.GetComponent<ModelEntityComponent>().Material.CompareId);
+
+            foreach (var entityListToMerge in entitiesByCategory)
+            {
+                if (entityListToMerge.Count() == 1) continue;
+
+                var entity = CreateEntity(true);
+
+                var mergeData = entityListToMerge.Select(ConvertEntityToGeometryMerge);
+
+                var mergedGeometry = GeometryData.Merge(mergeData);
+
+                var mergedMesh = new Rendering.Data.Mesh(GameController.Instance.GraphicsDevice, mergedGeometry);
+                var material = entityListToMerge.First().GetComponent<ModelEntityComponent>().Material;
+                material.TexcoordOffset = Vector2.Zero;
+                material.TexcoordScale = Vector2.One;
+
+                entity.AddComponent(new ModelEntityComponent(entity, mergedMesh, material, false));
+
+                foreach (var entityToRemove in entityListToMerge)
+                {
+                    RemoveEntity(entityToRemove);
+                }
+            }
+        }
+
+        private static GeometryDataMerge ConvertEntityToGeometryMerge(Entity entity)
+        {
+            var comp = entity.GetComponent<ModelEntityComponent>();
+            return new GeometryDataMerge
+            {
+                Data = comp.Mesh.GeometryData,
+                TextureOffset = comp.Material.TexcoordOffset,
+                TextureScale = comp.Material.TexcoordScale,
+                Transformation = entity.WorldMatrix
+            };
         }
     }
 }

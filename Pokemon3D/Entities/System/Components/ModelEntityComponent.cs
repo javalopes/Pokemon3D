@@ -15,10 +15,11 @@ namespace Pokemon3D.Entities.System.Components
     class ModelEntityComponent : EntityComponent
     {
         private readonly List<TextureRegion> _regions;
-        private readonly DrawableElement _drawableElement;
+        private DrawableElement _drawableElement;
 
         public List<TextureRegion> Regions => _regions;
         public Material Material => _drawableElement.Material;
+        public Mesh Mesh => _drawableElement.Mesh;
 
         private bool IsBillboard
         {
@@ -96,6 +97,12 @@ namespace Pokemon3D.Entities.System.Components
         public override void OnInitialized()
         {
             _drawableElement.EndInitialzing();
+        }
+
+        public override void OnComponentRemove()
+        {
+            GameInstance.SceneRenderer.RemoveDrawableElement(_drawableElement);
+            _drawableElement = null;
         }
 
         public void SetTexture(int index)

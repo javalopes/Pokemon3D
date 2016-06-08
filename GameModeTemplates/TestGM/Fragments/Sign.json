@@ -5,6 +5,7 @@
             "Entity": {
 				"Id" : "SignFront",
 				"Visible" : true,
+				"IsStatic" : true,
 				"Components" : [
 					{
 						"Id" : "VisualModel",
@@ -72,6 +73,7 @@
         {
             "Entity": {
                 "Id": "SignBack",
+				"IsStatic" : true,
                 "Components": [
                     {
 						"Id" : "VisualModel",
@@ -135,6 +137,7 @@
         {
             "Entity": {
                 "Id": "SignSide",
+				"IsStatic" : true,
                 "Components": [
                     {
 						"Id" : "VisualModel",
@@ -227,6 +230,7 @@
         {
             "Entity": {
                 "Id": "SignTopBottom",
+				"IsStatic" : true,
                 "Components": [
                     {
 						"Id" : "VisualModel",
@@ -290,6 +294,7 @@
         {
             "Entity": {
                 "Id": "PostSide",
+				"IsStatic" : true,
                 "Components": [
                     {
 						"Id" : "VisualModel",
@@ -440,6 +445,7 @@
         {
             "Entity": {
                 "Id": "PostTop",
+				"IsStatic" : true,
                  "Components": [
                     {
 						"Id" : "VisualModel",

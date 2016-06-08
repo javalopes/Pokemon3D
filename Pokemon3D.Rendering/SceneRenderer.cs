@@ -15,6 +15,8 @@ namespace Pokemon3D.Rendering
 
         DrawableElement CreateDrawableElement(bool initializing);
 
+        void RemoveDrawableElement(DrawableElement element);
+
         void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize);
 
         Camera CreateCamera();
