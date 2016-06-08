@@ -1,14 +1,11 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.Entities.System.Generators;
 using System.Collections.Generic;
 using System.Linq;
-using Assimp;
 using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.Data;
-using PrimitiveType = Microsoft.Xna.Framework.Graphics.PrimitiveType;
 
 namespace Pokemon3D.Entities.System
 {
@@ -71,6 +68,11 @@ namespace Pokemon3D.Entities.System
             entity.Position = position;
 
             return entity;
+        }
+
+        public int EntityCount
+        {
+            get { lock (_lockObject) return _entities.Count; }
         }
 
         public Entity CreateEntity(bool isInitializing = false)

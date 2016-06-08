@@ -15,7 +15,7 @@ namespace Pokemon3D.Entities
         public Map ActiveMap { get; private set; }
         public Player Player { get; private set; }
         public EntitySystem EntitySystem { get; }
-        
+
         public World()
         {
             EntitySystem = new EntitySystem();

@@ -4,6 +4,7 @@
     {
       "Entity": {
         "Id": "PostSide",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -154,6 +155,7 @@
     {
       "Entity": {
         "Id": "PostTop",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",

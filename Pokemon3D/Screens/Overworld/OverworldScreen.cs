@@ -242,10 +242,10 @@ namespace Pokemon3D.Screens.Overworld
 
             const int spacing = 5;
             var elementHeight = _debugSpriteFont.LineSpacing + spacing;
-            var height = elementHeight * 2 + spacing;
+            var height = elementHeight * 3 + spacing;
             const int width = 180;
 
-            var startPosition = new Vector2(0,0);
+            var startPosition = new Vector2(0,GameInstance.ScreenBounds.Height-height);
 
             GameInstance.SpriteBatch.Begin();
             GameInstance.ShapeRenderer.DrawRectangle((int)startPosition.X,
@@ -259,6 +259,8 @@ namespace Pokemon3D.Screens.Overworld
             GameInstance.SpriteBatch.DrawString(_debugSpriteFont, $"Average DrawTime[ms]: {renderStatistics.AverageDrawTime:0.00}", startPosition, Color.White);
             startPosition.Y += elementHeight;
             GameInstance.SpriteBatch.DrawString(_debugSpriteFont, $"Total Drawcalls: {renderStatistics.DrawCalls}", startPosition, Color.White);
+            startPosition.Y += elementHeight;
+            GameInstance.SpriteBatch.DrawString(_debugSpriteFont, $"Entity Count: {ActiveWorld.EntitySystem.EntityCount}", startPosition, Color.White);
             GameInstance.SpriteBatch.End();
         }
 

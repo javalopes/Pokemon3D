@@ -4,6 +4,7 @@
 	{
       "Entity": {
         "Id": "LabWall",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -83,6 +84,7 @@
 	{
       "Entity": {
         "Id": "Door",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -126,6 +128,7 @@
 	{
       "Entity": {
         "Id": "Window",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -169,6 +172,7 @@
 	{
       "Entity": {
         "Id": "LabWall2",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -230,6 +234,7 @@
 	{
       "Entity": {
         "Id": "Window2",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -282,6 +287,7 @@
 	{
       "Entity": {
         "Id": "Window2",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -334,6 +340,7 @@
 	{
       "Entity": {
         "Id": "Window2",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -377,6 +384,7 @@
 	{
       "Entity": {
         "Id": "Window2",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
@@ -420,6 +428,7 @@
 	{
       "Entity": {
         "Id": "Window2",
+		"IsStatic" : true,
         "Components": [
           {
 						"Id" : "VisualModel",
