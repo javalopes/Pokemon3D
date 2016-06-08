@@ -89,15 +89,15 @@ float CalculateShadowFactor(float4 lightPosition)
 	projectedTexCoords[0] = lightPosition.x / lightPosition.w / 2.0f + 0.5f;
 	projectedTexCoords[1] = -lightPosition.y / lightPosition.w / 2.0f + 0.5f;
 
-	float shadowFactor = 0.5f;
+	float shadowFactor = 1.0f;
 
 	if ((saturate(projectedTexCoords).x == projectedTexCoords.x) && (saturate(projectedTexCoords).y == projectedTexCoords.y))
 	{
 		float depthStoredInShadowMap = tex2D(ShadowMapSampler, projectedTexCoords).r;
 		float realDistance = lightPosition.z / lightPosition.w;
-		if ((realDistance - 2.0f*ShadowScale) <= depthStoredInShadowMap)
+		if ((realDistance - 2.0f*ShadowScale) > depthStoredInShadowMap)
 		{
-			shadowFactor = 1.0f;
+			shadowFactor = 0.5f;
 		}
 	}
 
