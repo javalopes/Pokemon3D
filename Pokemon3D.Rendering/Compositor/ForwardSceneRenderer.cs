@@ -3,9 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Microsoft.Xna.Framework.Input;
 
 // ReSharper disable ForCanBeConvertedToForeach
 
@@ -15,6 +13,7 @@ namespace Pokemon3D.Rendering.Compositor
     {
         private readonly object _lockObject = new object();
 
+        private readonly List<Light> _allLights; 
         private readonly List<DrawableElement> _initializingDrawables;
         private readonly List<DrawableElement> _allDrawables;
         private readonly List<Camera> _allCameras;
@@ -45,7 +44,7 @@ namespace Pokemon3D.Rendering.Compositor
             _allDrawables = new List<DrawableElement>();
             _initializingDrawables = new List<DrawableElement>();
             _allCameras = new List<Camera>();
-            Light = new Light();
+            _allLights = new List<Light>();
 
             _directionalLightShadowMap = new RenderTarget2D(_device, RenderSettings.ShadowMapSize, RenderSettings.ShadowMapSize, false, SurfaceFormat.Single, DepthFormat.Depth24);
 
@@ -194,40 +193,46 @@ namespace Pokemon3D.Rendering.Compositor
         {
             _device.Viewport = camera.Viewport;
 
-            DrawShadowCastersToDepthmap(camera);
+            var light = _allLights.FirstOrDefault();
+
+            if (light != null) DrawShadowCastersToDepthmap(light, camera);
             HandleCameraClearOrSkyPass(camera);
 
             _sceneEffect.ShadowMap = _directionalLightShadowMap;
             _sceneEffect.ShadowScale = 1.0f/_directionalLightShadowMap.Width;
             _sceneEffect.View = camera.ViewMatrix;
             _sceneEffect.Projection = camera.ProjectionMatrix;
-            _sceneEffect.LightDirection = Light.Direction;
-            _sceneEffect.AmbientIntensity = Light.AmbientIntensity;
-            _sceneEffect.DiffuseIntensity = Light.DiffuseIntensity;
 
+            if (light != null)
+            {
+                _sceneEffect.LightDirection = light.Direction;
+                _sceneEffect.AmbientIntensity = light.AmbientIntensity;
+                _sceneEffect.DiffuseIntensity = light.DiffuseIntensity;
+            }
+            
             for (var i = 0; i < _renderQueues.Count; i++)
             {
                 var renderQueue = _renderQueues[i];
                 if (!renderQueue.IsEnabled) continue;
-                renderQueue.Draw(camera, Light, camera.GlobalEulerAngles.Y);
+                renderQueue.Draw(camera, camera.GlobalEulerAngles.Y);
             }
         }
 
-        private void DrawShadowCastersToDepthmap(Camera camera)
+        private void DrawShadowCastersToDepthmap(Light light, Camera camera)
         {
             if (!RenderSettings.EnableShadows) return;
 
-            Light.UpdateLightViewMatrixForCamera(camera, _shadowCastersObjectsSolid);
+            light.UpdateLightViewMatrixForCamera(camera, _shadowCastersObjectsSolid);
             _sceneEffect.ShadowMap = null;
-            _sceneEffect.LightViewProjection = Light.LightViewMatrix;
+            _sceneEffect.LightViewProjection = light.LightViewMatrix;
 
             var oldRenderTargets = GameContext.GraphicsDevice.GetRenderTargets();
             GameContext.GraphicsDevice.SetRenderTarget(_directionalLightShadowMap);
             GameContext.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             
-            var angle = (float)Math.Atan2(Light.Direction.Z, Light.Direction.X) - MathHelper.Pi/4*3;
-            _shadowCasterQueueSolid.Draw(camera, Light, angle);
-           _shadowCasterQueueTransparent.Draw(camera, Light, angle);
+            var angle = (float)Math.Atan2(light.Direction.Z, light.Direction.X) - MathHelper.Pi/4*3;
+            _shadowCasterQueueSolid.Draw(camera, angle);
+           _shadowCasterQueueTransparent.Draw(camera, angle);
 
             GameContext.GraphicsDevice.SetRenderTargets(oldRenderTargets);
         }
@@ -310,6 +315,21 @@ namespace Pokemon3D.Rendering.Compositor
             return drawableElement;
         }
 
+        public Light CreateDirectionalLight(Vector3 direction)
+        {
+            Light light;
+            lock (_lockObject)
+            {
+                light = new Light
+                {
+                    Direction = direction,
+                    Type = LightType.Directional
+                };
+                _allLights.Add(light);
+            }
+            return light;
+        }
+
         public void RemoveDrawableElement(DrawableElement element)
         {
             lock (_lockObject)
@@ -343,11 +363,6 @@ namespace Pokemon3D.Rendering.Compositor
         /// Ambient Light for all Objects. Default is white.
         /// </summary>
         public Vector4 AmbientLight { get; set; }
-
-        /// <summary>
-        /// Currently single light just supported.
-        /// </summary>
-        public Light Light { get; set; }
 
         public void LateDebugDraw3D()
         {

@@ -1,6 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Rendering.Compositor;
+﻿using System;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace Pokemon3D.Rendering
@@ -29,6 +28,11 @@ namespace Pokemon3D.Rendering
         /// For light Type Position. Setting light position in world.
         /// </summary>
         public Vector3 Position { get; set; }
+
+        /// <summary>
+        /// Range of point light in world units.
+        /// </summary>
+        public float Range { get; set; }
 
         /// <summary>
         /// Light Type.
@@ -61,6 +65,21 @@ namespace Pokemon3D.Rendering
         /// <param name="shadowCasters">All Nodes casting a shadow for the scene.</param>
         internal void UpdateLightViewMatrixForCamera(Camera camera, IList<DrawableElement> shadowCasters)
         {
+            switch (Type)
+            {
+                case LightType.Directional:
+                    UpdateLightMatrixForDirectionalLight(camera, shadowCasters);
+                    break;
+                case LightType.Point:
+                    throw new NotImplementedException();
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+        }
+
+        private void UpdateLightMatrixForDirectionalLight(Camera camera, IList<DrawableElement> shadowCasters)
+        {
             var directionNormalized = Vector3.Normalize(Direction);
             var lightViewMatrix = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.Up);
 
@@ -88,8 +107,8 @@ namespace Pokemon3D.Rendering
 
             var cameraPosition = sphere.Center - directionNormalized * sphere.Radius;
             var cameraPositionTarget = cameraPosition + directionNormalized;
-                
-            LightViewMatrix = Matrix.CreateLookAt(cameraPosition, cameraPositionTarget, Vector3.Up) * Matrix.CreateOrthographic(width, height, 0.1f, sphere.Radius*2);
+
+            LightViewMatrix = Matrix.CreateLookAt(cameraPosition, cameraPositionTarget, Vector3.Up) * Matrix.CreateOrthographic(width, height, 0.1f, sphere.Radius * 2);
         }
     }
 }

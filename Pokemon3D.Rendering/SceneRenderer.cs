@@ -15,6 +15,8 @@ namespace Pokemon3D.Rendering
 
         DrawableElement CreateDrawableElement(bool initializing);
 
+        Light CreateDirectionalLight(Vector3 direction);
+
         void RemoveDrawableElement(DrawableElement element);
 
         void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize);
@@ -25,11 +27,6 @@ namespace Pokemon3D.Rendering
         /// Ambient Light for all Objects. Default is white.
         /// </summary>
         Vector4 AmbientLight { get; set; }
-
-        /// <summary>
-        /// Currently single light just supported.
-        /// </summary>
-        Light Light { get; set; }
 
         void LateDebugDraw3D();
     }

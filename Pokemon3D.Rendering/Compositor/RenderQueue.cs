@@ -31,7 +31,7 @@ namespace Pokemon3D.Rendering.Compositor
             IsEnabled = true;
         }
 
-        public void Draw(Camera camera, Light light, float yRotationForBillboards)
+        public void Draw(Camera camera, float yRotationForBillboards)
         {
             GameContext.GraphicsDevice.BlendState = BlendState;
             GameContext.GraphicsDevice.DepthStencilState = DepthStencilState;

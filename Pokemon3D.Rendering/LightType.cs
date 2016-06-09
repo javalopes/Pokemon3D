@@ -9,5 +9,10 @@ namespace Pokemon3D.Rendering
         /// Light with a direction.
         /// </summary>
         Directional,
+
+        /// <summary>
+        /// Light with 3D World position and Range.
+        /// </summary>
+        Point,
     }
 }

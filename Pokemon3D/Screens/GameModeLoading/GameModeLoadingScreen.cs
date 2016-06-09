@@ -4,8 +4,6 @@ using Pokemon3D.Screens.Transitions;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.GUI;
 using Pokemon3D.Rendering.Compositor;
-using Pokemon3D.DataModel.GameCore;
-using System.Collections.Generic;
 using Pokemon3D.Entities;
 using Pokemon3D.Screens.Overworld;
 using Pokemon3D.Common.Extensions;
@@ -38,9 +36,10 @@ namespace Pokemon3D.Screens.GameModeLoading
             renderer.AddPostProcessingStep(new HorizontalBlurPostProcessingStep());
             renderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
             renderer.EnablePostProcessing = false;
-            renderer.Light.Direction = new Vector3(-1.5f, -1.0f, -0.5f);
-            renderer.Light.AmbientIntensity = 0.5f;
-            renderer.Light.DiffuseIntensity = 0.8f;
+
+            var mainLight = renderer.CreateDirectionalLight(new Vector3(-1.5f, -1.0f, -0.5f));
+            mainLight.AmbientIntensity = 0.5f;
+            mainLight.DiffuseIntensity = 0.8f;
             renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
 
             var gameModes = GameInstance.GameModeManager.GetGameModeInfos();
