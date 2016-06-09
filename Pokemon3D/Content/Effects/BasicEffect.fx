@@ -45,7 +45,7 @@ sampler2D LinearSampler = sampler_state {
 
 struct VertexShaderInput
 {
-	float4 Position : SV_Position0;
+	float4 Position : POSITION;
 	float2 TexCoord : TEXCOORD0;
 	float3 Normal   : NORMAL0;
 };
@@ -59,7 +59,7 @@ struct VertexShaderOutput
 
 struct VertexShaderShadowReceiverInput
 {
-	float4 Position : SV_Position0;
+	float4 Position : POSITION;
 	float2 TexCoord : TEXCOORD0;
 	float3 Normal   : NORMAL0;
 };
@@ -327,7 +327,7 @@ technique LitNoTextureShadowReceiverPCF
 
 struct VSInputShadowCaster
 {
-	float4 Position : SV_POSITION;
+	float4 Position : POSITION;
 };
 
 struct VSOutputShadowReceiver
@@ -357,7 +357,7 @@ float4 ShadowCasterPS(VSOutputShadowReceiver input) : SV_TARGET
 
 struct VSInputShadowCasterTransparent
 {
-	float4 Position : SV_POSITION;
+	float4 Position : POSITION;
 	float2 Texcoord: TEXCOORD0;
 };
 
@@ -420,7 +420,7 @@ technique ShadowCasterTransparent
 
 struct UnlitInputVS
 {
-	float4 Position : SV_Position0;
+	float4 Position : POSITION;
 	float2 TexCoord : TEXCOORD0;
 	float3 Normal   : NORMAL0;
 };

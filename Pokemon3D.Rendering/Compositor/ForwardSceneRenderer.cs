@@ -291,10 +291,12 @@ namespace Pokemon3D.Rendering.Compositor
 
         public DrawableElement CreateDrawableElement(bool initializing)
         {
-            var drawableElement = new DrawableElement(initializing, OnEndInitializing);
+            DrawableElement drawableElement;
 
             lock (_lockObject)
             {
+                drawableElement = new DrawableElement(initializing, OnEndInitializing);
+
                 if (initializing)
                 {
                     _initializingDrawables.Add(drawableElement);
