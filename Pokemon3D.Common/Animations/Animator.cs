@@ -47,12 +47,13 @@ namespace Pokemon3D.Common.Animations
         /// Sets current animation and starts it.
         /// </summary>
         /// <param name="name">Name of animation</param>
-        public void SetAnimation(string name)
+        /// <param name="playReversed">Plays the animation backwards.</param>
+        public void SetAnimation(string name, bool playReversed = false)
         {
             if (_currentAnimationName == name && CurrentAnimation != null && !CurrentAnimation.IsFinished) return;
             _currentAnimationName = name;
             CurrentAnimation = _animations[name];
-            CurrentAnimation.Start();
+            CurrentAnimation.Start(playReversed);
             AnimationStarted?.Invoke(name);
         }
 

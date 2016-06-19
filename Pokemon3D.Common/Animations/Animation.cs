@@ -7,6 +7,8 @@ namespace Pokemon3D.Common.Animations
     /// </summary>
     public abstract class Animation
     {
+        public bool PlayReversed { get; private set; }
+
         /// <summary>
         /// Creates a new animation.
         /// </summary>
@@ -31,12 +33,13 @@ namespace Pokemon3D.Common.Animations
         /// <summary>
         /// Starts the current animation.
         /// </summary>
-        public void Start()
+        public void Start(bool playReversed = false)
         {
             IsFinished = false;
-            ElapsedSeconds = 0.0f;
+            PlayReversed = playReversed;
+            ElapsedSeconds = PlayReversed ? DurationSeconds : 0.0f;
         }
-
+        
         /// <summary>
         /// Updates the current animation.
         /// </summary>
@@ -44,11 +47,24 @@ namespace Pokemon3D.Common.Animations
         public void Update(float elapsedSeconds)
         {
             if (IsFinished) return;
-            ElapsedSeconds += elapsedSeconds;
-            if (ElapsedSeconds >= DurationSeconds)
+
+            if (PlayReversed)
             {
-                IsFinished = true;
-                ElapsedSeconds = DurationSeconds;
+                ElapsedSeconds -= elapsedSeconds;
+                if (ElapsedSeconds < 0.0f)
+                {
+                    IsFinished = true;
+                    ElapsedSeconds = 0.0f;
+                }
+            }
+            else
+            {
+                ElapsedSeconds += elapsedSeconds;
+                if (ElapsedSeconds >= DurationSeconds)
+                {
+                    IsFinished = true;
+                    ElapsedSeconds = DurationSeconds;
+                }
             }
             OnUpdate();
         }

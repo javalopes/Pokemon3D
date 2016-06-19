@@ -4,7 +4,7 @@ namespace Pokemon3D.Rendering.UI
 {
     public abstract class UiAnimation : Common.Animations.Animation
     {
-        public UiElement Owner { get; set; }
+        public virtual UiElement Owner { get; set; }
 
         protected UiAnimation(float durationSeconds) : base(durationSeconds, false)
         {

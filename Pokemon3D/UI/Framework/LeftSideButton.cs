@@ -29,7 +29,11 @@ namespace Pokemon3D.UI.Framework
             Bounds = bounds;
             _onClick = onClick;
 
-            HoverAnimation = new UiColorAnimation(0.5f, new Color(255, 255, 255), new Color(100, 193, 238));
+            HoverAnimation = new UiMultiAnimation(0.2f, new UiAnimation[]
+            {
+                new UiColorAnimation(0.5f, new Color(255, 255, 255), new Color(100, 193, 238)),
+                new UiOffsetAnimation(0.5f, Vector2.Zero, new Vector2(50,0))
+            }); 
         }
 
         public override void Update(GameTime time)
@@ -49,7 +53,7 @@ namespace Pokemon3D.UI.Framework
         public override void Draw(SpriteBatch spriteBatch)
         {
             DrawTexture(spriteBatch);
-            spriteBatch.DrawString(_font, Text, new Vector2(_position.X + 24, _position.Y + 5), Color.Black);
+            spriteBatch.DrawString(_font, Text, new Vector2(_position.X + 24, _position.Y + 5) + Offset, Color.Black);
         }
     }
 }

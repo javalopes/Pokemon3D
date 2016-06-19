@@ -69,6 +69,9 @@ namespace Pokemon3D.Rendering.UI
                 case "Leave":
                     State = UiState.Inactive;
                     break;
+                case "Hover":
+                    State = UiState.Hover;
+                    break;
             }
         }
 
@@ -116,7 +119,7 @@ namespace Pokemon3D.Rendering.UI
             if (State != UiState.Hover) return;
             if (HoverAnimation != null)
             {
-                _animator.SetAnimation("Hover");
+                _animator.SetAnimation("Hover", true);
             }
             else
             {
@@ -131,7 +134,10 @@ namespace Pokemon3D.Rendering.UI
 
         protected void DrawTexture(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, Bounds, SourceRectangle, Color * Alpha, 0.0f, Vector2.Zero, SpriteEffects.None, 0);
+            var bounds = Bounds;
+            bounds.X += (int)Offset.X;
+            bounds.Y += (int)Offset.Y;
+            spriteBatch.Draw(_texture, bounds, SourceRectangle, Color * Alpha, 0.0f, Vector2.Zero, SpriteEffects.None, 0);
         }
     }
 }
