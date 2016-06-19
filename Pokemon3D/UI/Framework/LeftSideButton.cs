@@ -2,115 +2,54 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Input;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Pokemon3D.Rendering.UI;
 using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
-    class LeftSideButton : Control
+    class LeftSideButton : UiElement
     {
-        private Texture2D _texture;
-        private SpriteFont _font;
-
+        private readonly SpriteFont _font;
         private Vector2 _position;
-        private Action<Control> _onClick;
+        private readonly Action<LeftSideButton> _onClick;
 
         public string Text { get; set; }
 
-        private ColorTransition _colorStepper;
-        private OffsetTransition _offsetStepper;
-
-        public bool Enabled { get; set; } = true;
-
-        public LeftSideButton(string text, Vector2 position, Action<Control> onClick)
+        public LeftSideButton(string text, Vector2 position, Action<LeftSideButton> onClick) : base(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank))
         {
-            _texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
             _font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
 
             Text = text;
             _position = position;
+            var bounds = Bounds;
+            bounds.X = (int) position.X;
+            bounds.Y = (int) position.Y;
+            bounds.Width = 200;
+            bounds.Height = 38;
+            Bounds = bounds;
             _onClick = onClick;
 
-            _colorStepper = new ColorTransition(new Color(255, 255, 255), 0.5f);
-            _offsetStepper = new OffsetTransition(0f, 0.5f);
+            HoverAnimation = new UiColorAnimation(0.5f, new Color(255, 255, 255), new Color(100, 193, 238));
         }
 
-        public override Rectangle GetBounds()
+        public override void Update(GameTime time)
         {
-            return new Rectangle((int)(_position.X + _offsetStepper.Offset), (int)_position.Y, 200, 38);
-        }
+            base.Update(time);
 
-        public override void Update()
-        {
-            base.Update();
-
-            if (_onClick != null && Selected && Group != null && Group.Active)
+            if (_onClick != null)
             {
                 if (GameInstance.InputSystem.Accept(AcceptInputTypes.Buttons) ||
-                    GetBounds().Contains(GameInstance.InputSystem.Mouse.Position) && GameInstance.InputSystem.Accept(AcceptInputTypes.LeftClick))
+                    Bounds.Contains(GameInstance.InputSystem.Mouse.Position) && GameInstance.InputSystem.Accept(AcceptInputTypes.LeftClick))
                 {
                     _onClick(this);
                 }
             }
-
-            _offsetStepper.Update();
-            _colorStepper.Update();
-        }
-
-        public override void Select()
-        {
-            base.Select();
-
-            TriggerSelected();
-        }
-
-        public override void Deselect()
-        {
-            base.Deselect();
-
-            TriggerDeselected();
-        }
-
-        public override void GroupActivated()
-        {
-            base.GroupActivated();
-
-            if (Selected)
-                TriggerSelected();
-        }
-
-        public override void GroupDeactivated()
-        {
-            TriggerDeselected();
-        }
-
-        private void TriggerSelected()
-        {
-            _offsetStepper.TargetOffset = 26;
-            if (Enabled)
-                _colorStepper.TargetColor = new Color(100, 193, 238);
-            else
-                _colorStepper.TargetColor = new Color(210, 210, 210);
-        }
-
-        private void TriggerDeselected()
-        {
-            _offsetStepper.TargetOffset = 0;
-            _colorStepper.TargetColor = new Color(255, 255, 255);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, GetBounds(), _colorStepper.Color);
-            spriteBatch.DrawString(_font, Text, new Vector2(_position.X + _offsetStepper.Offset + 24, _position.Y + 5), Color.Black);
-        }
-
-        public override void SetPosition(Vector2 position)
-        {
-            _position = position;
+            DrawTexture(spriteBatch);
+            spriteBatch.DrawString(_font, Text, new Vector2(_position.X + 24, _position.Y + 5), Color.Black);
         }
     }
 }

@@ -117,6 +117,7 @@
     <Compile Include="UI\Framework\ControlGroup.cs" />
     <Compile Include="UI\Framework\ControlGroupOrientation.cs" />
     <Compile Include="UI\Framework\DefaultControlGroup.cs" />
+    <Compile Include="UI\Framework\DefaultControlGroup2.cs" />
     <Compile Include="UI\Framework\Dialogs\ModalDialog.cs" />
     <Compile Include="UI\Framework\Dialogs\SelectionDialog.cs" />
     <Compile Include="UI\Framework\HexagonBackground.cs" />

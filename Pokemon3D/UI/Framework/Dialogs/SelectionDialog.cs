@@ -26,7 +26,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
 
         public SelectionDialog(string title, string text, LeftSideButton[] buttons)
         {
-            AddRange(buttons);
+            //AddRange(buttons);
 
             _batch = new SpriteBatch(GameInstance.GraphicsDevice);
             _renderer = new ShapeRenderer(_batch);

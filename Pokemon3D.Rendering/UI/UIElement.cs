@@ -5,7 +5,7 @@ using Pokemon3D.Common.Animations;
 
 namespace Pokemon3D.Rendering.UI
 {
-    public abstract class UiElement
+    public abstract class UiElement : UiBaseElement
     {
         private readonly Animator _animator;
         private UiAnimation _enterAnimation;
@@ -15,24 +15,22 @@ namespace Pokemon3D.Rendering.UI
 
         public Rectangle Bounds { get; protected set; }
         public int TabIndex { get; set; }
-        public Color Color { get; set; }
-        public Vector2 Offset { get; set; }
-        public float Alpha { get; set; }
-        public UiState State { get; private set; }
         public Rectangle SourceRectangle { get; set; }
 
         private void UpdateAnimation(string name, ref UiAnimation backingField, UiAnimation newValue)
         {
             if (backingField == newValue) return;
             _animator.RemoveAnimation(name);
-            _enterAnimation = newValue;
-            _animator.AddAnimation(name, _enterAnimation);
+            backingField = newValue;
+            backingField.Owner = this;
+            _animator.AddAnimation(name, backingField);
         }
 
         protected UiElement(Texture2D texture, Rectangle? sourceRectangle = null)
         {
             _texture = texture;
             SourceRectangle = sourceRectangle.GetValueOrDefault(_texture.Bounds);
+            Bounds = SourceRectangle;
             Alpha = 1.0f;
             Color = Color.White;
             TabIndex = 0;
@@ -41,15 +39,6 @@ namespace Pokemon3D.Rendering.UI
             _animator = new Animator();
             _animator.AnimationFinished += OnAnimationFinished;
             State = UiState.Inactive;
-        }
-
-        public void ScaleUniformToHeight(int height)
-        {
-            var percentageHeight = height/(float) SourceRectangle.Height;
-            var bounds = Bounds;
-            bounds.Height = height;
-            bounds.Width = (int) Math.Round(SourceRectangle.Width*percentageHeight, MidpointRounding.AwayFromZero);
-            Bounds = bounds;
         }
 
         public UiAnimation EnterAnimation
@@ -83,7 +72,7 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
-        public virtual void Show()
+        public override void Show()
         {
             if (EnterAnimation != null)
             {
@@ -96,7 +85,7 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
-        public virtual void Hide()
+        public override void Hide()
         {
             if (LeaveAnimation != null)
             {
@@ -109,7 +98,33 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
-        public virtual void Update(GameTime time)
+        public override void Hover()
+        {
+            if (State != UiState.Active) return;
+            if (HoverAnimation != null)
+            {
+                _animator.SetAnimation("Hover");
+            }
+            else
+            {
+                State = UiState.Hover;
+            }
+        }
+
+        public override void Unhover()
+        {
+            if (State != UiState.Hover) return;
+            if (HoverAnimation != null)
+            {
+                _animator.SetAnimation("Hover");
+            }
+            else
+            {
+                State = UiState.Active;
+            }
+        }
+
+        public override void Update(GameTime time)
         {
             _animator.Update(time);
         }
@@ -118,7 +133,5 @@ namespace Pokemon3D.Rendering.UI
         {
             spriteBatch.Draw(_texture, Bounds, SourceRectangle, Color * Alpha, 0.0f, Vector2.Zero, SpriteEffects.None, 0);
         }
-
-        public abstract void Draw(SpriteBatch spriteBatch);
     }
 }

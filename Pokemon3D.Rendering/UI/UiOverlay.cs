@@ -6,14 +6,14 @@ namespace Pokemon3D.Rendering.UI
 {
     public class UiOverlay
     {
-        private readonly List<UiElement> _uiElements;
+        private readonly List<UiBaseElement> _uiElements;
 
         public UiOverlay()
         {
-            _uiElements = new List<UiElement>();
+            _uiElements = new List<UiBaseElement>();
         }
 
-        public TElement AddElement<TElement>(TElement element) where TElement : UiElement
+        public TElement AddElement<TElement>(TElement element) where TElement : UiBaseElement
         {
             _uiElements.Add(element);
             return element;
@@ -27,12 +27,18 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
+        public void Show()
+        {
+            _uiElements.ForEach(e => e.Show());
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
             for (var i = 0; i < _uiElements.Count; i++)
             {
-                _uiElements[i].Draw(spriteBatch);
+                var uiBaseElement = _uiElements[i];
+                if (uiBaseElement.State != UiState.Inactive) uiBaseElement.Draw(spriteBatch);
             }
             spriteBatch.End();
         }

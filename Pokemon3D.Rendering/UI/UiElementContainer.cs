@@ -4,11 +4,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Rendering.UI
 {
-    public abstract class UiElementContainer : UiElement
+    public abstract class UiElementContainer : UiBaseElement
     {
         protected List<UiElement> Elements { get; }
 
-        protected UiElementContainer() : base(null, null)
+        protected UiElementContainer()
         {
             Elements = new List<UiElement>();
         }
@@ -20,24 +20,24 @@ namespace Pokemon3D.Rendering.UI
 
         public override void Update(GameTime time)
         {
-            base.Update(time);
             Elements.ForEach(e => e.Update(time));
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Elements.ForEach(e => e.Draw(spriteBatch));
+            Elements.ForEach(e =>
+            {
+                if (e.State != UiState.Inactive) e.Draw(spriteBatch);
+            });
         }
 
         public override void Show()
         {
-            base.Show();
             Elements.ForEach(e => e.Show());
         }
 
         public override void Hide()
         {
-            base.Hide();
             Elements.ForEach(e => e.Hide());
         }
     }

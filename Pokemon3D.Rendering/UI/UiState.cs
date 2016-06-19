@@ -6,7 +6,6 @@
         Inactive,
         Entering,
         Leaving,
-        HoverIn,
-        HoverOut
+        Hover
     }
 }
