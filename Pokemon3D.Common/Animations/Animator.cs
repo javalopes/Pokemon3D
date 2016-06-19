@@ -67,6 +67,15 @@ namespace Pokemon3D.Common.Animations
         }
 
         /// <summary>
+        /// Removes an Animation by name.
+        /// </summary>
+        /// <param name="sourceName"></param>
+        public void RemoveAnimation(string sourceName)
+        {
+            _animations.Remove(sourceName);
+        }
+
+        /// <summary>
         /// Registers transition between animation
         /// </summary>
         /// <param name="sourceName">Source Animation Name</param>
