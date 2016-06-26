@@ -16,11 +16,11 @@ namespace Pokemon3D.UI.Framework
 
         public ControlGroupOrientation Orientation { get; set; } = ControlGroupOrientation.Vertical;
 
-        public override void Hover()
+        public override void Focus()
         {
         }
 
-        public override void Unhover()
+        public override void Unfocus()
         {
         }
 
@@ -46,7 +46,7 @@ namespace Pokemon3D.UI.Framework
             if (_selectedElement == null)
             {
                 _selectedElement = Elements.First();
-                _selectedElement.Hover();
+                _selectedElement.Focus();
             }
             else
             {
@@ -69,9 +69,9 @@ namespace Pokemon3D.UI.Framework
 
                     if (newElement != _selectedElement)
                     {
-                        _selectedElement.Unhover();
+                        _selectedElement.Unfocus();
                         _selectedElement = newElement;
-                        _selectedElement.Hover();
+                        _selectedElement.Focus();
                     }
                 }
             }

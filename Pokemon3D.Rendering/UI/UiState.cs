@@ -6,6 +6,6 @@
         Inactive,
         Entering,
         Leaving,
-        Hover
+        Focused
     }
 }

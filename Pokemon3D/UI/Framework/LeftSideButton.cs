@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Input;
 using System;
 using Pokemon3D.Rendering.UI;
+using Pokemon3D.Rendering.UI.Animations;
 using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
@@ -29,7 +30,7 @@ namespace Pokemon3D.UI.Framework
             Bounds = bounds;
             _onClick = onClick;
 
-            HoverAnimation = new UiMultiAnimation(0.2f, new UiAnimation[]
+            FocusedAnimation = new UiMultiAnimation(0.2f, new UiAnimation[]
             {
                 new UiColorAnimation(0.5f, new Color(255, 255, 255), new Color(100, 193, 238)),
                 new UiOffsetAnimation(0.5f, Vector2.Zero, new Vector2(50,0))

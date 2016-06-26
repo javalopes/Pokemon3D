@@ -9,6 +9,7 @@ namespace Pokemon3D.Rendering.UI
         public Vector2 Offset { get; set; }
         public float Alpha { get; set; }
         public UiState State { get; protected set; }
+        public abstract bool IsAnimating { get; }
 
         protected UiBaseElement()
         {
@@ -19,8 +20,8 @@ namespace Pokemon3D.Rendering.UI
 
         public abstract void Show();
         public abstract void Hide();
-        public abstract void Hover();
-        public abstract void Unhover();
+        public abstract void Focus();
+        public abstract void Unfocus();
         public abstract void Update(GameTime time);
         public abstract void Draw(SpriteBatch spriteBatch);
     }

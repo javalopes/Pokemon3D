@@ -17,7 +17,7 @@ namespace Pokemon3D.Common.Animations
         /// <summary>
         /// Gets called when an animation has finished.
         /// </summary>
-        public event Action<string> AnimationFinished;
+        public event Action<string,bool> AnimationFinished;
 
         /// <summary>
         /// Gets called when an animation has started.
@@ -128,7 +128,7 @@ namespace Pokemon3D.Common.Animations
                 }
                 else
                 {
-                    AnimationFinished?.Invoke(_currentAnimationName);
+                    AnimationFinished?.Invoke(_currentAnimationName, CurrentAnimation.PlayReversed);
 
                     string newAnimation;
                     if (_transitions.TryGetValue(_currentAnimationName, out newAnimation))

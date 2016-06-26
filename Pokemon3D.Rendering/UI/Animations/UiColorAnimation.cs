@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Pokemon3D.Rendering.UI
+namespace Pokemon3D.Rendering.UI.Animations
 {
     public class UiColorAnimation : UiAnimation
     {

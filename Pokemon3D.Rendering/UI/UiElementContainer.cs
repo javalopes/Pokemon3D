@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -29,6 +30,11 @@ namespace Pokemon3D.Rendering.UI
             {
                 if (e.State != UiState.Inactive) e.Draw(spriteBatch);
             });
+        }
+
+        public override bool IsAnimating
+        {
+            get { return Elements.Any(e => e.IsAnimating); }
         }
 
         public override void Show()

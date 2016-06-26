@@ -1,6 +1,6 @@
 using System;
 
-namespace Pokemon3D.Rendering.UI
+namespace Pokemon3D.Rendering.UI.Animations
 {
     public abstract class UiAnimation : Common.Animations.Animation
     {

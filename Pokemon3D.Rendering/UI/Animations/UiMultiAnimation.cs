@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Pokemon3D.Rendering.UI
+namespace Pokemon3D.Rendering.UI.Animations
 {
     public class UiMultiAnimation : UiAnimation
     {

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Animations;
+using Pokemon3D.Rendering.UI.Animations;
 
 namespace Pokemon3D.Rendering.UI
 {
@@ -10,7 +11,7 @@ namespace Pokemon3D.Rendering.UI
         private readonly Animator _animator;
         private UiAnimation _enterAnimation;
         private UiAnimation _leaveAnimation;
-        private UiAnimation _hoverAnimation;
+        private UiAnimation _focusAnimation;
         private readonly Texture2D _texture;
 
         public Rectangle Bounds { get; protected set; }
@@ -53,13 +54,13 @@ namespace Pokemon3D.Rendering.UI
             set { UpdateAnimation("Leave", ref _leaveAnimation, value); }
         }
 
-        public UiAnimation HoverAnimation
+        public UiAnimation FocusedAnimation
         {
-            get { return _hoverAnimation; }
-            set { UpdateAnimation("Hover", ref _hoverAnimation, value); }
+            get { return _focusAnimation; }
+            set { UpdateAnimation("Focused", ref _focusAnimation, value); }
         }
 
-        private void OnAnimationFinished(string animationName)
+        private void OnAnimationFinished(string animationName, bool playedReversed)
         {
             switch (animationName)
             {
@@ -69,8 +70,8 @@ namespace Pokemon3D.Rendering.UI
                 case "Leave":
                     State = UiState.Inactive;
                     break;
-                case "Hover":
-                    State = UiState.Hover;
+                case "Focused":
+                    State = playedReversed ? UiState.Active : UiState.Focused;
                     break;
             }
         }
@@ -101,25 +102,25 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
-        public override void Hover()
+        public override void Focus()
         {
             if (State != UiState.Active) return;
-            if (HoverAnimation != null)
+            if (FocusedAnimation != null)
             {
-                _animator.SetAnimation("Hover");
+                _animator.SetAnimation("Focused");
             }
             else
             {
-                State = UiState.Hover;
+                State = UiState.Focused;
             }
         }
 
-        public override void Unhover()
+        public override void Unfocus()
         {
-            if (State != UiState.Hover) return;
-            if (HoverAnimation != null)
+            if (State != UiState.Focused) return;
+            if (FocusedAnimation != null)
             {
-                _animator.SetAnimation("Hover", true);
+                _animator.SetAnimation("Focused", true);
             }
             else
             {
@@ -131,6 +132,8 @@ namespace Pokemon3D.Rendering.UI
         {
             _animator.Update(time);
         }
+
+        public override bool IsAnimating => _animator.CurrentAnimation != null;
 
         protected void DrawTexture(SpriteBatch spriteBatch)
         {
