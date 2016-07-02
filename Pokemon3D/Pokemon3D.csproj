@@ -117,7 +117,6 @@
     <Compile Include="UI\Framework\ControlGroup.cs" />
     <Compile Include="UI\Framework\ControlGroupOrientation.cs" />
     <Compile Include="UI\Framework\DefaultControlGroup.cs" />
-    <Compile Include="UI\Framework\DefaultControlGroup2.cs" />
     <Compile Include="UI\Framework\Dialogs\ModalDialog.cs" />
     <Compile Include="UI\Framework\Dialogs\SelectionDialog.cs" />
     <Compile Include="UI\Framework\HexagonBackground.cs" />
@@ -128,6 +127,7 @@
     <Compile Include="UI\Framework\PokemonProfile.cs" />
     <Compile Include="UI\Framework\PokemonSpriteSheet.cs" />
     <Compile Include="UI\Framework\TextureProjectionQuad.cs" />
+    <Compile Include="UI\KeyboardUiInputController.cs" />
     <Compile Include="UI\Localization\CoreTranslationManager.cs" />
     <Compile Include="Entities\Resources\GameModei18nManager.cs" />
     <Compile Include="GameCore\Program.cs" />

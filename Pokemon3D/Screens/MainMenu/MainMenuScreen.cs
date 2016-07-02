@@ -5,6 +5,7 @@ using Pokemon3D.UI.Framework.Dialogs;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.GameModeLoading;
+using Pokemon3D.UI;
 using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.MainMenu
@@ -12,7 +13,6 @@ namespace Pokemon3D.Screens.MainMenu
     class MainMenuScreen : Screen
     {
         private UiOverlay _mainOverlay;
-        private DefaultControlGroup2 _buttons;
         private SelectionDialog _closeDialog;
 
         private readonly HexagonBackground _hexagons = new HexagonBackground();
@@ -24,23 +24,25 @@ namespace Pokemon3D.Screens.MainMenu
             GameInstance.GraphicsDeviceManager.ApplyChanges();
 
             _mainOverlay = new UiOverlay();
-            _buttons = _mainOverlay.AddElement(new DefaultControlGroup2());
 
-            _buttons.AddElement(new LeftSideButton("Start new game", new Vector2(26, 45), b =>
+            _mainOverlay.AddElement(new LeftSideButton("Start new game", new Vector2(26, 45), b =>
             {
                 GameInstance.ScreenManager.SetScreen(typeof(GameModeLoadingScreen), typeof(BlendTransition));
             }));
-            _buttons.AddElement(new LeftSideButton("Load game", new Vector2(26, 107), b =>
+            _mainOverlay.AddElement(new LeftSideButton("Load game", new Vector2(26, 107), b =>
             {
                 // Game.ScreenManager.SetScreen(typeof(LoadGameScreen), enterInformation: this);
             }));
-            _buttons.AddElement(new LeftSideButton("GameJolt", new Vector2(26, 169), null));
-            _buttons.AddElement(new LeftSideButton("Options", new Vector2(26, 231), null));
-            _buttons.AddElement(new LeftSideButton("Exit game", new Vector2(26, 293), b =>
+            _mainOverlay.AddElement(new LeftSideButton("GameJolt", new Vector2(26, 169), null));
+            _mainOverlay.AddElement(new LeftSideButton("Options", new Vector2(26, 231), null));
+            _mainOverlay.AddElement(new LeftSideButton("Exit game", new Vector2(26, 293), b =>
             {
                 _closeDialog.Show();
             }));
             //_buttons.AddElement(new LeftSideCheckbox("Checkbox test", new Vector2(26, 355), null));
+
+            _mainOverlay.AddInputController(new KeyboardUiInputController());
+            _mainOverlay.AutoEnumerateTabIndices();
 
             _closeDialog = new SelectionDialog("Do you really want to exit?", "Any unsaved changes will be lost.", new[]
             {

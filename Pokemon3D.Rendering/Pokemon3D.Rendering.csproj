@@ -116,6 +116,8 @@
     <Compile Include="UI\Controls\SimpleButton.cs" />
     <Compile Include="UI\Animations\UiAlphaAnimation.cs" />
     <Compile Include="UI\Animations\UiAnimation.cs" />
+    <Compile Include="UI\OverlayInputController.cs" />
+    <Compile Include="UI\OverlayInputControllerBase.cs" />
     <Compile Include="UI\UiBaseElement.cs" />
     <Compile Include="UI\Animations\UiColorAnimation.cs" />
     <Compile Include="UI\UIElement.cs" />
