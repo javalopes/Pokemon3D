@@ -33,6 +33,7 @@ namespace Pokemon3D.Common.Animations
         /// <summary>
         /// Starts the current animation.
         /// </summary>
+        /// <param name="playReversed">Plays the animation backwards.</param>
         public void Start(bool playReversed = false)
         {
             IsFinished = false;

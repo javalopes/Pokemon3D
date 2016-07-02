@@ -50,11 +50,19 @@ namespace Pokemon3D.Common.Animations
         /// <param name="playReversed">Plays the animation backwards.</param>
         public void SetAnimation(string name, bool playReversed = false)
         {
-            if (_currentAnimationName == name && CurrentAnimation != null && !CurrentAnimation.IsFinished) return;
-            _currentAnimationName = name;
-            CurrentAnimation = _animations[name];
-            CurrentAnimation.Start(playReversed);
-            AnimationStarted?.Invoke(name);
+            if (_currentAnimationName == name && CurrentAnimation != null)
+            {
+                if (CurrentAnimation.PlayReversed == playReversed) return;
+                CurrentAnimation.Start(playReversed);
+            }
+            else
+            {
+                _currentAnimationName = name;
+                CurrentAnimation = _animations[name];
+                CurrentAnimation.Start(playReversed);
+                AnimationStarted?.Invoke(name);
+            }
+            
         }
 
         /// <summary>

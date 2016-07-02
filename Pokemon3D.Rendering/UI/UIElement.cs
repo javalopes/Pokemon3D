@@ -117,7 +117,6 @@ namespace Pokemon3D.Rendering.UI
 
         public override void Unfocus()
         {
-            if (State != UiState.Focused) return;
             if (FocusedAnimation != null)
             {
                 _animator.SetAnimation("Focused", true);
