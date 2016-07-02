@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assimp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -8,8 +7,8 @@ namespace Pokemon3D.Rendering.UI
 {
     public class UiOverlay
     {
-        private readonly List<UiBaseElement> _uiBaseElements;
         private readonly List<UiElement> _uiElements;
+        private readonly List<UiElementContainer> _container; 
         private readonly List<OverlayInputController> _inputControllers;
         private bool _isUiElementListSortedByTabIndex;
 
@@ -17,8 +16,8 @@ namespace Pokemon3D.Rendering.UI
 
         public UiOverlay()
         {
-            _uiBaseElements = new List<UiBaseElement>();
             _uiElements = new List<UiElement>();
+            _container = new List<UiElementContainer>();
             _inputControllers = new List<OverlayInputController>();
             CurrentElement = null;
             _isUiElementListSortedByTabIndex = true;
@@ -66,6 +65,7 @@ namespace Pokemon3D.Rendering.UI
 
         private void ControllerOnOnAction(UiElement uiElement)
         {
+            CurrentElement?.OnAction();
         }
 
         private void ControllerOnMoveToNextElement()
@@ -88,16 +88,17 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
-        public TElement AddElement<TElement>(TElement element) where TElement : UiBaseElement
+        public TElement AddElement<TElement>(TElement element) where TElement : UiElement
         {
-            _uiBaseElements.Add(element);
-            var uiElement = element as UiElement;
-            if (uiElement != null)
-            {
-                _uiElements.Add(uiElement);
-                _isUiElementListSortedByTabIndex = false;
-            }
+            _uiElements.Add(element);
+            _isUiElementListSortedByTabIndex = false;
             return element;
+        }
+
+        public TContainer AddElementContainer<TContainer>(TContainer container) where TContainer : UiElementContainer
+        {
+            _container.Add(container);
+            return container;
         }
 
         public void Update(GameTime gameTime)
@@ -108,10 +109,12 @@ namespace Pokemon3D.Rendering.UI
                 _isUiElementListSortedByTabIndex = true;
             }
 
-            for (var i = 0; i < _uiBaseElements.Count; i++)
+            for (var i = 0; i < _uiElements.Count; i++)
             {
-                _uiBaseElements[i].Update(gameTime);
+                _uiElements[i].Update(gameTime);
             }
+
+            foreach (var container in _container) container.Update(gameTime);
 
             foreach (var inputController in _inputControllers)
             {
@@ -121,15 +124,15 @@ namespace Pokemon3D.Rendering.UI
 
         public void Show()
         {
-            _uiBaseElements.ForEach(e => e.Show());
+            _uiElements.ForEach(e => e.Show());
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            for (var i = 0; i < _uiBaseElements.Count; i++)
+            for (var i = 0; i < _uiElements.Count; i++)
             {
-                var uiBaseElement = _uiBaseElements[i];
+                var uiBaseElement = _uiElements[i];
                 if (uiBaseElement.State != UiState.Inactive) uiBaseElement.Draw(spriteBatch);
             }
             spriteBatch.End();

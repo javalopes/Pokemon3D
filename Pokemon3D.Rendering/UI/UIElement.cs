@@ -1,22 +1,24 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Animations;
 using Pokemon3D.Rendering.UI.Animations;
 
 namespace Pokemon3D.Rendering.UI
 {
-    public abstract class UiElement : UiBaseElement
+    public abstract class UiElement
     {
         private readonly Animator _animator;
         private UiAnimation _enterAnimation;
         private UiAnimation _leaveAnimation;
         private UiAnimation _focusAnimation;
-        private readonly Texture2D _texture;
 
+        public Color Color { get; set; }
+        public Vector2 Offset { get; set; }
+        public float Alpha { get; set; }
+        public UiState State { get; protected set; }
         public Rectangle Bounds { get; protected set; }
         public int TabIndex { get; set; }
-        public Rectangle SourceRectangle { get; set; }
+        public Rectangle? SourceRectangle { get; set; }
 
         private void UpdateAnimation(string name, ref UiAnimation backingField, UiAnimation newValue)
         {
@@ -27,11 +29,8 @@ namespace Pokemon3D.Rendering.UI
             _animator.AddAnimation(name, backingField);
         }
 
-        protected UiElement(Texture2D texture, Rectangle? sourceRectangle = null)
+        protected UiElement()
         {
-            _texture = texture;
-            SourceRectangle = sourceRectangle.GetValueOrDefault(_texture.Bounds);
-            Bounds = SourceRectangle;
             Alpha = 1.0f;
             Color = Color.White;
             TabIndex = 0;
@@ -76,7 +75,7 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
-        public override void Show()
+        public void Show()
         {
             if (EnterAnimation != null)
             {
@@ -89,7 +88,7 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
-        public override void Hide()
+        public void Hide()
         {
             if (LeaveAnimation != null)
             {
@@ -102,7 +101,7 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
-        public override void Focus()
+        public void Focus()
         {
             if (State != UiState.Active) return;
             if (FocusedAnimation != null)
@@ -115,7 +114,7 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
-        public override void Unfocus()
+        public void Unfocus()
         {
             if (FocusedAnimation != null)
             {
@@ -127,19 +126,23 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
-        public override void Update(GameTime time)
+        public void Update(GameTime time)
         {
             _animator.Update(time);
         }
 
-        public override bool IsAnimating => _animator.CurrentAnimation != null;
+        public bool IsAnimating => _animator.CurrentAnimation != null;
 
-        protected void DrawTexture(SpriteBatch spriteBatch)
+        protected void DrawTexture(SpriteBatch spriteBatch, Texture2D texture)
         {
             var bounds = Bounds;
             bounds.X += (int)Offset.X;
             bounds.Y += (int)Offset.Y;
-            spriteBatch.Draw(_texture, bounds, SourceRectangle, Color * Alpha, 0.0f, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, bounds, SourceRectangle, Color * Alpha, 0.0f, Vector2.Zero, SpriteEffects.None, 0);
         }
+
+        public abstract void OnAction();
+
+        public abstract void Draw(SpriteBatch spriteBatch);
     }
 }

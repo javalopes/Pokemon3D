@@ -16,6 +16,10 @@ namespace Pokemon3D.UI
             {
                 InvokeMoveToNextElement();
             }
+            if (GameProvider.GameInstance.InputSystem.Accept(AcceptInputTypes.Buttons))
+            {
+                InvokeAction(overlay.CurrentElement);
+            }
         }
     }
 }

@@ -13,12 +13,14 @@ namespace Pokemon3D.UI.Framework
         private readonly SpriteFont _font;
         private Vector2 _position;
         private readonly Action<LeftSideButton> _onClick;
+        private readonly Texture2D _texture;
 
         public string Text { get; set; }
 
-        public LeftSideButton(string text, Vector2 position, Action<LeftSideButton> onClick) : base(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank))
+        public LeftSideButton(string text, Vector2 position, Action<LeftSideButton> onClick)
         {
             _font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
 
             Text = text;
             _position = position;
@@ -37,23 +39,14 @@ namespace Pokemon3D.UI.Framework
             }); 
         }
 
-        public override void Update(GameTime time)
+        public override void OnAction()
         {
-            base.Update(time);
-
-            if (_onClick != null)
-            {
-                if (GameInstance.InputSystem.Accept(AcceptInputTypes.Buttons) ||
-                    Bounds.Contains(GameInstance.InputSystem.Mouse.Position) && GameInstance.InputSystem.Accept(AcceptInputTypes.LeftClick))
-                {
-                    _onClick(this);
-                }
-            }
+            _onClick?.Invoke(this);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            DrawTexture(spriteBatch);
+            DrawTexture(spriteBatch, _texture);
             spriteBatch.DrawString(_font, Text, new Vector2(_position.X + 24, _position.Y + 5) + Offset, Color.Black);
         }
     }

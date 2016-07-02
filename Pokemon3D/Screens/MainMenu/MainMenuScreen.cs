@@ -13,7 +13,7 @@ namespace Pokemon3D.Screens.MainMenu
     class MainMenuScreen : Screen
     {
         private UiOverlay _mainOverlay;
-        private SelectionDialog _closeDialog;
+        //private SelectionDialog _closeDialog;
 
         private readonly HexagonBackground _hexagons = new HexagonBackground();
         private readonly ControlBar _bar = new ControlBar();
@@ -37,28 +37,28 @@ namespace Pokemon3D.Screens.MainMenu
             _mainOverlay.AddElement(new LeftSideButton("Options", new Vector2(26, 231), null));
             _mainOverlay.AddElement(new LeftSideButton("Exit game", new Vector2(26, 293), b =>
             {
-                _closeDialog.Show();
+                //_closeDialog.Show();
             }));
             //_buttons.AddElement(new LeftSideCheckbox("Checkbox test", new Vector2(26, 355), null));
 
             _mainOverlay.AddInputController(new KeyboardUiInputController());
             _mainOverlay.AutoEnumerateTabIndices();
 
-            _closeDialog = new SelectionDialog("Do you really want to exit?", "Any unsaved changes will be lost.", new[]
-            {
-                new LeftSideButton("No", new Vector2(50, 50), b =>
-                {
-                    _closeDialog.Close();
-                }),
-                new LeftSideButton("Yes", new Vector2(50, 100), b =>
-                {
-                    GameInstance.ScreenManager.NotifyQuitGame();
-                })
-            });
+            //_closeDialog = new SelectionDialog("Do you really want to exit?", "Any unsaved changes will be lost.", new[]
+            //{
+            //    new LeftSideButton("No", new Vector2(50, 50), b =>
+            //    {
+            //        _closeDialog.Close();
+            //    }),
+            //    new LeftSideButton("Yes", new Vector2(50, 100), b =>
+            //    {
+            //        GameInstance.ScreenManager.NotifyQuitGame();
+            //    })
+            //});
             _mainOverlay.Show();
 
-            _closeDialog.Closed += HandleCloseDialogClosed;
-            _closeDialog.Shown += HandleCloseDialogShown;
+            //_closeDialog.Closed += HandleCloseDialogClosed;
+            //_closeDialog.Shown += HandleCloseDialogShown;
 
             //_buttons.Active = true;
             //_buttons.Visible = true;
@@ -66,15 +66,15 @@ namespace Pokemon3D.Screens.MainMenu
             _bar.AddEntry("Select", Buttons.A, Keys.Enter);
         }
 
-        private void HandleCloseDialogShown(ControlGroup sender)
-        {
-            //_buttons.Active = false;
-        }
+        //private void HandleCloseDialogShown(ControlGroup sender)
+        //{
+        //    //_buttons.Active = false;
+        //}
 
-        private void HandleCloseDialogClosed(ControlGroup sender)
-        {
-            //_buttons.Active = true;
-        }
+        //private void HandleCloseDialogClosed(ControlGroup sender)
+        //{
+        //    //_buttons.Active = true;
+        //}
 
         public void OnLateDraw(GameTime gameTime)
         {
@@ -86,7 +86,7 @@ namespace Pokemon3D.Screens.MainMenu
 
             _mainOverlay.Draw(GameInstance.SpriteBatch);
 
-            _closeDialog.Draw();
+            //_closeDialog.Draw();
         }
 
         public void OnEarlyDraw(GameTime gameTime)
@@ -95,7 +95,7 @@ namespace Pokemon3D.Screens.MainMenu
 
         public void OnUpdate(GameTime gameTime)
         {
-            _closeDialog.Update();
+            //_closeDialog.Update();
             _mainOverlay.Update(gameTime);
             _hexagons.Update();
         }

@@ -7,155 +7,149 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Entities.Pokemon;
 using Pokemon3D.Entities;
+using Pokemon3D.Rendering.UI;
 using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework
 {
-    class PokemonProfile : Control
-    {
-        private GameMode _gameMode;
-        private Vector2 _position;
-        private Texture2D _profileHPIndicatorTexture;
-        private Texture2D _profileBackTexture;
-        private Pokemon _pokemon;
-        private PokemonSpriteSheet _sheet;
+    //class PokemonProfile : UiElement
+    //{
+    //    private Vector2 _position;
+    //    private readonly Texture2D _profileHPIndicatorTexture;
+    //    private readonly Texture2D _profileBackTexture;
+    //    private readonly Pokemon _pokemon;
+    //    private readonly PokemonSpriteSheet _sheet;
 
-        private const int PROFILE_WIDTH = 120;
-        private const int PROFILE_HEIGHT = 105;
-        private const int HP_INDICATOR_OFFSET = 4;
+    //    private const int PROFILE_WIDTH = 120;
+    //    private const int PROFILE_HEIGHT = 105;
+    //    private const int HP_INDICATOR_OFFSET = 4;
 
-        private OffsetTransition _HPIndicatorStepper;
-        private Color _HPindicatorColor;
+    //    private readonly OffsetTransition _HPIndicatorStepper;
+    //    private readonly Color _HPindicatorColor;
 
-        private ColorTransition _colorStepper;
-        private OffsetTransition _expandStepper;
+    //    private readonly ColorTransition _colorStepper;
+    //    private readonly OffsetTransition _expandStepper;
 
-        public PokemonProfile(GameMode gameMode, Pokemon pokemon, Vector2 position)
-        {
-            _pokemon = pokemon;
-            _position = position;
-            _gameMode = gameMode;
+    //    public PokemonProfile(GameMode gameMode, Pokemon pokemon, Vector2 position) : base(null, null)
+    //    {
+    //        _pokemon = pokemon;
+    //        _position = position;
 
-            _profileHPIndicatorTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Profile);
-            _profileBackTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Profile_Shadow);
+    //        _profileHPIndicatorTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Profile);
+    //        _profileBackTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Profile_Shadow);
 
-            var dataModel = _pokemon.ActiveFormModel.FrontSpriteSheet;
-            _sheet = new PokemonSpriteSheet(_gameMode.GetTexture(dataModel.Source), dataModel.FrameSize.Width, dataModel.FrameSize.Height);
+    //        var dataModel = _pokemon.ActiveFormModel.FrontSpriteSheet;
+    //        _sheet = new PokemonSpriteSheet(gameMode.GetTexture(dataModel.Source), dataModel.FrameSize.Width, dataModel.FrameSize.Height);
 
-            double pokemonHpValue = (double)_pokemon.HP / (double)_pokemon.MaxHP;
-            _HPIndicatorStepper = new OffsetTransition(0f, 0.7f);
-            _HPIndicatorStepper.TargetOffset = GetHPIndicatorHeight(pokemonHpValue);
-            _HPindicatorColor = GetHPIndicatorColor(pokemonHpValue);
+    //        var pokemonHpValue = (double)_pokemon.HP / _pokemon.MaxHP;
+    //        _HPIndicatorStepper = new OffsetTransition(0f, 0.7f) {TargetOffset = GetHPIndicatorHeight(pokemonHpValue)};
+    //        _HPindicatorColor = GetHPIndicatorColor(pokemonHpValue);
 
-            _colorStepper = new ColorTransition(new Color(255, 255, 255), 0.5f);
-            _expandStepper = new OffsetTransition(0f, 0.5f);
-        }
+    //        _colorStepper = new ColorTransition(new Color(255, 255, 255), 0.5f);
+    //        _expandStepper = new OffsetTransition(0f, 0.5f);
+    //    }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(_profileBackTexture,
-                new Rectangle((int)(_position.X - _expandStepper.Offset / 2),
-                              (int)(_position.Y - _expandStepper.Offset / 2),
-                              (int)(_profileBackTexture.Width + _expandStepper.Offset),
-                              (int)(_profileBackTexture.Height + _expandStepper.Offset)),
-                _colorStepper.Color);
+    //    public override void OnAction()
+    //    {
+    //    }
 
-            if (_pokemon.HP > 0)
-            {
-                // calculate the height of the hp indicator texture:
-                var height = (int)_HPIndicatorStepper.Offset;
+    //    public override void Draw(SpriteBatch spriteBatch)
+    //    {
+    //        spriteBatch.Draw(_profileBackTexture,
+    //            new Rectangle((int)(_position.X - _expandStepper.Offset / 2),
+    //                          (int)(_position.Y - _expandStepper.Offset / 2),
+    //                          (int)(_profileBackTexture.Width + _expandStepper.Offset),
+    //                          (int)(_profileBackTexture.Height + _expandStepper.Offset)),
+    //            _colorStepper.Color);
 
-                spriteBatch.Draw(_profileHPIndicatorTexture,
-                    new Rectangle((int)_position.X + HP_INDICATOR_OFFSET, (int)_position.Y + HP_INDICATOR_OFFSET + (PROFILE_HEIGHT - height), PROFILE_WIDTH, height),
-                    new Rectangle(0, PROFILE_HEIGHT - height, PROFILE_WIDTH, height),
-                    _HPindicatorColor);
-            }
+    //        if (_pokemon.HP > 0)
+    //        {
+    //            // calculate the height of the hp indicator texture:
+    //            var height = (int)_HPIndicatorStepper.Offset;
 
-            int pokemonWidth = _sheet.CurrentFrame.Width;
-            int pokemonHeight = _sheet.CurrentFrame.Height;
+    //            spriteBatch.Draw(_profileHPIndicatorTexture,
+    //                new Rectangle((int)_position.X + HP_INDICATOR_OFFSET, (int)_position.Y + HP_INDICATOR_OFFSET + (PROFILE_HEIGHT - height), PROFILE_WIDTH, height),
+    //                new Rectangle(0, PROFILE_HEIGHT - height, PROFILE_WIDTH, height),
+    //                _HPindicatorColor);
+    //        }
 
-            spriteBatch.Draw(_sheet.CurrentFrame,
-                new Rectangle((int)(_position.X + HP_INDICATOR_OFFSET + PROFILE_WIDTH / 2 - pokemonWidth / 2),
-                (int)(_position.Y + HP_INDICATOR_OFFSET + PROFILE_HEIGHT / 2 - pokemonHeight / 2), pokemonWidth, pokemonHeight), Color.White);
-        }
+    //        int pokemonWidth = _sheet.CurrentFrame.Width;
+    //        int pokemonHeight = _sheet.CurrentFrame.Height;
 
-        private int GetHPIndicatorHeight(double HPValue)
-        {
-            return (int)Math.Ceiling(105 * HPValue);
-        }
+    //        spriteBatch.Draw(_sheet.CurrentFrame,
+    //            new Rectangle((int)(_position.X + HP_INDICATOR_OFFSET + PROFILE_WIDTH / 2 - pokemonWidth / 2),
+    //            (int)(_position.Y + HP_INDICATOR_OFFSET + PROFILE_HEIGHT / 2 - pokemonHeight / 2), pokemonWidth, pokemonHeight), Color.White);
+    //    }
 
-        private Color GetHPIndicatorColor(double HPValue)
-        {
-            if (HPValue >= 0.5)
-            {
-                return new Color(0, 193, 111);
-            }
-            else if (HPValue < 0.5 && HPValue > 0.2)
-            {
-                return new Color(255, 213, 0);
-            }
-            else
-            {
-                return new Color(201, 45, 0);
-            }
-        }
+    //    private int GetHPIndicatorHeight(double HPValue)
+    //    {
+    //        return (int)Math.Ceiling(105 * HPValue);
+    //    }
 
-        public override Rectangle GetBounds()
-        {
-            return new Rectangle((int)_position.X + 4, (int)_position.Y + 4, PROFILE_WIDTH, PROFILE_HEIGHT);
-        }
+    //    private Color GetHPIndicatorColor(double HPValue)
+    //    {
+    //        if (HPValue >= 0.5) return new Color(0, 193, 111);
+    //        if (HPValue < 0.5 && HPValue > 0.2) return new Color(255, 213, 0);
+    //            return new Color(201, 45, 0);
+    //        }
+    //    }
 
-        public override void SetPosition(Vector2 position)
-        {
-            _position = position;
-        }
+    //    public override Rectangle GetBounds()
+    //    {
+    //        return new Rectangle((int)_position.X + 4, (int)_position.Y + 4, PROFILE_WIDTH, PROFILE_HEIGHT);
+    //    }
 
-        public override void Select()
-        {
-            base.Select();
+    //    public override void SetPosition(Vector2 position)
+    //    {
+    //        _position = position;
+    //    }
 
-            TriggerSelected();
-        }
+    //    public override void Select()
+    //    {
+    //        base.Select();
 
-        public override void Deselect()
-        {
-            base.Deselect();
+    //        TriggerSelected();
+    //    }
 
-            TriggerDeselected();
-        }
+    //    public override void Deselect()
+    //    {
+    //        base.Deselect();
 
-        public override void GroupActivated()
-        {
-            if (Selected)
-                TriggerSelected();
-        }
+    //        TriggerDeselected();
+    //    }
 
-        public override void GroupDeactivated()
-        {
-            TriggerDeselected();
-        }
+    //    public override void GroupActivated()
+    //    {
+    //        if (Selected)
+    //            TriggerSelected();
+    //    }
 
-        private void TriggerSelected()
-        {
-            _colorStepper.TargetColor = new Color(100, 193, 238);
-            _expandStepper.TargetOffset = 30f;
-        }
+    //    public override void GroupDeactivated()
+    //    {
+    //        TriggerDeselected();
+    //    }
 
-        private void TriggerDeselected()
-        {
-            _colorStepper.TargetColor = new Color(255, 255, 255);
-            _expandStepper.TargetOffset = 0f;
-        }
+    //    private void TriggerSelected()
+    //    {
+    //        _colorStepper.TargetColor = new Color(100, 193, 238);
+    //        _expandStepper.TargetOffset = 30f;
+    //    }
 
-        public override void Update()
-        {
-            base.Update();
+    //    private void TriggerDeselected()
+    //    {
+    //        _colorStepper.TargetColor = new Color(255, 255, 255);
+    //        _expandStepper.TargetOffset = 0f;
+    //    }
 
-            _sheet.Update();
+    //    public override void Update()
+    //    {
+    //        base.Update();
 
-            _HPIndicatorStepper.Update();
-            _colorStepper.Update();
-            _expandStepper.Update();
-        }
-    }
+    //        _sheet.Update();
+
+    //        _HPIndicatorStepper.Update();
+    //        _colorStepper.Update();
+    //        _expandStepper.Update();
+    //    }
+    //}
 }

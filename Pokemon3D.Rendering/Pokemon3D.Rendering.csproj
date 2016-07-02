@@ -113,17 +113,16 @@
     <Compile Include="DrawableElement.cs" />
     <Compile Include="SceneRenderer.cs" />
     <Compile Include="Skybox.cs" />
-    <Compile Include="UI\Controls\SimpleButton.cs" />
     <Compile Include="UI\Animations\UiAlphaAnimation.cs" />
     <Compile Include="UI\Animations\UiAnimation.cs" />
     <Compile Include="UI\OverlayInputController.cs" />
     <Compile Include="UI\OverlayInputControllerBase.cs" />
-    <Compile Include="UI\UiBaseElement.cs" />
     <Compile Include="UI\Animations\UiColorAnimation.cs" />
     <Compile Include="UI\UIElement.cs" />
-    <Compile Include="UI\UiElementContainer.cs" />
     <Compile Include="UI\Animations\UiMultiAnimation.cs" />
     <Compile Include="UI\Animations\UiOffsetAnimation.cs" />
+    <Compile Include="UI\UiElementContainer.cs" />
+    <Compile Include="UI\UiElementContainerBase.cs" />
     <Compile Include="UI\UiOverlay.cs" />
     <Compile Include="UI\UiState.cs" />
   </ItemGroup>

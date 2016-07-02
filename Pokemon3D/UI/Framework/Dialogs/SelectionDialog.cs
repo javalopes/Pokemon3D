@@ -7,153 +7,153 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Framework.Dialogs
 {
-    class SelectionDialog : ModalDialog
-    {
-        private string _title;
-        private string _text;
-        private bool _closing = false;
+    //class SelectionDialog : ModalDialog
+    //{
+    //    private string _title;
+    //    private string _text;
+    //    private bool _closing = false;
 
-        SpriteFont _titleFont;
-        SpriteFont _textFont;
+    //    SpriteFont _titleFont;
+    //    SpriteFont _textFont;
 
-        SpriteBatch _batch;
-        ColorTransition _colorStepper;
-        ShapeRenderer _renderer;
+    //    SpriteBatch _batch;
+    //    ColorTransition _colorStepper;
+    //    ShapeRenderer _renderer;
 
-        private int _calculatedHeight;
+    //    private int _calculatedHeight;
 
-        private RenderTarget2D _target;
+    //    private RenderTarget2D _target;
 
-        public SelectionDialog(string title, string text, LeftSideButton[] buttons)
-        {
-            //AddRange(buttons);
+    //    public SelectionDialog(string title, string text, LeftSideButton[] buttons)
+    //    {
+    //        //AddRange(buttons);
 
-            _batch = new SpriteBatch(GameInstance.GraphicsDevice);
-            _renderer = new ShapeRenderer(_batch);
-            _colorStepper = new ColorTransition(new Color(255, 255, 255, 0), 0.7f);
+    //        _batch = new SpriteBatch(GameInstance.GraphicsDevice);
+    //        _renderer = new ShapeRenderer(_batch);
+    //        _colorStepper = new ColorTransition(new Color(255, 255, 255, 0), 0.7f);
 
-            _titleFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
-            _textFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+    //        _titleFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
+    //        _textFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
 
-            _title = title;
-            _text = text;
+    //        _title = title;
+    //        _text = text;
 
-            SetupLayout();
+    //        SetupLayout();
 
-            GameInstance.WindowSizeChanged += HandleWindowSizeChanged;
-        }
+    //        GameInstance.WindowSizeChanged += HandleWindowSizeChanged;
+    //    }
 
-        private void HandleWindowSizeChanged(object sender, EventArgs e)
-        {
-            if (Visible)
-                SetupLayout();
-        }
+    //    private void HandleWindowSizeChanged(object sender, EventArgs e)
+    //    {
+    //        if (Visible)
+    //            SetupLayout();
+    //    }
 
-        private void SetupLayout()
-        {
-            int totalHeight = 75;
-            if (Controls.Count > 0)
-            {
-                foreach (var control in Controls)
-                {
-                    totalHeight += 20 + control.GetBounds().Height;
-                }
-            }
+    //    private void SetupLayout()
+    //    {
+    //        int totalHeight = 75;
+    //        if (Controls.Count > 0)
+    //        {
+    //            foreach (var control in Controls)
+    //            {
+    //                totalHeight += 20 + control.GetBounds().Height;
+    //            }
+    //        }
 
-            _calculatedHeight = totalHeight;
+    //        _calculatedHeight = totalHeight;
 
-            int controlY = 65;
+    //        int controlY = 65;
 
-            if (!string.IsNullOrWhiteSpace(_text))
-            {
-                int textSpace = (int)_textFont.MeasureString(_text).Y + 20;
+    //        if (!string.IsNullOrWhiteSpace(_text))
+    //        {
+    //            int textSpace = (int)_textFont.MeasureString(_text).Y + 20;
 
-                controlY += textSpace;
-                _calculatedHeight += textSpace;
-            }
+    //            controlY += textSpace;
+    //            _calculatedHeight += textSpace;
+    //        }
 
-            int startY = GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
-            foreach (var control in Controls)
-            {
-                control.SetPosition(new Vector2(120, controlY + startY));
-                controlY += control.GetBounds().Height + 20;
-            }
+    //        int startY = GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
+    //        foreach (var control in Controls)
+    //        {
+    //            control.SetPosition(new Vector2(120, controlY + startY));
+    //            controlY += control.GetBounds().Height + 20;
+    //        }
 
-            _target = new RenderTarget2D(GameInstance.GraphicsDevice, GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height);
-        }
+    //        _target = new RenderTarget2D(GameInstance.GraphicsDevice, GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height);
+    //    }
 
-        public override void Draw(SamplerState samplerState = null, BlendState blendState = null)
-        {
-            if (Visible)
-            {
-                GameInstance.GraphicsDevice.SetRenderTarget(_target);
-                GameInstance.GraphicsDevice.Clear(Color.Transparent);
+    //    public override void Draw(SamplerState samplerState = null, BlendState blendState = null)
+    //    {
+    //        if (Visible)
+    //        {
+    //            GameInstance.GraphicsDevice.SetRenderTarget(_target);
+    //            GameInstance.GraphicsDevice.Clear(Color.Transparent);
 
-                _batch.Begin();
+    //            _batch.Begin();
 
-                DrawDialog();
+    //            DrawDialog();
 
-                _batch.End();
+    //            _batch.End();
 
-                GameInstance.GraphicsDevice.SetRenderTarget(null);
+    //            GameInstance.GraphicsDevice.SetRenderTarget(null);
 
-                _batch.Begin(blendState: BlendState.NonPremultiplied);
-                _batch.Draw(_target, Vector2.Zero, _colorStepper.Color);
-                _batch.End();
-            }
-        }
+    //            _batch.Begin(blendState: BlendState.NonPremultiplied);
+    //            _batch.Draw(_target, Vector2.Zero, _colorStepper.Color);
+    //            _batch.End();
+    //        }
+    //    }
 
-        private void DrawDialog()
-        {
-            int startY = GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
+    //    private void DrawDialog()
+    //    {
+    //        int startY = GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
 
-            _renderer.DrawRectangle(0, 0, GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height, new Color(255, 255, 255, 100));
-            _renderer.DrawRectangle(0, startY, GameInstance.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
+    //        _renderer.DrawRectangle(0, 0, GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height, new Color(255, 255, 255, 100));
+    //        _renderer.DrawRectangle(0, startY, GameInstance.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
 
-            _batch.DrawString(_titleFont, _title, new Vector2(100, startY + 20), Color.Black);
+    //        _batch.DrawString(_titleFont, _title, new Vector2(100, startY + 20), Color.Black);
 
-            if (!string.IsNullOrWhiteSpace(_text))
-            {
-                _batch.DrawString(_textFont, _text, new Vector2(120, startY + 65), Color.Black);
-            }
+    //        if (!string.IsNullOrWhiteSpace(_text))
+    //        {
+    //            _batch.DrawString(_textFont, _text, new Vector2(120, startY + 65), Color.Black);
+    //        }
 
-            InternalDraw(_batch);
-        }
+    //        InternalDraw(_batch);
+    //    }
 
-        public override void Show()
-        {
-            base.Show();
-            SetSelection(0);
-            _colorStepper.TargetColor = Color.White;
-            SetupLayout();
-        }
+    //    public override void Show()
+    //    {
+    //        base.Show();
+    //        SetSelection(0);
+    //        _colorStepper.TargetColor = Color.White;
+    //        SetupLayout();
+    //    }
 
-        public override void Close()
-        {
-            Active = false;
-            _closing = true;
-            _colorStepper.TargetColor = new Color(255, 255, 255, 0);
-        }
+    //    public override void Close()
+    //    {
+    //        Active = false;
+    //        _closing = true;
+    //        _colorStepper.TargetColor = new Color(255, 255, 255, 0);
+    //    }
 
-        public override void Update()
-        {
-            if (Active)
-            {
-                if (GameInstance.InputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
-                    MoveSelection(-1);
-                if (GameInstance.InputSystem.Down(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
-                    MoveSelection(1);
-                base.Update();
-            }
+    //    public override void Update()
+    //    {
+    //        if (Active)
+    //        {
+    //            if (GameInstance.InputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+    //                MoveSelection(-1);
+    //            if (GameInstance.InputSystem.Down(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+    //                MoveSelection(1);
+    //            base.Update();
+    //        }
 
-            _colorStepper.Update();
+    //        _colorStepper.Update();
 
-            if (_closing && _colorStepper.Finished)
-            {
-                _closing = false;
-                Visible = false;
-                OnClose();
-            }
-        }
-    }
+    //        if (_closing && _colorStepper.Finished)
+    //        {
+    //            _closing = false;
+    //            Visible = false;
+    //            OnClose();
+    //        }
+    //    }
+    //}
 }
