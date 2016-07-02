@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common.Input;
 using System;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
@@ -44,9 +43,11 @@ namespace Pokemon3D.UI.Framework
             _onClick?.Invoke(this);
         }
 
+        public override bool IsInteractable => true;
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            DrawTexture(spriteBatch, _texture);
+            spriteBatch.Draw(_texture, GetBounds(), null, Color * Alpha, 0.0f, Vector2.Zero, SpriteEffects.None, 0);
             spriteBatch.DrawString(_font, Text, new Vector2(_position.X + 24, _position.Y + 5) + Offset, Color.Black);
         }
     }

@@ -37,8 +37,15 @@ namespace Pokemon3D.Rendering.UI
             var currentTabIndex = 0;
             foreach (var uiElement in _uiElements)
             {
-                uiElement.TabIndex = currentTabIndex;
-                currentTabIndex++;
+                if (uiElement.IsInteractable)
+                {
+                    uiElement.TabIndex = currentTabIndex;
+                    currentTabIndex++;
+                }
+                else
+                {
+                    uiElement.TabIndex = -1;
+                }
             }
             _isUiElementListSortedByTabIndex = true;
         }

@@ -118,6 +118,7 @@
     <Compile Include="UI\OverlayInputController.cs" />
     <Compile Include="UI\OverlayInputControllerBase.cs" />
     <Compile Include="UI\Animations\UiColorAnimation.cs" />
+    <Compile Include="UI\UiCompoundElement.cs" />
     <Compile Include="UI\UIElement.cs" />
     <Compile Include="UI\Animations\UiMultiAnimation.cs" />
     <Compile Include="UI\Animations\UiOffsetAnimation.cs" />
