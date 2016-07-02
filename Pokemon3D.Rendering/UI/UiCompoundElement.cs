@@ -20,6 +20,11 @@ namespace Pokemon3D.Rendering.UI
             _children.Add(element);
         }
 
+        protected void RemoveChild(UiElement element)
+        {
+            _children.Remove(element);
+        }
+
         protected void ClearChildren()
         {
             _children.Clear();

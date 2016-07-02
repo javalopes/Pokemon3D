@@ -4,7 +4,6 @@ using Pokemon3D.Common;
 using Pokemon3D.Common.Diagnostics;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.Entities;
-using Pokemon3D.Rendering.GUI;
 using Pokemon3D.UI;
 using Pokemon3D.UI.Localization;
 using System;
@@ -15,7 +14,7 @@ using Pokemon3D.Common.Shapes;
 using Pokemon3D.Screens;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
-using Pokemon3D.Screens.GameMenu;
+using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.MainMenu;
 
 namespace Pokemon3D.GameCore
@@ -25,6 +24,8 @@ namespace Pokemon3D.GameCore
     /// </summary>
     class GameController : Game, GameContext
     {
+        private UiOverlay _notificationBarOverlay;
+
         /// <summary>
         /// The singleton instance of the main GameController class.
         /// </summary>
@@ -45,17 +46,16 @@ namespace Pokemon3D.GameCore
         public GraphicsDeviceManager GraphicsDeviceManager { get; private set; }
         public ScreenManager ScreenManager { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
-        public GuiSystem GuiSystem { get; private set; }
         public InputSystem InputSystem { get; private set; }
         public GameConfiguration GameConfig { get; }
         public TranslationProvider TranslationProvider { get; private set; }
         public NotificationBar NotificationBar { get; private set; }
         public CollisionManager CollisionManager { get; private set; }
 
-        public event System.EventHandler WindowSizeChanged;
+        public event EventHandler WindowSizeChanged;
         private Rectangle _currentScreenBounds;
 
-        public string VersionInformation => string.Format("{0} {1}", VERSION, DEVELOPMENT_STAGE);
+        public string VersionInformation => $"{VERSION} {DEVELOPMENT_STAGE}";
 
         /// <summary>
         /// Object to manage loaded GameModes.
@@ -110,11 +110,13 @@ namespace Pokemon3D.GameCore
             GameModeManager = new GameModeManager();
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             InputSystem = new InputSystem();
-            GuiSystem = new GuiSystem(this);
             ShapeRenderer = new ShapeRenderer(SpriteBatch);
             ScreenManager = new ScreenManager();
             TranslationProvider = new CoreTranslationManager();
-            NotificationBar = new NotificationBar(400);
+
+            _notificationBarOverlay = new UiOverlay();
+            NotificationBar = _notificationBarOverlay.AddElement(new NotificationBar(400));
+            _notificationBarOverlay.Show();
             CollisionManager = new CollisionManager();
 
 #if DEBUG_RENDERING
@@ -122,14 +124,6 @@ namespace Pokemon3D.GameCore
 #endif
 
             GameConfig.ConfigFileLoaded += TranslationProvider.OnLanguageChanged;
-
-            GuiSystem.SetSkin(new GuiSystemSkinParameters()
-            {
-                SkinTexture = Content.Load<Texture2D>(ResourceNames.Textures.guiskin),
-                BigFont = Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont),
-                NormalFont = Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont),
-                XmlSkinDescriptorFile = "Content/GUI/GuiSkin.xml"
-            });
 
 #if DEBUG
             ScreenManager.SetScreen(typeof(MainMenuScreen));
@@ -144,11 +138,9 @@ namespace Pokemon3D.GameCore
             base.Update(gameTime);
             InputSystem.Update();
             CollisionManager.Update();
-
-            if (!ScreenManager.Update(gameTime)) Exit();
-
             
-            NotificationBar.Update(gameTime);
+            if (!ScreenManager.Update(gameTime)) Exit();
+            _notificationBarOverlay.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -156,7 +148,7 @@ namespace Pokemon3D.GameCore
             ScreenManager.OnEarlyDraw(gameTime);
             SceneRenderer.Draw();
             ScreenManager.OnLateDraw(gameTime);
-            NotificationBar.Draw();
+            _notificationBarOverlay.Draw(SpriteBatch);
             base.Draw(gameTime);
         }
 

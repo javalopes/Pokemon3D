@@ -112,7 +112,6 @@
     <Compile Include="ScriptPipeline\EntityComponent.cs" />
     <Compile Include="ScriptPipeline\Vector2.cs" />
     <Compile Include="UI\Framework\BarEntry.cs" />
-    <Compile Include="UI\Framework\Control.cs" />
     <Compile Include="UI\Framework\ControlBar.cs" />
     <Compile Include="UI\Framework\Dialogs\ModalDialog.cs" />
     <Compile Include="UI\Framework\Dialogs\SelectionDialog.cs" />
@@ -120,7 +119,6 @@
     <Compile Include="UI\Framework\HexagonBackground.cs" />
     <Compile Include="UI\Framework\LeftSideButton.cs" />
     <Compile Include="UI\Framework\LeftSideCheckbox.cs" />
-    <Compile Include="UI\Framework\OffsetTransition.cs" />
     <Compile Include="UI\Framework\PokemonProfile.cs" />
     <Compile Include="UI\Framework\PokemonSpriteSheet.cs" />
     <Compile Include="UI\Framework\TextureProjectionQuad.cs" />
@@ -165,18 +163,6 @@
     <None Include="Content\Effects\BasicEffect.fx" />
     <None Include="Content\Effects\DebugShadowMap.fx" />
     <None Include="Content\Effects\PostProcessing.fx" />
-    <Content Include="Content\GUI\GuiSkin.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\GUI\OptionsMenu.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\GUI\PauseMenu.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\GUI\MainMenu.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Icon.ico" />
     <Compile Include="ScriptPipeline\ScriptPipelineManager.cs" />
   </ItemGroup>
