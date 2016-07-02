@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Rendering.UI
@@ -19,8 +20,14 @@ namespace Pokemon3D.Rendering.UI
             _children.Add(element);
         }
 
+        protected void ClearChildren()
+        {
+            _children.Clear();
+        }
+
         public override void Show()
         {
+            State = UiState.Active;
             foreach (var uiElement in _children)
             {
                 uiElement.Show();
@@ -29,6 +36,7 @@ namespace Pokemon3D.Rendering.UI
 
         public override void Hide()
         {
+            State = UiState.Inactive;
             foreach (var uiElement in _children)
             {
                 uiElement.Hide();
@@ -56,6 +64,15 @@ namespace Pokemon3D.Rendering.UI
             foreach (var uiElement in _children)
             {
                 uiElement.Draw(spriteBatch);
+            }
+        }
+
+        public override void Update(GameTime time)
+        {
+            base.Update(time);
+            foreach (var uiElement in _children)
+            {
+                uiElement.Update(time);
             }
         }
     }

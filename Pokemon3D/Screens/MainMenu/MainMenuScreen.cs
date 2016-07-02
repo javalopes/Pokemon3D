@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Screens.Transitions;
 using Pokemon3D.UI.Framework;
-using Pokemon3D.UI.Framework.Dialogs;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.GameModeLoading;
@@ -15,7 +14,6 @@ namespace Pokemon3D.Screens.MainMenu
         private UiOverlay _mainOverlay;
         //private SelectionDialog _closeDialog;
 
-        private readonly HexagonBackground _hexagons = new HexagonBackground();
         private readonly ControlBar _bar = new ControlBar();
 
         public void OnOpening(object enterInformation)
@@ -25,14 +23,9 @@ namespace Pokemon3D.Screens.MainMenu
 
             _mainOverlay = new UiOverlay();
 
-            _mainOverlay.AddElement(new LeftSideButton("Start new game", new Vector2(26, 45), b =>
-            {
-                GameInstance.ScreenManager.SetScreen(typeof(GameModeLoadingScreen), typeof(BlendTransition));
-            }));
-            _mainOverlay.AddElement(new LeftSideButton("Load game", new Vector2(26, 107), b =>
-            {
-                // Game.ScreenManager.SetScreen(typeof(LoadGameScreen), enterInformation: this);
-            }));
+            _mainOverlay.AddElement(new HexagonBackground());
+            _mainOverlay.AddElement(new LeftSideButton("Start new game", new Vector2(26, 45), OnStartNewGame));
+            _mainOverlay.AddElement(new LeftSideButton("Load game", new Vector2(26, 107), OnLoadGame));
             _mainOverlay.AddElement(new LeftSideButton("GameJolt", new Vector2(26, 169), null));
             _mainOverlay.AddElement(new LeftSideButton("Options", new Vector2(26, 231), null));
             _mainOverlay.AddElement(new LeftSideButton("Exit game", new Vector2(26, 293), b =>
@@ -66,6 +59,16 @@ namespace Pokemon3D.Screens.MainMenu
             _bar.AddEntry("Select", Buttons.A, Keys.Enter);
         }
 
+        private void OnStartNewGame(LeftSideButton button)
+        {
+            GameInstance.ScreenManager.SetScreen(typeof(GameModeLoadingScreen), typeof(BlendTransition));
+        }
+
+        private void OnLoadGame(LeftSideButton button)
+        {
+            // Game.ScreenManager.SetScreen(typeof(LoadGameScreen), enterInformation: this);
+        }
+
         //private void HandleCloseDialogShown(ControlGroup sender)
         //{
         //    //_buttons.Active = false;
@@ -79,12 +82,8 @@ namespace Pokemon3D.Screens.MainMenu
         public void OnLateDraw(GameTime gameTime)
         {
             GameInstance.GraphicsDevice.Clear(Color.LightGray);
-
-            _hexagons.Draw();
-
-            _bar.Draw();
-
             _mainOverlay.Draw(GameInstance.SpriteBatch);
+            _bar.Draw();
 
             //_closeDialog.Draw();
         }
@@ -97,7 +96,6 @@ namespace Pokemon3D.Screens.MainMenu
         {
             //_closeDialog.Update();
             _mainOverlay.Update(gameTime);
-            _hexagons.Update();
         }
 
         public void OnClosing()

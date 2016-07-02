@@ -13,9 +13,9 @@ namespace Pokemon3D.Rendering.UI.Animations
             _endColor = endColor;
         }
 
-        public override void OnUpdateDelta(float delta)
+        protected override void OnUpdate()
         {
-            Owner.Color = Color.Lerp(_startColor, _endColor, delta);
+            Owner.Color = Color.Lerp(_startColor, _endColor, Delta);
         }
     }
 }

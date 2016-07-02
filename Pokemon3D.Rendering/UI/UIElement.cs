@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Security.Permissions;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Animations;
 using Pokemon3D.Rendering.UI.Animations;
@@ -50,8 +51,19 @@ namespace Pokemon3D.Rendering.UI
             if (backingField == newValue) return;
             _animator.RemoveAnimation(name);
             backingField = newValue;
-            backingField.Owner = this;
-            _animator.AddAnimation(name, backingField);
+            AddAnimation(name, backingField);
+        }
+
+        protected TAnimation AddAnimation<TAnimation>(string name, TAnimation animation) where TAnimation : UiAnimation
+        {
+            animation.Owner = this;
+            _animator.AddAnimation(name, animation);
+            return animation;
+        }
+
+        protected void PlayAnimation(string name)
+        {
+            _animator.SetAnimation(name);
         }
 
         protected UiElement()
@@ -176,7 +188,7 @@ namespace Pokemon3D.Rendering.UI
         /// Updates animation.
         /// </summary>
         /// <param name="time">Game time</param>
-        public void Update(GameTime time)
+        public virtual void Update(GameTime time)
         {
             _animator.Update(time);
         }
@@ -184,7 +196,7 @@ namespace Pokemon3D.Rendering.UI
         /// <summary>
         /// if anything is in animation. This can be used to wait for animation finished.
         /// </summary>
-        public bool IsAnimating => _animator.CurrentAnimation != null;
+        public virtual bool IsAnimating => _animator.CurrentAnimation != null;
 
         /// <summary>
         /// Calculates the bounds with offset.
@@ -201,7 +213,10 @@ namespace Pokemon3D.Rendering.UI
         /// <summary>
         /// Is called when the element is interactable and the action key is pressed.
         /// </summary>
-        public abstract void OnAction();
+        public virtual void OnAction()
+        {
+            
+        }
 
         /// <summary>
         /// If the element can get focus.

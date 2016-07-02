@@ -4,18 +4,18 @@ namespace Pokemon3D.Rendering.UI.Animations
 {
     public class UiAlphaAnimation : UiAnimation
     {
-        private readonly float _startAlpha;
-        private readonly float _endAlpha;
+        public float StartAlpha { get; set; }
+        public float EndAlpha { get; set; }
 
         public UiAlphaAnimation(float durationSeconds, float startAlpha, float endAlpha) : base(durationSeconds)
         {
-            _startAlpha = startAlpha;
-            _endAlpha = endAlpha;
+            StartAlpha = startAlpha;
+            EndAlpha = endAlpha;
         }
 
-        public override void OnUpdateDelta(float delta)
+        protected override void OnUpdate()
         {
-            Owner.Alpha = MathHelper.Lerp(_startAlpha, _endAlpha, delta);
+            Owner.Alpha = MathHelper.Lerp(StartAlpha, EndAlpha, Delta);
         }
     }
 }

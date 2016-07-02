@@ -18,7 +18,7 @@ namespace Pokemon3D.Common.Animations
 
         protected override void OnUpdate()
         {
-            _onUpdate(MathHelper.Min(ElapsedSeconds/DurationSeconds, 1.0f));
+            _onUpdate(Delta);
         }
     }
 }

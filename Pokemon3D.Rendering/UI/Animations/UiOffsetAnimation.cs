@@ -13,9 +13,9 @@ namespace Pokemon3D.Rendering.UI.Animations
             _offsetEnd = offsetEnd;
         }
 
-        public override void OnUpdateDelta(float delta)
+        protected override void OnUpdate()
         {
-            Owner.Offset = Vector2.Lerp(_offsetStart, _offsetEnd, delta);
+            Owner.Offset = Vector2.Lerp(_offsetStart, _offsetEnd, Delta);
         }
     }
 }

@@ -26,32 +26,58 @@ namespace Pokemon3D.Common.Animations
         public float DurationSeconds { get; }
 
         /// <summary>
+        /// Delay before animation starts.
+        /// </summary>
+        public float Delay { get; set; }
+
+        /// <summary>
         /// Elapsed Seconds since start of animation.
         /// </summary>
         public float ElapsedSeconds { get; private set; }
 
         /// <summary>
+        /// Elapsed delay if set.
+        /// </summary>
+        public float RemainingDelay { get; private set; }
+
+        /// <summary>
         /// Starts the current animation.
         /// </summary>
         /// <param name="playReversed">Plays the animation backwards.</param>
-        public void Start(bool playReversed = false)
+        public virtual void Start(bool playReversed = false)
         {
             IsFinished = false;
             PlayReversed = playReversed;
             ElapsedSeconds = PlayReversed ? DurationSeconds : 0.0f;
+            RemainingDelay = Delay;
         }
         
         /// <summary>
         /// Updates the current animation.
         /// </summary>
         /// <param name="elapsedSeconds">elapsed time in seconds since last call.</param>
-        public void Update(float elapsedSeconds)
+        public virtual void Update(float elapsedSeconds)
         {
             if (IsFinished) return;
 
+            var elapsedForAnimation = elapsedSeconds;
+            if (RemainingDelay > 0.0f)
+            {
+                RemainingDelay -= elapsedSeconds;
+                if (RemainingDelay < 0.0f)
+                {
+                    elapsedForAnimation = Math.Abs(RemainingDelay);
+                    RemainingDelay = 0.0f;
+                }
+                else
+                {
+                    elapsedForAnimation = 0.0f;
+                }
+            }
+
             if (PlayReversed)
             {
-                ElapsedSeconds -= elapsedSeconds;
+                ElapsedSeconds -= elapsedForAnimation;
                 if (ElapsedSeconds < 0.0f)
                 {
                     IsFinished = true;
@@ -60,22 +86,25 @@ namespace Pokemon3D.Common.Animations
             }
             else
             {
-                ElapsedSeconds += elapsedSeconds;
+                ElapsedSeconds += elapsedForAnimation;
                 if (ElapsedSeconds >= DurationSeconds)
                 {
                     IsFinished = true;
                     ElapsedSeconds = DurationSeconds;
                 }
             }
+
             OnUpdate();
         }
 
         protected abstract void OnUpdate();
 
+        protected float Delta => ElapsedSeconds/DurationSeconds;
+
         /// <summary>
         /// Whether the animation is finished.
         /// </summary>
-        public bool IsFinished { get; private set; }
+        public bool IsFinished { get; protected set; }
 
         /// <summary>
         /// Creates an Animation interpolating from 0 to 1 over time.
