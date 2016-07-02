@@ -14,8 +14,6 @@ namespace Pokemon3D.Screens.MainMenu
         private UiOverlay _mainOverlay;
         //private SelectionDialog _closeDialog;
 
-        private readonly ControlBar _bar = new ControlBar();
-
         public void OnOpening(object enterInformation)
         {
             GameInstance.GraphicsDeviceManager.PreferMultiSampling = true;
@@ -28,10 +26,7 @@ namespace Pokemon3D.Screens.MainMenu
             _mainOverlay.AddElement(new LeftSideButton("Load game", new Vector2(26, 107), OnLoadGame));
             _mainOverlay.AddElement(new LeftSideButton("GameJolt", new Vector2(26, 169), null));
             _mainOverlay.AddElement(new LeftSideButton("Options", new Vector2(26, 231), null));
-            _mainOverlay.AddElement(new LeftSideButton("Exit game", new Vector2(26, 293), b =>
-            {
-                //_closeDialog.Show();
-            }));
+            _mainOverlay.AddElement(new LeftSideButton("Exit game", new Vector2(26, 293), OnExitGame));
             //_buttons.AddElement(new LeftSideCheckbox("Checkbox test", new Vector2(26, 355), null));
 
             _mainOverlay.AddInputController(new KeyboardUiInputController());
@@ -48,7 +43,6 @@ namespace Pokemon3D.Screens.MainMenu
             //        GameInstance.ScreenManager.NotifyQuitGame();
             //    })
             //});
-            _mainOverlay.Show();
 
             //_closeDialog.Closed += HandleCloseDialogClosed;
             //_closeDialog.Shown += HandleCloseDialogShown;
@@ -56,7 +50,15 @@ namespace Pokemon3D.Screens.MainMenu
             //_buttons.Active = true;
             //_buttons.Visible = true;
 
-            _bar.AddEntry("Select", Buttons.A, Keys.Enter);
+            var bar = new ControlBar();
+            bar.AddEntry("Select", Buttons.A, Keys.Enter);
+            _mainOverlay.AddElement(bar);
+            _mainOverlay.Show();
+        }
+
+        private void OnExitGame(LeftSideButton button)
+        {
+            //_closeDialog.Show();
         }
 
         private void OnStartNewGame(LeftSideButton button)
@@ -83,7 +85,6 @@ namespace Pokemon3D.Screens.MainMenu
         {
             GameInstance.GraphicsDevice.Clear(Color.LightGray);
             _mainOverlay.Draw(GameInstance.SpriteBatch);
-            _bar.Draw();
 
             //_closeDialog.Draw();
         }

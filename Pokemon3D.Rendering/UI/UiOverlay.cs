@@ -8,6 +8,7 @@ namespace Pokemon3D.Rendering.UI
     public class UiOverlay
     {
         private readonly List<UiElement> _uiElements;
+        private readonly List<UiElement> _interactableElements;
         private readonly List<UiElementContainer> _container; 
         private readonly List<OverlayInputController> _inputControllers;
         private bool _isUiElementListSortedByTabIndex;
@@ -17,6 +18,7 @@ namespace Pokemon3D.Rendering.UI
         public UiOverlay()
         {
             _uiElements = new List<UiElement>();
+            _interactableElements = new List<UiElement>();
             _container = new List<UiElementContainer>();
             _inputControllers = new List<OverlayInputController>();
             CurrentElement = null;
@@ -80,12 +82,12 @@ namespace Pokemon3D.Rendering.UI
             var lastElement = CurrentElement;
             if (CurrentElement == null)
             {
-                CurrentElement = _uiElements.FirstOrDefault();
+                CurrentElement = _interactableElements.FirstOrDefault();
             }
             else
             {
-                var index = _uiElements.IndexOf(CurrentElement);
-                CurrentElement = index == _uiElements.Count - 1 ? _uiElements[0] : _uiElements[index + 1];
+                var index = _interactableElements.IndexOf(CurrentElement);
+                CurrentElement = index == _interactableElements.Count - 1 ? _interactableElements[0] : _interactableElements[index + 1];
             }
 
             if (lastElement != CurrentElement)
@@ -112,7 +114,8 @@ namespace Pokemon3D.Rendering.UI
         {
             if (!_isUiElementListSortedByTabIndex)
             {
-                _uiElements.Sort((e1,e2) => e1.TabIndex.CompareTo(e2.TabIndex));
+                _interactableElements.Clear();
+                _interactableElements.AddRange(_uiElements.Where(e => e.IsInteractable).OrderBy(e => e.TabIndex));
                 _isUiElementListSortedByTabIndex = true;
             }
 

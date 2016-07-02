@@ -111,6 +111,7 @@
     <Compile Include="ScriptPipeline\Entity.cs" />
     <Compile Include="ScriptPipeline\EntityComponent.cs" />
     <Compile Include="ScriptPipeline\Vector2.cs" />
+    <Compile Include="UI\Framework\BarEntry.cs" />
     <Compile Include="UI\Framework\Control.cs" />
     <Compile Include="UI\Framework\ControlBar.cs" />
     <Compile Include="UI\Framework\Dialogs\ModalDialog.cs" />
