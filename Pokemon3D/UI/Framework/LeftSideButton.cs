@@ -10,7 +10,6 @@ namespace Pokemon3D.UI.Framework
     class LeftSideButton : UiElement
     {
         private readonly SpriteFont _font;
-        private Vector2 _position;
         private readonly Action<LeftSideButton> _onClick;
         private readonly Texture2D _texture;
 
@@ -22,7 +21,6 @@ namespace Pokemon3D.UI.Framework
             _texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
 
             Text = text;
-            _position = position;
             var bounds = Bounds;
             bounds.X = (int) position.X;
             bounds.Y = (int) position.Y;
@@ -47,8 +45,9 @@ namespace Pokemon3D.UI.Framework
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, GetBounds(), null, Color * Alpha, 0.0f, Vector2.Zero, SpriteEffects.None, 0);
-            spriteBatch.DrawString(_font, Text, new Vector2(_position.X + 24, _position.Y + 5) + Offset, Color.Black);
+            var bounds = GetBounds();
+            spriteBatch.Draw(_texture, bounds, null, Color * Alpha, 0.0f, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.DrawString(_font, Text, new Vector2(bounds.X + 24, bounds.Y + 5), Color.Black);
         }
     }
 }
