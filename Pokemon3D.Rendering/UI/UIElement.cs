@@ -1,5 +1,4 @@
-﻿using System.Security.Permissions;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Animations;
 using Pokemon3D.Rendering.UI.Animations;
@@ -202,12 +201,20 @@ namespace Pokemon3D.Rendering.UI
         /// Calculates the bounds with offset.
         /// </summary>
         /// <returns>Bounds.</returns>
-        protected Rectangle GetBounds()
+        public Rectangle GetBounds()
         {
             var bounds = Bounds;
             bounds.X += (int)Offset.X;
             bounds.Y += (int)Offset.Y;
             return bounds;
+        }
+
+        public void SetPosition(Vector2 position)
+        {
+            var bounds = Bounds;
+            bounds.X = (int) position.X;
+            bounds.Y = (int) position.Y;
+            Bounds = bounds;
         }
 
         /// <summary>

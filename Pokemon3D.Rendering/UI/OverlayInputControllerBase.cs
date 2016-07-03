@@ -19,7 +19,7 @@ namespace Pokemon3D.Rendering.UI
             OnAction?.Invoke(element);
         }
 
-        public abstract void Update(UiOverlay overlay);
+        public abstract void Update(UiFocusContainer container);
 
         public event Action<UiElement> OnAction;
         public event Action MoveToNextElement;

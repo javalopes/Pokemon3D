@@ -1,135 +1,49 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Rendering.UI
 {
-    public class UiOverlay
+    public class UiOverlay : UiFocusContainer
     {
+        private UiCompoundElement _currentModalElement;
         private readonly List<UiElement> _uiElements;
-        private readonly List<UiElement> _interactableElements;
-        private readonly List<UiElementContainer> _container; 
-        private readonly List<OverlayInputController> _inputControllers;
-        private bool _isUiElementListSortedByTabIndex;
-
-        public UiElement CurrentElement { get; private set; }
 
         public UiOverlay()
         {
             _uiElements = new List<UiElement>();
-            _interactableElements = new List<UiElement>();
-            _container = new List<UiElementContainer>();
-            _inputControllers = new List<OverlayInputController>();
-            CurrentElement = null;
-            _isUiElementListSortedByTabIndex = true;
-        }
-
-        public void AddInputController(OverlayInputController controller)
-        {
-            controller.MoveToNextElement += ControllerOnMoveToNextElement;
-            controller.MoveToPreviousElement += ControllerOnMoveToPreviousElement;
-            controller.OnAction += ControllerOnOnAction;
-
-            _inputControllers.Add(controller);
-        }
-
-        public void AutoEnumerateTabIndices()
-        {
-            var currentTabIndex = 0;
-            foreach (var uiElement in _uiElements)
-            {
-                if (uiElement.IsInteractable)
-                {
-                    uiElement.TabIndex = currentTabIndex;
-                    currentTabIndex++;
-                }
-                else
-                {
-                    uiElement.TabIndex = -1;
-                }
-            }
-            _isUiElementListSortedByTabIndex = true;
-        }
-
-        public void ControllerOnMoveToPreviousElement()
-        {
-            var lastElement = CurrentElement;
-            if (CurrentElement == null)
-            {
-                CurrentElement = _uiElements.FirstOrDefault();
-            }
-            else
-            {
-                var index = _uiElements.IndexOf(CurrentElement);
-                CurrentElement = index == 0 ? _uiElements[_uiElements.Count-1] : _uiElements[index - 1];
-            }
-
-            if (lastElement != CurrentElement)
-            {
-                lastElement?.Unfocus();
-                CurrentElement?.Focus();
-            }
-        }
-
-        private void ControllerOnOnAction(UiElement uiElement)
-        {
-            CurrentElement?.OnAction();
-        }
-
-        private void ControllerOnMoveToNextElement()
-        {
-            var lastElement = CurrentElement;
-            if (CurrentElement == null)
-            {
-                CurrentElement = _interactableElements.FirstOrDefault();
-            }
-            else
-            {
-                var index = _interactableElements.IndexOf(CurrentElement);
-                CurrentElement = index == _interactableElements.Count - 1 ? _interactableElements[0] : _interactableElements[index + 1];
-            }
-
-            if (lastElement != CurrentElement)
-            {
-                lastElement?.Unfocus();
-                CurrentElement?.Focus();
-            }
         }
 
         public TElement AddElement<TElement>(TElement element) where TElement : UiElement
         {
             _uiElements.Add(element);
-            _isUiElementListSortedByTabIndex = false;
+            AddUiElement(element);
             return element;
         }
 
-        public TContainer AddElementContainer<TContainer>(TContainer container) where TContainer : UiElementContainer
+        public override void Update(GameTime gameTime)
         {
-            _container.Add(container);
-            return container;
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            if (!_isUiElementListSortedByTabIndex)
-            {
-                _interactableElements.Clear();
-                _interactableElements.AddRange(_uiElements.Where(e => e.IsInteractable).OrderBy(e => e.TabIndex));
-                _isUiElementListSortedByTabIndex = true;
-            }
-
+            base.Update(gameTime);
             for (var i = 0; i < _uiElements.Count; i++)
             {
                 _uiElements[i].Update(gameTime);
             }
+            _currentModalElement?.Update(gameTime);
+        }
 
-            foreach (var container in _container) container.Update(gameTime);
+        public void ShowModal(UiCompoundElement modalElement)
+        {
+            _currentModalElement = modalElement;
+            SetUiElements(_currentModalElement.Children, true);
+            FocusFirstElement();
+            _currentModalElement.Show();
+        }
 
-            foreach (var inputController in _inputControllers)
-            {
-                inputController.Update(this);
-            }
+        public void CloseModal()
+        {
+            _currentModalElement?.Hide();
+            SetUiElements(_uiElements, false);
+            FocusFirstElement();
         }
 
         public void Show()
@@ -145,6 +59,8 @@ namespace Pokemon3D.Rendering.UI
                 var uiBaseElement = _uiElements[i];
                 if (uiBaseElement.State != UiState.Inactive) uiBaseElement.Draw(spriteBatch);
             }
+
+            if (_currentModalElement != null && _currentModalElement.State != UiState.Inactive) _currentModalElement?.Draw(spriteBatch);
             spriteBatch.End();
         }
     }

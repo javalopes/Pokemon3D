@@ -6,7 +6,7 @@ namespace Pokemon3D.UI
 {
     class KeyboardUiInputController : OverlayInputControllerBase
     {
-        public override void Update(UiOverlay overlay)
+        public override void Update(UiFocusContainer container)
         {
             if (GameProvider.GameInstance.InputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
             {
@@ -18,7 +18,7 @@ namespace Pokemon3D.UI
             }
             if (GameProvider.GameInstance.InputSystem.Accept(AcceptInputTypes.Buttons))
             {
-                InvokeAction(overlay.CurrentElement);
+                InvokeAction(container.CurrentElement);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Pokemon3D.Rendering.UI
         /// <summary>
         /// Called once per frame.
         /// </summary>
-        void Update(UiOverlay overlay);
+        void Update(UiFocusContainer container);
 
         /// <summary>
         /// This action should be called when an element should execute it's clicked action.

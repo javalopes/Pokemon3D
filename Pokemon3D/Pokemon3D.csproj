@@ -113,7 +113,6 @@
     <Compile Include="ScriptPipeline\Vector2.cs" />
     <Compile Include="UI\Framework\BarEntry.cs" />
     <Compile Include="UI\Framework\ControlBar.cs" />
-    <Compile Include="UI\Framework\Dialogs\ModalDialog.cs" />
     <Compile Include="UI\Framework\Dialogs\SelectionDialog.cs" />
     <Compile Include="UI\Framework\Hexagon.cs" />
     <Compile Include="UI\Framework\HexagonBackground.cs" />

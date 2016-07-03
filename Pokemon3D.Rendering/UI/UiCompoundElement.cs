@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -10,6 +11,13 @@ namespace Pokemon3D.Rendering.UI
     public abstract class UiCompoundElement : UiElement
     {
         private readonly List<UiElement> _children = new List<UiElement>();
+
+        public ReadOnlyCollection<UiElement> Children { get; }
+
+        protected UiCompoundElement()
+        {
+            Children = new ReadOnlyCollection<UiElement>(_children);
+        }
 
         /// <summary>
         /// Adds a child control to compound element.
