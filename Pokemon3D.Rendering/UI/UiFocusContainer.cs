@@ -9,8 +9,18 @@ namespace Pokemon3D.Rendering.UI
         private readonly List<UiElement> _interactableElements;
         protected readonly List<OverlayInputController> InputControllers;
         private bool _rearrangeList;
+        private UiElement _elementToGetFocus;
+        private UiElement _currentElement;
 
-        public UiElement CurrentElement { get; private set; }
+        public UiElement CurrentElement
+        {
+            get { return _currentElement; }
+            private set
+            {
+                if (_elementToGetFocus != null && _elementToGetFocus != _currentElement) _elementToGetFocus = null;
+                _currentElement = value;
+            }
+        }
 
         public UiFocusContainer()
         {
@@ -25,8 +35,8 @@ namespace Pokemon3D.Rendering.UI
             if (firstElement == CurrentElement) return;
 
             CurrentElement?.Unfocus();
-            firstElement?.Focus();
-            CurrentElement = firstElement;
+
+            _elementToGetFocus = firstElement;
         }
 
         public void AddInputController(OverlayInputController controller)
@@ -132,6 +142,13 @@ namespace Pokemon3D.Rendering.UI
             foreach (var inputController in InputControllers)
             {
                 inputController.Update(this);
+            }
+
+            if (_elementToGetFocus != null && _elementToGetFocus.State == UiState.Active)
+            {
+                _elementToGetFocus.Focus();
+                CurrentElement = _elementToGetFocus;
+                _elementToGetFocus = null;
             }
         }
     }

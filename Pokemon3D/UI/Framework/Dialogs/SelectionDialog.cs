@@ -71,7 +71,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
         {
             var startY = GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
 
-            GameInstance.ShapeRenderer.DrawRectangle(0, 0, GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height, new Color(255, 255, 255, 100));
+            GameInstance.ShapeRenderer.DrawRectangle(0, 0, GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height, Color.White * 0.4f);
             GameInstance.ShapeRenderer.DrawRectangle(0, startY, GameInstance.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
 
             spriteBatch.DrawString(_titleFont, _title, new Vector2(100, startY + 20), Color.Black);
