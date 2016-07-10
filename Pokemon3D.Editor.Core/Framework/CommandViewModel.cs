@@ -7,18 +7,20 @@ namespace Pokemon3D.Editor.Core.Framework
     {
         private readonly Action<object> _action;
         private bool _isEnabled;
+        private string _caption;
 
         public event EventHandler CanExecuteChanged;
 
-        public CommandViewModel(Action<object> action)
+        public CommandViewModel(Action<object> action, string caption)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
 
             _action = action;
             IsEnabled = true;
+            Caption = caption;
         }
 
-        public CommandViewModel(Action action) : this(o => action())
+        public CommandViewModel(Action action, string caption) : this(o => action(), caption)
         {
         }
 
@@ -33,6 +35,12 @@ namespace Pokemon3D.Editor.Core.Framework
                     CanExecuteChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
+        }
+
+        public string Caption
+        {
+            get { return _caption; }
+            set { SetProperty(ref _caption, value); }
         }
 
         public bool CanExecute(object parameter)

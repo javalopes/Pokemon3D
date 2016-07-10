@@ -16,6 +16,15 @@
             <StackPanel.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DefaultActionCommand}" />
             </StackPanel.InputBindings>
+            <StackPanel.ContextMenu>
+                <ContextMenu ItemsSource="{Binding Commands}">
+                    <ContextMenu.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Caption}" />
+                        </DataTemplate>
+                    </ContextMenu.ItemTemplate>
+                </ContextMenu>
+            </StackPanel.ContextMenu>
         </StackPanel>
         <HierarchicalDataTemplate.Triggers>
             <DataTrigger Binding="{Binding Type}" Value="{x:Static viewModels:TreeElementType.Folder}">

@@ -11,7 +11,7 @@ namespace Pokemon3D.Editor.Windows
         protected override void OnStartup(StartupEventArgs e)
         {
             var mainWindow = new MainWindow();
-            var applicationViewModel = new ApplicationViewModel(new PlatformServiceImp(mainWindow.View3D));
+            var applicationViewModel = new ApplicationViewModel(new PlatformServiceImp());
 
             MainWindow = mainWindow;
             MainWindow.DataContext = applicationViewModel;

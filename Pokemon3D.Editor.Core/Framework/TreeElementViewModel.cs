@@ -16,12 +16,14 @@ namespace Pokemon3D.Editor.Core.Framework
 
     public class TreeElementViewModel : ViewModel
     {
-        private ObservableCollection<TreeElementViewModel> _children;
+        private readonly ObservableCollection<TreeElementViewModel> _children;
+        private readonly ObservableCollection<CommandViewModel> _commands; 
         private string _name;
         private DetailViewModel _detailsViewModel;
-        private ApplicationViewModel _application;
+        private readonly ApplicationViewModel _application;
 
         public ReadOnlyObservableCollection<TreeElementViewModel> Children { get; }
+        public ReadOnlyObservableCollection<CommandViewModel> Commands { get; }
         public CommandViewModel DefaultActionCommand { get; }
 
         public TreeElementViewModel(ApplicationViewModel application, string name, TreeElementType? treeElementType = null)
@@ -32,7 +34,20 @@ namespace Pokemon3D.Editor.Core.Framework
             _children = new ObservableCollection<TreeElementViewModel>();
             Children = new ReadOnlyObservableCollection<TreeElementViewModel>(_children);
 
-            DefaultActionCommand = new CommandViewModel(OnDefaultActionCommand);
+            _commands = new ObservableCollection<CommandViewModel>();
+            Commands = new ReadOnlyObservableCollection<CommandViewModel>(_commands);
+
+            if (treeElementType.GetValueOrDefault(TreeElementType.Folder) != TreeElementType.Folder)
+            {
+                DefaultActionCommand = new CommandViewModel(OnDefaultActionCommand, "Open");
+
+                _commands.Add(DefaultActionCommand);
+            }
+        }
+
+        public void AddCommand(CommandViewModel command)
+        {
+            _commands.Add(command);
         }
 
         private void OnDefaultActionCommand()
@@ -45,11 +60,11 @@ namespace Pokemon3D.Editor.Core.Framework
 
         private TreeElementType GuessElementTypeByFileExtension(string name)
         {
-            if (name.EndsWith("json", System.StringComparison.OrdinalIgnoreCase)) return TreeElementType.JsonFile;
-            if (name.EndsWith("png", System.StringComparison.OrdinalIgnoreCase)) return TreeElementType.TextureFile;
-            if (name.EndsWith("bmp", System.StringComparison.OrdinalIgnoreCase)) return TreeElementType.TextureFile;
-            if (name.EndsWith("jpg", System.StringComparison.OrdinalIgnoreCase)) return TreeElementType.TextureFile;
-            if (name.EndsWith("jpeg", System.StringComparison.OrdinalIgnoreCase)) return TreeElementType.TextureFile;
+            if (name.EndsWith("json", StringComparison.OrdinalIgnoreCase)) return TreeElementType.JsonFile;
+            if (name.EndsWith("png", StringComparison.OrdinalIgnoreCase)) return TreeElementType.TextureFile;
+            if (name.EndsWith("bmp", StringComparison.OrdinalIgnoreCase)) return TreeElementType.TextureFile;
+            if (name.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)) return TreeElementType.TextureFile;
+            if (name.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase)) return TreeElementType.TextureFile;
             return TreeElementType.File;
         }
 

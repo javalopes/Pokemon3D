@@ -21,8 +21,8 @@ namespace Pokemon3D.Editor.Core.Framework
             _values = new ObservableCollection<TPropertyType>(values ?? new TPropertyType[0]);
             Values = new ReadOnlyObservableCollection<TPropertyType>(_values);
 
-            AddElementCommand = new CommandViewModel(OnAddElementCommand);
-            RemoveElementAtCommand = new CommandViewModel(OnRemoveElementAtCommand);
+            AddElementCommand = new CommandViewModel(OnAddElementCommand, "Add");
+            RemoveElementAtCommand = new CommandViewModel(OnRemoveElementAtCommand, "Remove");
 
             Caption = caption;
         }

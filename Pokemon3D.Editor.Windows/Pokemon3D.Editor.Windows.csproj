@@ -46,10 +46,6 @@
       <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.0.1678\lib\net40\MonoGame.Framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpDX, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="SharpDX.Direct3D11, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="SharpDX.Direct3D9, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="SharpDX.DXGI, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
@@ -96,10 +92,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="View3D\D3D11Host.cs" />
-    <Compile Include="View3D\D3D11Image.cs" />
-    <Compile Include="View3D\D3D9.cs" />
-    <Compile Include="View3D\WpfSceneEffect.cs" />
     <Page Include="DataTemplates\DataModelDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -121,7 +113,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CustomControls\ColorModelColorPicker.cs" />
-    <Compile Include="DataTemplates\Class1.cs" />
     <Compile Include="Extensions\EnumToItemsSource.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

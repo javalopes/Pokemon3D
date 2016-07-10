@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.5.0.1678, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.0.1678\lib\net40\MonoGame.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,13 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationViewModel.cs" />
-    <Compile Include="DataModelViewModels\BattlemapDataViewModel.cs" />
-    <Compile Include="DataModelViewModels\EntityFieldPositionDataViewModel.cs" />
-    <Compile Include="DataModelViewModels\GameModeStartConfigrationDataViewModel.cs" />
-    <Compile Include="DataModelViewModels\MapDataViewModel.cs" />
-    <Compile Include="DataModelViewModels\MoveDataViewModel.cs" />
-    <Compile Include="DataModelViewModels\PokedexEntryDataViewModel.cs" />
-    <Compile Include="DataModelViewModels\PokemonDataViewModel.cs" />
     <Compile Include="DetailViewModels\DetailViewModel.cs" />
     <Compile Include="DetailViewModels\ModelDetailViewModel.cs" />
     <Compile Include="DetailViewModels\TextureDetailViewModel.cs" />
@@ -65,9 +62,12 @@
     <Compile Include="Framework\StringListDataModelPropertyViewModel.cs" />
     <Compile Include="Framework\TreeElementViewModel.cs" />
     <Compile Include="Framework\ViewModel.cs" />
-    <Compile Include="DataModelViewModels\GameModeDataViewModel.cs" />
     <Compile Include="Model\FileSystem.cs" />
     <Compile Include="Model\GameModeModel.cs" />
+    <Compile Include="Model\ModelModel.cs" />
+    <Compile Include="Model\ResourceModel.cs" />
+    <Compile Include="Model\ResourceType.cs" />
+    <Compile Include="Model\TextureModel.cs" />
     <Compile Include="PlatformService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -76,6 +76,9 @@
       <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
       <Name>Pokemon3D.DataModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

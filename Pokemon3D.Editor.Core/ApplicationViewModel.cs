@@ -1,5 +1,4 @@
-﻿using Pokemon3D.Editor.Core.DataModelViewModels;
-using Pokemon3D.Editor.Core.DetailViewModels;
+﻿using Pokemon3D.Editor.Core.DetailViewModels;
 using Pokemon3D.Editor.Core.Framework;
 using Pokemon3D.Editor.Core.Model;
 using System;
@@ -53,7 +52,7 @@ namespace Pokemon3D.Editor.Core
             PlatformService = platformService;
             PlatformService.OnErrorOccurred = s => _output.Add(s);
             
-            OpenGameModeCommand = new CommandViewModel(OnOpenGameModeCommand);
+            OpenGameModeCommand = new CommandViewModel(OnOpenGameModeCommand, "Open Game Mode");
         }
 
         public ReadOnlyObservableCollection<string> Output { get; private set; }
@@ -80,7 +79,7 @@ namespace Pokemon3D.Editor.Core
 
             Root.AddChild(new TreeElementViewModel(this, GameModeModel.GameModeJsonFile, TreeElementType.JsonFile)
             {
-                DetailsViewModel = new GameModeDataViewModel(gameModeModel.GameModeDataModel)
+                //DetailsViewModel = new GameModeDataViewModel(gameModeModel.GameModeDataModel)
             });
             
             var texturesElement = contentElement.AddChild(new TreeElementViewModel(this, "Textures", TreeElementType.Folder));
@@ -94,7 +93,7 @@ namespace Pokemon3D.Editor.Core
             {
                 movesElement.AddChild(new TreeElementViewModel(this, move.Id, TreeElementType.JsonFile)
                 {
-                    DetailsViewModel = new MoveDataViewModel(move)
+                    //DetailsViewModel = new MoveDataViewModel(move)
                 });
             }
 
@@ -103,7 +102,7 @@ namespace Pokemon3D.Editor.Core
             {
                 pokemonElement.AddChild(new TreeElementViewModel(this, pokemon.Id, TreeElementType.JsonFile)
                 {
-                    DetailsViewModel = new PokemonDataViewModel(pokemon)
+                    //DetailsViewModel = new PokemonDataViewModel(pokemon)
                 });
             }
 

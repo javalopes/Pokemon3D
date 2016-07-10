@@ -9,50 +9,6 @@ using System.Linq;
 
 namespace Pokemon3D.Editor.Core.Model
 {
-    public enum ResourceType
-    {
-        JsonFile,
-        TextureFile,
-        File,
-        Model,
-    }
-
-    public abstract class ResourceModel
-    {
-        public string FilePath { get; set; }
-        public string Name { get; set; }
-        public string[] HierarchyPath { get; set; }
-
-        public ResourceType ResourceType { get; set; }
-
-        protected ResourceModel(string basePath, string filePath)
-        {
-            FilePath = filePath;
-            var localPath = (Path.GetDirectoryName(filePath) ?? "").Replace(basePath.Trim(), "");
-            HierarchyPath = localPath.Split(new[] { Path.DirectorySeparatorChar }, System.StringSplitOptions.RemoveEmptyEntries);
-        }
-    }
-
-    public class TextureModel : ResourceModel
-    {
-        public TextureModel(string basePath, string filePath) : base(basePath, filePath)
-        {
-            ResourceType = ResourceType.TextureFile;
-            Name = Path.GetFileName(filePath);
-        }
-    }
-
-    public class ModelModel : ResourceModel
-    {
-        public ModelModel(string basePath, string[] filePartPaths) 
-            : base(basePath, filePartPaths.First(f => f.EndsWith(".obj", StringComparison.OrdinalIgnoreCase)))
-        {
-            ResourceType = ResourceType.Model;
-            Name = Path.GetFileNameWithoutExtension(FilePath);
-            HierarchyPath = HierarchyPath.Take(HierarchyPath.Length - 1).ToArray();
-        }
-    }
-
     public class GameModeModel
     {
         private const string FolderNameContent = "Content";
@@ -71,10 +27,10 @@ namespace Pokemon3D.Editor.Core.Model
 
         public const string GameModeJsonFile = "GameMode.json";
 
-        private List<TextureModel> _textureModels;
-        private List<ModelModel> _modelModels;
-        private List<MoveModel> _moveModels;
-        private List<PokemonModel> _pokemonModel;
+        private readonly List<TextureModel> _textureModels;
+        private readonly List<ModelModel> _modelModels;
+        private readonly List<MoveModel> _moveModels;
+        private readonly List<PokemonModel> _pokemonModel;
 
         public GameModeModel()
         {
@@ -95,8 +51,7 @@ namespace Pokemon3D.Editor.Core.Model
         {
             EnsureDefaultFoldersExists(folderPath);
 
-            var gameMode = new GameModeModel();
-            return gameMode;
+            return new GameModeModel();
         }
 
         public static GameModeModel Open(string folderPath)
