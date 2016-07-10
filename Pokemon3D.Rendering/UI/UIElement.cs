@@ -26,6 +26,11 @@ namespace Pokemon3D.Rendering.UI
         public Vector2 Offset { get; set; }
 
         /// <summary>
+        /// Origin from where the position of the bounds defines.
+        /// </summary>
+        protected Vector2 Origin { get; private set; }
+
+        /// <summary>
         /// Alpha-Value of element.
         /// </summary>
         public float Alpha { get; set; }
@@ -75,6 +80,7 @@ namespace Pokemon3D.Rendering.UI
             _animator = new Animator();
             _animator.AnimationFinished += OnAnimationFinished;
             State = UiState.Inactive;
+            Scale = Vector2.One;
         }
 
         /// <summary>
@@ -198,23 +204,35 @@ namespace Pokemon3D.Rendering.UI
         public virtual bool IsAnimating => _animator.CurrentAnimation != null;
 
         /// <summary>
-        /// Calculates the bounds with offset.
+        /// Calculates the bounds with offset and origin.
         /// </summary>
         /// <returns>Bounds.</returns>
         public Rectangle GetBounds()
         {
             var bounds = Bounds;
-            bounds.X += (int)Offset.X;
-            bounds.Y += (int)Offset.Y;
+            bounds.X += (int)(Offset.X);
+            bounds.Y += (int)(Offset.Y);
             return bounds;
         }
 
         public void SetPosition(Vector2 position)
         {
             var bounds = Bounds;
-            bounds.X = (int) position.X;
-            bounds.Y = (int) position.Y;
+            bounds.X = (int)(position.X - Origin.X);
+            bounds.Y = (int)(position.Y - Origin.Y);
             Bounds = bounds;
+        }
+
+        /// <summary>
+        /// percentage offset of where to position the uielement.
+        /// This  takes also rotation and scaling center into consideration.
+        /// </summary>
+        /// <param name="percentage">Percentage from 0 to 1 (clamped)</param>
+        public void SetOriginPercentage(Vector2 percentage)
+        {
+            var originX = Bounds.Width*MathHelper.Clamp(percentage.X, 0, 1);
+            var originY = Bounds.Height*MathHelper.Clamp(percentage.Y, 0, 1);
+            Origin = new Vector2(originX, originY);
         }
 
         /// <summary>
@@ -229,6 +247,11 @@ namespace Pokemon3D.Rendering.UI
         /// If the element can get focus.
         /// </summary>
         public abstract bool IsInteractable { get; }
+
+        /// <summary>
+        /// Scale of control.
+        /// </summary>
+        public Vector2 Scale { get; set; }
 
         /// <summary>
         /// Draws the element

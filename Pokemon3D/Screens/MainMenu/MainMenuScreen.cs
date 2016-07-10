@@ -57,7 +57,7 @@ namespace Pokemon3D.Screens.MainMenu
 
         private void OnStartNewGame(LeftSideButton button)
         {
-            GameInstance.ScreenManager.SetScreen(typeof(GameModeLoadingScreen), typeof(BlendTransition));
+            GameInstance.ScreenManager.SetScreen(typeof(GameModeLoadingScreen));
         }
 
         private void OnLoadGame(LeftSideButton button)

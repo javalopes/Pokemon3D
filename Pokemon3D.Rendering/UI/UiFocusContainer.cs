@@ -70,7 +70,7 @@ namespace Pokemon3D.Rendering.UI
             _rearrangeList = false;
         }
         
-        public void AddUiElement(UiElement element)
+        protected void AddUiElement(UiElement element)
         {
             _interactableElements.Add(element);
             _rearrangeList = true;

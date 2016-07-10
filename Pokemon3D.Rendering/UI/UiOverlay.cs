@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -8,6 +10,18 @@ namespace Pokemon3D.Rendering.UI
     {
         private UiCompoundElement _currentModalElement;
         private readonly List<UiElement> _uiElements;
+        private bool _waitForShowed;
+        private bool _waitForHidden;
+
+        /// <summary>
+        /// Is called after show() and all elements have state active.
+        /// </summary>
+        public event Action Showed;
+
+        /// <summary>
+        /// Is called after show() and all elements have state inactive.
+        /// </summary>
+        public event Action Hidden;
 
         public UiOverlay()
         {
@@ -29,6 +43,18 @@ namespace Pokemon3D.Rendering.UI
                 _uiElements[i].Update(gameTime);
             }
             _currentModalElement?.Update(gameTime);
+
+            if (_waitForShowed && _uiElements.All(e => e.State == UiState.Active))
+            {
+                _waitForShowed = false;
+                Showed?.Invoke();
+            }
+
+            if (_waitForHidden && _uiElements.All(e => e.State == UiState.Inactive))
+            {
+                _waitForHidden = false;
+                Hidden?.Invoke();
+            }
         }
 
         public void ShowModal(UiCompoundElement modalElement)
@@ -49,6 +75,15 @@ namespace Pokemon3D.Rendering.UI
         public void Show()
         {
             _uiElements.ForEach(e => e.Show());
+            _waitForHidden = false;
+            _waitForShowed = true;
+        }
+
+        public void Hide()
+        {
+            _uiElements.ForEach(e => e.Hide());
+            _waitForHidden = true;
+            _waitForShowed = false;
         }
 
         public void Draw(SpriteBatch spriteBatch)

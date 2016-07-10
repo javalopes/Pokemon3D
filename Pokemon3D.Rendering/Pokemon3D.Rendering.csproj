@@ -68,10 +68,6 @@
     <Compile Include="Compositor\HorizontalBlurPostProcessingStep.cs" />
     <Compile Include="Compositor\LightTechniqueFlag.cs" />
     <Compile Include="Compositor\RenderQueue.cs" />
-    <Compile Include="GUI\HorizontalAlignment.cs" />
-    <Compile Include="GUI\Sprite.cs" />
-    <Compile Include="GUI\SpriteText.cs" />
-    <Compile Include="GUI\VerticalAlignment.cs" />
     <Compile Include="RenderSettings.cs" />
     <Compile Include="Compositor\RenderStatistics.cs" />
     <Compile Include="Compositor\SceneRendererFactory.cs" />
@@ -91,6 +87,9 @@
     <Compile Include="Skybox.cs" />
     <Compile Include="UI\Animations\UiAlphaAnimation.cs" />
     <Compile Include="UI\Animations\UiAnimation.cs" />
+    <Compile Include="UI\Animations\UiScaleAnimation.cs" />
+    <Compile Include="UI\Controls\StaticText.cs" />
+    <Compile Include="UI\Controls\Image.cs" />
     <Compile Include="UI\UiFocusContainer.cs" />
     <Compile Include="UI\OverlayInputController.cs" />
     <Compile Include="UI\OverlayInputControllerBase.cs" />
