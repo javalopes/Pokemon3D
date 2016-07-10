@@ -1,14 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Pokemon3D.GameCore.GameProvider;
-
-namespace Pokemon3D.UI.Framework
+﻿namespace Pokemon3D.UI
 {
     //class LeftSideCheckbox : Control
     //{

@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Entities.Pokemon;
-using Pokemon3D.Entities;
-using Pokemon3D.Rendering.UI;
-using static Pokemon3D.GameCore.GameProvider;
-
-namespace Pokemon3D.UI.Framework
+﻿namespace Pokemon3D.UI
 {
     //class PokemonProfile : UiElement
     //{

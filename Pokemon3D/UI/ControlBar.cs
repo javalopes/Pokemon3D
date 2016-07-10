@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
-using static Pokemon3D.GameCore.GameProvider;
 
-namespace Pokemon3D.UI.Framework
+namespace Pokemon3D.UI
 {
     /// <summary>
     /// Draws a bar to the bottom part of the screen that can display button functions for the current screen.
@@ -28,7 +28,7 @@ namespace Pokemon3D.UI.Framework
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            GameInstance.ShapeRenderer.DrawRectangle(0, GameInstance.ScreenBounds.Height - 64, GameInstance.ScreenBounds.Width, 64, Color.White);
+            GameProvider.GameInstance.ShapeRenderer.DrawRectangle(0, GameProvider.GameInstance.ScreenBounds.Height - 64, GameProvider.GameInstance.ScreenBounds.Width, 64, Color.White);
             base.Draw(spriteBatch);
         }
     }

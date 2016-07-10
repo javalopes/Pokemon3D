@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using static Pokemon3D.GameCore.GameProvider;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.GameCore;
 
-namespace Pokemon3D.UI.Framework
+namespace Pokemon3D.UI
 {
     /// <summary>
     /// Manages a Pokémon sprite sheet.
@@ -47,7 +47,7 @@ namespace Pokemon3D.UI.Framework
                             }
                             else
                             {
-                                Texture2D frame = new Texture2D(GameInstance.GraphicsDevice, frameWidth, frameHeight);
+                                Texture2D frame = new Texture2D(GameProvider.GameInstance.GraphicsDevice, frameWidth, frameHeight);
                                 frame.SetData(frameData);
                                 frames.Add(frame);
                             }

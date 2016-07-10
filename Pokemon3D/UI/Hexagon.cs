@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
 
-namespace Pokemon3D.UI.Framework
+namespace Pokemon3D.UI
 {
     public class Hexagon : UiElement
     {

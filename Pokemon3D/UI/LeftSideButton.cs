@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
-using static Pokemon3D.GameCore.GameProvider;
 
-namespace Pokemon3D.UI.Framework
+namespace Pokemon3D.UI
 {
     class LeftSideButton : UiElement
     {
@@ -17,8 +17,8 @@ namespace Pokemon3D.UI.Framework
 
         public LeftSideButton(string text, Vector2 position, Action<LeftSideButton> onClick)
         {
-            _font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
-            _texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
+            _font = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _texture = GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
 
             Text = text;
             var bounds = Bounds;

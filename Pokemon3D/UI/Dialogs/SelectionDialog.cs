@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
-using static Pokemon3D.GameCore.GameProvider;
 
-namespace Pokemon3D.UI.Framework.Dialogs
+namespace Pokemon3D.UI.Dialogs
 {
     class SelectionDialog : UiCompoundElement
     {
@@ -24,15 +24,15 @@ namespace Pokemon3D.UI.Framework.Dialogs
                 AddChildElement(leftSideButton);
             }
 
-            _titleFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
-            _textFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _titleFont = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
+            _textFont = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
 
             _title = title;
             _text = text;
 
             SetupLayout();
 
-            GameInstance.WindowSizeChanged += HandleWindowSizeChanged;
+            GameProvider.GameInstance.WindowSizeChanged += HandleWindowSizeChanged;
         }
 
         private void HandleWindowSizeChanged(object sender, EventArgs e)
@@ -57,7 +57,7 @@ namespace Pokemon3D.UI.Framework.Dialogs
                 _calculatedHeight += textSpace;
             }
 
-            var startY = GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
+            var startY = GameProvider.GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
             foreach (var uiElement in Children)
             {
                 uiElement.SetPosition(new Vector2(120, controlY + startY));
@@ -69,10 +69,10 @@ namespace Pokemon3D.UI.Framework.Dialogs
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            var startY = GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
+            var startY = GameProvider.GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
 
-            GameInstance.ShapeRenderer.DrawRectangle(0, 0, GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height, Color.White * 0.4f);
-            GameInstance.ShapeRenderer.DrawRectangle(0, startY, GameInstance.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
+            GameProvider.GameInstance.ShapeRenderer.DrawRectangle(0, 0, GameProvider.GameInstance.ScreenBounds.Width, GameProvider.GameInstance.ScreenBounds.Height, Color.White * 0.4f);
+            GameProvider.GameInstance.ShapeRenderer.DrawRectangle(0, startY, GameProvider.GameInstance.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
 
             spriteBatch.DrawString(_titleFont, _title, new Vector2(100, startY + 20), Color.Black);
 

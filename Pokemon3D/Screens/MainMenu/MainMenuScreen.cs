@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Screens.Transitions;
-using Pokemon3D.UI.Framework;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.GameModeLoading;
 using Pokemon3D.UI;
-using Pokemon3D.UI.Framework.Dialogs;
+using Pokemon3D.UI.Dialogs;
 using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.MainMenu

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
 
-namespace Pokemon3D.UI.Framework
+namespace Pokemon3D.UI
 {
     class BarEntry : UiElement
     {

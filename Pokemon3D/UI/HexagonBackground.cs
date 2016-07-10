@@ -1,13 +1,9 @@
-﻿using Pokemon3D.GameCore;
-using Microsoft.Xna.Framework;
+﻿using System;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
-using static Pokemon3D.GameCore.GameProvider;
 
-namespace Pokemon3D.UI.Framework
+namespace Pokemon3D.UI
 {
     /// <summary>
     /// Displays a half-visible background filled with hexagons.
@@ -18,8 +14,8 @@ namespace Pokemon3D.UI.Framework
 
         public HexagonBackground()
         {
-            GameInstance.WindowSizeChanged += HandleWindowSizeChanged;
-            _hexagonTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Hexagon);
+            GameProvider.GameInstance.WindowSizeChanged += HandleWindowSizeChanged;
+            _hexagonTexture = GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Hexagon);
             GenerateHexagons(true);
         }
 
@@ -31,9 +27,9 @@ namespace Pokemon3D.UI.Framework
         private void GenerateHexagons(bool hasAnimation)
         {
             ClearChildren();
-            for (var x = -1; x < GameInstance.ScreenBounds.Width/Hexagon.Width + 1; x++)
+            for (var x = -1; x < GameProvider.GameInstance.ScreenBounds.Width/Hexagon.Width + 1; x++)
             {
-                for (var y = -1; y < GameInstance.ScreenBounds.Height / Hexagon.HeightHalf + 1; y++)
+                for (var y = -1; y < GameProvider.GameInstance.ScreenBounds.Height / Hexagon.HeightHalf + 1; y++)
                 {
                     var hexagon = new Hexagon(_hexagonTexture, x, y, hasAnimation);
                     AddChildElement(hexagon);
