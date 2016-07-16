@@ -15,6 +15,7 @@ using Pokemon3D.Screens;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering.UI;
+using Pokemon3D.Screens.GameMenu;
 using Pokemon3D.Screens.MainMenu;
 
 namespace Pokemon3D.GameCore

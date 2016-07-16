@@ -87,6 +87,8 @@
     <Compile Include="Skybox.cs" />
     <Compile Include="UI\Animations\UiAlphaAnimation.cs" />
     <Compile Include="UI\Animations\UiAnimation.cs" />
+    <Compile Include="UI\Animations\UiCustomDeltaAnimation.cs" />
+    <Compile Include="UI\Animations\UiRotationAnimation.cs" />
     <Compile Include="UI\Animations\UiScaleAnimation.cs" />
     <Compile Include="UI\Controls\StaticText.cs" />
     <Compile Include="UI\Controls\Image.cs" />

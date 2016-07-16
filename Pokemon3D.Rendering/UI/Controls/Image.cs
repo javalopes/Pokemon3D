@@ -20,7 +20,7 @@ namespace Pokemon3D.Rendering.UI.Controls
         public override void Draw(SpriteBatch spriteBatch)
         {
             var bounds = GetBounds();
-            spriteBatch.Draw(_texture, new Vector2(bounds.X, bounds.Y), _sourceRectangle, Color * Alpha, 0.0f, Origin, Scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(_texture, new Vector2(bounds.X, bounds.Y), _sourceRectangle, Color * Alpha, Rotation, Origin, Scale, SpriteEffects.None, 0);
         }
     }
 }

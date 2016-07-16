@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Animations;
 using Pokemon3D.Rendering.UI.Animations;
@@ -123,6 +124,9 @@ namespace Pokemon3D.Rendering.UI
                 case "Focused":
                     State = playedReversed ? UiState.Active : UiState.Focused;
                     break;
+                default:
+                    CustomAnimationFinshed?.Invoke(animationName);
+                    break;
             }
         }
 
@@ -243,6 +247,17 @@ namespace Pokemon3D.Rendering.UI
             
         }
 
+        public void AddCustomAnimation(string name, UiAnimation animation)
+        {
+            animation.Owner = this;
+            _animator.AddAnimation(name, animation);
+        }
+
+        public void PlayCustomAnimation(string name)
+        {
+            _animator.SetAnimation(name);
+        }
+
         /// <summary>
         /// If the element can get focus.
         /// </summary>
@@ -252,6 +267,16 @@ namespace Pokemon3D.Rendering.UI
         /// Scale of control.
         /// </summary>
         public Vector2 Scale { get; set; }
+
+        /// <summary>
+        /// Called when an animation has finished.
+        /// </summary>
+        public event Action<string> CustomAnimationFinshed;
+
+        /// <summary>
+        /// Rotation of control.
+        /// </summary>
+        public float Rotation { get; set; }
 
         /// <summary>
         /// Draws the element
