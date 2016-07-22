@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.UI;
@@ -11,9 +12,10 @@ namespace Pokemon3D.Entities
 {
     class World
     {
-        private InputSystem _inputSystem;
+        private readonly InputSystem _inputSystem;
         private Action _onFinished;
-        private NotificationBar _notificationBar;
+        private readonly NotificationBar _notificationBar;
+        private Dictionary<string, Map> _allMaps = new Dictionary<string, Map>(); 
 
         public Map ActiveMap { get; private set; }
         public Player Player { get; private set; }
@@ -38,8 +40,13 @@ namespace Pokemon3D.Entities
             gameMode.Preload();
             var mapModel = gameMode.LoadMap(gameMode.GameModeInfo.StartMap);
             ActiveMap = new Map(this, mapModel);
-            ActiveMap.Load();
+            ActiveMap.Load(Vector3.Zero);
             Player = new Player(this);
+
+            //var mapModel2 = gameMode.LoadMap("Route1");
+            //var adjacent = new Map(this, mapModel2);
+            //adjacent.Load(new Vector3(0,0, -32));
+
             _onFinished();
         }
 

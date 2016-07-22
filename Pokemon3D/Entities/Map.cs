@@ -19,7 +19,7 @@ namespace Pokemon3D.Entities
             _mapModel = mapModel;
         }
 
-        public void Load()
+        public void Load(Vector3 basicOffset)
         {
             if (_mapModel.Entities != null)
             {
@@ -27,7 +27,7 @@ namespace Pokemon3D.Entities
                 {
                     foreach (var entityPlacing in entityDefinition.Placing)
                     {
-                        PlaceEntities(entityDefinition, entityPlacing, Vector3.Zero);
+                        PlaceEntities(entityDefinition, entityPlacing, basicOffset);
                     }
                 }
             }
@@ -44,7 +44,7 @@ namespace Pokemon3D.Entities
 
                     foreach (var position in positions)
                     {
-                        var fragmentOffset = position.GetVector3();
+                        var fragmentOffset = position.GetVector3() + basicOffset;
 
                         foreach (var entityDefinition in importedFragment.Entities)
                         {
