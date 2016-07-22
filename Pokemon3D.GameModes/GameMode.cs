@@ -43,11 +43,6 @@ namespace Pokemon3D.Entities
 
         public bool IsValid { get; }
 
-        public Dispatcher MainThreadDispatcher
-        {
-            get { return GameContext.MainThreadDispatcher; }
-        }
-
         public GraphicsDevice GraphicsDevice
         {
             get { return GameContext.GraphicsDevice; }
@@ -71,19 +66,16 @@ namespace Pokemon3D.Entities
             IsValid = true;
         }
 
-        public void PreloadAsync(Action finished)
+        public void Preload()
         {
-            FileLoader.GetFilesAsync(new[]
+            var data = FileLoader.GetFiles(new[]
             {
                 PrimitivesFilePath,
                 NaturesFilePath,
                 TypesFilePath,
                 PokedexesFilePath
-            }, a => OnLoadFinished(a,finished));
-        }
+            });
 
-        private void OnLoadFinished(DataLoadResult[] data, Action finished)
-        {
             _primitiveModels = DataModel<PrimitiveModel[]>.FromByteArray(data[0].Data);
             foreach (var primitiveModel in _primitiveModels)
             {
@@ -97,7 +89,9 @@ namespace Pokemon3D.Entities
                     }).ToArray(),
                     Indices = primitiveModel.Indices.Select(i => (ushort)i).ToArray()
                 };
-                var mesh = new Mesh(GameContext.GraphicsDevice, geometryData);
+
+                Mesh mesh = null;
+                GameContext.EnsureExecutedInMainThread(() => mesh = new Mesh(GameContext.GraphicsDevice, geometryData));
                 _meshPrimitivesByName.Add(primitiveModel.Id, mesh);
             }
 
@@ -105,38 +99,13 @@ namespace Pokemon3D.Entities
             _typeModels = DataModel<TypeModel[]>.FromByteArray(data[2].Data);
             _pokedexModels = DataModel<PokedexModel[]>.FromByteArray(data[3].Data);
 
-            FileLoader.GetFilesOfFolderAsync(MoveFilesPath, d => OnMovesLoaded(d, finished));
+            var movesFilePaths = FileLoader.GetFilesOfFolder(MoveFilesPath);
+            _moveModels = movesFilePaths.Select(d => DataModel<MoveModel>.FromByteArray(d.Data)).ToArray();
+            
+            var itemsFiles = FileLoader.GetFilesOfFolder(ItemFilesPath);
+            _itemModels = itemsFiles.Select(d => DataModel<ItemModel>.FromByteArray(d.Data)).ToArray();
         }
-
-        private void OnMovesLoaded(DataLoadResult[] data, Action finished)
-        {
-            _moveModels = data.Select(d => DataModel<MoveModel>.FromByteArray(d.Data)).ToArray();
-            FileLoader.GetFilesOfFolderAsync(ItemFilesPath, d => OnItemsLoaded(d, finished));
-        }
-
-        private void OnItemsLoaded(DataLoadResult[] data, Action finished)
-        {
-            _itemModels = data.Select(d => DataModel<ItemModel>.FromByteArray(d.Data)).ToArray();
-            finished();
-        }
-        
-        public AsyncTexture2D GetTextureAsync(string filePath)
-        {
-            var fullPath = Path.Combine(TexturePath, filePath);
-
-            Texture2D existing;
-            if (_textureCache.TryGetValue(fullPath, out existing)) return new AsyncTexture2D(existing);
-
-            var newTextureLoadRequest = new AsyncTexture2D();
-            FileLoader.GetFileAsync(Path.Combine(TexturePath, fullPath), d =>
-            {
-                var texture = GetTextureFromByteArrayDispatched(d.Data);
-                _textureCache.Add(fullPath, texture);
-                newTextureLoadRequest.SetTexture(texture);
-            });
-            return newTextureLoadRequest;
-        }
-
+                
         public Texture2D GetTexture(string filePath)
         {
             return GetTextureFromRawFolder(Path.Combine(TexturePath, filePath));
@@ -146,44 +115,27 @@ namespace Pokemon3D.Entities
         {
             Texture2D existing;
             if (_textureCache.TryGetValue(filePath, out existing)) return existing;
+            
+            var data = FileLoader.GetFile(Path.Combine(TexturePath, filePath));
 
-            existing = GetTextureFromByteArrayDispatched(FileLoader.GetFile(Path.Combine(TexturePath, filePath)));
-            _textureCache.Add(filePath, existing);
-            return existing;
-        }
-
-        private Texture2D GetTextureFromByteArrayDispatched(byte[] data)
-        {
             Texture2D texture = null;
-            using (var memoryStream = new MemoryStream(data))
+            using (var memoryStream = new MemoryStream(data.Data))
             {
                 memoryStream.Seek(0, SeekOrigin.Begin);
-                if (GameContext.MainThreadDispatcher.CheckAccess())
+                GameContext.EnsureExecutedInMainThread(() =>
                 {
                     texture = Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream);
-                }
-                else
-                {
-                    GameContext.MainThreadDispatcher.Invoke(() =>
-                    {
-                        texture = Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream);
-                    });
-                }
+                });
             }
+            
+            _textureCache.Add(filePath, texture);
             return texture;
         }
 
-        public void LoadMapAsync(string dataPath, Action<MapModel> mapModelLoaded)
+        public MapModel LoadMap(string dataPath)
         {
-            FileLoader.GetFileAsync(GetMapFilePath(dataPath), a =>
-            {
-                mapModelLoaded(DataModel<MapModel>.FromByteArray(a.Data));
-            });
-        }
-
-        public void GetModelAsync(string filePath, Action<Rendering.Data.ModelMesh[]> modelLoaded)
-        {
-            throw new NotImplementedException("Currently disabled");
+            var data = FileLoader.GetFile(GetMapFilePath(dataPath));
+            return DataModel<MapModel>.FromByteArray(data.Data);
         }
 
         public Rendering.Data.ModelMesh[] GetModel(string filePath, Dispatcher mainThreadDispatcher = null)
@@ -265,6 +217,11 @@ namespace Pokemon3D.Entities
         public NatureModel[] GetNatures()
         {
             return _natureModels;
+        }
+
+        public void EnsureExecutedInMainThread(Action action)
+        {
+            GameContext.EnsureExecutedInMainThread(action);
         }
     }
 }

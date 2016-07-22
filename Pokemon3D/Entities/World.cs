@@ -24,19 +24,19 @@ namespace Pokemon3D.Entities
         public void StartNewGameAsync(Action onFinished)
         {
             _onFinished = onFinished;
-            GameInstance.ActiveGameMode.PreloadAsync(ContinueLoadMap);
+            GameInstance.ExecuteBackgroundJob(LoadWorldAsync);
         }
 
-        private void ContinueLoadMap()
+        private void LoadWorldAsync()
         {
-            GameInstance.ActiveGameMode.LoadMapAsync(GameInstance.ActiveGameMode.GameModeInfo.StartMap, FinishedLoadingMapModel);
-        }
-
-        private void FinishedLoadingMapModel(MapModel mapModel)
-        {
-            ActiveMap = new Map(this, mapModel, _onFinished);
+            GameInstance.ActiveGameMode.Preload();
+            var mapModel = GameInstance.ActiveGameMode.LoadMap(GameInstance.ActiveGameMode.GameModeInfo.StartMap);
+            ActiveMap = new Map(this, mapModel);
+            ActiveMap.Load();
             Player = new Player(this);
+            _onFinished();
         }
+
 
         public void ActivateNewEntities()
         {

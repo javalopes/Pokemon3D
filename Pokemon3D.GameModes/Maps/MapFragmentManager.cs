@@ -8,6 +8,7 @@ namespace Pokemon3D.Entities.Maps
 {
     public class MapFragmentManager
     {
+        private static readonly object _lockObject = new object();
         private readonly Dictionary<string, MapFragmentModel> _fragmentModelCache;
         private readonly GameMode _gameMode;
 
@@ -17,23 +18,21 @@ namespace Pokemon3D.Entities.Maps
             _fragmentModelCache = new Dictionary<string, MapFragmentModel>();
         }
 
-        public void LoadFragmentAsync(string dataPath, Action<MapFragmentModel> fragmentLoaded)
+        public MapFragmentModel GetFragment(string dataPath)
         {
-            MapFragmentModel fragment;
-            if (_fragmentModelCache.TryGetValue(dataPath, out fragment))
+            lock (_lockObject)
             {
-                fragmentLoaded(fragment);
-            }
+                MapFragmentModel fragment;
+                if (_fragmentModelCache.TryGetValue(dataPath, out fragment))
+                {
+                    return fragment;
+                }
 
-            _gameMode.FileLoader.GetFileAsync(_gameMode.GetMapFragmentFilePath(dataPath), a => OnFragmentLoaded(dataPath, a, fragmentLoaded));
-        }
-
-        private void OnFragmentLoaded(string dataPath, DataLoadResult data, Action<MapFragmentModel> fragmentLoaded)
-        {
-            var fragment = DataModel.DataModel<MapFragmentModel>.FromByteArray(data.Data);
-            if (!_fragmentModelCache.ContainsKey(dataPath))
+                var data = _gameMode.FileLoader.GetFile(_gameMode.GetMapFragmentFilePath(dataPath));
+                fragment = DataModel.DataModel<MapFragmentModel>.FromByteArray(data.Data);
                 _fragmentModelCache.Add(dataPath, fragment);
-            fragmentLoaded(fragment);
+                return fragment;
+            }
         }
     }
 }

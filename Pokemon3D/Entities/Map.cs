@@ -10,16 +10,17 @@ namespace Pokemon3D.Entities
 {
     class Map
     {
-        private readonly Action _onFinished;
         private readonly MapModel _mapModel;
         private readonly World _world;
 
-        public Map(World world, MapModel mapModel, Action onFinished)
+        public Map(World world, MapModel mapModel)
         {
             _world = world;
             _mapModel = mapModel;
-            _onFinished = onFinished;
+        }
 
+        public void Load()
+        {
             if (_mapModel.Entities != null)
             {
                 foreach (var entityDefinition in _mapModel.Entities)
@@ -34,34 +35,27 @@ namespace Pokemon3D.Entities
             {
                 foreach (var fragmentImport in _mapModel.Fragments)
                 {
-                    GameInstance.ActiveGameMode.MapFragmentManager.LoadFragmentAsync(fragmentImport.Id,
-                        l => FinishLoadingMapFragment(fragmentImport, l));
-                }
-            }
-        }
+                    var importedFragment = GameInstance.ActiveGameMode.MapFragmentManager.GetFragment(fragmentImport.Id);
+                    var positions = fragmentImport.Positions;
+                    var entitiesToMerge = new List<Entity>();
 
-        private void FinishLoadingMapFragment(MapFragmentImportModel importModel, MapFragmentModel fragmentModel)
-        {
-            var positions = importModel.Positions;
-
-            var entitiesToMerge = new List<Entity>();
-
-            foreach (var position in positions)
-            {
-                var fragmentOffset = position.GetVector3();
-
-                foreach (var entityDefinition in fragmentModel.Entities)
-                {
-                    foreach (var entityPlacing in entityDefinition.Placing)
+                    foreach (var position in positions)
                     {
-                        entitiesToMerge.AddRange(PlaceEntities(entityDefinition, entityPlacing, fragmentOffset));
+                        var fragmentOffset = position.GetVector3();
+
+                        foreach (var entityDefinition in importedFragment.Entities)
+                        {
+                            foreach (var entityPlacing in entityDefinition.Placing)
+                            {
+                                entitiesToMerge.AddRange(PlaceEntities(entityDefinition, entityPlacing, fragmentOffset));
+                            }
+                        }
+
+                        _world.EntitySystem.MergeStaticVisualEntities(entitiesToMerge);
+                        entitiesToMerge.Clear();
                     }
                 }
-
-                _world.EntitySystem.MergeStaticVisualEntities(entitiesToMerge);
-                entitiesToMerge.Clear();
             }
-            _onFinished.Invoke();
         }
 
         private Entity CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position)

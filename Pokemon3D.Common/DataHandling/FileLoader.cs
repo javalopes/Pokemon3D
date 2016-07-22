@@ -6,66 +6,64 @@ using System.Threading;
 
 namespace Pokemon3D.Common.DataHandling
 {
-    public class FileLoader : AsyncDataLoader, FileProvider
+    public class FileLoader : FileProvider
     {
+        private readonly object _lockObject = new object();
         private readonly Dictionary<string, byte[]> _fileCache;
 
         public FileLoader()
         {
             _fileCache = new Dictionary<string, byte[]>();
         }
-
-        protected override DataLoadResult OnRequestData(string resourcePath)
+        
+        public DataLoadResult GetFile(string filePath)
         {
-            byte[] existing;
-            if (_fileCache.TryGetValue(resourcePath, out existing)) return DataLoadResult.Succeeded(existing);
-
-            try
+            lock (_lockObject)
             {
-                existing = File.ReadAllBytes(resourcePath);
-            }
-            catch (Exception ex)
-            {
-                return DataLoadResult.Failed(ex.Message);
-            }
-            _fileCache.Add(resourcePath, existing);
+                byte[] existing;
+                if (_fileCache.TryGetValue(filePath, out existing)) return DataLoadResult.Succeeded(existing);
 
-            return DataLoadResult.Succeeded(existing);
-        }
-
-        protected override DataLoadResult[] OnMultiCastRequestData(string resourcePath)
-        {
-            var requestResults = new List<DataLoadResult>();
-            if (Directory.Exists(resourcePath))
-            {
-                foreach (var filePath in Directory.GetFiles(resourcePath))
+                try
                 {
-                    requestResults.Add(OnRequestData(filePath));
+                    existing = File.ReadAllBytes(filePath);
                 }
+                catch (Exception ex)
+                {
+                    return DataLoadResult.Failed(ex.Message);
+                }
+                _fileCache.Add(filePath, existing);
+
+                return DataLoadResult.Succeeded(existing);
             }
-            return requestResults.ToArray();
         }
 
-        public void GetFileAsync(string filePath, Action<DataLoadResult> onDataReceived)
+        public DataLoadResult[] GetFiles(string[] filePaths)
         {
-            LoadAsync(filePath, onDataReceived);
+            lock (_lockObject)
+            {
+                var requestResults = new List<DataLoadResult>();
+                foreach (var filePath in filePaths)
+                {
+                    requestResults.Add(GetFile(filePath));
+                }
+                return requestResults.ToArray();
+            }
         }
 
-        public void GetFilesAsync(string[] filePaths, Action<DataLoadResult[]> onDataReceived)
+        public DataLoadResult[] GetFilesOfFolder(string folderPath)
         {
-            LoadAsync(filePaths, onDataReceived);
-        }
-
-        public void GetFilesOfFolderAsync(string folderPath, Action<DataLoadResult[]> onDataReceived)
-        {
-            LoadMulticastAsync(folderPath, onDataReceived);
-        }
-
-        public byte[] GetFile(string filePath)
-        {
-            var data = OnRequestData(filePath);
-
-            return data.Data;
+            lock (_lockObject)
+            {
+                var requestResults = new List<DataLoadResult>();
+                if (Directory.Exists(folderPath))
+                {
+                    foreach (var filePath in Directory.GetFiles(folderPath))
+                    {
+                        requestResults.Add(GetFile(filePath));
+                    }
+                }
+                return requestResults.ToArray();
+            }
         }
     }
 }

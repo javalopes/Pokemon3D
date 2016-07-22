@@ -85,7 +85,9 @@ namespace Pokemon3D.ScriptPipeline
             {
                 try
                 {
-                    string source = Encoding.UTF8.GetString(GameInstance.ActiveGameMode.FileLoader.GetFile(GameInstance.ActiveGameMode.GetScriptFilePath(scriptFile)));
+                    //todo: HÜLFE!
+                    //string source = Encoding.UTF8.GetString(GameInstance.ActiveGameMode.FileLoader.GetFile(GameInstance.ActiveGameMode.GetScriptFilePath(scriptFile)));
+                    var source = "blubb";
 
                     var processor = CreateProcessor();
                     var result = processor.Run(source);

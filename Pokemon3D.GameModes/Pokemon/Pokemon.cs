@@ -168,14 +168,14 @@ namespace Pokemon3D.Entities.Pokemon
 
         private const string KEY_FORMAT = "{0}\\{1}\\{2}";
 
-        private AsyncTexture2D GetMenuTexture(string pokemonId, string formId, string textureSource)
+        private Texture2D GetMenuTexture(string pokemonId, string formId, string textureSource)
         {
             var key = string.Format(KEY_FORMAT, pokemonId, formId, textureSource);
 
-            return _gameMode.GetTextureAsync(key);
+            return _gameMode.GetTexture(key);
         }
 
-        public AsyncTexture2D GetMenuTexture()
+        public Texture2D GetMenuTexture()
         {
             return GetMenuTexture(_dataModel.Id, ActiveFormModel.Id, ActiveFormModel.MenuTexture.Source);
         }

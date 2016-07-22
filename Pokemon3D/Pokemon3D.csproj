@@ -69,7 +69,6 @@
     <Compile Include="FileSystem\i18nPathProvider.cs" />
     <Compile Include="FileSystem\StaticPathProvider.cs" />
     <Compile Include="GameCore\GameConfiguration.cs" />
-    <Compile Include="GameCore\GameObject.cs" />
     <Compile Include="GameCore\GameController.cs" />
     <Compile Include="Entities\System\Entity.cs" />
     <Compile Include="Entities\System\Components\AnimateTexturesEntityComponent.cs" />

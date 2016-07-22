@@ -58,11 +58,9 @@ namespace Pokemon3D.Entities
 
             foreach (var pokemon in _dataModel.Pokemon)
             {
-                _gameMode.PokemonFactory.GetPokemon(pokemon, (p) =>
-                {
-                    _loadedItems++;
-                    PartyPokemon.Add(p);
-                });
+                var p = _gameMode.PokemonFactory.GetPokemon(pokemon);
+                _loadedItems++;
+                PartyPokemon.Add(p);
             }
         }
     }

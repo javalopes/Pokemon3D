@@ -6,6 +6,7 @@ using System.Linq;
 using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.Data;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities.System
 {
@@ -164,8 +165,9 @@ namespace Pokemon3D.Entities.System
                 var mergeData = entityListToMerge.Select(ConvertEntityToGeometryMerge);
 
                 var mergedGeometry = GeometryData.Merge(mergeData);
+                Mesh mergedMesh = null;
 
-                var mergedMesh = new Rendering.Data.Mesh(GameController.Instance.GraphicsDevice, mergedGeometry);
+                GameInstance.EnsureExecutedInMainThread(() => mergedMesh = new Mesh(GameController.Instance.GraphicsDevice, mergedGeometry));
                 var material = entityListToMerge.First().GetComponent<ModelEntityComponent>().Material;
                 material.TexcoordOffset = Vector2.Zero;
                 material.TexcoordScale = Vector2.One;

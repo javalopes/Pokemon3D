@@ -10,11 +10,11 @@ namespace Pokemon3D.Rendering.Data
 {
     public interface ModelMeshContext
     {
-        Dispatcher MainThreadDispatcher { get; }
-
         GraphicsDevice GraphicsDevice { get; }
 
         Texture2D GetTextureFromRawFolder(string path);
+
+        void EnsureExecutedInMainThread(Action action);
     }
 
     /// <summary>
@@ -49,14 +49,7 @@ namespace Pokemon3D.Rendering.Data
         {
             var geometryData = GenerateGeometryDataFromAssimpMesh(assimpMesh);
 
-            if (loaderContext.MainThreadDispatcher != null)
-            {
-                loaderContext.MainThreadDispatcher.Invoke(() => Mesh = new Mesh(loaderContext.GraphicsDevice, geometryData));
-            }
-            else
-            {
-                Mesh = new Mesh(loaderContext.GraphicsDevice, geometryData);
-            }
+            loaderContext.EnsureExecutedInMainThread(() => Mesh = new Mesh(loaderContext.GraphicsDevice, geometryData));
             Material = GenerateMaterialFromMesh(assimpMesh.MaterialIndex, loaderContext, assimpScene, modelDirectory);
         }
 

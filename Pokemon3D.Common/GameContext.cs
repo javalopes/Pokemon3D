@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Shapes;
+using System;
 
 namespace Pokemon3D.Common
 {
@@ -17,6 +18,6 @@ namespace Pokemon3D.Common
         GraphicsDevice GraphicsDevice { get; }
         Localization.TranslationProvider TranslationProvider { get; }
         string VersionInformation { get; }
-        Dispatcher MainThreadDispatcher { get; }
+        void EnsureExecutedInMainThread(Action action);
     }
 }

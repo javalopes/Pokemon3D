@@ -17,6 +17,7 @@ using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.GameMenu;
 using Pokemon3D.Screens.MainMenu;
+using System.Threading;
 
 namespace Pokemon3D.GameCore
 {
@@ -164,6 +165,33 @@ namespace Pokemon3D.GameCore
                 WindowSizeChanged(this, EventArgs.Empty);
 
             _currentScreenBounds = Window.ClientBounds;
+        }
+
+        public void EnsureExecutedInMainThread(Action action)
+        {
+            if (MainThreadDispatcher.Thread == Thread.CurrentThread)
+            {
+                action();
+            }
+            else
+            {
+                MainThreadDispatcher.Invoke(action);
+            }
+        }
+
+        public void ExecuteBackgroundJob(Action action)
+        {
+            ThreadPool.QueueUserWorkItem(s => 
+            {
+                try
+                {
+                    action();
+                }
+                catch(Exception ex)
+                {
+                    GameLogger.Instance.Log(ex);
+                }
+            });
         }
     }
 }

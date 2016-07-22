@@ -5,12 +5,10 @@ namespace Pokemon3D.Common.DataHandling
 {
     public interface FileProvider
     {
-        void GetFileAsync(string filePath, Action<DataLoadResult> onDataReceived);
+        DataLoadResult GetFile(string filePath);
 
-        void GetFilesAsync(string[] filePaths, Action<DataLoadResult[]> onDataReceived);
+        DataLoadResult[] GetFiles(string[] filePaths);
 
-        void GetFilesOfFolderAsync(string folderPath, Action<DataLoadResult[]> onDataReceived);
-
-        byte[] GetFile(string filePath);
+        DataLoadResult[] GetFilesOfFolder(string folderPath);
     }
 }

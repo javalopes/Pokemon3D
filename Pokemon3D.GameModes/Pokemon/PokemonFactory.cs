@@ -27,49 +27,44 @@ namespace Pokemon3D.Entities.Pokemon
             _gameMode = gameMode;
         }
         
-        public void GetPokemon(string pokemonId, int level, Action<Pokemon> finished)
+        public Pokemon GetPokemon(string pokemonId, int level)
         {
             PokemonModel dataModel;
 
             if (!_pokemonModelCache.TryGetValue(pokemonId, out dataModel))
             {
-                _gameMode.FileLoader.GetFileAsync(_gameMode.GetPokemonFilePath(pokemonId), (d) =>
-                {
-                    dataModel = DataModel<PokemonModel>.FromByteArray(d.Data);
-                    _pokemonModelCache.Add(pokemonId, dataModel);
-
-                    finished(CreatePokemon(dataModel, level));
-                });
+                var d = _gameMode.FileLoader.GetFile(_gameMode.GetPokemonFilePath(pokemonId));
+                dataModel = DataModel<PokemonModel>.FromByteArray(d.Data);
+                _pokemonModelCache.Add(pokemonId, dataModel);
+                return CreatePokemon(dataModel, level);
             }
             else
             {
-                finished(CreatePokemon(dataModel, level));
+                return CreatePokemon(dataModel, level);
             }
         }
         
-        public void GetPokemon(PokemonSaveModel saveModel, Action<Pokemon> finished)
+        public Pokemon GetPokemon(PokemonSaveModel saveModel)
         {
             PokemonModel dataModel;
 
             if (!_pokemonModelCache.TryGetValue(saveModel.Id, out dataModel))
             {
-                _gameMode.FileLoader.GetFileAsync(_gameMode.GetPokemonFilePath(saveModel.Id), (d) =>
+                var d = _gameMode.FileLoader.GetFile(_gameMode.GetPokemonFilePath(saveModel.Id));
+                if (!_pokemonModelCache.ContainsKey(saveModel.Id))
                 {
-                    if (!_pokemonModelCache.ContainsKey(saveModel.Id))
-                    {
-                        dataModel = DataModel<PokemonModel>.FromByteArray(d.Data);
-                        _pokemonModelCache.Add(saveModel.Id, dataModel);
-                    }
-                    else
-                    {
-                        dataModel = _pokemonModelCache[saveModel.Id];
-                    }
-                    finished(new Pokemon(_gameMode, dataModel, saveModel));
-                });
+                    dataModel = DataModel<PokemonModel>.FromByteArray(d.Data);
+                    _pokemonModelCache.Add(saveModel.Id, dataModel);
+                }
+                else
+                {
+                    dataModel = _pokemonModelCache[saveModel.Id];
+                }
+                return new Pokemon(_gameMode, dataModel, saveModel);
             }
             else
             {
-                finished(new Pokemon(_gameMode, dataModel, saveModel));
+                return new Pokemon(_gameMode, dataModel, saveModel);
             }
         }
         
