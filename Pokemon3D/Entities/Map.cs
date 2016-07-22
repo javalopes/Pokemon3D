@@ -111,13 +111,13 @@ namespace Pokemon3D.Entities
         private List<Entity> PlaceEntities(EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 offset)
         {
             var entities = new List<Entity>();
-            for (var x = 1.0f; x <= entityPlacing.Size.X; x += entityPlacing.Steps.X)
+            for (var x = 0; x < (int)entityPlacing.Size.X; x++)
             {
-                for (var y = 1.0f; y <= entityPlacing.Size.Y; y += entityPlacing.Steps.Y)
+                for (var y = 0; y < (int)entityPlacing.Size.Y; y++)
                 {
-                    for (var z = 1.0f; z <= entityPlacing.Size.Z; z += entityPlacing.Steps.Z)
+                    for (var z = 0; z < (int)entityPlacing.Size.Z; z++)
                     {
-                        var position = entityPlacing.Position.GetVector3() + new Vector3(x, y, z) + offset;
+                        var position = entityPlacing.Position.GetVector3() + new Vector3(x * entityPlacing.Steps.X, y * entityPlacing.Steps.Y, z * entityPlacing.Steps.Z) + offset;
 
                         entities.Add(CreateEntityFromDataModel(entityDefinition.Entity, entityPlacing, position));
                     }
