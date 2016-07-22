@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common;
 using Pokemon3D.Common.Diagnostics;
-using Pokemon3D.Common.Localization;
 using Pokemon3D.Entities;
 using Pokemon3D.UI;
 using Pokemon3D.UI.Localization;
@@ -15,9 +14,9 @@ using Pokemon3D.Screens;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering.UI;
-using Pokemon3D.Screens.GameMenu;
 using Pokemon3D.Screens.MainMenu;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Pokemon3D.GameCore
 {
@@ -27,6 +26,11 @@ namespace Pokemon3D.GameCore
     class GameController : Game, GameContext
     {
         private UiOverlay _notificationBarOverlay;
+        private Dictionary<Type, object> _services = new Dictionary<Type, object>();
+        private Dispatcher _mainThreadDispatcher;
+        private Rectangle _currentScreenBounds;
+        private GameConfiguration _gameConfig;
+        private SceneRenderer _renderer;
 
         /// <summary>
         /// The singleton instance of the main GameController class.
@@ -43,34 +47,16 @@ namespace Pokemon3D.GameCore
         public const string INTERNAL_VERSION = "89";
         /// <summary>If the debug mode is currently active.</summary>
         public const bool IS_DEBUG_ACTIVE = true;
-
-        public SceneRenderer SceneRenderer { get; private set; }
-        public GraphicsDeviceManager GraphicsDeviceManager { get; private set; }
-        public ScreenManager ScreenManager { get; private set; }
-        public SpriteBatch SpriteBatch { get; private set; }
-        public InputSystem InputSystem { get; private set; }
-        public GameConfiguration GameConfig { get; }
-        public TranslationProvider TranslationProvider { get; private set; }
-        public NotificationBar NotificationBar { get; private set; }
-        public CollisionManager CollisionManager { get; private set; }
+        private SpriteBatch _spriteBatch;
+        private InputSystem _inputSystem;
+        private ScreenManager _screenManager;
+        private CollisionManager _collisionManager;
 
         public event EventHandler WindowSizeChanged;
-        private Rectangle _currentScreenBounds;
-
+        
         public string VersionInformation => $"{VERSION} {DEVELOPMENT_STAGE}";
 
-        /// <summary>
-        /// Object to manage loaded GameModes.
-        /// </summary>
-        public GameModeManager GameModeManager { get; private set; }
-
-        public GameMode ActiveGameMode { get; set; }
-
         public Rectangle ScreenBounds => _currentScreenBounds;
-
-        public ShapeRenderer ShapeRenderer { get; private set; }
-
-        public Dispatcher MainThreadDispatcher { get; }
 
         public SaveGame LoadedSave { get; set; }
 
@@ -86,13 +72,13 @@ namespace Pokemon3D.GameCore
             Instance = this;
 
             Content.RootDirectory = "Content";
-            GameConfig = new GameConfiguration();
-            GraphicsDeviceManager = new GraphicsDeviceManager(this)
+            _gameConfig = RegisterService(new GameConfiguration());
+            RegisterService(new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = GameConfig.WindowSize.Width,
-                PreferredBackBufferHeight = GameConfig.WindowSize.Height
-            };
-            MainThreadDispatcher = Dispatcher.CurrentDispatcher;
+                PreferredBackBufferWidth = _gameConfig.WindowSize.Width,
+                PreferredBackBufferHeight = _gameConfig.WindowSize.Height
+            });
+            _mainThreadDispatcher = Dispatcher.CurrentDispatcher;
         }
 
         protected override void LoadContent()
@@ -103,32 +89,30 @@ namespace Pokemon3D.GameCore
 
             var renderSettings = new RenderSettings
             {
-                EnableShadows = GameConfig.ShadowsEnabled,
-                EnableSoftShadows = GameConfig.SoftShadows,
+                EnableShadows = _gameConfig.ShadowsEnabled,
+                EnableSoftShadows = _gameConfig.SoftShadows,
                 ShadowMapSize = 1024 // todo: reenable
             };
 
-            SceneRenderer = SceneRendererFactory.Create(this, new WindowsSceneEffect(Content), renderSettings);
-            GameModeManager = new GameModeManager();
-            SpriteBatch = new SpriteBatch(GraphicsDevice);
-            InputSystem = new InputSystem();
-            ShapeRenderer = new ShapeRenderer(SpriteBatch);
-            ScreenManager = new ScreenManager();
-            TranslationProvider = new CoreTranslationManager();
+            RegisterService(GraphicsDevice);
+            _renderer = RegisterService(SceneRendererFactory.Create(this, new WindowsSceneEffect(Content), renderSettings));
+            RegisterService(new GameModeManager());
+            _spriteBatch = RegisterService(new SpriteBatch(GraphicsDevice));
+            _inputSystem = RegisterService(new InputSystem());
+            RegisterService(new ShapeRenderer(_spriteBatch));
+            _screenManager = RegisterService(new ScreenManager());
+            RegisterService(new CoreTranslationManager());
+            _collisionManager = RegisterService(new CollisionManager());
 
             _notificationBarOverlay = new UiOverlay();
-            NotificationBar = _notificationBarOverlay.AddElement(new NotificationBar(400));
+            RegisterService(_notificationBarOverlay.AddElement(new NotificationBar(400)));
             _notificationBarOverlay.Show();
-            CollisionManager = new CollisionManager();
 
 #if DEBUG_RENDERING
             CollisionManager.DrawDebugShapes = true;
 #endif
-
-            GameConfig.ConfigFileLoaded += TranslationProvider.OnLanguageChanged;
-
 #if DEBUG
-            ScreenManager.SetScreen(typeof(MainMenuScreen));
+            GetService<ScreenManager>().SetScreen(typeof(MainMenuScreen));
 #else
             ScreenManager.SetScreen(typeof(IntroScreen));
 #endif
@@ -138,19 +122,19 @@ namespace Pokemon3D.GameCore
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            InputSystem.Update();
-            CollisionManager.Update();
+            _inputSystem.Update();
+            _collisionManager.Update();
             
-            if (!ScreenManager.Update(gameTime)) Exit();
+            if (!_screenManager.Update(gameTime)) Exit();
             _notificationBarOverlay.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            ScreenManager.OnEarlyDraw(gameTime);
-            SceneRenderer.Draw();
-            ScreenManager.OnLateDraw(gameTime);
-            _notificationBarOverlay.Draw(SpriteBatch);
+            _screenManager.OnEarlyDraw(gameTime);
+            _renderer.Draw();
+            _screenManager.OnLateDraw(gameTime);
+            _notificationBarOverlay.Draw(_spriteBatch);
             base.Draw(gameTime);
         }
 
@@ -169,14 +153,27 @@ namespace Pokemon3D.GameCore
 
         public void EnsureExecutedInMainThread(Action action)
         {
-            if (MainThreadDispatcher.Thread == Thread.CurrentThread)
+            if (_mainThreadDispatcher.Thread == Thread.CurrentThread)
             {
                 action();
             }
             else
             {
-                MainThreadDispatcher.Invoke(action);
+                _mainThreadDispatcher.Invoke(action);
             }
+        }
+
+        public TService GetService<TService>() where TService : class
+        {
+            return _services[typeof(TService)] as TService;
+        }
+
+        public TService RegisterService<TService>(TService service)
+        {
+            if (_services.ContainsKey(typeof(TService))) throw new InvalidOperationException("Service " + typeof(TService).FullName + " already registered");
+
+            _services.Add(typeof(TService), service);
+            return service;
         }
 
         public void ExecuteBackgroundJob(Action action)

@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Pokemon3D.Common.Input;
+using Pokemon3D.Common.Shapes;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
 
@@ -10,7 +12,6 @@ namespace Pokemon3D.UI
     {
         private readonly SpriteFont _font;
         private readonly Color _highlightColor;
-
         public BarEntry()
         {
             _font = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
@@ -47,7 +48,7 @@ namespace Pokemon3D.UI
         {
             var offset = 11 + Index*(26 + (int) _font.MeasureString(Text).X);
 
-            if (GameProvider.GameInstance.InputSystem.GamePad.IsConnected())
+            if (GameProvider.GameInstance.GetService<InputSystem>().GamePad.IsConnected())
             {
                 spriteBatch.Draw(GetTexture(), new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, 32, 32), _highlightColor);
                 offset += 32;
@@ -62,7 +63,7 @@ namespace Pokemon3D.UI
                     boxWidth = (int)(_font.MeasureString(displayString).X + 10);
                 }
 
-                GameProvider.GameInstance.ShapeRenderer.DrawRectangle(new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor, filled: false);
+                GameProvider.GameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor, filled: false);
                 spriteBatch.DrawString(_font, displayString, new Vector2(offset + 5, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
 
                 offset += boxWidth;

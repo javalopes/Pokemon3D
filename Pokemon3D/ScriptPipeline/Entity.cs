@@ -32,7 +32,7 @@ namespace Pokemon3D.ScriptPipeline
         public Entity GetEntity()
         {
             // attempt to get world instance from world container screen:
-            var screen = GameCore.GameController.Instance.ScreenManager.CurrentScreen;
+            var screen = GameCore.GameController.Instance.GetService<ScreenManager>().CurrentScreen;
             if (screen is WorldContainer)
             {
                 var world = ((WorldContainer)screen).ActiveWorld;

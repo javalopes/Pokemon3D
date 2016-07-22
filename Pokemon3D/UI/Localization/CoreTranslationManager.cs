@@ -2,6 +2,7 @@
 using Pokemon3D.DataModel;
 using Pokemon3D.DataModel.i18n;
 using Pokemon3D.FileSystem;
+using Pokemon3D.GameCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,8 @@ namespace Pokemon3D.UI.Localization
     {
         public CoreTranslationManager()
         {
+            GameController.Instance.GetService<GameConfiguration>().ConfigFileLoaded += OnConfigFileLoaded;
+
             if (Directory.Exists(i18nPathProvider.LookupPath))
             {
                 List<SectionModel> sectionModels = new List<SectionModel>();
@@ -38,6 +41,11 @@ namespace Pokemon3D.UI.Localization
             {
                 GameLogger.Instance.Log(MessageType.Warning, "The internationalization folder (\"i18n\") was not found.");
             }
+        }
+
+        private void OnConfigFileLoaded(object sender, EventArgs e)
+        {
+            OnLanguageChanged(sender, e);
         }
     }
 }

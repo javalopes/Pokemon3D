@@ -1,5 +1,6 @@
 ﻿using Pokemon3D.Common.Localization;
 using Pokemon3D.DataModel.i18n;
+using Pokemon3D.GameCore;
 using System;
 using System.Collections.Generic;
 using static Pokemon3D.GameCore.GameProvider;
@@ -34,7 +35,7 @@ namespace Pokemon3D.UI.Localization
 
         public string GetTranslation(string sectionId, string tokenId)
         {
-            var key = string.Format(KeyFormat, GameInstance.GameConfig.DisplayLanguage, sectionId, tokenId);
+            var key = string.Format(KeyFormat, GameInstance.GetService<GameConfiguration>().DisplayLanguage, sectionId, tokenId);
             string value;
             if (_translations.TryGetValue(key, out value)) return value;
 

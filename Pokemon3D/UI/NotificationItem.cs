@@ -7,6 +7,7 @@ using Pokemon3D.Common.Extensions;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
 using static Pokemon3D.GameCore.GameProvider;
+using Pokemon3D.Common.Shapes;
 
 namespace Pokemon3D.UI
 {
@@ -66,15 +67,15 @@ namespace Pokemon3D.UI
             var startY = GameInstance.ScreenBounds.Height - (Index+1) * (elementHeight + ElementMargin);
             var startX = (GameInstance.ScreenBounds.Width - Width) / 2;
 
-            GameInstance.ShapeRenderer.DrawRectangle(startX, startY, Width, elementHeight, _backgroundColor * Alpha);
+            GameInstance.GetService<ShapeRenderer>().DrawRectangle(startX, startY, Width, elementHeight, _backgroundColor * Alpha);
 
             var currentX = startX + ElementMargin;
             var sourceRectangle = _notificationRectangle[NotificationKind];
             var position = new Vector2(currentX, startY + (elementHeight - IconSize) / 2);
-            GameInstance.SpriteBatch.Draw(_notificationIcons, position, sourceRectangle, Color.White * Alpha);
+            spriteBatch.Draw(_notificationIcons, position, sourceRectangle, Color.White * Alpha);
 
             position = new Vector2(currentX + IconSize + ElementMargin, startY + ElementPadding);
-            GameInstance.SpriteBatch.DrawString(_spriteFont, Message, position, Color.White * Alpha);
+            spriteBatch.DrawString(_spriteFont, Message, position, Color.White * Alpha);
         }
     }
 }

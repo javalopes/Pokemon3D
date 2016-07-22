@@ -24,6 +24,8 @@ namespace Pokemon3D.Entities
             return gameModes.ToArray();
         }
 
+        public GameMode ActiveGameMode { get; set; }
+
         public GameMode CreateGameMode(GameModeInfo gameModeInfo, GameContext gameContext)
         {
             return new GameMode(gameModeInfo, gameContext, new FileLoader());

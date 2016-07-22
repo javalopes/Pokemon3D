@@ -38,7 +38,7 @@ namespace Pokemon3D.Rendering.Compositor
 
         public ForwardSceneRenderer(GameContext context, SceneEffect effect, RenderSettings settings) : base(context)
         {
-            _device = context.GraphicsDevice;
+            _device = context.GetService<GraphicsDevice>();
             _sceneEffect = effect;
             RenderSettings = settings;
             _allDrawables = new List<DrawableElement>();
@@ -177,9 +177,11 @@ namespace Pokemon3D.Rendering.Compositor
             }
 
             _device.SetRenderTargets(_oldBindings);
-            GameContext.SpriteBatch.Begin();
-            GameContext.SpriteBatch.Draw(_activeRenderTarget, Vector2.Zero, Color.White);
-            GameContext.SpriteBatch.End();
+
+            var spriteBatch = GameContext.GetService<SpriteBatch>();
+            spriteBatch.Begin();
+            spriteBatch.Draw(_activeRenderTarget, Vector2.Zero, Color.White);
+            spriteBatch.End();
         }
 
         private void DrawDebugShadowMap(SpriteBatch spriteBatch, Rectangle target)
@@ -226,15 +228,15 @@ namespace Pokemon3D.Rendering.Compositor
             _sceneEffect.ShadowMap = null;
             _sceneEffect.LightViewProjection = light.LightViewMatrix;
 
-            var oldRenderTargets = GameContext.GraphicsDevice.GetRenderTargets();
-            GameContext.GraphicsDevice.SetRenderTarget(_directionalLightShadowMap);
-            GameContext.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+            var oldRenderTargets = _device.GetRenderTargets();
+            _device.SetRenderTarget(_directionalLightShadowMap);
+            _device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             
             var angle = (float)Math.Atan2(light.Direction.Z, light.Direction.X) - MathHelper.Pi/4*3;
             _shadowCasterQueueSolid.Draw(camera, angle);
            _shadowCasterQueueTransparent.Draw(camera, angle);
 
-            GameContext.GraphicsDevice.SetRenderTargets(oldRenderTargets);
+            _device.SetRenderTargets(oldRenderTargets);
         }
 
         private void HandleCameraClearOrSkyPass(Camera camera)
@@ -351,7 +353,7 @@ namespace Pokemon3D.Rendering.Compositor
 
         public Camera CreateCamera()
         {
-            var camera = new Camera(GameContext.GraphicsDevice.Viewport);
+            var camera = new Camera(_device.Viewport);
             lock (_lockObject)
             {
                 _allCameras.Add(camera);
@@ -366,7 +368,7 @@ namespace Pokemon3D.Rendering.Compositor
 
         public void LateDebugDraw3D()
         {
-            if (RenderSettings.EnableShadows) DrawDebugShadowMap(GameContext.SpriteBatch, new Rectangle(0, 0, 128, 128));
+            if (RenderSettings.EnableShadows) DrawDebugShadowMap(GameContext.GetService<SpriteBatch>(), new Rectangle(0, 0, 128, 128));
         }
         
         public void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize)

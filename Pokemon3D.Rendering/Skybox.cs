@@ -38,7 +38,7 @@ namespace Pokemon3D.Rendering
                 new Vector2(1.0f*width,2.0f*height), new Vector2(width, height),
             };
             
-            _skyBoxModel = new Mesh(GameContext.GraphicsDevice, Primitives.GenerateCubeData(coords));
+            _skyBoxModel = new Mesh(GameContext.GetService<GraphicsDevice>(), Primitives.GenerateCubeData(coords));
             DrawableElement.Mesh = _skyBoxModel;
             DrawableElement.Material = new Material
             {

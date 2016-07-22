@@ -38,7 +38,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public CameraEntityComponent(Entity parent, Skybox skybox) : base(parent)
         {
-            Camera = GameInstance.SceneRenderer.CreateCamera();
+            Camera = GameInstance.GetService<SceneRenderer>().CreateCamera();
             NearClipDistance = 0.1f;
             FarClipDistance = 1000.0f;
             FieldOfView = MathHelper.PiOver4;

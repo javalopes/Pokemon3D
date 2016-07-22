@@ -31,11 +31,14 @@ namespace Pokemon3D.Entities
                     }
                 }
             }
+
+            var mapFragmentManager = GameInstance.GetService<GameModeManager>().ActiveGameMode.MapFragmentManager;
+
             if (_mapModel.Fragments != null)
             {
                 foreach (var fragmentImport in _mapModel.Fragments)
                 {
-                    var importedFragment = GameInstance.ActiveGameMode.MapFragmentManager.GetFragment(fragmentImport.Id);
+                    var importedFragment = mapFragmentManager.GetFragment(fragmentImport.Id);
                     var positions = fragmentImport.Positions;
                     var entitiesToMerge = new List<Entity>();
 

@@ -27,9 +27,11 @@ namespace Pokemon3D.Rendering.Compositor
             _sourceMapParameter.SetValue(source);
             _invScreenSizeParameter.SetValue(new Vector2(1.0f / gameContext.ScreenBounds.Width, 1.0f / gameContext.ScreenBounds.Height));
 
-            gameContext.SpriteBatch.Begin(effect: _effect);
-            gameContext.SpriteBatch.Draw(source, Vector2.Zero, Color.White);
-            gameContext.SpriteBatch.End();
+            var spriteBatch = gameContext.GetService<SpriteBatch>();
+
+            spriteBatch.Begin(effect: _effect);
+            spriteBatch.Draw(source, Vector2.Zero, Color.White);
+            spriteBatch.End();
         }
     }
 
@@ -56,9 +58,10 @@ namespace Pokemon3D.Rendering.Compositor
             _sourceMapParameter.SetValue(source);
             _invScreenSizeParameter.SetValue(new Vector2(1.0f / gameContext.ScreenBounds.Width, 1.0f / gameContext.ScreenBounds.Height));
 
-            gameContext.SpriteBatch.Begin(effect: _effect);
-            gameContext.SpriteBatch.Draw(source, Vector2.Zero, Color.White);
-            gameContext.SpriteBatch.End();
+            var spriteBatch = gameContext.GetService<SpriteBatch>();
+            spriteBatch.Begin(effect: _effect);
+            spriteBatch.Draw(source, Vector2.Zero, Color.White);
+            spriteBatch.End();
         }
     }
 }

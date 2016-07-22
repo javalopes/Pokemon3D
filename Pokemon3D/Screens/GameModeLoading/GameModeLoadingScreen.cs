@@ -10,6 +10,7 @@ using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
 using Pokemon3D.Rendering.UI.Controls;
 using static Pokemon3D.GameCore.GameProvider;
+using Pokemon3D.Rendering;
 
 namespace Pokemon3D.Screens.GameModeLoading
 {
@@ -49,7 +50,7 @@ namespace Pokemon3D.Screens.GameModeLoading
         {
             GameInstance.GraphicsDevice.Clear(Color.Black);
 
-            _overlay.Draw(GameInstance.SpriteBatch);
+            _overlay.Draw(GameInstance.GetService<SpriteBatch>());
         }
 
         public void OnEarlyDraw(GameTime gameTime)
@@ -63,7 +64,7 @@ namespace Pokemon3D.Screens.GameModeLoading
             if (_loadingFinished)
             {
                 _world.ActivateNewEntities();
-                GameInstance.ScreenManager.SetScreen(typeof(OverworldScreen), typeof(SlideTransition), _world);
+                GameInstance.GetService<ScreenManager>().SetScreen(typeof(OverworldScreen), typeof(SlideTransition), _world);
             }
         }
 
@@ -74,7 +75,7 @@ namespace Pokemon3D.Screens.GameModeLoading
 
         private void StartCreateNewGame()
         {
-            var renderer = GameInstance.SceneRenderer;
+            var renderer = GameInstance.GetService<SceneRenderer>();
             renderer.AddPostProcessingStep(new HorizontalBlurPostProcessingStep());
             renderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
             renderer.EnablePostProcessing = false;
@@ -84,8 +85,9 @@ namespace Pokemon3D.Screens.GameModeLoading
             mainLight.DiffuseIntensity = 0.8f;
             renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
 
-            var gameModes = GameInstance.GameModeManager.GetGameModeInfos();
-            GameInstance.ActiveGameMode = GameInstance.GameModeManager.CreateGameMode(gameModes.First(), GameInstance);
+            var gameModeManager = GameInstance.GetService<GameModeManager>();
+            var gameModes = gameModeManager.GetGameModeInfos();
+            gameModeManager.ActiveGameMode = gameModeManager.CreateGameMode(gameModes.First(), GameInstance);
 
             _loadingFinished = false;
             _world = new World();

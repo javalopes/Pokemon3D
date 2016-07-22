@@ -13,6 +13,10 @@ using Pokemon3D.Screens.MainMenu;
 using System.Collections.Generic;
 using System.Linq;
 using static Pokemon3D.GameCore.GameProvider;
+using Pokemon3D.Rendering;
+using Pokemon3D.Common.Input;
+using Pokemon3D.Collisions;
+using Pokemon3D.Common.Shapes;
 
 namespace Pokemon3D.Screens.Overworld
 {
@@ -173,40 +177,44 @@ namespace Pokemon3D.Screens.Overworld
             };
 
             GameInstance.LoadedSave = new SaveGame(dataModel);
-            GameInstance.LoadedSave.Load(GameInstance.ActiveGameMode);
+            GameInstance.LoadedSave.Load(GameInstance.GetService<GameModeManager>().ActiveGameMode);
         }
 
         public void OnUpdate(GameTime gameTime)
         {
+            var inputSystem = GameInstance.GetService<InputSystem>();
+            var screenManager = GameInstance.GetService<ScreenManager>();
+            var sceneRenderer = GameInstance.GetService<SceneRenderer>();
+
             ActiveWorld.Update(gameTime);
 
             lock (_uiElements)
                 _uiElements.ForEach(e => { if (e.IsActive) e.Update(gameTime); });
 
-            if (GameInstance.InputSystem.Keyboard.IsKeyDown(Keys.Escape))
+            if (inputSystem.Keyboard.IsKeyDown(Keys.Escape))
             {
-                GameInstance.ScreenManager.SetScreen(typeof(MainMenuScreen), typeof(BlendTransition));
+                screenManager.SetScreen(typeof(MainMenuScreen), typeof(BlendTransition));
             }
 
-            if (GameInstance.InputSystem.Keyboard.IsKeyDownOnce(Keys.L))
+            if (inputSystem.Keyboard.IsKeyDownOnce(Keys.L))
             {
-                GameInstance.SceneRenderer.EnablePostProcessing = !GameInstance.SceneRenderer.EnablePostProcessing;
+                sceneRenderer.EnablePostProcessing = !sceneRenderer.EnablePostProcessing;
             }
 
-            if (GameInstance.InputSystem.Keyboard.IsKeyDownOnce(Keys.F12))
+            if (inputSystem.Keyboard.IsKeyDownOnce(Keys.F12))
             {
                 _showRenderStatistics = !_showRenderStatistics;
             }
 
-            if (GameInstance.InputSystem.Keyboard.IsKeyDownOnce(Keys.X) || GameInstance.InputSystem.GamePad.IsButtonDownOnce(Buttons.X))
+            if (inputSystem.Keyboard.IsKeyDownOnce(Keys.X) || inputSystem.GamePad.IsButtonDownOnce(Buttons.X))
             {
-                GameInstance.ScreenManager.SetScreen(typeof(GameMenu.GameMenuScreen));
+                screenManager.SetScreen(typeof(GameMenu.GameMenuScreen));
             }
         }
 
         public void OnLateDraw(GameTime gameTime)
         {
-            GameInstance.CollisionManager.Draw(ActiveWorld.Player.Camera);
+            GameInstance.GetService<CollisionManager>().Draw(ActiveWorld.Player.Camera);
             if (_showRenderStatistics) DrawRenderStatsitics();
 
             bool anyActive;
@@ -217,14 +225,15 @@ namespace Pokemon3D.Screens.Overworld
 
             if (anyActive)
             {
-                GameInstance.SpriteBatch.Begin();
+                var spriteBatch = GameInstance.GetService<SpriteBatch>();
+                spriteBatch.Begin();
 
                 lock (_uiElements)
                 {
                     _uiElements.ForEach(e => { if (e.IsActive) e.Draw(gameTime); });
                 }
-                
-                GameInstance.SpriteBatch.End();
+
+                spriteBatch.End();
             }
 
 #if DEBUG_RENDERING
@@ -239,6 +248,7 @@ namespace Pokemon3D.Screens.Overworld
         private void DrawRenderStatsitics()
         {
             var renderStatistics = RenderStatistics.Instance;
+            var spriteBatch = GameInstance.GetService<SpriteBatch>();
 
             const int spacing = 5;
             var elementHeight = _debugSpriteFont.LineSpacing + spacing;
@@ -247,8 +257,8 @@ namespace Pokemon3D.Screens.Overworld
 
             var startPosition = new Vector2(0,GameInstance.ScreenBounds.Height-height);
 
-            GameInstance.SpriteBatch.Begin();
-            GameInstance.ShapeRenderer.DrawRectangle((int)startPosition.X,
+            spriteBatch.Begin();
+            GameInstance.GetService<ShapeRenderer>().DrawRectangle((int)startPosition.X,
                 (int)startPosition.Y,
                 width,
                 height,
@@ -256,12 +266,12 @@ namespace Pokemon3D.Screens.Overworld
 
             startPosition.X += spacing;
             startPosition.Y += spacing;
-            GameInstance.SpriteBatch.DrawString(_debugSpriteFont, $"Average DrawTime[ms]: {renderStatistics.AverageDrawTime:0.00}", startPosition, Color.White);
+            spriteBatch.DrawString(_debugSpriteFont, $"Average DrawTime[ms]: {renderStatistics.AverageDrawTime:0.00}", startPosition, Color.White);
             startPosition.Y += elementHeight;
-            GameInstance.SpriteBatch.DrawString(_debugSpriteFont, $"Total Drawcalls: {renderStatistics.DrawCalls}", startPosition, Color.White);
+            spriteBatch.DrawString(_debugSpriteFont, $"Total Drawcalls: {renderStatistics.DrawCalls}", startPosition, Color.White);
             startPosition.Y += elementHeight;
-            GameInstance.SpriteBatch.DrawString(_debugSpriteFont, $"Entity Count: {ActiveWorld.EntitySystem.EntityCount}", startPosition, Color.White);
-            GameInstance.SpriteBatch.End();
+            spriteBatch.DrawString(_debugSpriteFont, $"Entity Count: {ActiveWorld.EntitySystem.EntityCount}", startPosition, Color.White);
+            spriteBatch.End();
         }
 
         public void OnClosing()

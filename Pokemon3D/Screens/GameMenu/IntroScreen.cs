@@ -20,7 +20,7 @@ namespace Pokemon3D.Screens.GameMenu
         public void OnLateDraw(GameTime gameTime)
         {
             GameInstance.GraphicsDevice.Clear(Color.Black);
-            _overlay.Draw(GameInstance.SpriteBatch);
+            _overlay.Draw(GameInstance.GetService<SpriteBatch>());
         }
 
         public void OnUpdate(GameTime gameTime)
@@ -57,7 +57,7 @@ namespace Pokemon3D.Screens.GameMenu
 
         private static void CustomAnimationFinished(string name)
         {
-            GameInstance.ScreenManager.SetScreen(typeof(MainMenuScreen));
+            GameInstance.GetService<ScreenManager>().SetScreen(typeof(MainMenuScreen));
         }
 
         private static void OnUpdateHighlightPass(UiElement owner, float delta)

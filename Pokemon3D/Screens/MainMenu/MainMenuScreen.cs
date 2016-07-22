@@ -6,6 +6,7 @@ using Pokemon3D.Screens.GameModeLoading;
 using Pokemon3D.UI;
 using Pokemon3D.UI.Dialogs;
 using static Pokemon3D.GameCore.GameProvider;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Screens.MainMenu
 {
@@ -16,8 +17,9 @@ namespace Pokemon3D.Screens.MainMenu
 
         public void OnOpening(object enterInformation)
         {
-            GameInstance.GraphicsDeviceManager.PreferMultiSampling = true;
-            GameInstance.GraphicsDeviceManager.ApplyChanges();
+            var graphicsDeviceManager = GameInstance.GetService<GraphicsDeviceManager>();
+            graphicsDeviceManager.PreferMultiSampling = true;
+            graphicsDeviceManager.ApplyChanges();
 
             _mainOverlay = new UiOverlay();
 
@@ -40,7 +42,7 @@ namespace Pokemon3D.Screens.MainMenu
                 }),
                 new LeftSideButton("Yes", new Vector2(50, 100), b =>
                 {
-                    GameInstance.ScreenManager.NotifyQuitGame();
+                    GameInstance.GetService<ScreenManager>().NotifyQuitGame();
                 })
             });
 
@@ -57,7 +59,7 @@ namespace Pokemon3D.Screens.MainMenu
 
         private void OnStartNewGame(LeftSideButton button)
         {
-            GameInstance.ScreenManager.SetScreen(typeof(GameModeLoadingScreen));
+            GameInstance.GetService<ScreenManager>().SetScreen(typeof(GameModeLoadingScreen));
         }
 
         private void OnLoadGame(LeftSideButton button)
@@ -68,7 +70,7 @@ namespace Pokemon3D.Screens.MainMenu
         public void OnLateDraw(GameTime gameTime)
         {
             GameInstance.GraphicsDevice.Clear(Color.LightGray);
-            _mainOverlay.Draw(GameInstance.SpriteBatch);
+            _mainOverlay.Draw(GameInstance.GetService<SpriteBatch>());
         }
 
         public void OnEarlyDraw(GameTime gameTime)

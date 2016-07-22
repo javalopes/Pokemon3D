@@ -3,6 +3,7 @@ using Pokemon3D.Screens.Overworld;
 using Pokemon3D.Scripting;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
+using Pokemon3D.Screens;
 
 namespace Pokemon3D.ScriptPipeline.APIClasses
 {
@@ -16,7 +17,7 @@ namespace Pokemon3D.ScriptPipeline.APIClasses
             {
                 var text = (string)netObjects[0];
 
-                OverworldScreen screen = (OverworldScreen)GameCore.GameProvider.GameInstance.ScreenManager.CurrentScreen;
+                OverworldScreen screen = (OverworldScreen)GameCore.GameProvider.GameInstance.GetService<ScreenManager>().CurrentScreen;
                 MessageOverworldUIElement uiElement = new MessageOverworldUIElement(text);
 
                 screen.AddUiElement(uiElement);

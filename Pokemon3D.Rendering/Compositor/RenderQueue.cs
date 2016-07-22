@@ -10,6 +10,7 @@ namespace Pokemon3D.Rendering.Compositor
 {
     internal class RenderQueue : GameContextObject
     {
+        private GraphicsDevice _device;
         private readonly Action<Material> _handleEffect;
         private readonly Func<IList<DrawableElement>> _getDrawableElements;
 
@@ -29,13 +30,14 @@ namespace Pokemon3D.Rendering.Compositor
             _getDrawableElements = getDrawableElements;
             SceneEffect = sceneEffect;
             IsEnabled = true;
+            _device = context.GetService<GraphicsDevice>();
         }
 
         public void Draw(Camera camera, float yRotationForBillboards)
         {
-            GameContext.GraphicsDevice.BlendState = BlendState;
-            GameContext.GraphicsDevice.DepthStencilState = DepthStencilState;
-            GameContext.GraphicsDevice.RasterizerState = RasterizerState;
+            _device.BlendState = BlendState;
+            _device.DepthStencilState = DepthStencilState;
+            _device.RasterizerState = RasterizerState;
 
             var drawableElements = _getDrawableElements();
 

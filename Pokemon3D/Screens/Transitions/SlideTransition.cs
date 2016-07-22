@@ -39,13 +39,12 @@ namespace Pokemon3D.Screens.Transitions
         public void Draw()
         {
             var offset = (_elapsedTime/_transitionTime)*GameInstance.ScreenBounds.Width;
+            var spriteBatch = GameInstance.GetService<SpriteBatch>();
 
-            GameInstance.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
-
-            GameInstance.SpriteBatch.Draw(_source, new Vector2(-offset, 0.0f), Color.White);
-            GameInstance.SpriteBatch.Draw(_target, new Vector2(GameInstance.ScreenBounds.Width - offset, 0.0f), Color.White);
-
-            GameInstance.SpriteBatch.End();
+            spriteBatch.Begin(blendState: BlendState.NonPremultiplied);
+            spriteBatch.Draw(_source, new Vector2(-offset, 0.0f), Color.White);
+            spriteBatch.Draw(_target, new Vector2(GameInstance.ScreenBounds.Width - offset, 0.0f), Color.White);
+            spriteBatch.End();
         }
     }
 }

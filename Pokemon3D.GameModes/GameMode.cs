@@ -45,7 +45,7 @@ namespace Pokemon3D.Entities
 
         public GraphicsDevice GraphicsDevice
         {
-            get { return GameContext.GraphicsDevice; }
+            get { return GameContext.GetService<GraphicsDevice>(); }
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Pokemon3D.Entities
                 };
 
                 Mesh mesh = null;
-                GameContext.EnsureExecutedInMainThread(() => mesh = new Mesh(GameContext.GraphicsDevice, geometryData));
+                GameContext.EnsureExecutedInMainThread(() => mesh = new Mesh(GraphicsDevice, geometryData));
                 _meshPrimitivesByName.Add(primitiveModel.Id, mesh);
             }
 
@@ -124,7 +124,7 @@ namespace Pokemon3D.Entities
                 memoryStream.Seek(0, SeekOrigin.Begin);
                 GameContext.EnsureExecutedInMainThread(() =>
                 {
-                    texture = Texture2D.FromStream(GameContext.GraphicsDevice, memoryStream);
+                    texture = Texture2D.FromStream(GraphicsDevice, memoryStream);
                 });
             }
             

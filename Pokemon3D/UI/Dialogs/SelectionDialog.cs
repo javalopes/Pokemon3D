@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
+using Pokemon3D.Common.Shapes;
 
 namespace Pokemon3D.UI.Dialogs
 {
@@ -71,8 +72,9 @@ namespace Pokemon3D.UI.Dialogs
         {
             var startY = GameProvider.GameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
 
-            GameProvider.GameInstance.ShapeRenderer.DrawRectangle(0, 0, GameProvider.GameInstance.ScreenBounds.Width, GameProvider.GameInstance.ScreenBounds.Height, Color.White * 0.4f);
-            GameProvider.GameInstance.ShapeRenderer.DrawRectangle(0, startY, GameProvider.GameInstance.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
+            var shapeRenderer = GameProvider.GameInstance.GetService<ShapeRenderer>();
+            shapeRenderer.DrawRectangle(0, 0, GameProvider.GameInstance.ScreenBounds.Width, GameProvider.GameInstance.ScreenBounds.Height, Color.White * 0.4f);
+            shapeRenderer.DrawRectangle(0, startY, GameProvider.GameInstance.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
 
             spriteBatch.DrawString(_titleFont, _title, new Vector2(100, startY + 20), Color.Black);
 

@@ -6,17 +6,25 @@ namespace Pokemon3D.UI
 {
     class KeyboardUiInputController : OverlayInputControllerBase
     {
+        private InputSystem _inputSystem;
+
+        public KeyboardUiInputController()
+        {
+            _inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
+        }
+
         public override void Update(UiFocusContainer container)
         {
-            if (GameProvider.GameInstance.InputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+
+            if (_inputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
             {
                 InvokeMoveToPreviousElement();
             }
-            if (GameProvider.GameInstance.InputSystem.Down(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+            if (_inputSystem.Down(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
             {
                 InvokeMoveToNextElement();
             }
-            if (GameProvider.GameInstance.InputSystem.Accept(AcceptInputTypes.Buttons))
+            if (_inputSystem.Accept(AcceptInputTypes.Buttons))
             {
                 InvokeAction(container.CurrentElement);
             }

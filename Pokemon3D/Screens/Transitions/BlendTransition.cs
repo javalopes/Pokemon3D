@@ -37,14 +37,13 @@ namespace Pokemon3D.Screens.Transitions
 
         public void Draw()
         {
+            var spriteBatch = GameInstance.GetService<SpriteBatch>();
             var alpha = _elapsedTime/_transitionTime;
 
-            GameInstance.SpriteBatch.Begin(blendState: BlendState.NonPremultiplied);
-
-            GameInstance.SpriteBatch.Draw(_target, Vector2.Zero, Color.White * alpha);
-            GameInstance.SpriteBatch.Draw(_source, Vector2.Zero, Color.White * (1.0f - alpha));
-
-            GameInstance.SpriteBatch.End();
+            spriteBatch.Begin(blendState: BlendState.NonPremultiplied);
+            spriteBatch.Draw(_target, Vector2.Zero, Color.White * alpha);
+            spriteBatch.Draw(_source, Vector2.Zero, Color.White * (1.0f - alpha));
+            spriteBatch.End();
         }
     }
 }

@@ -27,13 +27,13 @@ namespace Pokemon3D.Entities.System.Components
 
             if (Parent.IsInitializing) return;
             Collider.SetPosition(Parent.GlobalPosition);
-            GameInstance.CollisionManager.Add(Collider);
+            GameInstance.GetService<CollisionManager>().Add(Collider);
         }
 
         public override void OnInitialized()
         {
             Collider.SetPosition(Parent.GlobalPosition);
-            GameInstance.CollisionManager.Add(Collider);
+            GameInstance.GetService<CollisionManager>().Add(Collider);
         }
 
         public override void OnComponentRemove()
@@ -47,7 +47,7 @@ namespace Pokemon3D.Entities.System.Components
             Collider.SetPosition(Parent.Position);
 
             if (!ResolvesPosition) return;
-            var collisionResult = GameInstance.CollisionManager.CheckCollision(Collider);
+            var collisionResult = GameInstance.GetService<CollisionManager>().CheckCollision(Collider);
             if (collisionResult != null)
             {
                 for (var i = 0; i < collisionResult.Length; i++)

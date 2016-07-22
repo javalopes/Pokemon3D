@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Pokemon3D.Common.Shapes;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
 
@@ -28,7 +29,7 @@ namespace Pokemon3D.UI
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            GameProvider.GameInstance.ShapeRenderer.DrawRectangle(0, GameProvider.GameInstance.ScreenBounds.Height - 64, GameProvider.GameInstance.ScreenBounds.Width, 64, Color.White);
+            GameProvider.GameInstance.GetService<ShapeRenderer>().DrawRectangle(0, GameProvider.GameInstance.ScreenBounds.Height - 64, GameProvider.GameInstance.ScreenBounds.Width, 64, Color.White);
             base.Draw(spriteBatch);
         }
     }

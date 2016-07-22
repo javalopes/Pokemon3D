@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
 using static Pokemon3D.GameCore.GameProvider;
+using Pokemon3D.Common.Shapes;
+using Pokemon3D.Common.Input;
 
 namespace Pokemon3D.Screens.Overworld
 {
@@ -28,17 +30,17 @@ namespace Pokemon3D.Screens.Overworld
 
         public override void Draw(GameTime gameTime)
         {
-            GameInstance.ShapeRenderer.DrawRectangle(new Rectangle(GameInstance.ScreenBounds.Width / 2 - 200, 100, 400, 100), Color.Black.Alpha(200));
+            GameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(GameInstance.ScreenBounds.Width / 2 - 200, 100, 400, 100), Color.Black.Alpha(200));
 
             var font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular);
             var fontSize = font.MeasureString(_message);
 
-            GameInstance.SpriteBatch.DrawString(font, _message, new Vector2(GameInstance.ScreenBounds.Width / 2 - 190, 110), Color.White);
+            GameInstance.GetService<SpriteBatch>().DrawString(font, _message, new Vector2(GameInstance.ScreenBounds.Width / 2 - 190, 110), Color.White);
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (GameInstance.InputSystem.GamePad.IsButtonDownOnce(Microsoft.Xna.Framework.Input.Buttons.A))
+            if (GameInstance.GetService<InputSystem>().GamePad.IsButtonDownOnce(Microsoft.Xna.Framework.Input.Buttons.A))
             {
                 IsActive = false;
                 MessageClosed?.Invoke(this);

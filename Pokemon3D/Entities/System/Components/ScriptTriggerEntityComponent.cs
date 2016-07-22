@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Collisions;
+using Pokemon3D.Screens;
 using Pokemon3D.Screens.Overworld;
 using static Pokemon3D.GameCore.GameProvider;
 
@@ -26,7 +27,7 @@ namespace Pokemon3D.Entities.System.Components
 
             _collider = new Collider(Parent.Scale, isTrigger: true);
             _collider.SetPosition(Parent.GlobalPosition);
-            GameInstance.CollisionManager.Add(_collider);
+            GameInstance.GetService<CollisionManager>().Add(_collider);
             _collider.OnTriggerEnter = OnTriggerEnter;
             _collider.OnTriggerLeave = OnTriggerLeave;
 
@@ -44,7 +45,7 @@ namespace Pokemon3D.Entities.System.Components
         {
             if (collider.Tag != "Player") return;
 
-            var overworldScreen = (OverworldScreen)GameInstance.ScreenManager.CurrentScreen;
+            var overworldScreen = (OverworldScreen)GameInstance.GetService<ScreenManager>().CurrentScreen;
 
             overworldScreen.AddUiElement(_uiElement);
             _uiElement.IsActive = true;
@@ -61,7 +62,7 @@ namespace Pokemon3D.Entities.System.Components
         {
             if (_addedUIElement)
             {
-                var screen = GameInstance.ScreenManager.CurrentScreen;
+                var screen = GameInstance.GetService<ScreenManager>().CurrentScreen;
                 if (screen is OverworldScreen) ((OverworldScreen)screen).RemoveUiElement(_uiElement);
             }
         }

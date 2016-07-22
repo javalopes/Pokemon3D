@@ -29,15 +29,16 @@ namespace Pokemon3D.Entities.System.Components
 
         public ModelEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
-            _drawableElement = GameInstance.SceneRenderer.CreateDrawableElement(true);
+            _drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(true);
             IsBillboard = GetDataOrDefault("IsBillboard", false);
 
             var modelReference = GetData<string>("MeshReference");
             var useTransparency = GetDataOrDefault("UseTransparency", false);
+            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
 
             if (!string.IsNullOrEmpty(modelReference))
             {
-                var primitiveMesh = GameController.Instance.ActiveGameMode.GetPrimitiveMesh(modelReference);
+                var primitiveMesh = gameMode.GetPrimitiveMesh(modelReference);
                 if (primitiveMesh != null)
                 {
                     _drawableElement.Mesh = primitiveMesh;
@@ -45,7 +46,7 @@ namespace Pokemon3D.Entities.System.Components
                 }
                 else
                 {
-                    var modelMesh = GameController.Instance.ActiveGameMode.GetModel(modelReference).First();
+                    var modelMesh = gameMode.GetModel(modelReference).First();
                     _drawableElement.Mesh = modelMesh.Mesh;
                     _drawableElement.Material = modelMesh.Material;
 
@@ -62,7 +63,6 @@ namespace Pokemon3D.Entities.System.Components
             var textures = GetEnumeratedData<string>("Texture");
             var regions = GetEnumeratedData<Rectangle>("Rectangle");
 
-            var gameMode = GameInstance.ActiveGameMode;
             if (textures.Length == 1)
             {
                 AddTextureRegion(gameMode.GetTexture(textures[0]), regions.Length == 0 ? (Rectangle?)null : regions[0]);
@@ -83,7 +83,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public ModelEntityComponent(Entity parent, Mesh mesh, Material material, bool isBillboard) : base(parent)
         {
-            _drawableElement = GameInstance.SceneRenderer.CreateDrawableElement(true);
+            _drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(true);
             _drawableElement.Material = material;
             _drawableElement.Mesh = mesh;
             IsBillboard = isBillboard;
@@ -101,7 +101,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public override void OnComponentRemove()
         {
-            GameInstance.SceneRenderer.RemoveDrawableElement(_drawableElement);
+            GameInstance.GetService<SceneRenderer>().RemoveDrawableElement(_drawableElement);
             _drawableElement = null;
         }
 
