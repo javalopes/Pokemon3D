@@ -15,7 +15,7 @@ namespace Pokemon3D.Entities
         private readonly InputSystem _inputSystem;
         private Action _onFinished;
         private readonly NotificationBar _notificationBar;
-        private Dictionary<string, Map> _allMaps = new Dictionary<string, Map>(); 
+        private Dictionary<string, Map> _allMaps = new Dictionary<string, Map>();
 
         public Map ActiveMap { get; private set; }
         public Player Player { get; private set; }
@@ -43,13 +43,22 @@ namespace Pokemon3D.Entities
             ActiveMap.Load(Vector3.Zero);
             Player = new Player(this);
 
-            var mapModel2 = gameMode.LoadMap("Route1");
-            var adjacent = new Map(this, mapModel2);
-            adjacent.Load(new Vector3(0, 0, -32));
+            //var mapModel2 = gameMode.LoadMap("Route1");
+            //var adjacent = new Map(this, mapModel2);
+            //adjacent.Load(new Vector3(0, 0, -32));
 
             _onFinished();
         }
 
+        public void AddMap(string id, double x, double y, double z)
+        {
+            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
+            var mapModel2 = gameMode.LoadMap(id);
+            var adjacent = new Map(this, mapModel2);
+            adjacent.Load(new Vector3((float)x, (float)y, (float)z));
+
+            ActivateNewEntities();
+        }
 
         public void ActivateNewEntities()
         {
