@@ -41,7 +41,9 @@ namespace Pokemon3D.ScriptPipeline.APIClasses
         /// </summary>
         protected static void BlockThreadUntilCondition(Func<bool> condition)
         {
+            ScriptPipelineManager.ThreadBlockingOperationCount++;
             SpinWait.SpinUntil(condition);
+            ScriptPipelineManager.ThreadBlockingOperationCount--;
         }
     }
 }

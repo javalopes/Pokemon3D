@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using Pokemon3D.Common.Diagnostics;
+using Pokemon3D.Entities;
 using Pokemon3D.Scripting;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
@@ -16,6 +17,8 @@ namespace Pokemon3D.ScriptPipeline
     static class ScriptPipelineManager
     {
         public static int ActiveProcessorCount { get; private set; }
+
+        public static int ThreadBlockingOperationCount { get; set; }
 
         private static List<SObject> _prototypeBuffer;
         private static Dictionary<string, MethodInfo[]> _apiClasses;
@@ -86,8 +89,9 @@ namespace Pokemon3D.ScriptPipeline
                 try
                 {
                     //todo: HÜLFE!
-                    //string source = Encoding.UTF8.GetString(GameInstance.ActiveGameMode.FileLoader.GetFile(GameInstance.ActiveGameMode.GetScriptFilePath(scriptFile)));
-                    var source = "blubb";
+                    var gamemode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
+                    string source = Encoding.UTF8.GetString(gamemode.FileLoader.GetFile(gamemode.GetScriptFilePath(scriptFile)).Data);
+                    //var source = "blubb";
 
                     var processor = CreateProcessor();
                     var result = processor.Run(source);

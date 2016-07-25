@@ -237,7 +237,7 @@ namespace Pokemon3D.Screens.Overworld
             }
 
 #if DEBUG_RENDERING
-            GameInstance.SceneRenderer.LateDebugDraw3D();
+            GameInstance.GetService<SceneRenderer>().LateDebugDraw3D();
 #endif
         }
 

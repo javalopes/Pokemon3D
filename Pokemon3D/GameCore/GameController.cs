@@ -53,7 +53,7 @@ namespace Pokemon3D.GameCore
         private CollisionManager _collisionManager;
 
         public event EventHandler WindowSizeChanged;
-        
+
         public string VersionInformation => $"{VERSION} {DEVELOPMENT_STAGE}";
 
         public Rectangle ScreenBounds => _currentScreenBounds;
@@ -109,7 +109,7 @@ namespace Pokemon3D.GameCore
             _notificationBarOverlay.Show();
 
 #if DEBUG_RENDERING
-            CollisionManager.DrawDebugShapes = true;
+            _collisionManager.DrawDebugShapes = true;
 #endif
 #if DEBUG
             GetService<ScreenManager>().SetScreen(typeof(MainMenuScreen));
@@ -124,7 +124,7 @@ namespace Pokemon3D.GameCore
             base.Update(gameTime);
             _inputSystem.Update();
             _collisionManager.Update();
-            
+
             if (!_screenManager.Update(gameTime)) Exit();
             _notificationBarOverlay.Update(gameTime);
         }
@@ -178,13 +178,13 @@ namespace Pokemon3D.GameCore
 
         public void ExecuteBackgroundJob(Action action)
         {
-            ThreadPool.QueueUserWorkItem(s => 
+            ThreadPool.QueueUserWorkItem(s =>
             {
                 try
                 {
                     action();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     GameLogger.Instance.Log(ex);
                 }
