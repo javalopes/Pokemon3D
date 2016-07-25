@@ -19,17 +19,18 @@ namespace Pokemon3D.Screens.GameModeLoading
         private bool _loadingFinished;
 
         private UiOverlay _overlay;
-
+        private UiElement _pokeballSprite;
         private World _world;
 
         public void OnOpening(object enterInformation)
         {
             _overlay = new UiOverlay();
-            var pokeballSprite = _overlay.AddElement(new Image(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball)));
-            pokeballSprite.SetPosition(new Vector2(GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height) * 0.5f);
-            pokeballSprite.SetOriginPercentage(new Vector2(0.5f));
-            pokeballSprite.EnterAnimation =  new UiScaleAnimation(0.5f, Vector2.Zero, Vector2.One);
-            pokeballSprite.Scale = Vector2.Zero;
+            _pokeballSprite = _overlay.AddElement(new Image(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball)));
+            _pokeballSprite.SetPosition(new Vector2(GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height) * 0.5f);
+            _pokeballSprite.SetOriginPercentage(new Vector2(0.5f));
+            _pokeballSprite.EnterAnimation =  new UiScaleAnimation(0.5f, Vector2.Zero, Vector2.One);
+            _pokeballSprite.Scale = Vector2.Zero;
+            _pokeballSprite.AddCustomAnimation("Rotating", new UiRotationAnimation(0.5f, 0.0f, MathHelper.TwoPi), true);
 
             var loadingText = _overlay.AddElement(new StaticText(GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont), "@Loading..."));
             loadingText.SetPosition(new Vector2(GameInstance.ScreenBounds.Width * 0.5f, 400));
@@ -43,6 +44,7 @@ namespace Pokemon3D.Screens.GameModeLoading
 
         private void OverlayOnShowed()
         {
+            _pokeballSprite.PlayCustomAnimation("Rotating");
             StartCreateNewGame();
         }
 

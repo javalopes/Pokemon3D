@@ -247,9 +247,10 @@ namespace Pokemon3D.Rendering.UI
             
         }
 
-        public void AddCustomAnimation(string name, UiAnimation animation)
+        public void AddCustomAnimation(string name, UiAnimation animation, bool isLoop = false)
         {
             animation.Owner = this;
+            animation.IsLoop = isLoop;
             _animator.AddAnimation(name, animation);
         }
 

@@ -43,9 +43,9 @@ namespace Pokemon3D.Entities
             ActiveMap.Load(Vector3.Zero);
             Player = new Player(this);
 
-            //var mapModel2 = gameMode.LoadMap("Route1");
-            //var adjacent = new Map(this, mapModel2);
-            //adjacent.Load(new Vector3(0,0, -32));
+            var mapModel2 = gameMode.LoadMap("Route1");
+            var adjacent = new Map(this, mapModel2);
+            adjacent.Load(new Vector3(0, 0, -32));
 
             _onFinished();
         }

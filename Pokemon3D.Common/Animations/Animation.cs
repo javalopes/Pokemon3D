@@ -141,6 +141,6 @@ namespace Pokemon3D.Common.Animations
             return new WaitAnimation(durationSeconds);
         }
 
-        public bool IsLoop { get; private set; }
+        public bool IsLoop { get; set; }
     }
 }
