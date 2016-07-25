@@ -28,14 +28,15 @@ namespace Pokemon3D.Rendering
 
             var height = 1.0f / 3.0f;
             var width = 0.25f;
+            const float threshold = 0.001f;
             var coords = new[]
             {
-                new Vector2(1.0f*width,1.0f*height), new Vector2(width, height),
-                new Vector2(3.0f*width,1.0f*height), new Vector2(width, height),
-                new Vector2(2.0f*width,1.0f*height), new Vector2(width, height),
-                new Vector2(0.0f*width,1.0f*height), new Vector2(width, height),
-                new Vector2(1.0f*width,0.0f*height), new Vector2(width, height),
-                new Vector2(1.0f*width,2.0f*height), new Vector2(width, height),
+                new Vector2(1.0f*width+threshold,1.0f*height+threshold), new Vector2(width-threshold*2, height-threshold*2),
+                new Vector2(3.0f*width+threshold,1.0f*height+threshold), new Vector2(width-threshold*2, height-threshold*2),
+                new Vector2(2.0f*width+threshold,1.0f*height+threshold), new Vector2(width-threshold*2, height-threshold*2),
+                new Vector2(0.0f*width+threshold,1.0f*height+threshold), new Vector2(width-threshold*2, height-threshold*2),
+                new Vector2(1.0f*width+threshold,0.0f*height+threshold), new Vector2(width-threshold*2, height-threshold*2),
+                new Vector2(1.0f*width+threshold,2.0f*height+threshold), new Vector2(width-threshold*2, height-threshold*2),
             };
             
             _skyBoxModel = new Mesh(GameContext.GetService<GraphicsDevice>(), Primitives.GenerateCubeData(coords));
