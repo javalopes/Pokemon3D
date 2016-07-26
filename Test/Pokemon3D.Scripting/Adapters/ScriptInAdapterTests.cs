@@ -107,7 +107,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
             [ScriptVariable]
             public string OriginalName = "";
 
-            [ScriptFunction]
+            [ScriptFunction(ScriptFunctionType.Standard)]
             public string SetName = "function(name) { if (this.OriginalName == \"\") { this.OriginalName = this.Name; } this.Name = name; }";
         }
     }

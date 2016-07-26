@@ -12,14 +12,11 @@ namespace Pokemon3D.Scripting.Adapters
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Field, AllowMultiple = false)]
     public class ScriptFunctionAttribute : ScriptMemberAttribute
     {
-        /// <summary>
-        /// If this function is the indexer get function of the class.
-        /// </summary>
-        public bool IndexerGet { get; set; }
+        public ScriptFunctionAttribute(ScriptFunctionType functionType)
+        {
+            FunctionType = functionType;
+        }
 
-        /// <summary>
-        /// If this function is the indexer set function of the class.
-        /// </summary>
-        public bool IndexerSet { get; set; }
+        internal ScriptFunctionType FunctionType { get; set; }
     }
 }

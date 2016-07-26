@@ -8,6 +8,7 @@ using Pokemon3D.Scripting;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Screens.Overworld;
 using Pokemon3D.Screens;
+using Pokemon3D.ScriptPipeline.Prototypes;
 
 namespace Pokemon3D.ScriptPipeline.APIClasses
 {
@@ -31,11 +32,12 @@ namespace Pokemon3D.ScriptPipeline.APIClasses
         public static SObject load(ScriptProcessor processor, SObject[] parameters)
         {
             object[] netObjects;
-            if (EnsureTypeContract(parameters, new Type[] { typeof(string), typeof(double), typeof(double), typeof(double) }, out netObjects))
+            if (EnsureTypeContract(parameters, new Type[] { typeof(string), typeof(Vector3Wrapper) }, out netObjects))
             {
                 OverworldScreen screen = (OverworldScreen)GameCore.GameProvider.GameInstance.GetService<ScreenManager>().CurrentScreen;
 
-                screen.ActiveWorld.AddMap(netObjects[0] as string, (double)netObjects[1], (double)netObjects[2], (double)netObjects[3]);
+                var position = netObjects[1] as Vector3Wrapper;
+                screen.ActiveWorld.AddMap(netObjects[0] as string, position.x, position.y, position.z);
             }
 
             return ScriptInAdapter.GetUndefined(processor);

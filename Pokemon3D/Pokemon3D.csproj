@@ -110,7 +110,9 @@
     <Compile Include="ScriptPipeline\APIClasses\World.cs" />
     <Compile Include="ScriptPipeline\Entity.cs" />
     <Compile Include="ScriptPipeline\EntityComponent.cs" />
-    <Compile Include="ScriptPipeline\Vector2.cs" />
+    <Compile Include="ScriptPipeline\Prototypes\TypeContract.cs" />
+    <Compile Include="ScriptPipeline\Prototypes\Vector2.cs" />
+    <Compile Include="ScriptPipeline\Prototypes\Vector3.cs" />
     <Compile Include="UI\BarEntry.cs" />
     <Compile Include="UI\ControlBar.cs" />
     <Compile Include="UI\Dialogs\SelectionDialog.cs" />

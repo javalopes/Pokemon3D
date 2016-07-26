@@ -16,7 +16,7 @@ namespace Pokemon3D.ScriptPipeline
         [ScriptVariable]
         public string id;
 
-        [ScriptFunction]
+        [ScriptFunction(ScriptFunctionType.Standard)]
         public static object getComponent(object This, object[] parameters)
         {
             var wrapper = (EntityWrapper)This;

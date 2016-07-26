@@ -1,3 +1,4 @@
 using world;
 
-world.load("Route1", 0, 0, -40);
+var position = new Vector3(0, 0, -40);
+world.load("Route1", position);

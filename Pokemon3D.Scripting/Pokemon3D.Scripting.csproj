@@ -57,6 +57,7 @@
     <Compile Include="Adapters\Delegates.cs" />
     <Compile Include="Adapters\ScriptContextManipulator.cs" />
     <Compile Include="Adapters\ScriptFunctionAttribute.cs" />
+    <Compile Include="Adapters\ScriptFunctionType.cs" />
     <Compile Include="Adapters\ScriptInAdapter.cs" />
     <Compile Include="Adapters\ScriptMemberAttribute.cs" />
     <Compile Include="Adapters\ScriptOutAdapter.cs" />

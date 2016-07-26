@@ -225,24 +225,30 @@ namespace Pokemon3D.Scripting.Adapters
 
                         var fieldContent = field.GetValue(typeInstance);
 
-                        if (memberAttr.IndexerGet && memberAttr.IndexerSet)
-                            throw new InvalidOperationException("The member function " + field.Name + " was marked both as an indexer set and indexer get. It can only be one at a time.");
-
                         if (fieldContent == null)
                         {
-                            if (memberAttr.IndexerGet || memberAttr.IndexerSet)
-                                throw new InvalidOperationException("A member function marked with Indexer Set or Indexer Get has to be defined.");
+                            if (memberAttr.FunctionType != ScriptFunctionType.Standard)
+                                throw new InvalidOperationException("A member function marked with Indexer Set, Indexer Get or Constructor has to be defined.");
 
                             prototype.AddMember(processor, new PrototypeMember(identifier, processor.Undefined, field.IsStatic, field.IsInitOnly, false, false));
                         }
                         else
                         {
-                            if (memberAttr.IndexerGet)
-                                prototype.IndexerGetFunction = new SFunction(processor, fieldContent.ToString());
-                            else if (memberAttr.IndexerSet)
-                                prototype.IndexerSetFunction = new SFunction(processor, fieldContent.ToString());
-                            else
-                                prototype.AddMember(processor, new PrototypeMember(identifier, new SFunction(processor, fieldContent.ToString()), field.IsStatic, field.IsInitOnly, false, false));
+                            switch (memberAttr.FunctionType)
+                            {
+                                case ScriptFunctionType.Standard:
+                                    prototype.AddMember(processor, new PrototypeMember(identifier, new SFunction(processor, fieldContent.ToString()), field.IsStatic, field.IsInitOnly, false, false));
+                                    break;
+                                case ScriptFunctionType.IndexerGet:
+                                    prototype.IndexerGetFunction = new SFunction(processor, fieldContent.ToString());
+                                    break;
+                                case ScriptFunctionType.IndexerSet:
+                                    prototype.IndexerSetFunction = new SFunction(processor, fieldContent.ToString());
+                                    break;
+                                case ScriptFunctionType.Constructor:
+                                    prototype.Constructor = new PrototypeMember(Prototype.CLASS_METHOD_CTOR, new SFunction(processor, fieldContent.ToString()), false, true, false, false);
+                                    break;
+                            }
                         }
                     }
                 }
@@ -262,9 +268,6 @@ namespace Pokemon3D.Scripting.Adapters
                     if (!string.IsNullOrEmpty(attr.VariableName))
                         identifier = attr.VariableName;
 
-                    if (attr.IndexerGet && attr.IndexerSet)
-                        throw new InvalidOperationException("The member function " + method.Name + " was marked both as an indexer set and indexer get. It can only be one at a time.");
-
                     Delegate methodDelegate = null;
 
                     if (method.GetParameters().Length == 2)
@@ -278,12 +281,21 @@ namespace Pokemon3D.Scripting.Adapters
                         methodDelegate = (BuiltInMethod)Delegate.CreateDelegate(typeof(BuiltInMethod), method);
                     }
 
-                    if (attr.IndexerGet)
-                        prototype.IndexerGetFunction = new SFunction(methodDelegate);
-                    else if (attr.IndexerSet)
-                        prototype.IndexerSetFunction = new SFunction(methodDelegate);
-                    else
-                        prototype.AddMember(processor, new PrototypeMember(identifier, new SFunction(methodDelegate), method.IsStatic, true, false, false));
+                    switch (attr.FunctionType)
+                    {
+                        case ScriptFunctionType.Standard:
+                            prototype.AddMember(processor, new PrototypeMember(identifier, new SFunction(methodDelegate), method.IsStatic, true, false, false));
+                            break;
+                        case ScriptFunctionType.IndexerGet:
+                            prototype.IndexerGetFunction = new SFunction(methodDelegate);
+                            break;
+                        case ScriptFunctionType.IndexerSet:
+                            prototype.IndexerSetFunction = new SFunction(methodDelegate);
+                            break;
+                        case ScriptFunctionType.Constructor:
+                            prototype.Constructor = new PrototypeMember(Prototype.CLASS_METHOD_CTOR, new SFunction(methodDelegate), false, true, false, false);
+                            break;
+                    }
                 }
             }
 

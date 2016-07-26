@@ -16,7 +16,7 @@ namespace Pokemon3D.ScriptPipeline
         [ScriptVariable]
         public string id;
 
-        [ScriptFunction]
+        [ScriptFunction(ScriptFunctionType.Standard)]
         public static object setData(object This, object[] parameters)
         {
             var instance = (EntityComponentWrapper)This;
@@ -31,7 +31,7 @@ namespace Pokemon3D.ScriptPipeline
             return dataValue;
         }
 
-        [ScriptFunction]
+        [ScriptFunction(ScriptFunctionType.Standard)]
         public static object getData(object This, object[] parameters)
         {
             var instance = (EntityComponentWrapper)This;
