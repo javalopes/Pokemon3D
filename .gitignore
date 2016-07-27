@@ -224,3 +224,9 @@ birdScript/Program.cs
 #Unignore everthing in the game mode folder.
 !/GameModeTemplates/**/*
 *.scgdat
+
+#############
+## Rider
+#############
+
+.idea.Pokemon3D*/
