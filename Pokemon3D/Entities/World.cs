@@ -37,11 +37,11 @@ namespace Pokemon3D.Entities
             gameMode.Preload();
             
             Player = new Player(this);
-            ActivatemapsWithOffsets(gameMode.GameModeInfo.StartMap, Vector3.Zero);
+            ActivateMapsWithOffsets(gameMode.GameModeInfo.StartMap, Vector3.Zero);
             EntitySystem.InitializeAllPendingEntities();
         }
 
-        private void ActivatemapsWithOffsets(string id, Vector3 position)
+        private void ActivateMapsWithOffsets(string id, Vector3 position)
         {
             var mainMap = ActivateMap(id, position);
             
@@ -76,9 +76,11 @@ namespace Pokemon3D.Entities
         public void LoadMap(string id, double x, double y, double z)
         {
             foreach(var map in _allMaps) map.Value.Deactivate();
-            ActivatemapsWithOffsets(id, new Vector3((float)x, (float)y, (float)z));
+            ActivateMapsWithOffsets(id, new Vector3((float)x, (float)y, (float)z));
             EntitySystem.InitializeAllPendingEntities();
         }
+
+
 
         public void Update(GameTime gameTime)
         {

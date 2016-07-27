@@ -103,6 +103,7 @@
     <Compile Include="Screens\Overworld\InteractionPromptOverworldUIElement.cs" />
     <Compile Include="Screens\Overworld\MessageOverworldUIElement.cs" />
     <Compile Include="Screens\Overworld\OverworldUIElement.cs" />
+    <Compile Include="Screens\Transitions\ShrinkOldTransition.cs" />
     <Compile Include="Screens\WorldContainer.cs" />
     <Compile Include="ScriptPipeline\APIClasses\APIClass.cs" />
     <Compile Include="ScriptPipeline\APIClasses\APIClassAttribute.cs" />
@@ -138,7 +139,6 @@
     <Compile Include="Screens\Transitions\BlendTransition.cs" />
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\ScreenManager.cs" />
-    <Compile Include="Screens\Transitions\FadeTransition.cs" />
     <Compile Include="Screens\Transitions\ScreenTransition.cs" />
     <Compile Include="Screens\Transitions\SlideTransition.cs" />
     <Compile Include="Screens\WindowsSceneEffect.cs" />

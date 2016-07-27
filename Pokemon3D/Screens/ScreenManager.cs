@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Rendering;
 using Pokemon3D.Screens.Transitions;
 using System;
 using System.Collections.Generic;
@@ -104,6 +105,7 @@ namespace Pokemon3D.Screens
             GameInstance.GraphicsDevice.SetRenderTarget(_targetRenderTarget);
             currentScreen.OnUpdate(new GameTime());
             currentScreen.OnEarlyDraw(new GameTime());
+            GameInstance.GetService<SceneRenderer>().Draw();
             currentScreen.OnLateDraw(new GameTime());
 
             GameInstance.GraphicsDevice.SetRenderTargets(currentRenderTarget);

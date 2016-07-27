@@ -28,7 +28,8 @@ namespace Pokemon3D.Screens.GameModeLoading
             _pokeballSprite = _overlay.AddElement(new Image(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball)));
             _pokeballSprite.SetPosition(new Vector2(GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height) * 0.5f);
             _pokeballSprite.SetOriginPercentage(new Vector2(0.5f));
-            _pokeballSprite.EnterAnimation =  new UiScaleAnimation(0.5f, Vector2.Zero, Vector2.One);
+            _pokeballSprite.EnterAnimation = new UiScaleAnimation(0.5f, Vector2.Zero, Vector2.One);
+            _pokeballSprite.LeaveAnimation = new UiScaleAnimation(0.5f, Vector2.One, Vector2.Zero);
             _pokeballSprite.Scale = Vector2.Zero;
             _pokeballSprite.AddCustomAnimation("Rotating", new UiRotationAnimation(0.5f, 0.0f, MathHelper.TwoPi), true);
 
@@ -36,10 +37,17 @@ namespace Pokemon3D.Screens.GameModeLoading
             loadingText.SetPosition(new Vector2(GameInstance.ScreenBounds.Width * 0.5f, 400));
             loadingText.SetOriginPercentage(new Vector2(0.5f, 0.0f));
             loadingText.EnterAnimation = new UiAlphaAnimation(0.4f, 0.0f, 1.0f);
+            loadingText.LeaveAnimation = new UiAlphaAnimation(0.4f, 1.0f, 0.0f);
             loadingText.Alpha = 0.0f;
 
             _overlay.Showed += OverlayOnShowed;
+            _overlay.Hidden += OnHidden;
             _overlay.Show();
+        }
+
+        private void OnHidden()
+        {
+            GameInstance.GetService<ScreenManager>().SetScreen(typeof(OverworldScreen), typeof(ShrinkOldTransition), _world);
         }
 
         private void OverlayOnShowed()
@@ -62,11 +70,6 @@ namespace Pokemon3D.Screens.GameModeLoading
         public void OnUpdate(GameTime gameTime)
         {
             _overlay.Update(gameTime);
-
-            if (_loadingFinished)
-            {
-                GameInstance.GetService<ScreenManager>().SetScreen(typeof(OverworldScreen), typeof(SlideTransition), _world);
-            }
         }
 
         public void OnClosing()
@@ -92,7 +95,7 @@ namespace Pokemon3D.Screens.GameModeLoading
 
             _loadingFinished = false;
             _world = new World();
-            _world.StartNewGameAsync(() => _loadingFinished = true);
+            _world.StartNewGameAsync(() => _overlay.Hide());
         }
     }
 }
