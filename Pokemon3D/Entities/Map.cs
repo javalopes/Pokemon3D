@@ -10,22 +10,23 @@ namespace Pokemon3D.Entities
 {
     class Map
     {
-        private readonly MapModel _mapModel;
         private readonly World _world;
         private List<Entity> _allMapEntities;
+
+        public MapModel Model { get; private set; }
 
         public Map(World world, MapModel mapModel)
         {
             _world = world;
-            _mapModel = mapModel;
+            Model = mapModel;
             _allMapEntities = new List<Entity>();
         }
 
         public void Load(Vector3 basicOffset)
         {
-            if (_mapModel.Entities != null)
+            if (Model.Entities != null)
             {
-                foreach (var entityDefinition in _mapModel.Entities)
+                foreach (var entityDefinition in Model.Entities)
                 {
                     foreach (var entityPlacing in entityDefinition.Placing)
                     {
@@ -37,9 +38,9 @@ namespace Pokemon3D.Entities
 
             var mapFragmentManager = GameInstance.GetService<GameModeManager>().ActiveGameMode.MapFragmentManager;
 
-            if (_mapModel.Fragments != null)
+            if (Model.Fragments != null)
             {
-                foreach (var fragmentImport in _mapModel.Fragments)
+                foreach (var fragmentImport in Model.Fragments)
                 {
                     var importedFragment = mapFragmentManager.GetFragment(fragmentImport.Id);
                     var positions = fragmentImport.Positions;

@@ -36,14 +36,9 @@ namespace Pokemon3D.Entities
         {
             var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
             gameMode.Preload();
-
-
-            Player = new Player(this);
-
-            var mapModel = gameMode.LoadMap(gameMode.GameModeInfo.StartMap);
-            ActiveMap = new Map(this, mapModel);
-            ActiveMap.Load(Vector3.Zero);
             
+            Player = new Player(this);
+            ActiveMap = LoadMap(gameMode.GameModeInfo.StartMap, Vector3.Zero, true);
             EntitySystem.InitializeAllPendingEntities();
         }
 
@@ -62,12 +57,21 @@ namespace Pokemon3D.Entities
             }
         }
 
-        private Map LoadMap(string id, Vector3 position)
+        private Map LoadMap(string id, Vector3 position, bool loadOffsets = true)
         {
             var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
             var mapModel = gameMode.LoadMap(id);
             var map = new Map(this, mapModel);
             map.Load(position);
+
+            if (loadOffsets && map.Model.OffsetMaps != null)
+            {
+                foreach(var offsetmap in map.Model.OffsetMaps)
+                {
+                    LoadMap(offsetmap.MapFile, position + offsetmap.Offset.GetVector3(), false);
+                }
+            }
+
             EntitySystem.InitializeAllPendingEntities();
             return map;
         }

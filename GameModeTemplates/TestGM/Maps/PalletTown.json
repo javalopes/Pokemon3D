@@ -848,5 +848,15 @@
         }
       ]
     }
+  ],
+  "OffsetMaps": [
+    {
+      "MapFile": "Route1",
+      "Offset": {
+          "X": 0,
+          "Y": 0,
+          "Z": -36
+        }
+    }
   ]
 }
