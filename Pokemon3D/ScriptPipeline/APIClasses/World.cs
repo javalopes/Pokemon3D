@@ -37,7 +37,7 @@ namespace Pokemon3D.ScriptPipeline.APIClasses
                 OverworldScreen screen = (OverworldScreen)GameCore.GameProvider.GameInstance.GetService<ScreenManager>().CurrentScreen;
 
                 var position = netObjects[1] as Vector3Wrapper;
-                screen.ActiveWorld.AddMap(netObjects[0] as string, position.x, position.y, position.z);
+                screen.ActiveWorld.LoadMap(netObjects[0] as string, position.x, position.y, position.z);
             }
 
             return ScriptInAdapter.GetUndefined(processor);

@@ -36,6 +36,9 @@ namespace Pokemon3D.DataModel.GameCore
         [DataMember(Order = 6)]
         public bool SoftShadows;
 
+        [DataMember(Order = 7)]
+        public bool EnableFileHotSwapping;
+
         public static ConfigurationModel Default
         {
             get
@@ -52,7 +55,8 @@ namespace Pokemon3D.DataModel.GameCore
                     {
                         Width = 1024,
                         Height = 600
-                    }
+                    },
+                    EnableFileHotSwapping = false
                 };
             }
         }

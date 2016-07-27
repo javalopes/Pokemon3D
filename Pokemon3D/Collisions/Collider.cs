@@ -44,6 +44,8 @@ namespace Pokemon3D.Collisions
 
         public string Tag { get; set; }
 
+        public bool IsActive { get; set; }
+
         /// <summary>
         /// This collider can be hit and does not through away but notify.
         /// </summary>
@@ -75,6 +77,7 @@ namespace Pokemon3D.Collisions
             OffsetToCenter = centerOffset.GetValueOrDefault(Vector3.Zero);
             Type = ColliderType.BoundingBox;
             BoundingBox = new BoundingBox(-size*0.5f, size*0.5f);
+            IsActive = true;
         }
         
         /// <summary>

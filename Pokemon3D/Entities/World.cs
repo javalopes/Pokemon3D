@@ -16,7 +16,6 @@ namespace Pokemon3D.Entities
         private readonly NotificationBar _notificationBar;
         private Dictionary<string, Map> _allMaps = new Dictionary<string, Map>();
 
-        public Map ActiveMap { get; private set; }
         public Player Player { get; private set; }
         public EntitySystem EntitySystem { get; }
 
@@ -38,42 +37,47 @@ namespace Pokemon3D.Entities
             gameMode.Preload();
             
             Player = new Player(this);
-            ActiveMap = LoadMap(gameMode.GameModeInfo.StartMap, Vector3.Zero, true);
+            ActivatemapsWithOffsets(gameMode.GameModeInfo.StartMap, Vector3.Zero);
             EntitySystem.InitializeAllPendingEntities();
         }
 
-        public void AddMap(string id, double x, double y, double z)
+        private void ActivatemapsWithOffsets(string id, Vector3 position)
+        {
+            var mainMap = ActivateMap(id, position);
+            
+            if (mainMap.Model.OffsetMaps != null)
+            {
+                foreach(var offsetModel in mainMap.Model.OffsetMaps)
+                {
+                    ActivateMap(offsetModel.MapFile, position + offsetModel.Offset.GetVector3());
+                }
+            }
+        }
+
+        private Map ActivateMap(string id, Vector3 position)
         {
             Map existingMap;
             if (_allMaps.TryGetValue(id, out existingMap))
             {
                 existingMap.Activate();
+                return existingMap;
             }
             else
             {
-                var map = LoadMap(id, new Vector3((float)x, (float)y, (float)z));
+                var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
+                var mapModel = gameMode.LoadMap(id);
+                var map = new Map(this, mapModel);
+                map.Load(position);
                 _allMaps.Add(id, map);
-                EntitySystem.InitializeAllPendingEntities();
+                return map;
             }
         }
 
-        private Map LoadMap(string id, Vector3 position, bool loadOffsets = true)
+        public void LoadMap(string id, double x, double y, double z)
         {
-            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
-            var mapModel = gameMode.LoadMap(id);
-            var map = new Map(this, mapModel);
-            map.Load(position);
-
-            if (loadOffsets && map.Model.OffsetMaps != null)
-            {
-                foreach(var offsetmap in map.Model.OffsetMaps)
-                {
-                    LoadMap(offsetmap.MapFile, position + offsetmap.Offset.GetVector3(), false);
-                }
-            }
-
+            foreach(var map in _allMaps) map.Value.Deactivate();
+            ActivatemapsWithOffsets(id, new Vector3((float)x, (float)y, (float)z));
             EntitySystem.InitializeAllPendingEntities();
-            return map;
         }
 
         public void Update(GameTime gameTime)

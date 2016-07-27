@@ -41,6 +41,11 @@ namespace Pokemon3D.Entities.System.Components
             throw new NotImplementedException("Needs to be handled properly.");
         }
 
+        public override void OnIsActiveChanged()
+        {
+            Collider.IsActive = IsActive;
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);

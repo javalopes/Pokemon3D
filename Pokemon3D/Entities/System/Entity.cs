@@ -148,7 +148,7 @@ namespace Pokemon3D.Entities.System
                     _isActive = value;
                     for (var i = 0; i < _components.Count; i++)
                     {
-                        _components[i].OnIsActiveChanged();
+                        _components[i].IsActive = _isActive;
                     }
                     for (var i = 0; i < _childNodes.Count; i++)
                     {

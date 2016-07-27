@@ -1,4 +1,5 @@
 ﻿texture DepthMap;
+
 sampler2D DepthMapSampler = sampler_state {
 	Texture = (DepthMap);
 	MagFilter = Point;

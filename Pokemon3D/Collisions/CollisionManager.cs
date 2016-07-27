@@ -21,6 +21,7 @@ namespace Pokemon3D.Collisions
 
         private readonly Effect _lineDrawEffect;
         private readonly EffectParameter _worldViewProjection;
+        private readonly EffectParameter _modulateColor;
         private readonly EffectTechnique _lineTechnique;
 
         public bool DrawDebugShapes { get; set; }
@@ -60,6 +61,7 @@ namespace Pokemon3D.Collisions
 
             _lineDrawEffect = GameInstance.Content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
             _worldViewProjection = _lineDrawEffect.Parameters["WorldViewProjection"];
+            _modulateColor = _lineDrawEffect.Parameters["Color"];
             _lineTechnique = _lineDrawEffect.Techniques["LineDraw"];
         }
 
@@ -88,6 +90,7 @@ namespace Pokemon3D.Collisions
                 foreach (var possibleCollider in _allColliders)
                 {
                     if (collider == possibleCollider) continue;
+                    if (!possibleCollider.IsActive) continue;
 
                     var result = possibleCollider.CheckCollision(collider);
                     if (result.Collides)
@@ -106,9 +109,12 @@ namespace Pokemon3D.Collisions
             {
                 foreach (var trigger in _allTriggers)
                 {
+                    if (!trigger.IsActive) continue;
+
                     foreach (var collidingPartner in _allTriggersAndColliders)
                     {
                         if (trigger == collidingPartner) continue;
+                        if (!collidingPartner.IsActive) continue;
 
                         if (trigger.Intersects(collidingPartner))
                         {
@@ -137,9 +143,10 @@ namespace Pokemon3D.Collisions
 
             lock (_lockObject)
             {
-                for (var i = 0; i < _allColliders.Count; i++)
+                for (var i = 0; i < _allTriggersAndColliders.Count; i++)
                 {
-                    var collider = _allColliders[i];
+                    var collider = _allTriggersAndColliders[i];
+                    if (!collider.IsActive) continue;
                     switch (collider.Type)
                     {
                         case ColliderType.BoundingBox:
@@ -152,6 +159,9 @@ namespace Pokemon3D.Collisions
             _lineDrawEffect.CurrentTechnique = oldTechnique;
         }
 
+        private static readonly Vector4 ColorTrigger = new Vector4(0.2f, 1.0f, 0.1f, 1.0f);
+        private static readonly Vector4 ColorCollider = new Vector4(1.0f, 0.1f, 0.1f, 1.0f);
+
         private void DrawBoundingBox(Camera observer, Collider collider)
         {
             var scale = -collider.BoundingBox.Min + collider.BoundingBox.Max;
@@ -160,6 +170,7 @@ namespace Pokemon3D.Collisions
                                       observer.ProjectionMatrix;
 
             _worldViewProjection.SetValue(worldViewProjection);
+            _modulateColor.SetValue(collider.IsTrigger ? ColorTrigger : ColorCollider);
 
             _lineDrawEffect.CurrentTechnique.Passes[0].Apply();
 
