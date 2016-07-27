@@ -12,11 +12,13 @@ namespace Pokemon3D.Entities
     {
         private readonly MapModel _mapModel;
         private readonly World _world;
+        private List<Entity> _allMapEntities;
 
         public Map(World world, MapModel mapModel)
         {
             _world = world;
             _mapModel = mapModel;
+            _allMapEntities = new List<Entity>();
         }
 
         public void Load(Vector3 basicOffset)
@@ -27,7 +29,8 @@ namespace Pokemon3D.Entities
                 {
                     foreach (var entityPlacing in entityDefinition.Placing)
                     {
-                        PlaceEntities(entityDefinition, entityPlacing, basicOffset);
+                        var entities = PlaceEntities(entityDefinition, entityPlacing, basicOffset);
+                        _allMapEntities.AddRange(entities);
                     }
                 }
             }
@@ -54,10 +57,27 @@ namespace Pokemon3D.Entities
                             }
                         }
 
-                        _world.EntitySystem.MergeStaticVisualEntities(entitiesToMerge);
+                        var merged = _world.EntitySystem.MergeStaticVisualEntities(entitiesToMerge);
+                        _allMapEntities.AddRange(merged);
                         entitiesToMerge.Clear();
                     }
                 }
+            }
+        }
+
+        public void Deactivate()
+        {
+            foreach(var entity in _allMapEntities)
+            {
+                entity.IsActive = false;
+            }
+        }
+
+        public void Activate()
+        {
+            foreach (var entity in _allMapEntities)
+            {
+                entity.IsActive = true;
             }
         }
 

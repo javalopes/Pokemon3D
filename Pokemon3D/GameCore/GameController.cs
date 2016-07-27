@@ -176,13 +176,14 @@ namespace Pokemon3D.GameCore
             return service;
         }
 
-        public void ExecuteBackgroundJob(Action action)
+        public void ExecuteBackgroundJob(Action action, Action onFinished = null)
         {
             ThreadPool.QueueUserWorkItem(s =>
             {
                 try
                 {
                     action();
+                    onFinished?.Invoke();
                 }
                 catch (Exception ex)
                 {

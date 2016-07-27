@@ -73,7 +73,7 @@ namespace Pokemon3D.Screens.Overworld
 
         public override void Update(GameTime gameTime)
         {
-            if (GameInstance.GetService<InputSystem>().GamePad.IsButtonDown(Buttons.A) &&
+            if ((GameInstance.GetService<InputSystem>().GamePad.IsButtonDown(Buttons.A) || GameInstance.GetService<InputSystem>().Keyboard.IsKeyDown(Keys.G)) &&
                 !Screen.HasBlockingElements &&
                 ScriptPipelineManager.ActiveProcessorCount == 0) // only update these if this are no scripts running.
             {

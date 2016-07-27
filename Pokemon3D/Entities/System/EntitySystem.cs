@@ -150,11 +150,13 @@ namespace Pokemon3D.Entities.System
             }
         }
 
-        public void MergeStaticVisualEntities(IList<Entity> entitiesToMerge)
+        public List<Entity> MergeStaticVisualEntities(IList<Entity> entitiesToMerge)
         {
             var entitiesByCategory = entitiesToMerge.Where(
                 e => e.IsStatic && e.ComponentCount == 1 && e.HasComponent<ModelEntityComponent>())
                 .GroupBy(e => e.GetComponent<ModelEntityComponent>().Material.CompareId);
+
+            var mergedEntities = new List<Entity>();
 
             foreach (var entityListToMerge in entitiesByCategory)
             {
@@ -178,7 +180,11 @@ namespace Pokemon3D.Entities.System
                 {
                     RemoveEntity(entityToRemove);
                 }
+
+                mergedEntities.Add(entity);
             }
+
+            return mergedEntities;
         }
 
         private static GeometryDataMerge ConvertEntityToGeometryMerge(Entity entity)

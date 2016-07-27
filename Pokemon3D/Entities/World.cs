@@ -13,7 +13,6 @@ namespace Pokemon3D.Entities
     class World
     {
         private readonly InputSystem _inputSystem;
-        private Action _onFinished;
         private readonly NotificationBar _notificationBar;
         private Dictionary<string, Map> _allMaps = new Dictionary<string, Map>();
 
@@ -30,39 +29,47 @@ namespace Pokemon3D.Entities
 
         public void StartNewGameAsync(Action onFinished)
         {
-            _onFinished = onFinished;
-            GameInstance.ExecuteBackgroundJob(LoadWorldAsync);
+            GameInstance.ExecuteBackgroundJob(LoadWorldAsync, onFinished);
         }
 
         private void LoadWorldAsync()
         {
             var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
             gameMode.Preload();
+
+
+            Player = new Player(this);
+
             var mapModel = gameMode.LoadMap(gameMode.GameModeInfo.StartMap);
             ActiveMap = new Map(this, mapModel);
             ActiveMap.Load(Vector3.Zero);
-            Player = new Player(this);
-
-            //var mapModel2 = gameMode.LoadMap("Route1");
-            //var adjacent = new Map(this, mapModel2);
-            //adjacent.Load(new Vector3(0, 0, -32));
-
-            _onFinished();
+            
+            EntitySystem.InitializeAllPendingEntities();
         }
 
         public void AddMap(string id, double x, double y, double z)
         {
-            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
-            var mapModel2 = gameMode.LoadMap(id);
-            var adjacent = new Map(this, mapModel2);
-            adjacent.Load(new Vector3((float)x, (float)y, (float)z));
-
-            ActivateNewEntities();
+            Map existingMap;
+            if (_allMaps.TryGetValue(id, out existingMap))
+            {
+                existingMap.Activate();
+            }
+            else
+            {
+                var map = LoadMap(id, new Vector3((float)x, (float)y, (float)z));
+                _allMaps.Add(id, map);
+                EntitySystem.InitializeAllPendingEntities();
+            }
         }
 
-        public void ActivateNewEntities()
+        private Map LoadMap(string id, Vector3 position)
         {
+            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
+            var mapModel = gameMode.LoadMap(id);
+            var map = new Map(this, mapModel);
+            map.Load(position);
             EntitySystem.InitializeAllPendingEntities();
+            return map;
         }
 
         public void Update(GameTime gameTime)
