@@ -116,7 +116,7 @@ namespace Pokemon3D.Entities
             Texture2D existing;
             if (_textureCache.TryGetValue(filePath, out existing)) return existing;
             
-            var data = FileLoader.GetFile(Path.Combine(TexturePath, filePath));
+            var data = FileLoader.GetFile(Path.Combine(TexturePath, filePath), false);
 
             Texture2D texture = null;
             using (var memoryStream = new MemoryStream(data.Data))
@@ -132,9 +132,9 @@ namespace Pokemon3D.Entities
             return texture;
         }
 
-        public MapModel LoadMap(string dataPath)
+        public MapModel LoadMap(string dataPath, bool forceReloadCached = false)
         {
-            var data = FileLoader.GetFile(GetMapFilePath(dataPath));
+            var data = FileLoader.GetFile(GetMapFilePath(dataPath), forceReloadCached);
             return DataModel<MapModel>.FromByteArray(data.Data);
         }
 

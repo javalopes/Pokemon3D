@@ -62,9 +62,7 @@
     <Compile Include="Animations\DiscreteAnimation.cs" />
     <Compile Include="AsyncTexture2D.cs" />
     <Compile Include="CollisionResult.cs" />
-    <Compile Include="DataHandling\AsyncDataLoader.cs" />
     <Compile Include="DataHandling\DataLoadResult.cs" />
-    <Compile Include="DataHandling\DataRequest.cs" />
     <Compile Include="DataHandling\FileLoader.cs" />
     <Compile Include="DataHandling\FileProvider.cs" />
     <Compile Include="Diagnostics\GameLogger.cs" />

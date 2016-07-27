@@ -82,6 +82,23 @@ namespace Pokemon3D.Collisions
             }
         }
 
+        public void Remove(Collider collider)
+        {
+            lock (_lockObject)
+            {
+                _allTriggersAndColliders.Remove(collider);
+
+                if (collider.IsTrigger)
+                {
+                    _allTriggers.Remove(collider);
+                }
+                else
+                {
+                    _allColliders.Remove(collider);
+                }
+            }
+        }
+
         public CollisionResult[] CheckCollision(Collider collider)
         {
             lock (_lockObject)
@@ -170,10 +187,9 @@ namespace Pokemon3D.Collisions
                                       observer.ProjectionMatrix;
 
             _worldViewProjection.SetValue(worldViewProjection);
-            _modulateColor.SetValue(collider.IsTrigger ? ColorTrigger : ColorCollider);
+            //_modulateColor.SetValue(collider.IsTrigger ? ColorTrigger : ColorCollider);
 
             _lineDrawEffect.CurrentTechnique.Passes[0].Apply();
-
             _boundingBoxMesh.Draw();
         }
     }

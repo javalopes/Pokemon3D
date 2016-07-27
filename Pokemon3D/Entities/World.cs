@@ -64,9 +64,7 @@ namespace Pokemon3D.Entities
             }
             else
             {
-                var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
-                var mapModel = gameMode.LoadMap(id);
-                var map = new Map(this, mapModel);
+                var map = new Map(this, id);
                 map.Load(position);
                 _allMaps.Add(id, map);
                 return map;
@@ -79,8 +77,6 @@ namespace Pokemon3D.Entities
             ActivateMapsWithOffsets(id, new Vector3((float)x, (float)y, (float)z));
             EntitySystem.InitializeAllPendingEntities();
         }
-
-
 
         public void Update(GameTime gameTime)
         {

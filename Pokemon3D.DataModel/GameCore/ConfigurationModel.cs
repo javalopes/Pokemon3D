@@ -39,6 +39,9 @@ namespace Pokemon3D.DataModel.GameCore
         [DataMember(Order = 7)]
         public bool EnableFileHotSwapping;
 
+        [DataMember(Order = 8)]
+        public string CustomGameModeBasePath;
+
         public static ConfigurationModel Default
         {
             get
@@ -56,7 +59,8 @@ namespace Pokemon3D.DataModel.GameCore
                         Width = 1024,
                         Height = 600
                     },
-                    EnableFileHotSwapping = false
+                    EnableFileHotSwapping = false,
+                    CustomGameModeBasePath = "..\\..\\..\\..\\GameModeTemplates"
                 };
             }
         }

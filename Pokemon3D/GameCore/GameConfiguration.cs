@@ -62,6 +62,12 @@ namespace Pokemon3D.GameCore
             set { _dataModel.SoftShadows = value; }
         }
 
+        public bool EnableFileHotSwapping
+        {
+            get { return _dataModel.EnableFileHotSwapping; }
+            set { _dataModel.EnableFileHotSwapping = value; }
+        }
+
         public ShadowQuality ShadowQuality
         {
             get { return _dataModel.ShadowQuality; }

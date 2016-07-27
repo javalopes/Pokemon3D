@@ -28,7 +28,7 @@ namespace Pokemon3D.Entities.Maps
                     return fragment;
                 }
 
-                var data = _gameMode.FileLoader.GetFile(_gameMode.GetMapFragmentFilePath(dataPath));
+                var data = _gameMode.FileLoader.GetFile(_gameMode.GetMapFragmentFilePath(dataPath), false);
                 fragment = DataModel.DataModel<MapFragmentModel>.FromByteArray(data.Data);
                 _fragmentModelCache.Add(dataPath, fragment);
                 return fragment;

@@ -1,11 +1,6 @@
 ﻿using Pokemon3D.DataModel.GameMode;
 using Pokemon3D.Common.FileSystem;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Pokemon3D.DataModel;
 using Pokemon3D.Common.Diagnostics;
 

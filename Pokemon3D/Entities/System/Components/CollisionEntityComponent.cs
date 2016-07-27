@@ -38,7 +38,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public override void OnComponentRemove()
         {
-            throw new NotImplementedException("Needs to be handled properly.");
+            GameInstance.GetService<CollisionManager>().Remove(Collider);
         }
 
         public override void OnIsActiveChanged()

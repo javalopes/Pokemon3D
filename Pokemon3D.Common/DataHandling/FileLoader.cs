@@ -16,11 +16,13 @@ namespace Pokemon3D.Common.DataHandling
             _fileCache = new Dictionary<string, byte[]>();
         }
         
-        public DataLoadResult GetFile(string filePath)
+        public DataLoadResult GetFile(string filePath, bool forceReloadCached)
         {
             lock (_lockObject)
             {
                 byte[] existing;
+                if (forceReloadCached) _fileCache.Remove(filePath);
+
                 if (_fileCache.TryGetValue(filePath, out existing)) return DataLoadResult.Succeeded(existing);
 
                 try
@@ -44,7 +46,7 @@ namespace Pokemon3D.Common.DataHandling
                 var requestResults = new List<DataLoadResult>();
                 foreach (var filePath in filePaths)
                 {
-                    requestResults.Add(GetFile(filePath));
+                    requestResults.Add(GetFile(filePath, false));
                 }
                 return requestResults.ToArray();
             }
@@ -59,7 +61,7 @@ namespace Pokemon3D.Common.DataHandling
                 {
                     foreach (var filePath in Directory.GetFiles(folderPath))
                     {
-                        requestResults.Add(GetFile(filePath));
+                        requestResults.Add(GetFile(filePath, false));
                     }
                 }
                 return requestResults.ToArray();

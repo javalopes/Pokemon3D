@@ -33,7 +33,7 @@ namespace Pokemon3D.Entities.Pokemon
 
             if (!_pokemonModelCache.TryGetValue(pokemonId, out dataModel))
             {
-                var d = _gameMode.FileLoader.GetFile(_gameMode.GetPokemonFilePath(pokemonId));
+                var d = _gameMode.FileLoader.GetFile(_gameMode.GetPokemonFilePath(pokemonId), false);
                 dataModel = DataModel<PokemonModel>.FromByteArray(d.Data);
                 _pokemonModelCache.Add(pokemonId, dataModel);
                 return CreatePokemon(dataModel, level);
@@ -50,7 +50,7 @@ namespace Pokemon3D.Entities.Pokemon
 
             if (!_pokemonModelCache.TryGetValue(saveModel.Id, out dataModel))
             {
-                var d = _gameMode.FileLoader.GetFile(_gameMode.GetPokemonFilePath(saveModel.Id));
+                var d = _gameMode.FileLoader.GetFile(_gameMode.GetPokemonFilePath(saveModel.Id), false);
                 if (!_pokemonModelCache.ContainsKey(saveModel.Id))
                 {
                     dataModel = DataModel<PokemonModel>.FromByteArray(d.Data);

@@ -5,6 +5,9 @@ using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.Entities.System;
 using static Pokemon3D.GameCore.GameProvider;
+using System.IO;
+using Pokemon3D.Common.FileSystem;
+using Pokemon3D.GameCore;
 
 namespace Pokemon3D.Entities
 {
@@ -12,18 +15,29 @@ namespace Pokemon3D.Entities
     {
         private readonly World _world;
         private List<Entity> _allMapEntities;
+        private string _dataPath;
+        private string _id;
 
         public MapModel Model { get; private set; }
+        public bool IsActive { get; private set; }
 
-        public Map(World world, MapModel mapModel)
+        public Vector3 Offset { get; private set; }
+
+        public Map(World world, string id)
         {
             _world = world;
-            Model = mapModel;
+            _id = id;
             _allMapEntities = new List<Entity>();
+            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
+            _dataPath = gameMode.GetMapFilePath(_id);
         }
 
-        public void Load(Vector3 basicOffset)
+        public void Load(Vector3 basicOffset, bool forceResetCache = false)
         {
+            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
+            Model = gameMode.LoadMap(_id);
+
+            Offset = basicOffset;
             if (Model.Entities != null)
             {
                 foreach (var entityDefinition in Model.Entities)
@@ -64,22 +78,54 @@ namespace Pokemon3D.Entities
                     }
                 }
             }
+            IsActive = true;
+
+            if (GameInstance.GetService<GameConfiguration>().EnableFileHotSwapping)
+            {
+                FileObserver.Instance.StartFileObserve(_dataPath, MapChanged);
+            }
         }
 
         public void Deactivate()
         {
+            if (!IsActive) return;
             foreach(var entity in _allMapEntities)
             {
                 entity.IsActive = false;
             }
+
+            if (GameInstance.GetService<GameConfiguration>().EnableFileHotSwapping)
+            {
+                FileObserver.Instance.StopFileObserve(_dataPath, MapChanged);
+            }
+            IsActive = false;
         }
 
         public void Activate()
         {
+            if (IsActive) return;
             foreach (var entity in _allMapEntities)
             {
                 entity.IsActive = true;
             }
+            if (GameInstance.GetService<GameConfiguration>().EnableFileHotSwapping)
+            {
+                FileObserver.Instance.StartFileObserve(_dataPath, MapChanged);
+            }
+            IsActive = true;
+        }
+
+        private void MapChanged(global::System.Object sender, FileSystemEventArgs e)
+        {
+            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
+            var mapModel = gameMode.LoadMap(_id, true);
+            foreach (var entity in _allMapEntities)
+            {
+                _world.EntitySystem.RemoveEntity(entity);
+            }
+            _allMapEntities.Clear();
+            Load(Offset, true);
+            _world.EntitySystem.InitializeAllPendingEntities();
         }
 
         private Entity CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position)

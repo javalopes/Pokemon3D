@@ -16,8 +16,6 @@ namespace Pokemon3D.Screens.GameModeLoading
 {
     class GameModeLoadingScreen : Screen
     {
-        private bool _loadingFinished;
-
         private UiOverlay _overlay;
         private UiElement _pokeballSprite;
         private World _world;
@@ -93,7 +91,6 @@ namespace Pokemon3D.Screens.GameModeLoading
             var gameModes = gameModeManager.GetGameModeInfos();
             gameModeManager.ActiveGameMode = gameModeManager.CreateGameMode(gameModes.First(), GameInstance);
 
-            _loadingFinished = false;
             _world = new World();
             _world.StartNewGameAsync(() => _overlay.Hide());
         }
