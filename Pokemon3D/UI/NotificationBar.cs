@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Pokemon3D.Rendering.UI;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.UI
 {
     class NotificationBar : UiCompoundElement
     {
+        private readonly object _lockObject = new object();
         private readonly int _maxNotifications;
         private readonly float _notificationTime;
         private readonly List<NotificationItem> _notifications = new List<NotificationItem>();
@@ -21,19 +23,22 @@ namespace Pokemon3D.UI
 
         public void PushNotification(NotificationKind notificationKind, string message)
         {
-            var notificationItem = new NotificationItem(_notificationTime, notificationKind, message)
+            lock (_lockObject)
             {
-                Width = _barWidth
-            };
-            notificationItem.Show();
-            _notifications.Add(notificationItem);
-            AddChildElement(notificationItem);
-            if (_notifications.Count > _maxNotifications)
-            {
-                RemoveChild(_notifications.First());
-                _notifications.RemoveAt(0);
+                var notificationItem = new NotificationItem(_notificationTime, notificationKind, message)
+                {
+                    Width = _barWidth
+                };
+                notificationItem.Show();
+                _notifications.Add(notificationItem);
+                AddChildElement(notificationItem);
+                if (_notifications.Count > _maxNotifications)
+                {
+                    RemoveChild(_notifications.First());
+                    _notifications.RemoveAt(0);
+                }
+                UpdateIndices();
             }
-            UpdateIndices();
         }
 
         private void UpdateIndices()
@@ -47,19 +52,29 @@ namespace Pokemon3D.UI
 
         public override void Update(GameTime gameTime)
         {
-            _notifications.ForEach(n => n.Update(gameTime));
-
-            var elementsToRemove = _notifications.Where(n => n.State == UiState.Inactive).ToArray();
-            if (elementsToRemove.Length > 0)
+            lock (_lockObject)
             {
-                foreach (var element in elementsToRemove)
+                _notifications.ForEach(n => n.Update(gameTime));
+
+                var elementsToRemove = _notifications.Where(n => n.State == UiState.Inactive).ToArray();
+                if (elementsToRemove.Length > 0)
                 {
-                    _notifications.Remove(element);
-                    RemoveChild(element);
+                    foreach (var element in elementsToRemove)
+                    {
+                        _notifications.Remove(element);
+                        RemoveChild(element);
+                    }
+                    UpdateIndices();
                 }
-                UpdateIndices();
             }
-            
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            lock (_lockObject)
+            {
+                base.Draw(spriteBatch);
+            }
         }
 
         public override bool IsInteractable => false;

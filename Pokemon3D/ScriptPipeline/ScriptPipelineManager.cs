@@ -11,6 +11,7 @@ using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
 using Pokemon3D.ScriptPipeline.APIClasses;
 using static Pokemon3D.GameCore.GameProvider;
+using Pokemon3D.UI;
 
 namespace Pokemon3D.ScriptPipeline
 {
@@ -91,7 +92,6 @@ namespace Pokemon3D.ScriptPipeline
                     //todo: HÜLFE!
                     var gamemode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
                     string source = Encoding.UTF8.GetString(gamemode.FileLoader.GetFile(gamemode.GetScriptFilePath(scriptFile)).Data);
-                    //var source = "blubb";
 
                     var processor = CreateProcessor();
                     var result = processor.Run(source);
@@ -105,11 +105,15 @@ namespace Pokemon3D.ScriptPipeline
                 }
                 catch (ArgumentNullException)
                 {
-                    GameLogger.Instance.Log(MessageType.Error, "Failed to run script \"" + scriptFile + "\".");
+                    var message = "Failed to run script \"" + scriptFile + "\"";
+                    GameLogger.Instance.Log(MessageType.Error, message);
+                    GameInstance.GetService<NotificationBar>().PushNotification(NotificationKind.Error, message);
                 }
                 catch (ScriptRuntimeException ex)
                 {
-                    GameLogger.Instance.Log(MessageType.Error, $"Script execution failed at runtime. {ex.Type} ({scriptFile}, L{ex.Line}): {ex.Message}");
+                    var message = $"Script execution failed at runtime. {ex.Type} ({scriptFile}, L{ex.Line}): {ex.Message}";
+                    GameLogger.Instance.Log(MessageType.Error, message);
+                    GameInstance.GetService<NotificationBar>().PushNotification(NotificationKind.Error, message);
                 }
 
                 ActiveProcessorCount--;
