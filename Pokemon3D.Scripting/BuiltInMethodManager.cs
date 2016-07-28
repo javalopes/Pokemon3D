@@ -29,30 +29,31 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// Returns a list of methods with: Methodname, Method Attribute and Method Delegate.
         /// </summary>
-        internal static List<Tuple<string, BuiltInMethodAttribute, BuiltInMethod>> GetMethods(Type t)
+        internal static List<BuiltInMethodData> GetMethods(Type t)
         {
-            var list = new List<Tuple<string, BuiltInMethodAttribute, BuiltInMethod>>();
-            bool isPrototype = Prototype.IsPrototype(t);
+            var list = new List<BuiltInMethodData>();
+            var isPrototype = Prototype.IsPrototype(t);
 
             var methods = t.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
-            foreach (MethodInfo method in methods)
+            foreach (var method in methods)
             {
                 var attribute = method.GetCustomAttribute<BuiltInMethodAttribute>(false);
 
                 // Only proceed if the method has the correct attribute
                 if (attribute != null && (!attribute.IsStatic || isPrototype))
                 {
-                    string usedMethodName = method.Name;
+                    var usedMethodName = method.Name;
 
                     if (!string.IsNullOrEmpty(attribute.MethodName))
                         usedMethodName = attribute.MethodName;
 
-                    list.Add(new Tuple<string, BuiltInMethodAttribute, BuiltInMethod>(
-                        usedMethodName,
-                        attribute,
-                        (BuiltInMethod)Delegate.CreateDelegate(typeof(BuiltInMethod), method)
-                        ));
+                    list.Add(new BuiltInMethodData
+                    {
+                        Name = usedMethodName,
+                        Attribute = attribute,
+                        Delegate = (BuiltInMethod) Delegate.CreateDelegate(typeof(BuiltInMethod), method)
+                    });
                 }
             }
 
@@ -64,7 +65,7 @@ namespace Pokemon3D.Scripting
     /// An attribute added to methods to mark them as built in methods of <see cref="Prototype"/>s.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    class BuiltInMethodAttribute : Attribute
+    internal class BuiltInMethodAttribute : Attribute
     {
         /// <summary>
         /// If this is set, the value of this property will be used as identifier instead of the method name of the method of this attribute.

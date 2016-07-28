@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the "undefined" literal as object.
     /// </summary>
-    class SUndefined : SObject
+    internal class SUndefined : SObject
     {
         private SUndefined() { }
         

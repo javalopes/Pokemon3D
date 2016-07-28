@@ -8,7 +8,7 @@ namespace Pokemon3D.Scripting
     /// </summary>
     internal class LeftToRightStringEscapeHelper : StringEscapeHelper
     {
-        bool _isEscaped;
+        private bool _isEscaped;
 
         /// <summary>
         /// Creates a new instance of the <see cref="LeftToRightStringEscapeHelper"/> class, setting it to an index within the expression and ignoring every char in front of that index.
@@ -56,9 +56,9 @@ namespace Pokemon3D.Scripting
             }
         }
 
-        protected override void CheckNext()
+        protected sealed override void CheckNext()
         {
-            char t = _expression[_index];
+            var t = _expression[_index];
 
             if (_endOfString)
             {
@@ -153,7 +153,7 @@ namespace Pokemon3D.Scripting
 
         protected override void CheckNext()
         {
-            char t = _expression[_index];
+            var t = _expression[_index];
 
             if (_endOfString)
             {
@@ -165,8 +165,8 @@ namespace Pokemon3D.Scripting
             {
                 if (_isString && t == _startChar)
                 {
-                    int cIndex = _index - 1;
-                    bool isEscaped = false;
+                    var cIndex = _index - 1;
+                    var isEscaped = false;
 
                     while (cIndex >= 0 && _expression[cIndex] == '\\')
                     {
@@ -214,10 +214,7 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// Returns if the <see cref="StringEscapeHelper"/> is currently positioned within a string.
         /// </summary>
-        internal bool IsString
-        {
-            get { return _isString; }
-        }
+        internal bool IsString => _isString;
 
         /// <summary>
         /// Jumps to the given index, ignoring all chars in between the current index and the new one.
@@ -255,16 +252,16 @@ namespace Pokemon3D.Scripting
                 }
                 else
                 {
-                    int index = 0;
-                    bool escaped = false;
-                    bool isString = false;
-                    char startChar = STRING_DELIMITER_SINGLE;
+                    var index = 0;
+                    var escaped = false;
+                    var isString = false;
+                    var startChar = STRING_DELIMITER_SINGLE;
 
-                    StringBuilder sb = new StringBuilder();
+                    var sb = new StringBuilder();
 
                     while (index < expression.Length)
                     {
-                        char t = expression[index];
+                        var t = expression[index];
 
                         if (t == STRING_DELIMITER_SINGLE || t == STRING_DELIMITER_DOUBLE)
                         {

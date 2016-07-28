@@ -1,6 +1,6 @@
 ﻿namespace Pokemon3D.Scripting.Types
 {
-    class SString : SProtoObject
+    internal class SString : SProtoObject
     {
         internal const string STRING_LENGTH_PROPERTY_NAME = "length";
 
@@ -11,11 +11,11 @@
         {
             if (val.Contains("\\"))
             {
-                int searchOffset = 0;
+                var searchOffset = 0;
 
                 while (val.IndexOf("\\", searchOffset) > -1)
                 {
-                    int cIndex = val.IndexOf("\\");
+                    var cIndex = val.IndexOf("\\");
 
                     if (cIndex < val.Length - 1) //When the \ is not the last character:
                     {
@@ -78,11 +78,11 @@
 
             if (val.Contains("{") && val.Contains("}"))
             {
-                int searchOffset = 0;
+                var searchOffset = 0;
 
                 while (val.IndexOf("{", searchOffset) > -1 && val.IndexOf("}", searchOffset) > -1)
                 {
-                    int startIndex = val.IndexOf("{", searchOffset);
+                    var startIndex = val.IndexOf("{", searchOffset);
 
                     if (startIndex < val.Length - 2)
                     {
@@ -91,12 +91,12 @@
                             val = val.Remove(startIndex + 1) + val.Remove(0, startIndex + 2);
 
                             // find closing bracket and remove it:
-                            int level = 1;
-                            int i = startIndex + 1;
-                            bool foundClosing = false;
+                            var level = 1;
+                            var i = startIndex + 1;
+                            var foundClosing = false;
                             while (!foundClosing && i < val.Length)
                             {
-                                char token = val[i];
+                                var token = val[i];
 
                                 switch (token)
                                 {
@@ -120,10 +120,10 @@
                         }
                         else
                         {
-                            int endIndex = val.IndexOf("}", startIndex);
+                            var endIndex = val.IndexOf("}", startIndex);
                             if (endIndex > -1)
                             {
-                                string interpolationSequence = val.Substring(startIndex, endIndex - startIndex + 1);
+                                var interpolationSequence = val.Substring(startIndex, endIndex - startIndex + 1);
                                 interpolationSequence = processor.ExecuteStatement(new ScriptStatement(interpolationSequence.Remove(interpolationSequence.Length - 1, 1).Remove(0, 1))).ToString(processor).Value;
 
                                 val = val.Remove(startIndex) + interpolationSequence + val.Remove(0, endIndex + 1);
@@ -211,7 +211,7 @@
             }
             else
             {
-                double dblResult = 0;
+                var dblResult = 0D;
                 if (double.TryParse(Value, out dblResult))
                 {
                     return processor.CreateNumber(dblResult);

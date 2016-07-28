@@ -38,17 +38,10 @@ namespace Pokemon3D.Scripting
         /// </summary>
         internal int GetLineNumber()
         {
-            int lineNumber = -1;
+            var lineNumber = -1;
             if (_statements != null)
             {
-                if (_index >= _statements.Length)
-                {
-                    lineNumber = _statements.Last().LineNumber;
-                }
-                else
-                {
-                    lineNumber = _statements[_index].LineNumber;
-                }
+                lineNumber = _index >= _statements.Length ? _statements.Last().LineNumber : _statements[_index].LineNumber;
             }
             if (_hasParent)
             {
@@ -63,8 +56,8 @@ namespace Pokemon3D.Scripting
         private ScriptStatement[] _statements;
         private int _index;
         private string _source;
-        private bool _hasParent = false;
-        private int _parentLineNumber = 0;
+        private readonly bool _hasParent = false;
+        private readonly int _parentLineNumber = 0;
 
         private bool _returnIssued = false;
         private bool _continueIssued = false;
@@ -119,7 +112,7 @@ namespace Pokemon3D.Scripting
         {
             _source = code;
 
-            SObject returnObject = Undefined;
+            SObject returnObject;
             ErrorHandler.Clean();
 
             if (_hasParent || DEBUG_CRASH_MODE)
@@ -163,18 +156,12 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// The undefined object.
         /// </summary>
-        internal SObject Undefined
-        {
-            get { return Context.GetVariable(SObject.LITERAL_UNDEFINED).Data; }
-        }
+        internal SObject Undefined => Context.GetVariable(SObject.LITERAL_UNDEFINED).Data;
 
         /// <summary>
         /// The null "object".
         /// </summary>
-        internal SObject Null
-        {
-            get { return Context.GetVariable(SObject.LITERAL_NULL).Data; }
-        }
+        internal SObject Null => Context.GetVariable(SObject.LITERAL_NULL).Data;
 
         /// <summary>
         /// Creates an instance of the string primitive.
@@ -212,7 +199,7 @@ namespace Pokemon3D.Scripting
 
         private SObject ProcessStatements()
         {
-            SObject returnObject = Undefined;
+            var returnObject = Undefined;
 
             _statements = StatementProcessor.GetStatements(this, _source);
 
@@ -242,22 +229,20 @@ namespace Pokemon3D.Scripting
             // The reverse bool operator ("!") gets evaluated from right to left, instead of left to right.
             // So the list of operators gets reversed.
 
-            string op = "!";
+            const string op = "!";
 
-            int[] ops = GetOperatorPositions(exp, op).Reverse().ToArray();
+            var ops = GetOperatorPositions(exp, op).Reverse().ToArray();
 
-            for (int i = 0; i < ops.Length; i++)
+            foreach (var cOp in ops)
             {
-                var cOp = ops[i];
-
-                ElementCapture captureRight = CaptureRight(exp, cOp + op.Length);
-                string elementRight = captureRight.Identifier.Trim();
+                var captureRight = CaptureRight(exp, cOp + op.Length);
+                var elementRight = captureRight.Identifier.Trim();
 
                 if (!string.IsNullOrWhiteSpace(elementRight))
                 {
-                    SObject objRight = ToScriptObject(elementRight);
+                    var objRight = ToScriptObject(elementRight);
 
-                    string result = ObjectOperators.NotOperator(this, objRight);
+                    var result = ObjectOperators.NotOperator(this, objRight);
 
                     exp = exp.Remove(cOp, elementRight.Length + op.Length);
                     exp = exp.Insert(cOp, result);
@@ -269,30 +254,25 @@ namespace Pokemon3D.Scripting
 
         private string EvaluateOperator(string exp, string op)
         {
-            int[] ops = GetOperatorPositions(exp, op);
+            var ops = GetOperatorPositions(exp, op);
 
-            for (int i = 0; i < ops.Length; i++)
+            for (var i = 0; i < ops.Length; i++)
             {
                 var cOp = ops[i];
 
-                bool needRight = true;
+                var needRight = !(op == "++" || op == "--");
 
-                if (op == "++" || op == "--")
-                {
-                    needRight = false;
-                }
-
-                ElementCapture captureLeft = CaptureLeft(exp, cOp - 1);
-                string elementLeft = captureLeft.Identifier.Trim();
+                var captureLeft = CaptureLeft(exp, cOp - 1);
+                var elementLeft = captureLeft.Identifier.Trim();
 
                 if (!(op == "-" && elementLeft.Length == 0))
                 {
-                    string result = "";
+                    var result = "";
 
                     if (string.IsNullOrWhiteSpace(elementLeft))
                         ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, op);
 
-                    SObject objectLeft = ToScriptObject(elementLeft);
+                    var objectLeft = ToScriptObject(elementLeft);
 
                     ElementCapture captureRight;
                     string elementRight;
@@ -382,7 +362,7 @@ namespace Pokemon3D.Scripting
                         exp = exp.Insert(captureLeft.StartIndex, result);
 
                         var offset = result.Length - (op.Length + captureLeft.Length + captureRight.Length);
-                        for (int j = i + 1; j < ops.Length; j++)
+                        for (var j = i + 1; j < ops.Length; j++)
                         {
                             ops[j] += offset;
                         }
@@ -420,15 +400,15 @@ namespace Pokemon3D.Scripting
                     // It is possible that we are having a simple array declaration here.
                     // We check that by looking if we can find a "[" before the expression ends:
 
-                    int depth = 0;
-                    int index = exp.Length - 2;
-                    int indexerStartIndex = 0;
-                    bool foundIndexer = false;
+                    var depth = 0;
+                    var index = exp.Length - 2;
+                    var indexerStartIndex = 0;
+                    var foundIndexer = false;
                     StringEscapeHelper escaper = new RightToLeftStringEscapeHelper(exp, index);
 
                     while (index > 0 && !foundIndexer)
                     {
-                        char t = exp[index];
+                        var t = exp[index];
                         escaper.CheckStartAt(index);
 
                         if (!escaper.IsString)
@@ -463,11 +443,11 @@ namespace Pokemon3D.Scripting
 
                     if (foundIndexer)
                     {
-                        string indexerCode = exp.Substring(indexerStartIndex + 1, exp.Length - indexerStartIndex - 2);
+                        var indexerCode = exp.Substring(indexerStartIndex + 1, exp.Length - indexerStartIndex - 2);
 
-                        string identifier = exp.Remove(indexerStartIndex);
+                        var identifier = exp.Remove(indexerStartIndex);
 
-                        SObject statementResult = ExecuteStatement(new ScriptStatement(indexerCode));
+                        var statementResult = ExecuteStatement(new ScriptStatement(indexerCode));
                         return ToScriptObject(identifier).GetMember(this, statementResult, true);
                     }
                 }
@@ -476,7 +456,7 @@ namespace Pokemon3D.Scripting
             // Normal object return procedure:
 
             // Negative number:
-            bool isNegative = false;
+            var isNegative = false;
             if (exp.StartsWith("-"))
             {
                 exp = exp.Remove(0, 1);
@@ -560,8 +540,8 @@ namespace Pokemon3D.Scripting
             }
             else if (exp.StartsWith(ObjectBuffer.OBJ_PREFIX))
             {
-                string strId = exp.Remove(0, ObjectBuffer.OBJ_PREFIX.Length);
-                int id = 0;
+                var strId = exp.Remove(0, ObjectBuffer.OBJ_PREFIX.Length);
+                var id = 0;
 
                 if (int.TryParse(strId, out id) && ObjectBuffer.HasObject(id))
                 {
@@ -583,7 +563,7 @@ namespace Pokemon3D.Scripting
             return returnObject;
         }
 
-        private bool IsDotOperatorDecimalSeparator(string elementLeft, string elementRight)
+        private static bool IsDotOperatorDecimalSeparator(string elementLeft, string elementRight)
         {
             return Regex.IsMatch(elementLeft.Trim(), REGEX_NUMLEFTDOT) &&
                    Regex.IsMatch(elementRight.Trim(), REGEX_NUMRIGHTDOT);
@@ -592,17 +572,17 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// Returns positions of the given operator in the expression, sorted from left to right.
         /// </summary>
-        private int[] GetOperatorPositions(string exp, string op)
+        private static int[] GetOperatorPositions(string exp, string op)
         {
-            List<int> operators = new List<int>();
+            var operators = new List<int>();
 
             StringEscapeHelper escaper = new LeftToRightStringEscapeHelper(exp, 0);
-            int depth = 0;
-            int index = 0;
+            var depth = 0;
+            var index = 0;
 
             while (index < exp.Length)
             {
-                char t = exp[index];
+                var t = exp[index];
                 escaper.CheckStartAt(index);
 
                 if (!escaper.IsString)
@@ -620,8 +600,8 @@ namespace Pokemon3D.Scripting
                     {
                         if (op.Length > 1 && index + op.Length - 1 < exp.Length)
                         {
-                            bool correctOperator = true;
-                            for (int i = 1; i < op.Length; i++)
+                            var correctOperator = true;
+                            for (var i = 1; i < op.Length; i++)
                             {
                                 if (exp[index + i] != op[i])
                                     correctOperator = false;
@@ -649,15 +629,15 @@ namespace Pokemon3D.Scripting
         {
             if (exp.Contains("(") && exp.Contains(")"))
             {
-                int index = 0;
-                int depth = 0;
-                int parenthesesStartIndex = -1;
-                StringBuilder newExpression = new StringBuilder();
-                StringEscapeHelper escaper = new LeftToRightStringEscapeHelper(exp, 0);
+                var index = 0;
+                var depth = 0;
+                var parenthesesStartIndex = -1;
+                var newExpression = new StringBuilder();
+                var escaper = new LeftToRightStringEscapeHelper(exp, 0);
 
                 while (index < exp.Length)
                 {
-                    char t = exp[index];
+                    var t = exp[index];
                     escaper.CheckStartAt(index);
 
                     if (!escaper.IsString)
@@ -678,8 +658,8 @@ namespace Pokemon3D.Scripting
                         {
                             if (depth == 0 && parenthesesStartIndex == -1)
                             {
-                                ElementCapture capture = CaptureLeft(newExpression.ToString(), newExpression.Length - 1);
-                                string identifier = capture.Identifier;
+                                var capture = CaptureLeft(newExpression.ToString(), newExpression.Length - 1);
+                                var identifier = capture.Identifier;
                                 if (capture.Depth == 0 || identifier == "")
                                 {
                                     if (identifier.Length == 0)
@@ -688,9 +668,9 @@ namespace Pokemon3D.Scripting
                                     }
                                     else
                                     {
-                                        string testExp = newExpression.ToString().Remove(capture.StartIndex).Trim();
+                                        var testExp = newExpression.ToString().Remove(capture.StartIndex).Trim();
 
-                                        if (testExp.Length > 0 && testExp.Last() == '.' || StatementProcessor.controlStatements.Contains(identifier) || identifier.StartsWith("new "))
+                                        if (testExp.Length > 0 && testExp.Last() == '.' || StatementProcessor.ControlStatements.Contains(identifier) || identifier.StartsWith("new "))
                                         {
                                             newExpression.Append(t);
                                         }
@@ -718,7 +698,7 @@ namespace Pokemon3D.Scripting
                         {
                             if (depth == 0 && parenthesesStartIndex > -1)
                             {
-                                string parenthesesCode = exp.Substring(parenthesesStartIndex + 1, index - parenthesesStartIndex - 1);
+                                var parenthesesCode = exp.Substring(parenthesesStartIndex + 1, index - parenthesesStartIndex - 1);
 
                                 if (parenthesesCode.Length > 0)
                                 {
@@ -737,7 +717,7 @@ namespace Pokemon3D.Scripting
                                     // check for lambda statement
                                     // if this turns out to be a lambda statement, then the whole expression is this lambda statement.
                                     // therefore, discard everything and just add the converted function code taken from the lambda statement.
-                                    string nonParenthesesCode = exp.Substring(index + 1).Trim();
+                                    var nonParenthesesCode = exp.Substring(index + 1).Trim();
                                     if (nonParenthesesCode.StartsWith("=>"))
                                     {
                                         return BuildLambdaFunction(exp);
@@ -777,25 +757,25 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// Builds a function() {} from a lambda statement.
         /// </summary>
-        private string BuildLambdaFunction(string lambdaCode)
+        private static string BuildLambdaFunction(string lambdaCode)
         {
-            string signatureCode = lambdaCode.Remove(lambdaCode.IndexOf("=>")).Trim();
-            StringBuilder signatureBuilder = new StringBuilder();
+            var signatureCode = lambdaCode.Remove(lambdaCode.IndexOf("=>")).Trim();
+            var signatureBuilder = new StringBuilder();
 
             if (signatureCode != "()")
             {
-                string[] signature = signatureCode.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var signature = signatureCode.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                for (int i = 0; i < signature.Length; i++)
+                foreach (var t in signature)
                 {
                     if (signatureBuilder.Length > 0)
                         signatureBuilder.Append(',');
 
-                    signatureBuilder.Append(signature[i]);
+                    signatureBuilder.Append(t);
                 }
             }
 
-            string code = lambdaCode.Remove(0, lambdaCode.IndexOf("=>") + 2).Trim();
+            var code = lambdaCode.Remove(0, lambdaCode.IndexOf("=>") + 2).Trim();
 
             // code without a code block ({ ... }) are a single statement that is implied to follow a "return" statement.
             // e.g. (a) => a + 1 -> function(a) { return a + 1; }
@@ -805,30 +785,30 @@ namespace Pokemon3D.Scripting
 
             if (code.StartsWith("{") && code.EndsWith("}"))
             {
-                return string.Format("function({0}){1}", signatureBuilder.ToString(), code);
+                return $"function({signatureBuilder.ToString()}){code}";
             }
             else
             {
-                return string.Format("function({0}){{return {1};}}", signatureBuilder.ToString(), code);
+                return $"function({signatureBuilder.ToString()}){{return {code};}}";
             }
         }
 
         /// <summary>
         /// Captures an element right from the starting index.
         /// </summary>
-        private ElementCapture CaptureRight(string exp, int index)
+        private static ElementCapture CaptureRight(string exp, int index)
         {
             if (string.IsNullOrWhiteSpace(exp))
                 return new ElementCapture() { Length = 0, StartIndex = 0, Identifier = "", Depth = 0 };
 
-            string identifier = "";
-            bool foundSeparatorChar = false;
-            int depth = 0;
+            var identifier = "";
+            var foundSeparatorChar = false;
+            var depth = 0;
             StringEscapeHelper escaper = new LeftToRightStringEscapeHelper(exp, index);
 
             while (index < exp.Length && !foundSeparatorChar)
             {
-                char t = exp[index];
+                var t = exp[index];
                 escaper.CheckStartAt(index);
 
                 if (!escaper.IsString)
@@ -883,19 +863,19 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// Captures an element left from the starting index.
         /// </summary>
-        private ElementCapture CaptureLeft(string exp, int index)
+        private static ElementCapture CaptureLeft(string exp, int index)
         {
             if (string.IsNullOrWhiteSpace(exp))
                 return new ElementCapture() { Length = 0, StartIndex = 0, Identifier = "", Depth = 0 };
 
-            string identifier = "";
-            bool foundSeparatorChar = false;
-            int depth = 0;
+            var identifier = "";
+            var foundSeparatorChar = false;
+            var depth = 0;
             StringEscapeHelper escaper = new RightToLeftStringEscapeHelper(exp, index);
 
             while (index >= 0 && !foundSeparatorChar)
             {
-                char t = exp[index];
+                var t = exp[index];
                 escaper.CheckStartAt(index);
 
                 if (!escaper.IsString)
@@ -965,18 +945,18 @@ namespace Pokemon3D.Scripting
             if (string.IsNullOrWhiteSpace(exp))
                 return new SObject[] { };
 
-            List<SObject> parameters = new List<SObject>();
+            var parameters = new List<SObject>();
 
-            int index = 0;
-            int depth = 0;
+            var index = 0;
+            var depth = 0;
             string parameter;
             SObject parameterObject;
-            int parameterStartIndex = 0;
-            StringEscapeHelper escaper = new LeftToRightStringEscapeHelper(exp, 0);
+            var parameterStartIndex = 0;
+            var escaper = new LeftToRightStringEscapeHelper(exp, 0);
 
             while (index < exp.Length)
             {
-                char t = exp[index];
+                var t = exp[index];
                 escaper.CheckStartAt(index);
 
                 if (!escaper.IsString)
@@ -1023,12 +1003,9 @@ namespace Pokemon3D.Scripting
             owner = SObject.Unbox(owner);
             memberOrMethod = memberOrMethod.Trim();
 
-            bool isMethod = memberOrMethod.EndsWith(")");
+            var isMethod = memberOrMethod.EndsWith(")");
 
-            if (isMethod)
-                return InvokeMethod(owner, memberOrMethod);
-            else
-                return InvokeMember(owner, memberOrMethod);
+            return isMethod ? InvokeMethod(owner, memberOrMethod) : InvokeMember(owner, memberOrMethod);
         }
 
         private SObject InvokeMember(SObject owner, string memberName)
@@ -1037,17 +1014,17 @@ namespace Pokemon3D.Scripting
 
             if (memberName.Last() == ']')
             {
-                string exp = memberName;
+                var exp = memberName;
 
-                int depth = 0;
-                int index = exp.Length - 2;
-                int indexerStartIndex = 0;
-                bool foundIndexer = false;
-                StringEscapeHelper escaper = new RightToLeftStringEscapeHelper(exp, index);
+                var depth = 0;
+                var index = exp.Length - 2;
+                var indexerStartIndex = 0;
+                var foundIndexer = false;
+                var escaper = new RightToLeftStringEscapeHelper(exp, index);
 
                 while (index > 0 && !foundIndexer)
                 {
-                    char t = exp[index];
+                    var t = exp[index];
                     escaper.CheckStartAt(index);
 
                     if (!escaper.IsString)
@@ -1080,8 +1057,8 @@ namespace Pokemon3D.Scripting
 
                 if (foundIndexer)
                 {
-                    string indexerCode = exp.Substring(indexerStartIndex + 1, exp.Length - indexerStartIndex - 2);
-                    string identifier = exp.Remove(indexerStartIndex);
+                    var indexerCode = exp.Substring(indexerStartIndex + 1, exp.Length - indexerStartIndex - 2);
+                    var identifier = exp.Remove(indexerStartIndex);
 
                     var indexerObject = ExecuteStatement(new ScriptStatement(indexerCode));
 
@@ -1100,10 +1077,10 @@ namespace Pokemon3D.Scripting
 
         private SObject InvokeMethod(SObject owner, string methodName)
         {
-            string exp = methodName;
-            int index = exp.Length - 1;
-            int argumentStartIndex = -1;
-            SObject This = owner;
+            var exp = methodName;
+            var index = exp.Length - 1;
+            var argumentStartIndex = -1;
+            var This = owner;
 
             if (exp.EndsWith("()"))
             {
@@ -1112,13 +1089,13 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                int depth = 0;
-                bool foundArguments = false;
+                var depth = 0;
+                var foundArguments = false;
                 StringEscapeHelper escaper = new RightToLeftStringEscapeHelper(exp, index);
 
                 while (index > 0 && !foundArguments)
                 {
-                    char t = exp[index];
+                    var t = exp[index];
                     escaper.CheckStartAt(index);
 
                     if (!escaper.IsString)
@@ -1148,9 +1125,9 @@ namespace Pokemon3D.Scripting
             }
 
             methodName = exp.Remove(argumentStartIndex);
-            string argumentCode = exp.Remove(0, argumentStartIndex + 1);
+            var argumentCode = exp.Remove(0, argumentStartIndex + 1);
             argumentCode = argumentCode.Remove(argumentCode.Length - 1, 1).Trim();
-            SObject[] parameters = ParseParameters(argumentCode);
+            var parameters = ParseParameters(argumentCode);
 
             if (methodName == CALL_LITERAL && owner is SFunction)
             {
@@ -1160,9 +1137,9 @@ namespace Pokemon3D.Scripting
             // If it has an indexer, parse it again:
             if (index > 0 && exp[index] == ']')
             {
-                SObject member = InvokeMemberOrMethod(owner, methodName);
+                var member = InvokeMemberOrMethod(owner, methodName);
 
-                if (member is SVariable && ((SVariable)member).Data is SFunction)
+                if ((member as SVariable)?.Data is SFunction)
                 {
                     return owner.ExecuteMethod(this, ((SVariable)member).Identifier, owner, This, parameters);
                 }

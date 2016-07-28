@@ -6,7 +6,7 @@
     internal class GlobalContextObject : SObject
     {
         // The context this object was created for.
-        private ScriptContext _context;
+        private readonly ScriptContext _context;
 
         public GlobalContextObject(ScriptContext context)
         {
@@ -60,8 +60,8 @@
 
             if (_context.IsVariable(methodName))
             {
-                SVariable methodVariable = _context.GetVariable(methodName);
-                SObject method = methodVariable.Data;
+                var methodVariable = _context.GetVariable(methodName);
+                var method = methodVariable.Data;
 
                 if (method is SFunction)
                 {

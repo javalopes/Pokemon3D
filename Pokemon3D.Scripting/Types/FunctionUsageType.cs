@@ -3,7 +3,7 @@
     /// <summary>
     /// Different usage types for a function.
     /// </summary>
-    enum FunctionUsageType
+    internal enum FunctionUsageType
     {
         Default,
         PropertyGetter,

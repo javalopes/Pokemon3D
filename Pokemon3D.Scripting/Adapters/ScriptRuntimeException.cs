@@ -18,18 +18,12 @@ namespace Pokemon3D.Scripting.Adapters
         /// <summary>
         /// The type of error that occurred.
         /// </summary>
-        public string Type
-        {
-            get { return GetStringMember(ErrorObject, ErrorPrototype.MEMBER_NAME_TYPE); }
-        }
+        public string Type => GetStringMember(ErrorObject, ErrorPrototype.MEMBER_NAME_TYPE);
 
         /// <summary>
         /// The line in the source of the script the error occurred on.
         /// </summary>
-        public int Line
-        {
-            get { return (int)GetNumberMember(ErrorObject, ErrorPrototype.MEMBER_NAME_LINE); }
-        }
+        public int Line => (int)GetNumberMember(ErrorObject, ErrorPrototype.MEMBER_NAME_LINE);
 
         internal ScriptRuntimeException(SError errorObject)
             : base(GetStringMember(errorObject, ErrorPrototype.MEMBER_NAME_MESSAGE))

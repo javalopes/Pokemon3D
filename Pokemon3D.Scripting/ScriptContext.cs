@@ -20,22 +20,19 @@ namespace Pokemon3D.Scripting
         /// </summary>
         internal SObject This { get; set; }
 
-        private Dictionary<CallbackType, Delegate> _apiCallbacks = new Dictionary<CallbackType, Delegate>();
+        private readonly Dictionary<CallbackType, Delegate> _apiCallbacks = new Dictionary<CallbackType, Delegate>();
 
-        private Dictionary<string, SAPIUsing> _apiUsings = new Dictionary<string, SAPIUsing>();
-        private Dictionary<string, SVariable> _variables = new Dictionary<string, SVariable>();
-        private Dictionary<string, Prototype> _prototypes = new Dictionary<string, Prototype>();
-        private ScriptProcessor _processor;
+        private readonly Dictionary<string, SAPIUsing> _apiUsings = new Dictionary<string, SAPIUsing>();
+        private readonly Dictionary<string, SVariable> _variables = new Dictionary<string, SVariable>();
+        private readonly Dictionary<string, Prototype> _prototypes = new Dictionary<string, Prototype>();
+        private readonly ScriptProcessor _processor;
 
         internal ScriptContext(ScriptProcessor processor, ScriptContext parent)
         {
             _processor = processor;
             Parent = parent;
 
-            if (parent != null)
-                This = parent.This;
-            else
-                This = new GlobalContextObject(this);
+            This = parent != null ? parent.This : new GlobalContextObject(this);
         }
 
         internal void Initialize()
@@ -53,7 +50,7 @@ namespace Pokemon3D.Scripting
                 AddPrototype(new ErrorPrototype(_processor));
 
                 GlobalFunctions.GetFunctions()
-                    .ForEach(x => AddVariable(x));
+                    .ForEach(AddVariable);
             }
         }
 
@@ -75,14 +72,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                if (Parent != null)
-                {
-                    return Parent.HasCallback(callbackType);
-                }
-                else
-                {
-                    return false;
-                }
+                return Parent != null && Parent.HasCallback(callbackType);
             }
         }
 
@@ -94,14 +84,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                if (Parent != null)
-                {
-                    return Parent.GetCallback(callbackType);
-                }
-                else
-                {
-                    return null;
-                }
+                return Parent?.GetCallback(callbackType);
             }
         }
 
@@ -116,12 +99,8 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                if (Parent != null)
-                {
-                    return Parent.IsVariable(identifier);
-                }
+                return Parent != null && Parent.IsVariable(identifier);
             }
-            return false;
         }
 
         internal SVariable GetVariable(string identifier)
@@ -132,14 +111,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                if (Parent != null)
-                {
-                    return Parent.GetVariable(identifier);
-                }
-                else
-                {
-                    return null;
-                }
+                return Parent?.GetVariable(identifier);
             }
         }
 
@@ -198,14 +170,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                if (Parent != null)
-                {
-                    return Parent.GetAPIUsing(identifier);
-                }
-                else
-                {
-                    return null;
-                }
+                return Parent?.GetAPIUsing(identifier);
             }
         }
 
@@ -239,14 +204,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                if (Parent != null)
-                {
-                    return Parent.GetPrototype(identifier);
-                }
-                else
-                {
-                    return null;
-                }
+                return Parent?.GetPrototype(identifier);
             }
         }
 
@@ -284,16 +242,16 @@ namespace Pokemon3D.Scripting
         {
             exp = exp.Remove(0, "new ".Length).Trim();
 
-            string prototypeName = exp.Remove(exp.IndexOf("("));
-            Prototype prototype = GetPrototype(prototypeName);
+            var prototypeName = exp.Remove(exp.IndexOf("("));
+            var prototype = GetPrototype(prototypeName);
 
             if (prototype == null)
                 _processor.ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MESSAGE_REFERENCE_NOT_DEFINED, prototypeName);
 
-            string argCode = exp.Remove(0, exp.IndexOf("(") + 1);
+            var argCode = exp.Remove(0, exp.IndexOf("(") + 1);
             argCode = argCode.Remove(argCode.Length - 1, 1);
 
-            SObject[] parameters = _processor.ParseParameters(argCode);
+            var parameters = _processor.ParseParameters(argCode);
 
             return CreateInstance(prototypeName, parameters);
         }

@@ -23,24 +23,24 @@
             // Both are numbers:
             else if (left.TypeOf() == SObject.LITERAL_TYPE_NUMBER)
             {
-                double numLeft = ((SNumber)left).Value;
-                double numRight = ((SNumber)right).Value;
+                var numLeft = ((SNumber)left).Value;
+                var numRight = ((SNumber)right).Value;
 
                 return numLeft == numRight;
             }
             // Both are string:
             else if (left.TypeOf() == SObject.LITERAL_TYPE_STRING)
             {
-                string strLeft = ((SString)left).Value;
-                string strRight = ((SString)right).Value;
+                var strLeft = ((SString)left).Value;
+                var strRight = ((SString)right).Value;
 
                 return strLeft == strRight;
             }
             // Both are bool:
             else if (left.TypeOf() == SObject.LITERAL_TYPE_BOOL)
             {
-                bool boolLeft = ((SBool)left).Value;
-                bool boolRight = ((SBool)right).Value;
+                var boolLeft = ((SBool)left).Value;
+                var boolRight = ((SBool)right).Value;
 
                 return boolLeft == boolRight;
             }
@@ -70,24 +70,24 @@
                 // Both are numbers:
                 else if (left.TypeOf() == SObject.LITERAL_TYPE_NUMBER)
                 {
-                    double numLeft = ((SNumber)left).Value;
-                    double numRight = ((SNumber)right).Value;
+                    var numLeft = ((SNumber)left).Value;
+                    var numRight = ((SNumber)right).Value;
 
                     return numLeft == numRight;
                 }
                 // Both are string:
                 else if (left.TypeOf() == SObject.LITERAL_TYPE_STRING)
                 {
-                    string strLeft = ((SString)left).Value;
-                    string strRight = ((SString)right).Value;
+                    var strLeft = ((SString)left).Value;
+                    var strRight = ((SString)right).Value;
 
                     return strLeft == strRight;
                 }
                 // Both are bool:
                 else if (left.TypeOf() == SObject.LITERAL_TYPE_BOOL)
                 {
-                    bool boolLeft = ((SBool)left).Value;
-                    bool boolRight = ((SBool)right).Value;
+                    var boolLeft = ((SBool)left).Value;
+                    var boolRight = ((SBool)right).Value;
 
                     return boolLeft == boolRight;
                 }
@@ -105,15 +105,15 @@
             // When one is a number and another is a string, convert the string to a number and compare:
             else if (left.TypeOf() == SObject.LITERAL_TYPE_STRING && right.TypeOf() == SObject.LITERAL_TYPE_NUMBER)
             {
-                double numLeft = left.ToNumber(processor).Value;
-                double numRight = ((SNumber)right).Value;
+                var numLeft = left.ToNumber(processor).Value;
+                var numRight = ((SNumber)right).Value;
 
                 return numLeft == numRight;
             }
             else if (left.TypeOf() == SObject.LITERAL_TYPE_NUMBER && right.TypeOf() == SObject.LITERAL_TYPE_STRING)
             {
-                double numRight = right.ToNumber(processor).Value;
-                double numLeft = ((SNumber)left).Value;
+                var numRight = right.ToNumber(processor).Value;
+                var numLeft = ((SNumber)left).Value;
 
                 return numLeft == numRight;
             }

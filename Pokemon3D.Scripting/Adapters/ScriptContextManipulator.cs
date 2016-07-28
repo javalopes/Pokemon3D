@@ -1,5 +1,6 @@
 ﻿using Pokemon3D.Scripting.Types;
 using System;
+using Pokemon3D.Scripting.Types.Prototypes;
 
 namespace Pokemon3D.Scripting.Adapters
 {
@@ -27,6 +28,7 @@ namespace Pokemon3D.Scripting.Adapters
         /// <summary>
         /// Creates a <see cref="Prototype"/> from a .net <see cref="Type"/> and adds it to the context.
         /// </summary>
+        /// <param name="processor">Reference to a processor instance.</param>
         /// <param name="t">The type from which to create the prototype. The name of the type will be used for the Prototype's name.</param>
         public static void AddPrototype(ScriptProcessor processor, Type t)
         {

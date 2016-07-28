@@ -22,17 +22,17 @@ namespace Pokemon3D.Scripting.Types
 
             exp = exp.Remove(exp.Length - 1, 1).Remove(0, 1).Trim(); // Remove [ and ].
 
-            List<SObject> elements = new List<SObject>();
+            var elements = new List<SObject>();
 
-            int elementStart = 0;
-            int index = 0;
-            int depth = 0;
+            var elementStart = 0;
+            var index = 0;
+            var depth = 0;
             StringEscapeHelper escaper = new LeftToRightStringEscapeHelper(exp, 0);
             string element;
 
             while (index < exp.Length)
             {
-                char t = exp[index];
+                var t = exp[index];
                 escaper.CheckStartAt(index);
 
                 if (!escaper.IsString)
@@ -73,7 +73,7 @@ namespace Pokemon3D.Scripting.Types
         
         internal override string ToScriptSource()
         {
-            StringBuilder source = new StringBuilder();
+            var source = new StringBuilder();
 
             foreach (var arrItem in ArrayMembers)
             {

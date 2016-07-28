@@ -1,6 +1,6 @@
 ﻿namespace Pokemon3D.Scripting.Types
 {
-    class SError : SProtoObject
+    internal class SError : SProtoObject
     {
         internal override string TypeOf()
         {

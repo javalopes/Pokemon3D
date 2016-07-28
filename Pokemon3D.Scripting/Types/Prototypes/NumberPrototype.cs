@@ -1,6 +1,6 @@
 ﻿namespace Pokemon3D.Scripting.Types.Prototypes
 {
-    class NumberPrototype : Prototype
+    internal class NumberPrototype : Prototype
     {
         public NumberPrototype() : base("Number")
         {
@@ -14,7 +14,7 @@
 
         private static SObject constructor(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            SNumber obj = (SNumber)instance;
+            var obj = (SNumber)instance;
 
             if (parameters[0] is SNumber)
                 obj.Value = ((SNumber)parameters[0]).Value;

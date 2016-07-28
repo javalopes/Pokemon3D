@@ -6,29 +6,29 @@ namespace Pokemon3D.Scripting
 {
     internal class StatementProcessor
     {
-        internal static readonly string[] controlStatements = new string[] { "if", "else", "else if", "while", "for", "function", "class", "try", "catch", "finally" };
+        internal static readonly string[] ControlStatements = { "if", "else", "else if", "while", "for", "function", "class", "try", "catch", "finally" };
 
         private const string OBJECT_DISCOVER_TOKEN = "+*-/&|<>.[(;";
 
         internal static ScriptStatement[] GetStatements(ScriptProcessor processor, string code)
         {
-            List<ScriptStatement> statements = new List<ScriptStatement>();
+            var statements = new List<ScriptStatement>();
 
-            StringBuilder statement = new StringBuilder();
+            var statement = new StringBuilder();
 
-            int index = 0;
-            int depth = 0;
-            int lineNumber = 1;
-            int lineNumberBuffer = 0; // buffers line counts from the start of a statement.
-            bool isComment = false;
-            bool isControlStatement = false; // If the current statement is a control statement.
-            bool isCompoundStatement = false; // If the current statement is bunch of statements wrapped in { ... }
+            var index = 0;
+            var depth = 0;
+            var lineNumber = 1;
+            var lineNumberBuffer = 0; // buffers line counts from the start of a statement.
+            var isComment = false;
+            var isControlStatement = false; // If the current statement is a control statement.
+            var isCompoundStatement = false; // If the current statement is bunch of statements wrapped in { ... }
 
             StringEscapeHelper escaper = new LeftToRightStringEscapeHelper(code, 0);
 
             while (index < code.Length)
             {
-                char t = code[index];
+                var t = code[index];
 
                 if (!isComment)
                     escaper.CheckStartAt(index);
@@ -70,11 +70,11 @@ namespace Pokemon3D.Scripting
 
                             if (isControlStatement)
                             {
-                                string statementStr = statement.ToString();
-                                string s = statementStr.Trim();
+                                var statementStr = statement.ToString();
+                                var s = statementStr.Trim();
                                 if (s.StartsWith("if") || s.StartsWith("else if") || s.StartsWith("function") || s.StartsWith("for") || s.StartsWith("while") || s.StartsWith("catch"))
                                 {
-                                    int extraLines = statementStr.Replace("\r", "").TakeWhile(c => c == '\n').Count(); // count the starting lines
+                                    var extraLines = statementStr.Replace("\r", "").TakeWhile(c => c == '\n').Count(); // count the starting lines
                                     statements.Add(new ScriptStatement(s, GetStatementType(s, true), lineNumber + extraLines));
                                     statement.Clear();
                                     lineNumber += lineNumberBuffer;
@@ -90,12 +90,12 @@ namespace Pokemon3D.Scripting
 
                             if (depth == 1)
                             {
-                                string statementStr = statement.ToString();
-                                string s = statementStr.Trim();
+                                var statementStr = statement.ToString();
+                                var s = statementStr.Trim();
 
                                 if (isControlStatement)
                                 {
-                                    int extraLines = statementStr.Replace("\r", "").TakeWhile(c => c == '\n').Count(); // count the starting lines
+                                    var extraLines = statementStr.Replace("\r", "").TakeWhile(c => c == '\n').Count(); // count the starting lines
 
                                     s = s.Remove(s.Length - 1, 1).Trim();
                                     statements.Add(new ScriptStatement(s, GetStatementType(s, true), lineNumber + extraLines));
@@ -128,12 +128,12 @@ namespace Pokemon3D.Scripting
                                 //   - an operator => object ("+*-/&|<>.[(")
                                 //   - nothing => statement
 
-                                bool foundOperator = false;
-                                int charFindIndex = index + 1;
+                                var foundOperator = false;
+                                var charFindIndex = index + 1;
 
                                 while (!foundOperator && charFindIndex < code.Length)
                                 {
-                                    char testChar = code[charFindIndex];
+                                    var testChar = code[charFindIndex];
                                     if (OBJECT_DISCOVER_TOKEN.Contains(testChar))
                                     {
                                         foundOperator = true;
@@ -148,9 +148,9 @@ namespace Pokemon3D.Scripting
 
                                 if (!foundOperator)
                                 {
-                                    string statementStr = statement.ToString();
-                                    int extraLines = statementStr.Replace("\r", "").TakeWhile(c => c == '\n').Count(); // count the starting lines
-                                    string s = statementStr.Trim();
+                                    var statementStr = statement.ToString();
+                                    var extraLines = statementStr.Replace("\r", "").TakeWhile(c => c == '\n').Count(); // count the starting lines
+                                    var s = statementStr.Trim();
                                     statements.Add(new ScriptStatement(s, StatementType.Executable, lineNumber + extraLines) { IsCompoundStatement = true });
                                     statement.Clear();
                                     lineNumber += lineNumberBuffer;
@@ -162,9 +162,9 @@ namespace Pokemon3D.Scripting
                         }
                         else if (t == ';' && depth == 0)
                         {
-                            string statementStr = statement.ToString();
-                            int extraLines = statementStr.Replace("\r", "").TakeWhile(c => c == '\n').Count(); // count the starting lines
-                            string s = statementStr.Trim().TrimEnd(new char[] { ';' });
+                            var statementStr = statement.ToString();
+                            var extraLines = statementStr.Replace("\r", "").TakeWhile(c => c == '\n').Count(); // count the starting lines
+                            var s = statementStr.Trim().TrimEnd(new char[] { ';' });
                             statements.Add(new ScriptStatement(s, GetStatementType(s, false), lineNumber + extraLines));
                             statement.Clear();
                             lineNumber += lineNumberBuffer;
@@ -172,23 +172,23 @@ namespace Pokemon3D.Scripting
                         }
                         else if (!isCompoundStatement && !isControlStatement)
                         {
-                            string statementStr = statement.ToString();
-                            int extraLines = statementStr.Replace("\r", "").TakeWhile(c => c == '\n').Count(); // count the starting lines
-                            string s = statementStr.TrimStart();
+                            var statementStr = statement.ToString();
+                            var extraLines = statementStr.Replace("\r", "").TakeWhile(c => c == '\n').Count(); // count the starting lines
+                            var s = statementStr.TrimStart();
 
-                            char nextChar = 'X'; // Set to something that is not matching with the condition below.
+                            var nextChar = 'X'; // Set to something that is not matching with the condition below.
                             if (code.Length > index + 1)
                                 nextChar = code[index + 1];
 
                             // Check if it's actually a control statement by looking if the next char matches (whitespace, ";" or "(")
-                            if ((char.IsWhiteSpace(nextChar) || nextChar == ';' || nextChar == '(') && controlStatements.Contains(s))
+                            if ((char.IsWhiteSpace(nextChar) || nextChar == ';' || nextChar == '(') && ControlStatements.Contains(s))
                             {
                                 isControlStatement = true;
                                 if (s.StartsWith("else"))
                                 {
                                     if (index + 3 < code.Length)
                                     {
-                                        string check = code.Substring(index + 1, 3);
+                                        var check = code.Substring(index + 1, 3);
                                         if (check != " if")
                                         {
                                             statements.Add(new ScriptStatement("else", StatementType.Else, lineNumber + extraLines));
@@ -234,7 +234,7 @@ namespace Pokemon3D.Scripting
                 processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
 
             // an executable statement not closed with ";" is getting added here:
-            string leftOver = statement.ToString().Trim();
+            var leftOver = statement.ToString().Trim();
             if (leftOver.Length > 0)
             {
                 statements.Add(new ScriptStatement(leftOver, GetStatementType(leftOver, false), lineNumber));

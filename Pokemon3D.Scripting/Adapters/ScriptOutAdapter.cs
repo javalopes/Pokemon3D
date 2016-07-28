@@ -51,7 +51,7 @@ namespace Pokemon3D.Scripting.Adapters
             {
                 return TranslateError((SError)obj);
             }
-            else if (obj is SProtoObject && ((SProtoObject)obj).Prototype.MappedType != null)
+            else if ((obj as SProtoObject)?.Prototype.MappedType != null)
             {
                 return Translate((SProtoObject)obj, ((SProtoObject)obj).Prototype.MappedType);
             }
@@ -67,7 +67,7 @@ namespace Pokemon3D.Scripting.Adapters
 
         private static object TranslateArray(SArray obj)
         {
-            return obj.ArrayMembers.Select(x => Translate(x)).ToArray();
+            return obj.ArrayMembers.Select(Translate).ToArray();
         }
 
         private static object TranslateError(SError obj)
@@ -81,17 +81,17 @@ namespace Pokemon3D.Scripting.Adapters
 
             foreach (var item in obj.Members)
             {
-                string memberName = item.Key;
+                var memberName = item.Key;
                 // Do not translate back the prototype and super instances:
                 if (memberName != SProtoObject.MEMBER_NAME_PROTOTYPE &&
                     memberName != SProtoObject.MEMBER_NAME_SUPER)
                 {
-                    SObject memberContent = SObject.Unbox(item.Value);
+                    var memberContent = SObject.Unbox(item.Value);
                     returnObj.Add(memberName, Translate(memberContent));
                 }
             }
 
-            return returnObj as dynamic;
+            return returnObj;
         }
 
         private static object TranslateFunction(SFunction obj)
@@ -111,7 +111,7 @@ namespace Pokemon3D.Scripting.Adapters
         {
             var instance = Activator.CreateInstance(t);
 
-            FieldInfo[] fields = t
+            var fields = t
                 .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 .Where(f => f.GetCustomAttribute<CompilerGeneratedAttribute>() == null)
                 .ToArray();
@@ -122,11 +122,11 @@ namespace Pokemon3D.Scripting.Adapters
 
                 if (attr != null)
                 {
-                    string identifier = field.Name;
+                    var identifier = field.Name;
                     if (!string.IsNullOrEmpty(attr.VariableName))
                         identifier = attr.VariableName;
 
-                    SObject setValue = SObject.Unbox(obj.Members[identifier]);
+                    var setValue = SObject.Unbox(obj.Members[identifier]);
 
                     try
                     {

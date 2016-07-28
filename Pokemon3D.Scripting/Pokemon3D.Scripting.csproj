@@ -64,6 +64,7 @@
     <Compile Include="Adapters\ScriptPrototypeAttribute.cs" />
     <Compile Include="Adapters\ScriptRuntimeException.cs" />
     <Compile Include="Adapters\ScriptVariableAttribute.cs" />
+    <Compile Include="BuiltInMethodData.cs" />
     <Compile Include="BuiltInMethodManager.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="ErrorType.cs" />

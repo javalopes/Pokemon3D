@@ -22,10 +22,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             get
             {
-                if (MappedType != null)
-                    return MappedType.IsAbstract;
-
-                return _isAbstract;
+                return MappedType?.IsAbstract ?? _isAbstract;
             }
             private set
             {
@@ -34,7 +31,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        private Dictionary<string, PrototypeMember> _prototypeMembers = new Dictionary<string, PrototypeMember>();
+        private readonly Dictionary<string, PrototypeMember> _prototypeMembers = new Dictionary<string, PrototypeMember>();
         private bool _initializedStatic;
         private SFunction _staticConstructor;
         private ScriptProcessor _staticConstructorProcessor;
@@ -52,22 +49,22 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             var methods = BuiltInMethodManager.GetMethods(GetType());
             foreach (var methodData in methods)
             {
-                SFunction function = new SFunction(methodData.Item3);
-                string identifier = methodData.Item1;
+                var function = new SFunction(methodData.Delegate);
+                var identifier = methodData.Name;
 
-                function.FunctionUsage = methodData.Item2.FunctionType;
-                if (methodData.Item2.FunctionType == FunctionUsageType.PropertyGetter)
+                function.FunctionUsage = methodData.Attribute.FunctionType;
+                if (methodData.Attribute.FunctionType == FunctionUsageType.PropertyGetter)
                     identifier = PROPERTY_GET_PREFIX + identifier;
-                else if (methodData.Item2.FunctionType == FunctionUsageType.PropertySetter)
+                else if (methodData.Attribute.FunctionType == FunctionUsageType.PropertySetter)
                     identifier = PROPERTY_SET_PREFIX + identifier;
 
                 _prototypeMembers.Add(identifier, new PrototypeMember(
                         identifier: identifier,
                         data: function,
-                        isStatic: methodData.Item2.IsStatic,
+                        isStatic: methodData.Attribute.IsStatic,
                         isReadOnly: false,
-                        isIndexerGet: methodData.Item2.IsIndexerGet,
-                        isIndexerSet: methodData.Item2.IsIndexerSet
+                        isIndexerGet: methodData.Attribute.IsIndexerGet,
+                        isIndexerSet: methodData.Attribute.IsIndexerSet
                     ));
             }
         }
@@ -107,10 +104,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             AddObjectPrototypeAsExtends(processor);
 
-            if (_prototypeMembers.ContainsKey(memberName))
-                return true;
-            else
-                return base.HasMember(processor, memberName);
+            return _prototypeMembers.ContainsKey(memberName) || base.HasMember(processor, memberName);
         }
 
         internal override SObject GetMember(ScriptProcessor processor, SObject accessor, bool isIndexer)
@@ -177,10 +171,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             {
                 _initializedStatic = true;
 
-                if (_staticConstructor != null)
-                {
-                    _staticConstructor.Call(_staticConstructorProcessor, this, this, new SObject[] { });
-                }
+                _staticConstructor?.Call(_staticConstructorProcessor, this, this, new SObject[] { });
             }
         }
 
@@ -219,7 +210,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 obj.AddMember(MEMBER_NAME_SUPER, superInstance);
             }
 
-            foreach (PrototypeMember member in GetInstanceMembers())
+            foreach (var member in GetInstanceMembers())
             {
                 obj.AddMember(member.Identifier, member.Data);
             }
@@ -232,9 +223,9 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             if (indexerSetFunction != null)
                 obj.IndexerSetFunction = indexerSetFunction.ToFunction();
 
-            if (executeCtor && Constructor != null)
+            if (executeCtor)
             {
-                Constructor.ToFunction().Call(processor, obj, obj, parameters);
+                Constructor?.ToFunction().Call(processor, obj, obj, parameters);
             }
 
             // Lock all readonly members after the constructor call, so they can be set in the constructor:
@@ -268,14 +259,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
         internal PrototypeMember GetIndexerSetFunction()
         {
-            foreach (var member in _prototypeMembers.Values)
-            {
-                if (member.IsIndexerSet && member.IsFunction)
-                {
-                    return member;
-                }
-            }
-            return null;
+            return _prototypeMembers.Values.FirstOrDefault(member => member.IsIndexerSet && member.IsFunction);
         }
 
         /// <summary>
@@ -283,11 +267,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         /// </summary>
         internal bool IsStaticMember(string memberName)
         {
-            if (_prototypeMembers.ContainsKey(memberName))
-            {
-                return _prototypeMembers[memberName].IsStatic;
-            }
-            return false;
+            return _prototypeMembers.ContainsKey(memberName) && _prototypeMembers[memberName].IsStatic;
         }
 
         /// <summary>
@@ -295,11 +275,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         /// </summary>
         internal bool IsReadOnlyMember(string memberName)
         {
-            if (_prototypeMembers.ContainsKey(memberName))
-            {
-                return _prototypeMembers[memberName].IsReadOnly;
-            }
-            return false;
+            return _prototypeMembers.ContainsKey(memberName) && _prototypeMembers[memberName].IsReadOnly;
         }
 
         internal void AddMember(ScriptProcessor processor, PrototypeMember member)
@@ -324,16 +300,16 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
             if (Regex.IsMatch(code, REGEX_CLASS_SIGNATURE, RegexOptions.Singleline))
             {
-                List<string> signature = code.Remove(code.IndexOf("{")).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var signature = code.Remove(code.IndexOf("{")).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                string extends = "";
-                string identifier = "";
-                bool isAbstract = false;
+                var extends = "";
+                var identifier = "";
+                var isAbstract = false;
 
                 // Read extends:
                 if (signature.Contains(CLASS_SIGNATURE_EXTENDS))
                 {
-                    int extendsIndex = signature.IndexOf(CLASS_SIGNATURE_EXTENDS);
+                    var extendsIndex = signature.IndexOf(CLASS_SIGNATURE_EXTENDS);
 
                     if (extendsIndex + 1 == signature.Count) // when extends is the last element in the signature, throw error:
                         processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_EXTENDS_MISSING);
@@ -360,7 +336,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                     processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_IDENTIFIER_MISSING);
 
                 // Create instance:
-                Prototype prototype = new Prototype(identifier)
+                var prototype = new Prototype(identifier)
                 {
                     IsAbstract = isAbstract
                 };
@@ -371,7 +347,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                     if (isAbstract)
                         processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_TYPE_ABSTRACT_NO_EXTENDS);
 
-                    Prototype extendedPrototype = processor.Context.GetPrototype(extends);
+                    var extendedPrototype = processor.Context.GetPrototype(extends);
 
                     if (extendedPrototype == null)
                         processor.ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MESSAGE_REFERENCE_NO_PROTOTYPE, extends);
@@ -384,17 +360,17 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                     prototype.Extends = processor.Context.GetPrototype("Object");
                 }
 
-                string body = code.Remove(0, code.IndexOf("{") + 1);
+                var body = code.Remove(0, code.IndexOf("{") + 1);
                 body = body.Remove(body.Length - 1, 1).Trim();
 
-                string additionalCtorCode = "";
-                string staticCtorCode = "";
+                var additionalCtorCode = "";
+                var staticCtorCode = "";
 
-                ScriptStatement[] statements = StatementProcessor.GetStatements(processor, body);
+                var statements = StatementProcessor.GetStatements(processor, body);
 
-                for (int i = 0; i < statements.Length; i++)
+                for (var i = 0; i < statements.Length; i++)
                 {
-                    ScriptStatement statement = statements[i];
+                    var statement = statements[i];
 
                     if (statement.StatementType == StatementType.Var)
                     {
@@ -424,7 +400,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                         if (statements.Length > i)
                         {
                             var bodyStatement = statements[i];
-                            PrototypeMember parsed = ParseFunctionStatement(processor, statement, bodyStatement);
+                            var parsed = ParseFunctionStatement(processor, statement, bodyStatement);
 
                             if (parsed.Identifier == CLASS_METHOD_CTOR)
                             {
@@ -483,13 +459,13 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
         private static Tuple<PrototypeMember, string> ParseVarStatement(ScriptProcessor processor, ScriptStatement statement)
         {
-            string code = statement.Code;
-            List<string> signature = code.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var code = statement.Code;
+            var signature = code.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             string identifier;
-            string assignment = "";
-            bool isReadOnly = false;
-            bool isStatic = false;
+            var assignment = "";
+            var isReadOnly = false;
+            var isStatic = false;
 
             // Read static:
             if (signature.Contains(VAR_SIGNATURE_STATIC))
@@ -538,16 +514,16 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
         private static PrototypeMember ParseFunctionStatement(ScriptProcessor processor, ScriptStatement headerStatement, ScriptStatement bodyStatement)
         {
-            string header = headerStatement.Code;
-            List<string> signature = header.Remove(header.IndexOf("(")).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var header = headerStatement.Code;
+            var signature = header.Remove(header.IndexOf("(")).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             string identifier;
-            bool isStatic = false;
-            bool isIndexerGet = false;
-            bool isIndexerSet = false;
-            FunctionUsageType functionType = FunctionUsageType.Default;
+            var isStatic = false;
+            var isIndexerGet = false;
+            var isIndexerSet = false;
+            var functionType = FunctionUsageType.Default;
 
-            int significantCount = 0;
+            var significantCount = 0;
 
             // Read static:
             if (signature.Contains(FUNCTION_SIGNATURE_STATIC))
@@ -561,12 +537,12 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             {
                 significantCount++;
 
-                int indexerIndex = signature.IndexOf(FUNCTION_SIGNATURE_INDEXER);
+                var indexerIndex = signature.IndexOf(FUNCTION_SIGNATURE_INDEXER);
 
                 if (indexerIndex + 1 == signature.Count)
                     processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_FUNCTION_INDEXER_EXPECTED_TYPE);
 
-                string indexerType = signature[indexerIndex + 1];
+                var indexerType = signature[indexerIndex + 1];
                 if (indexerType == FUNCTION_SIGNATURE_GET)
                 {
                     isIndexerGet = true;
@@ -589,12 +565,12 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             {
                 significantCount++;
 
-                int propertyIndex = signature.IndexOf(FUNCTION_SIGNATURE_PROPERTY);
+                var propertyIndex = signature.IndexOf(FUNCTION_SIGNATURE_PROPERTY);
 
                 if (propertyIndex + 1 == signature.Count)
                     processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_FUNCTION_PROPERTY_EXPECTED_TYPE);
 
-                string propertyType = signature[propertyIndex + 1];
+                var propertyType = signature[propertyIndex + 1];
                 if (propertyType == FUNCTION_SIGNATURE_GET)
                 {
                     functionType = FunctionUsageType.PropertyGetter;
@@ -631,8 +607,10 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             if (functionType == FunctionUsageType.PropertySetter)
                 identifier = PROPERTY_SET_PREFIX + identifier;
 
-            SFunction function = new SFunction(processor, signature[0] + " " + header.Remove(0, header.IndexOf("(")) + bodyStatement.Code);
-            function.FunctionUsage = functionType;
+            var function = new SFunction(processor, signature[0] + " " + header.Remove(0, header.IndexOf("(")) + bodyStatement.Code)
+            {
+                FunctionUsage = functionType
+            };
 
             return new PrototypeMember(identifier, function, isStatic, false, isIndexerGet, isIndexerSet);
         }

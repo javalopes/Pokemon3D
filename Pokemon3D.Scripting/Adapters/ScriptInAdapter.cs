@@ -97,15 +97,9 @@ namespace Pokemon3D.Scripting.Adapters
             return new SFunction(methodIn);
         }
 
-        private static SObject TranslateArray(ScriptProcessor processor, Array array)
-        {
-            List<SObject> elements = new List<SObject>();
-
-            for (int i = 0; i < array.Length; i++)
-                elements.Add(Translate(processor, array.GetValue(i)));
-
-            return processor.Context.CreateInstance("Array", elements.ToArray());
-        }
+        private static SObject TranslateArray(ScriptProcessor processor, Array array) =>
+            processor.Context.CreateInstance("Array", array.Cast<object>().Select((t, i) =>
+                    Translate(processor, array.GetValue(i))).ToArray());
 
         private static SObject TranslateException(ScriptRuntimeException exceptionIn)
         {
@@ -116,9 +110,9 @@ namespace Pokemon3D.Scripting.Adapters
         {
             var objType = objIn.GetType();
 
-            string typeName = objType.Name;
-            ScriptPrototypeAttribute customNameAttribute = objType.GetCustomAttribute<ScriptPrototypeAttribute>();
-            if (customNameAttribute != null && !string.IsNullOrWhiteSpace(customNameAttribute.VariableName))
+            var typeName = objType.Name;
+            var customNameAttribute = objType.GetCustomAttribute<ScriptPrototypeAttribute>();
+            if (!string.IsNullOrWhiteSpace(customNameAttribute?.VariableName))
                 typeName = customNameAttribute.VariableName;
 
             Prototype prototype = null;
@@ -132,7 +126,7 @@ namespace Pokemon3D.Scripting.Adapters
 
             // Set the field values of the current instance:
 
-            FieldInfo[] fields = objIn.GetType()
+            var fields = objIn.GetType()
                 .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 .Where(f => f.GetCustomAttribute<CompilerGeneratedAttribute>() == null)
                 .ToArray();
@@ -147,7 +141,7 @@ namespace Pokemon3D.Scripting.Adapters
                     {
                         var memberAttr = (ScriptMemberAttribute)attr;
 
-                        string identifier = field.Name;
+                        var identifier = field.Name;
                         if (!string.IsNullOrEmpty(memberAttr.VariableName))
                             identifier = memberAttr.VariableName;
 
@@ -162,11 +156,11 @@ namespace Pokemon3D.Scripting.Adapters
 
                         var memberAttr = (ScriptMemberAttribute)attr;
 
-                        string identifier = field.Name;
+                        var identifier = field.Name;
                         if (!string.IsNullOrEmpty(memberAttr.VariableName))
                             identifier = memberAttr.VariableName;
 
-                        string functionCode = field.GetValue(objIn).ToString();
+                        var functionCode = field.GetValue(objIn).ToString();
 
                         obj.SetMember(identifier, new SFunction(processor, functionCode));
                     }
@@ -178,9 +172,9 @@ namespace Pokemon3D.Scripting.Adapters
 
         internal static Prototype TranslatePrototype(ScriptProcessor processor, Type t)
         {
-            string name = t.Name;
-            ScriptPrototypeAttribute customNameAttribute = t.GetCustomAttribute<ScriptPrototypeAttribute>();
-            if (customNameAttribute != null && !string.IsNullOrWhiteSpace(customNameAttribute.VariableName))
+            var name = t.Name;
+            var customNameAttribute = t.GetCustomAttribute<ScriptPrototypeAttribute>();
+            if (!string.IsNullOrWhiteSpace(customNameAttribute?.VariableName))
                 name = customNameAttribute.VariableName;
 
             var prototype = new Prototype(name);
@@ -191,7 +185,7 @@ namespace Pokemon3D.Scripting.Adapters
                 typeInstance = Activator.CreateInstance(t);
             }
 
-            FieldInfo[] fields = t
+            var fields = t
                 .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
                 .Where(f => f.GetCustomAttribute<CompilerGeneratedAttribute>() == null)
                 .ToArray();
@@ -205,7 +199,7 @@ namespace Pokemon3D.Scripting.Adapters
                     if (attr.GetType() == typeof(ScriptVariableAttribute))
                     {
                         var memberAttr = (ScriptMemberAttribute)attr;
-                        string identifier = field.Name;
+                        var identifier = field.Name;
                         if (!string.IsNullOrEmpty(memberAttr.VariableName))
                             identifier = memberAttr.VariableName;
 
@@ -219,7 +213,7 @@ namespace Pokemon3D.Scripting.Adapters
                     else if (attr.GetType() == typeof(ScriptFunctionAttribute))
                     {
                         var memberAttr = (ScriptFunctionAttribute)attr;
-                        string identifier = field.Name;
+                        var identifier = field.Name;
                         if (!string.IsNullOrEmpty(memberAttr.VariableName))
                             identifier = memberAttr.VariableName;
 
@@ -254,7 +248,7 @@ namespace Pokemon3D.Scripting.Adapters
                 }
             }
 
-            MethodInfo[] methods = t
+            var methods = t
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
                 .Where(f => f.GetCustomAttribute<CompilerGeneratedAttribute>() == null)
                 .ToArray();
@@ -264,7 +258,7 @@ namespace Pokemon3D.Scripting.Adapters
                 var attr = method.GetCustomAttribute<ScriptFunctionAttribute>(false);
                 if (attr != null)
                 {
-                    string identifier = method.Name;
+                    var identifier = method.Name;
                     if (!string.IsNullOrEmpty(attr.VariableName))
                         identifier = attr.VariableName;
 

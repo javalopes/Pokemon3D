@@ -22,7 +22,7 @@
 
         private static SObject constructor(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            SError obj = (SError)instance;
+            var obj = (SError)instance;
 
             if (parameters.Length > 0)
             {

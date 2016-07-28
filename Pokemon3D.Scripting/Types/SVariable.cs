@@ -1,6 +1,6 @@
 ﻿namespace Pokemon3D.Scripting.Types
 {
-    class SVariable : SObject
+    internal class SVariable : SObject
     {
         private SObject _data;
 

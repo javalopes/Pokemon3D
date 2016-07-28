@@ -5,7 +5,7 @@ namespace Pokemon3D.Scripting.Types
     /// <summary>
     /// Implements methods to use operators on <see cref="SObject"/> instances.
     /// </summary>
-    class ObjectOperators
+    internal class ObjectOperators
     {
         private static Tuple<double, double> GetNumericOperatorParameters(ScriptProcessor processor, SObject left, SObject right)
         {

@@ -8,7 +8,7 @@ namespace Pokemon3D.Scripting.Types
     /// </summary>
     internal class SFunction : SObject
     {
-        private string[] _parameters;
+        private readonly string[] _parameters;
 
         /// <summary>
         /// The code body of the function.
@@ -21,10 +21,7 @@ namespace Pokemon3D.Scripting.Types
 
         public DotNetBuiltInMethod DotNetMethod { get; set; }
 
-        private bool HasBuiltInMethod
-        {
-            get { return Method != null || DotNetMethod != null; }
-        }
+        private bool HasBuiltInMethod => Method != null || DotNetMethod != null;
 
         public SFunction(string body, string[] parameters)
         {
@@ -39,13 +36,13 @@ namespace Pokemon3D.Scripting.Types
         public SFunction(ScriptProcessor processor, string sourceCode)
         {
             sourceCode = sourceCode.Trim();
-            string paramCode = sourceCode.Remove(0, "function".Length).Trim().Remove(0, 1); //Removes "function", then any spaces between "function" and "(", then removes "(".
+            var paramCode = sourceCode.Remove(0, "function".Length).Trim().Remove(0, 1); //Removes "function", then any spaces between "function" and "(", then removes "(".
             paramCode = paramCode.Remove(paramCode.IndexOf(")"));
 
             _parameters = paramCode.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray();
 
-            bool allIdentifiersValid = true;
-            int i = 0;
+            var allIdentifiersValid = true;
+            var i = 0;
 
             while (i < _parameters.Length - 1 && allIdentifiersValid)
             {
@@ -114,10 +111,10 @@ namespace Pokemon3D.Scripting.Types
 
         internal override string ToScriptSource()
         {
-            string paramSource = "";
+            var paramSource = "";
             if (_parameters != null)
             {
-                foreach (string par in _parameters)
+                foreach (var par in _parameters)
                 {
                     if (paramSource.Length > 0)
                     {
@@ -127,7 +124,7 @@ namespace Pokemon3D.Scripting.Types
                 }
             }
 
-            string bodySource = "";
+            var bodySource = "";
             if (HasBuiltInMethod)
             {
                 bodySource = FUNCTION_NATIVE_CODE_SOURCE;
@@ -159,7 +156,7 @@ namespace Pokemon3D.Scripting.Types
         /// <param name="parameters">The parameters used in this function call.</param>
         public SObject Call(ScriptProcessor processor, SObject caller, SObject This, SObject[] parameters)
         {
-            ScriptProcessor functionProcessor = new ScriptProcessor(processor.Context, processor.GetLineNumber());
+            var functionProcessor = new ScriptProcessor(processor.Context, processor.GetLineNumber());
             SObject functionReturnObject;
 
             if (HasBuiltInMethod)
@@ -177,7 +174,7 @@ namespace Pokemon3D.Scripting.Types
             }
             else
             {
-                for (int i = 0; i < _parameters.Length; i++)
+                for (var i = 0; i < _parameters.Length; i++)
                 {
                     if (parameters.Length > i)
                     {

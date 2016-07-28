@@ -1,6 +1,6 @@
 ﻿namespace Pokemon3D.Scripting.Types
 {
-    class SBool : SProtoObject
+    internal class SBool : SProtoObject
     {
         /// <summary>
         /// Converts the value to the script representation.

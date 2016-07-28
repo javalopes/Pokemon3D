@@ -23,7 +23,7 @@ namespace Pokemon3D.Scripting.Types
             if (processor.Context.HasCallback(CallbackType.SetMember))
             {
                 var callback = (DSetMember)processor.Context.GetCallback(CallbackType.SetMember);
-                Task task = Task.Factory.StartNew(() => callback(processor, APIClass, accessor, isIndexer, value));
+                var task = Task.Factory.StartNew(() => callback(processor, APIClass, accessor, isIndexer, value));
                 task.Wait();
             }
             else
@@ -37,7 +37,7 @@ namespace Pokemon3D.Scripting.Types
             if (processor.Context.HasCallback(CallbackType.ExecuteMethod))
             {
                 var callback = (DExecuteMethod)processor.Context.GetCallback(CallbackType.ExecuteMethod);
-                Task<SObject> task = Task<SObject>.Factory.StartNew(() => callback(processor, APIClass, methodName, parameters));
+                var task = Task<SObject>.Factory.StartNew(() => callback(processor, APIClass, methodName, parameters));
                 task.Wait();
 
                 return task.Result;
@@ -54,7 +54,7 @@ namespace Pokemon3D.Scripting.Types
             if (processor.Context.HasCallback(CallbackType.GetMember))
             {
                 var callback = (DGetMember)processor.Context.GetCallback(CallbackType.GetMember);
-                Task<SObject> task = Task<SObject>.Factory.StartNew(() => callback(processor, APIClass, accessor, isIndexer));
+                var task = Task<SObject>.Factory.StartNew(() => callback(processor, APIClass, accessor, isIndexer));
                 task.Wait();
 
                 return task.Result;
@@ -71,7 +71,7 @@ namespace Pokemon3D.Scripting.Types
             if (processor.Context.HasCallback(CallbackType.HasMember))
             {
                 var callback = (DHasMember)processor.Context.GetCallback(CallbackType.HasMember);
-                Task<bool> task = Task<bool>.Factory.StartNew(() => callback(processor, APIClass, memberName));
+                var task = Task<bool>.Factory.StartNew(() => callback(processor, APIClass, memberName));
                 task.Wait();
 
                 return task.Result;

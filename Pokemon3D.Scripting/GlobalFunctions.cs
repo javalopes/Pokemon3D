@@ -1,25 +1,21 @@
 ﻿using Pokemon3D.Scripting.Types;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Pokemon3D.Scripting
 {
     /// <summary>
     /// A class containing all globally accessible script functions.
     /// </summary>
-    static class GlobalFunctions
+    internal static class GlobalFunctions
     {
         /// <summary>
         /// Creates an array of script functions built from the static BuiltInMethods of this class.
         /// </summary>
-        internal static List<SVariable> GetFunctions()
-        {
-            List<SVariable> functions = new List<SVariable>();
-
-            foreach (var methodDesc in BuiltInMethodManager.GetMethods(typeof(GlobalFunctions)))
-                functions.Add(new SVariable(methodDesc.Item1, new SFunction(methodDesc.Item3), true));
-
-            return functions;
-        }
+        internal static List<SVariable> GetFunctions() =>
+            BuiltInMethodManager.GetMethods(typeof(GlobalFunctions))
+                .Select(m => new SVariable(m.Name, new SFunction(m.Delegate), true))
+                .ToList();
 
         /// <summary>
         /// Mirrors the eval() function of JavaScript.
@@ -41,22 +37,12 @@ namespace Pokemon3D.Scripting
         }
 
         [BuiltInMethod(MethodName = "sizeof")]
-        public static SObject SizeOf(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
-        {
-            if (parameters.Length == 0)
-                return processor.Undefined;
-
-            return processor.CreateNumber(parameters[0].SizeOf());
-        }
+        public static SObject SizeOf(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters) =>
+            parameters.Length == 0 ? processor.Undefined : processor.CreateNumber(parameters[0].SizeOf());
 
         [BuiltInMethod(MethodName = "typeof")]
-        public static SObject TypeOf(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
-        {
-            if (parameters.Length == 0)
-                return processor.Undefined;
-
-            return processor.CreateString(parameters[0].TypeOf());
-        }
+        public static SObject TypeOf(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters) =>
+            parameters.Length == 0 ? processor.Undefined : processor.CreateString(parameters[0].TypeOf());
 
         /// <summary>
         /// This is not like the C# nameof operator - it rather returns the actual typed name of the object, instead of just "object".
@@ -70,10 +56,7 @@ namespace Pokemon3D.Scripting
             if (parameters[0] is SProtoObject)
             {
                 var protoObj = (SProtoObject)parameters[0];
-                if (protoObj.IsProtoInstance)
-                    return processor.CreateString(protoObj.Prototype.Name);
-                else
-                    return processor.CreateString(protoObj.TypeOf());
+                return processor.CreateString(protoObj.IsProtoInstance ? protoObj.Prototype.Name : protoObj.TypeOf());
             }
             else
             {
@@ -120,7 +103,7 @@ namespace Pokemon3D.Scripting
         }
 
         [BuiltInMethod(MethodName = "isNaN")]
-        public static SObject isNaN(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        public static SObject IsNaN(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
             if (parameters.Length == 0)
                 return processor.Undefined;
@@ -135,7 +118,7 @@ namespace Pokemon3D.Scripting
         }
 
         [BuiltInMethod(MethodName = "isFinite")]
-        public static SObject isFinite(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        public static SObject IsFinite(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
             if (parameters.Length == 0)
                 return processor.Undefined;

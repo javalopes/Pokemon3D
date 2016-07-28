@@ -71,7 +71,7 @@ namespace Pokemon3D.Scripting
 
         private SObject ExecuteTry(ScriptStatement statement)
         {
-            string exp = statement.Code;
+            var exp = statement.Code;
 
             if (exp != "try")
                 return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_BEFORE_TRY);
@@ -79,13 +79,13 @@ namespace Pokemon3D.Scripting
             _index++;
             if (_statements.Length > _index)
             {
-                ScriptStatement executeStatement = _statements[_index];
-                bool encounteredError = false;
-                bool foundCatch = false;
-                bool foundFinally = false;
-                bool foundMatchingCatch = false;
+                var executeStatement = _statements[_index];
+                var encounteredError = false;
+                var foundCatch = false;
+                var foundFinally = false;
+                var foundMatchingCatch = false;
                 SObject errorObject = null;
-                SObject returnObject = Undefined;
+                var returnObject = Undefined;
 
                 try
                 {
@@ -99,8 +99,8 @@ namespace Pokemon3D.Scripting
                 
                 if (encounteredError)
                 {
-                    bool endedCatchSearch = false;
-                    int findCatchIndex = _index + 1;
+                    var endedCatchSearch = false;
+                    var findCatchIndex = _index + 1;
                     while (findCatchIndex < _statements.Length && !endedCatchSearch)
                     {
                         if (_statements[findCatchIndex].StatementType == StatementType.Catch)
@@ -111,11 +111,11 @@ namespace Pokemon3D.Scripting
                             {
                                 if (!foundMatchingCatch)
                                 {
-                                    ScriptStatement catchExecuteStatement = _statements[_index];
+                                    var catchExecuteStatement = _statements[_index];
                                     foundCatch = true;
 
-                                    string catchCode = _statements[findCatchIndex].Code;
-                                    string errorVarName = "";
+                                    var catchCode = _statements[findCatchIndex].Code;
+                                    var errorVarName = "";
 
                                     if (catchCode != "catch")
                                     {
@@ -129,10 +129,10 @@ namespace Pokemon3D.Scripting
                                         errorVarName = catchCode.Remove(catchCode.IndexOf(" "));
                                         string conditionCode = catchCode.Remove(0, catchCode.IndexOf("if") + 3);
 
-                                        ScriptProcessor processor = new ScriptProcessor(Context, GetLineNumber());
+                                        var processor = new ScriptProcessor(Context, GetLineNumber());
                                         processor.Context.AddVariable(errorVarName, errorObject);
 
-                                        SObject conditionResult = processor.ExecuteStatement(new ScriptStatement(conditionCode));
+                                        var conditionResult = processor.ExecuteStatement(new ScriptStatement(conditionCode));
 
                                         if (conditionResult is SBool)
                                             foundMatchingCatch = ((SBool)conditionResult).Value;
@@ -145,7 +145,7 @@ namespace Pokemon3D.Scripting
                                     else
                                     {
                                         foundMatchingCatch = true;
-                                        ScriptProcessor processor = new ScriptProcessor(Context, GetLineNumber());
+                                        var processor = new ScriptProcessor(Context, GetLineNumber());
                                         processor.Context.AddVariable(errorVarName, errorObject);
                                         returnObject = processor.ExecuteStatement(catchExecuteStatement);
                                     }
@@ -167,7 +167,7 @@ namespace Pokemon3D.Scripting
                 }
                 else
                 {
-                    int findCatchIndex = _index + 1;
+                    var findCatchIndex = _index + 1;
                     while (findCatchIndex < _statements.Length)
                     {
                         if (_statements[findCatchIndex].StatementType == StatementType.Catch)
@@ -189,7 +189,7 @@ namespace Pokemon3D.Scripting
                     return ErrorHandler.ThrowError(errorObject);
 
                 // now, try to find finally statement:
-                int findFinallyIndex = _index + 1;
+                var findFinallyIndex = _index + 1;
                 while (findFinallyIndex < _statements.Length && !foundFinally)
                 {
                     if (_statements[findFinallyIndex].StatementType == StatementType.Finally)
@@ -198,7 +198,7 @@ namespace Pokemon3D.Scripting
 
                         if (_statements.Length > _index)
                         {
-                            ScriptStatement finallyExecuteStatement = _statements[_index];
+                            var finallyExecuteStatement = _statements[_index];
                             foundFinally = true;
 
                             returnObject = ExecuteStatement(finallyExecuteStatement);
@@ -229,7 +229,7 @@ namespace Pokemon3D.Scripting
 
         private SObject ExecuteThrow(ScriptStatement statement)
         {
-            string exp = statement.Code;
+            var exp = statement.Code;
 
             if (exp == "throw")
             {
@@ -265,26 +265,26 @@ namespace Pokemon3D.Scripting
         {
             if (Context.HasCallback(CallbackType.ScriptPipeline))
             {
-                string exp = statement.Code;
+                var exp = statement.Code;
                 exp = exp.Remove(0, "link ".Length).Trim();
 
                 var callback = (DScriptPipeline)Context.GetCallback(CallbackType.ScriptPipeline);
-                Task<string> task = Task<string>.Factory.StartNew(() => callback(this, exp));
+                var task = Task<string>.Factory.StartNew(() => callback(this, exp));
                 task.Wait();
 
-                string code = task.Result;
+                var code = task.Result;
 
-                ScriptStatement[] statements = StatementProcessor.GetStatements(this, code);
+                var statements = StatementProcessor.GetStatements(this, code);
 
                 // Convert the current statements into a list, so we can modify them.
-                List<ScriptStatement> tempStatements = _statements.ToList();
+                var tempStatements = _statements.ToList();
                 // Remove the "link" statement, because we don't want to step into it again if we are in a loop.
                 tempStatements.RemoveAt(_index);
 
                 // Insert class, using and link statements right after the current statement.
-                int insertIndex = _index;
+                var insertIndex = _index;
 
-                for (int i = 0; i < statements.Length; i++)
+                for (var i = 0; i < statements.Length; i++)
                 {
                     if (statements[i].StatementType == StatementType.Class)
                     {
@@ -322,7 +322,7 @@ namespace Pokemon3D.Scripting
 
         private SObject ExecuteClass(ScriptStatement statement)
         {
-            string exp = statement.Code;
+            var exp = statement.Code;
 
             // The function's body is the next statement:
 
@@ -330,13 +330,13 @@ namespace Pokemon3D.Scripting
 
             if (_index < _statements.Length)
             {
-                ScriptStatement classBodyStatement = _statements[_index];
+                var classBodyStatement = _statements[_index];
 
                 if (classBodyStatement.IsCompoundStatement)
                 {
                     exp += classBodyStatement.Code;
 
-                    Prototype prototype = (Prototype)Prototype.Parse(this, exp);
+                    var prototype = (Prototype)Prototype.Parse(this, exp);
                     Context.AddPrototype(prototype);
 
                     return prototype;
@@ -355,14 +355,14 @@ namespace Pokemon3D.Scripting
         private SObject ExecuteFunction(ScriptStatement statement)
         {
             // function <name> ()
-            string exp = statement.Code;
+            var exp = statement.Code;
             exp = exp.Remove(0, "function".Length).Trim();
-            string functionName = exp.Remove(exp.IndexOf("("));
+            var functionName = exp.Remove(exp.IndexOf("("));
 
             if (!IsValidIdentifier(functionName))
                 return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
 
-            string functionExpression = "function " + exp.Remove(0, exp.IndexOf("("));
+            var functionExpression = "function " + exp.Remove(0, exp.IndexOf("("));
 
             // The function's body is the next statement:
 
@@ -370,9 +370,9 @@ namespace Pokemon3D.Scripting
 
             if (_index < _statements.Length)
             {
-                ScriptStatement functionBodyStatement = _statements[_index];
+                var functionBodyStatement = _statements[_index];
 
-                string functionBody = functionBodyStatement.Code;
+                var functionBody = functionBodyStatement.Code;
                 if (!functionBodyStatement.IsCompoundStatement)
                     functionBody = "{" + functionBody + "}";
 
@@ -391,12 +391,12 @@ namespace Pokemon3D.Scripting
 
         private SObject ExecuteFor(ScriptStatement statement)
         {
-            string exp = statement.Code;
+            var exp = statement.Code;
 
-            string forCode = exp.Remove(0, exp.IndexOf("for") + "for".Length).Trim().Remove(0, 1); // Remove "for" and "(".
+            var forCode = exp.Remove(0, exp.IndexOf("for") + "for".Length).Trim().Remove(0, 1); // Remove "for" and "(".
             forCode = forCode.Remove(forCode.Length - 1, 1); // Remove ")".
 
-            ScriptStatement[] forStatements = StatementProcessor.GetStatements(this, forCode);
+            var forStatements = StatementProcessor.GetStatements(this, forCode);
 
             if (forStatements.Length == 0)
                 return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION,  ")" );
@@ -409,9 +409,9 @@ namespace Pokemon3D.Scripting
 
             var processor = new ScriptProcessor(Context, GetLineNumber());
 
-            ScriptStatement forInitializer = forStatements[0];
-            ScriptStatement forCondition = forStatements[1];
-            ScriptStatement forControl = forStatements[2];
+            var forInitializer = forStatements[0];
+            var forCondition = forStatements[1];
+            var forControl = forStatements[2];
 
             if (forInitializer.Code.Length > 0)
                 processor.ExecuteStatement(forInitializer);
@@ -420,7 +420,7 @@ namespace Pokemon3D.Scripting
 
             if (_statements.Length > _index)
             {
-                bool stayInFor = true;
+                var stayInFor = true;
                 var executeStatement = _statements[_index];
                 var returnObject = Undefined;
 
@@ -428,7 +428,7 @@ namespace Pokemon3D.Scripting
                 {
                     if (forCondition.Code.Length > 0)
                     {
-                        SObject conditionResult = processor.ExecuteStatement(forCondition);
+                        var conditionResult = processor.ExecuteStatement(forCondition);
 
                         if (conditionResult is SBool)
                             stayInFor = ((SBool)conditionResult).Value;
@@ -463,21 +463,21 @@ namespace Pokemon3D.Scripting
 
         private SObject ExecuteAssignment(ScriptStatement statement)
         {
-            string exp = statement.Code;
+            var exp = statement.Code;
 
-            string leftSide = "";
-            string rightSide = "";
-            string assignmentOperator = "";
+            var leftSide = "";
+            var rightSide = "";
+            var assignmentOperator = "";
 
             // Get left and right side of the assignment:
             {
-                int depth = 0;
-                int index = 0;
+                var depth = 0;
+                var index = 0;
                 StringEscapeHelper escaper = new LeftToRightStringEscapeHelper(exp, 0);
 
                 while (index < exp.Length && assignmentOperator.Length == 0)
                 {
-                    char t = exp[index];
+                    var t = exp[index];
                     escaper.CheckStartAt(index);
 
                     if (!escaper.IsString)
@@ -492,7 +492,7 @@ namespace Pokemon3D.Scripting
                         }
                         else if (t == '=' && depth == 0)
                         {
-                            char previous = ' ';
+                            var previous = ' ';
                             if (index > 0)
                                 previous = exp[index - 1];
 
@@ -522,20 +522,20 @@ namespace Pokemon3D.Scripting
             SObject memberHost = null;
             SObject accessor = null;
             SObject value = null;
-            bool isIndexer = false;
-            string host = "";
-            string member = "";
+            var isIndexer = false;
+            var host = "";
+            var member = "";
 
             if (leftSide.EndsWith("]"))
             {
-                int indexerStartIndex = 0;
-                int index = leftSide.Length - 1;
-                int depth = 0;
+                var indexerStartIndex = 0;
+                var index = leftSide.Length - 1;
+                var depth = 0;
 
                 StringEscapeHelper escaper = new RightToLeftStringEscapeHelper(leftSide, index);
                 while (index > 0 && !isIndexer)
                 {
-                    char t = leftSide[index];
+                    var t = leftSide[index];
                     escaper.CheckStartAt(index);
 
                     if (!escaper.IsString)
@@ -571,17 +571,17 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                bool foundMember = false;
+                var foundMember = false;
 
                 if (leftSide.Contains("."))
                 {
-                    int index = leftSide.Length - 1;
-                    int depth = 0;
+                    var index = leftSide.Length - 1;
+                    var depth = 0;
                     StringEscapeHelper escaper = new RightToLeftStringEscapeHelper(leftSide, index);
 
                     while (index > 0 && !foundMember)
                     {
-                        char t = leftSide[index];
+                        var t = leftSide[index];
                         escaper.CheckStartAt(index);
 
                         if (!escaper.IsString)
@@ -614,14 +614,7 @@ namespace Pokemon3D.Scripting
             }
 
             // When it's an indexer, we parse it as statement:
-            if (isIndexer)
-            {
-                accessor = SObject.Unbox(ExecuteStatement(new ScriptStatement(member)));
-            }
-            else
-            {
-                accessor = CreateString(member);
-            }
+            accessor = isIndexer ? SObject.Unbox(ExecuteStatement(new ScriptStatement(member))) : CreateString(member);
             
             memberHost = ExecuteStatement(new ScriptStatement(host));
             value = SObject.Unbox(ExecuteStatement(new ScriptStatement(rightSide)));
@@ -634,7 +627,7 @@ namespace Pokemon3D.Scripting
             {
                 var memberContent = memberHost.GetMember(this, accessor, isIndexer);
 
-                string result = "";
+                var result = "";
 
                 switch (assignmentOperator)
                 {
@@ -662,10 +655,10 @@ namespace Pokemon3D.Scripting
         {
             if (statement.IsCompoundStatement)
             {
-                ScriptProcessor processor = new ScriptProcessor(Context, GetLineNumber());
+                var processor = new ScriptProcessor(Context, GetLineNumber());
 
                 // Remove { and }:
-                string code = statement.Code.Remove(0, 1);
+                var code = statement.Code.Remove(0, 1);
                 code = code.Remove(code.Length - 1, 1);
 
                 var returnObject = processor.Run(code);
@@ -678,7 +671,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                string exp = ResolveParentheses(statement.Code).Trim();
+                var exp = ResolveParentheses(statement.Code).Trim();
 
                 #region QuickConvert
 
@@ -756,15 +749,15 @@ namespace Pokemon3D.Scripting
 
         private SObject ExecuteIf(ScriptStatement statement)
         {
-            string exp = statement.Code;
+            var exp = statement.Code;
 
-            string condition = exp.Remove(0, exp.IndexOf("if") + "if".Length).Trim().Remove(0, 1); // Remove "if" and "(".
+            var condition = exp.Remove(0, exp.IndexOf("if") + "if".Length).Trim().Remove(0, 1); // Remove "if" and "(".
             condition = condition.Remove(condition.Length - 1, 1).Trim(); // Remove ")".
 
             if (condition.Length == 0)
                 return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, ")" );
 
-            SObject conditionResult = ExecuteStatement(new ScriptStatement(condition));
+            var conditionResult = ExecuteStatement(new ScriptStatement(condition));
             statement.StatementResult = conditionResult;
 
             bool conditionEval;
@@ -781,12 +774,12 @@ namespace Pokemon3D.Scripting
 
                 if (conditionEval)
                 {
-                    SObject returnObject = ExecuteStatement(executeStatement);
+                    var returnObject = ExecuteStatement(executeStatement);
 
                     // Jump over all "else if" and "else" statements that follow this if / else if:
 
-                    int searchIndex = _index + 1;
-                    bool foundIfs = true;
+                    var searchIndex = _index + 1;
+                    var foundIfs = true;
 
                     while (searchIndex < _statements.Length && foundIfs)
                     {
@@ -814,8 +807,8 @@ namespace Pokemon3D.Scripting
         private SObject ExecuteElse(ScriptStatement statement)
         {
             // Search for an if statement:
-            int searchIndex = _index - 2;
-            bool foundIf = false;
+            var searchIndex = _index - 2;
+            var foundIf = false;
 
             while (searchIndex >= 0 && !foundIf)
             {
@@ -844,8 +837,8 @@ namespace Pokemon3D.Scripting
         private SObject ExecuteElseIf(ScriptStatement statement)
         {
             // Search for an if statement:
-            int searchIndex = _index - 2;
-            bool foundIf = false;
+            var searchIndex = _index - 2;
+            var foundIf = false;
 
             while (searchIndex >= 0 && !foundIf)
             {
@@ -855,17 +848,16 @@ namespace Pokemon3D.Scripting
                 searchIndex -= 2;
             }
 
-            if (!foundIf)
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "keyword \'else if\'" );
-
-            return ExecuteIf(statement);
+            return foundIf ?
+                ExecuteIf(statement) :
+                ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "keyword \'else if\'" );
         }
 
         private SObject ExecuteUsing(ScriptStatement statement)
         {
-            string exp = statement.Code;
+            var exp = statement.Code;
 
-            string identifier = exp.Remove(0, "using ".Length).Trim();
+            var identifier = exp.Remove(0, "using ".Length).Trim();
 
             if (!IsValidIdentifier(identifier))
                 return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
@@ -878,14 +870,14 @@ namespace Pokemon3D.Scripting
 
         private SObject ExecuteVar(ScriptStatement statement)
         {
-            string exp = statement.Code;
+            var exp = statement.Code;
 
-            string identifier = exp.Remove(0, "var ".Length).Trim();
-            SObject data = Undefined;
+            var identifier = exp.Remove(0, "var ".Length).Trim();
+            var data = Undefined;
 
             if (identifier.Contains("="))
             {
-                string assignment = identifier.Remove(0, identifier.IndexOf("=") + 1).Trim();
+                var assignment = identifier.Remove(0, identifier.IndexOf("=") + 1).Trim();
                 identifier = identifier.Remove(identifier.IndexOf("=")).Trim();
 
                 data = SObject.Unbox(ExecuteStatement(new ScriptStatement(assignment)));
@@ -894,7 +886,7 @@ namespace Pokemon3D.Scripting
             if (!IsValidIdentifier(identifier))
                 return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
 
-            SVariable variable = new SVariable(identifier, data);
+            var variable = new SVariable(identifier, data);
             Context.AddVariable(variable);
 
             return variable;
@@ -902,9 +894,9 @@ namespace Pokemon3D.Scripting
 
         private SObject ExecuteWhile(ScriptStatement statement)
         {
-            string exp = statement.Code;
+            var exp = statement.Code;
 
-            string condition = exp.Remove(0, exp.IndexOf("while") + "while".Length).Trim().Remove(0, 1); // Remove "while" and "(".
+            var condition = exp.Remove(0, exp.IndexOf("while") + "while".Length).Trim().Remove(0, 1); // Remove "while" and "(".
             condition = condition.Remove(condition.Length - 1, 1).Trim(); // Remove ")".
 
             if (condition.Length == 0)
@@ -914,13 +906,13 @@ namespace Pokemon3D.Scripting
 
             if (_statements.Length > _index)
             {
-                bool stayInWhile = true;
+                var stayInWhile = true;
                 var executeStatement = _statements[_index];
                 var returnObject = Undefined;
 
                 while (stayInWhile)
                 {
-                    SObject conditionResult = ExecuteStatement(new ScriptStatement(condition));
+                    var conditionResult = ExecuteStatement(new ScriptStatement(condition));
 
                     if (conditionResult is SBool)
                         stayInWhile = ((SBool)conditionResult).Value;
@@ -949,7 +941,7 @@ namespace Pokemon3D.Scripting
 
         private SObject ExecuteReturn(ScriptStatement statement)
         {
-            string exp = statement.Code;
+            var exp = statement.Code;
 
             if (exp == "return")
             {

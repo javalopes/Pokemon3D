@@ -11,8 +11,8 @@ namespace Pokemon3D.Scripting.Types
     {
         protected const string PROPERTY_GET_PREFIX = "_get_";
         protected const string PROPERTY_SET_PREFIX = "_set_";
-        internal protected const string MEMBER_NAME_PROTOTYPE = "prototype";
-        internal protected const string MEMBER_NAME_SUPER = "super";
+        protected internal const string MEMBER_NAME_PROTOTYPE = "prototype";
+        protected internal const string MEMBER_NAME_SUPER = "super";
 
         /// <summary>
         /// Determines if this object actually was instantiated through a prototype.
@@ -157,9 +157,9 @@ namespace Pokemon3D.Scripting.Types
                     // So we do that now, and then set the value of that member:
                     AddMember(memberName, value);
                 }
-                else if (SuperClass != null)
+                else
                 {
-                    SuperClass.SetMember(processor, accessor, isIndexer, value);
+                    SuperClass?.SetMember(processor, accessor, isIndexer, value);
                 }
             }
         }
@@ -200,7 +200,7 @@ namespace Pokemon3D.Scripting.Types
 
         internal override string ToScriptSource()
         {
-            StringBuilder source = new StringBuilder();
+            var source = new StringBuilder();
 
             foreach (var member in Members)
             {
@@ -244,7 +244,7 @@ namespace Pokemon3D.Scripting.Types
         /// </summary>
         internal static SProtoObject Parse(ScriptProcessor processor, string source)
         {
-            Prototype prototype = new Prototype(LITERAL_OBJECT);
+            var prototype = new Prototype(LITERAL_OBJECT);
 
             source = source.Trim();
 
@@ -256,14 +256,14 @@ namespace Pokemon3D.Scripting.Types
             if (source.Length == 0)
                 return prototype.CreateInstance(processor, null, false);
 
-            int index = 0;
-            string identifier = "";
-            string content = "";
+            var index = 0;
+            var identifier = "";
+            var content = "";
             SObject contentObj = null;
 
             while (index < source.Length)
             {
-                int nextSeperatorIndex = source.IndexOf(",", index);
+                var nextSeperatorIndex = source.IndexOf(",", index);
                 if (nextSeperatorIndex == -1)
                 {
                     nextSeperatorIndex = source.Length;
@@ -274,13 +274,13 @@ namespace Pokemon3D.Scripting.Types
 
                     nextSeperatorIndex = index;
 
-                    int depth = 0;
+                    var depth = 0;
                     StringEscapeHelper escaper = new LeftToRightStringEscapeHelper(source, nextSeperatorIndex, true);
-                    bool foundSeperator = false;
+                    var foundSeperator = false;
 
                     while (!foundSeperator && nextSeperatorIndex < source.Length)
                     {
-                        char t = source[nextSeperatorIndex];
+                        var t = source[nextSeperatorIndex];
 
                         escaper.CheckStartAt(nextSeperatorIndex);
 
@@ -305,7 +305,7 @@ namespace Pokemon3D.Scripting.Types
                     }
                 }
 
-                string member = source.Substring(index, nextSeperatorIndex - index);
+                var member = source.Substring(index, nextSeperatorIndex - index);
 
                 if (member.Contains(":"))
                 {

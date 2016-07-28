@@ -2,7 +2,7 @@
 
 namespace Pokemon3D.Scripting.Types.Prototypes
 {
-    class ObjectPrototype : Prototype
+    internal class ObjectPrototype : Prototype
     {
         public ObjectPrototype() : base("Object") { }
 
@@ -12,8 +12,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             return processor.CreateString(LITERAL_OBJECT_STR);
         }
 
-        [BuiltInMethod(IsStatic = true)]
-        public static SObject create(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        [BuiltInMethod(IsStatic = true, MethodName = "create")]
+        public static SObject Create(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
             Prototype prototype = null;
 
@@ -47,8 +47,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [BuiltInMethod(IsStatic = true)]
-        public static SObject addMember(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        [BuiltInMethod(IsStatic = true, MethodName = "addMember")]
+        public static SObject AddMember(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
             // Parameter #1: (String)Name of the new member
             // [Parameter #2: Default value of the new member ] / Undefined
@@ -76,21 +76,21 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             else
                 memberName = parameters[0].ToString(processor).Value;
 
-            SObject defaultValue = processor.Undefined;
+            var defaultValue = processor.Undefined;
 
             if (parameters.Length > 1)
             {
                 defaultValue = parameters[1];
             }
 
-            bool isReadOnly = false;
-            bool isStatic = false;
-            bool isIndexerGet = false;
-            bool isIndexerSet = false;
+            var isReadOnly = false;
+            var isStatic = false;
+            var isIndexerGet = false;
+            var isIndexerSet = false;
 
             if (parameters.Length > 2)
             {
-                SObject signature = parameters[2];
+                var signature = parameters[2];
                 if (signature is SArray)
                 {
                     foreach (var arrayMember in ((SArray)signature).ArrayMembers)

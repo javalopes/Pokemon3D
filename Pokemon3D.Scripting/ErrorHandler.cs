@@ -56,13 +56,10 @@ namespace Pokemon3D.Scripting
 
         #endregion
 
-        private ScriptProcessor _processor;
+        private readonly ScriptProcessor _processor;
         private SObject _errorObject;
 
-        public bool ThrownError
-        {
-            get { return _errorObject != null; }
-        }
+        public bool ThrownError => _errorObject != null;
 
         public SObject ErrorObject
         {
@@ -99,10 +96,12 @@ namespace Pokemon3D.Scripting
         /// </summary>
         public SObject ThrowError(ErrorType errorType, string message, params object[] messageArgs)
         {
-            string strErrorType = errorType.ToString();
-            string formattedMessage = string.Format(message, messageArgs);
+            var strErrorType = errorType.ToString();
+            var formattedMessage = string.Format(message, messageArgs);
 
-            SObject errorObject = _processor.Context.CreateInstance("Error", new SObject[] { _processor.CreateString(formattedMessage), _processor.CreateString(errorType.ToString()), _processor.CreateNumber(_processor.GetLineNumber()) });
+            var errorObject = _processor.Context.CreateInstance("Error", new SObject[] { _processor.CreateString(formattedMessage),
+                                                                                         _processor.CreateString(errorType.ToString()),
+                                                                                         _processor.CreateNumber(_processor.GetLineNumber()) });
 
             return ThrowError(errorObject);
         }

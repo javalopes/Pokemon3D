@@ -2,7 +2,7 @@
 
 namespace Pokemon3D.Scripting.Types
 {
-    class SNumber : SProtoObject
+    internal class SNumber : SProtoObject
     {
         /// <summary>
         /// Converts the value to the script representation.
@@ -22,8 +22,8 @@ namespace Pokemon3D.Scripting.Types
         /// </summary>
         internal static bool TryParse(string input, out double result)
         {
-            int numBase = 10;
-            char baseChar = 'd'; //Standard -> decimal
+            var numBase = 10;
+            var baseChar = 'd'; //Standard -> decimal
 
             if (input.StartsWith("0b") ||
                 input.StartsWith("0o") ||
@@ -48,7 +48,7 @@ namespace Pokemon3D.Scripting.Types
 
             if (baseChar != 'd')
             {
-                int parseResult = 0;
+                var parseResult = 0;
                 if (int.TryParse(input, out parseResult))
                 {
                     result = Convert.ToInt32(input, numBase);

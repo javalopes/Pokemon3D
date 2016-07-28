@@ -1,6 +1,6 @@
 ﻿namespace Pokemon3D.Scripting.Types.Prototypes
 {
-    class BooleanPrototype : Prototype
+    internal class BooleanPrototype : Prototype
     {
         public BooleanPrototype() : base("Boolean")
         {
@@ -14,7 +14,7 @@
 
         private static SObject constructor(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            SBool obj = (SBool)instance;
+            var obj = (SBool)instance;
 
             if (parameters[0] is SBool)
                 obj.Value = ((SBool)parameters[0]).Value;

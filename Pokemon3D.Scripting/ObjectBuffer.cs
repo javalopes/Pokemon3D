@@ -9,9 +9,9 @@ namespace Pokemon3D.Scripting
     {
         internal const string OBJ_PREFIX = "§";
 
-        private static object _syncRoot = new object();
+        private static readonly object _syncRoot = new object();
 
-        private static List<object> _buffer = new List<object>();
+        private static readonly List<object> _buffer = new List<object>();
 
         internal static int GetObjectId(object obj)
         {

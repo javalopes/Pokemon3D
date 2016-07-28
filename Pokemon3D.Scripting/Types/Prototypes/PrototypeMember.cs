@@ -3,7 +3,7 @@
     /// <summary>
     /// The member variable of a <see cref="Prototype"/>, with name and signature.
     /// </summary>
-    class PrototypeMember
+    internal class PrototypeMember
     {
         public string Identifier { get; }
 
@@ -12,13 +12,7 @@
         /// <summary>
         /// Determines if this member contains a function.
         /// </summary>
-        internal bool IsFunction
-        {
-            get
-            {
-                return (Data != null && Data is SFunction);
-            }
-        }
+        internal bool IsFunction => Data is SFunction;
 
         public PrototypeMember(string identifier, SObject data) : this(identifier, data, false, false, false, false) { }
 

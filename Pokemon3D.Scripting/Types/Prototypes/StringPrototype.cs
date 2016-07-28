@@ -1,6 +1,6 @@
 ﻿namespace Pokemon3D.Scripting.Types.Prototypes
 {
-    class StringPrototype : Prototype
+    internal class StringPrototype : Prototype
     {
         public StringPrototype(ScriptProcessor processor) : base("String")
         {
@@ -14,7 +14,7 @@
 
         private static SObject constructor(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            SString obj = (SString)instance;
+            var obj = (SString)instance;
 
             if (parameters[0] is SString)
             {
@@ -27,16 +27,16 @@
             return obj;
         }
 
-        [BuiltInMethod(FunctionType = FunctionUsageType.PropertyGetter)]
-        public static SObject length(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        [BuiltInMethod(FunctionType = FunctionUsageType.PropertyGetter, MethodName = "length")]
+        public static SObject Length(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            SString obj = (SString)instance;
+            var obj = (SString)instance;
 
             return processor.CreateNumber(obj.Value.Length);
         }
 
-        [BuiltInMethod(FunctionType = FunctionUsageType.PropertyGetter, IsStatic = true)]
-        public static SObject empty(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        [BuiltInMethod(FunctionType = FunctionUsageType.PropertyGetter, IsStatic = true, MethodName = "empty")]
+        public static SObject Empty(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
             return processor.CreateString("");
         }
