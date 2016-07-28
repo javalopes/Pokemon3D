@@ -30,39 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.1.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.2.99-Beta\lib\net40\MonoGame.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="MonoGame.Framework, Version=3.5.0.1678, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.0.1678\lib\net40\MonoGame.Framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpDX, Version=2.5.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.2.99-Beta\lib\net40\SharpDX.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct2D1, Version=2.5.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.2.99-Beta\lib\net40\SharpDX.Direct2D1.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D11, Version=2.5.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.2.99-Beta\lib\net40\SharpDX.Direct3D11.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D9, Version=2.5.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.2.99-Beta\lib\net40\SharpDX.Direct3D9.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.DXGI, Version=2.5.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.2.99-Beta\lib\net40\SharpDX.DXGI.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.MediaFoundation, Version=2.5.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.2.99-Beta\lib\net40\SharpDX.MediaFoundation.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.RawInput, Version=2.5.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.2.99-Beta\lib\net40\SharpDX.RawInput.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.XAudio2, Version=2.5.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.2.99-Beta\lib\net40\SharpDX.XAudio2.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.XInput, Version=2.5.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.2.99-Beta\lib\net40\SharpDX.XInput.dll</HintPath>
+    <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
