@@ -10,18 +10,17 @@ using Pokemon3D.Screens.Overworld;
 using Pokemon3D.Screens;
 using Pokemon3D.ScriptPipeline.Prototypes;
 
-namespace Pokemon3D.ScriptPipeline.APIClasses
+namespace Pokemon3D.ScriptPipeline.ApiClasses
 {
-    [APIClass(ClassName = "world")]
-    class World : APIClass
+    [ApiClass(ClassName = "world")]
+    internal class World : ApiClass
     {
         public static SObject getEntity(ScriptProcessor processor, SObject[] parameters)
         {
             object[] netObjects;
-            if (EnsureTypeContract(parameters, new Type[] { typeof(string) }, out netObjects))
+            if (EnsureTypeContract(parameters, new[] { typeof(string) }, out netObjects))
             {
-                var entity = new EntityWrapper();
-                entity.id = (string)netObjects[0];
+                var entity = new EntityWrapper {id = (string)netObjects[0]};
 
                 return ScriptInAdapter.Translate(processor, entity);
             }
@@ -32,12 +31,13 @@ namespace Pokemon3D.ScriptPipeline.APIClasses
         public static SObject load(ScriptProcessor processor, SObject[] parameters)
         {
             object[] netObjects;
-            if (EnsureTypeContract(parameters, new Type[] { typeof(string), typeof(Vector3Wrapper) }, out netObjects))
+            if (EnsureTypeContract(parameters, new[] { typeof(string), typeof(Vector3Wrapper) }, out netObjects))
             {
-                OverworldScreen screen = (OverworldScreen)GameCore.GameProvider.GameInstance.GetService<ScreenManager>().CurrentScreen;
+                var screen = (OverworldScreen)GameCore.GameProvider.GameInstance.GetService<ScreenManager>().CurrentScreen;
 
                 var position = netObjects[1] as Vector3Wrapper;
-                screen.ActiveWorld.LoadMap(netObjects[0] as string, position.x, position.y, position.z);
+                if (position != null)
+                    screen.ActiveWorld.LoadMap(netObjects[0] as string, position.X, position.Y, position.Z);
             }
 
             return ScriptInAdapter.GetUndefined(processor);

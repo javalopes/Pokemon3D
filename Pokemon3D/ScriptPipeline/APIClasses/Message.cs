@@ -5,10 +5,10 @@ using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
 using Pokemon3D.Screens;
 
-namespace Pokemon3D.ScriptPipeline.APIClasses
+namespace Pokemon3D.ScriptPipeline.ApiClasses
 {
-    [APIClass(ClassName = "message")]
-    class Message : APIClass
+    [ApiClass(ClassName = "message")]
+    internal class Message : ApiClass
     {
         public static SObject show(ScriptProcessor processor, SObject[] parameters)
         {
@@ -17,8 +17,8 @@ namespace Pokemon3D.ScriptPipeline.APIClasses
             {
                 var text = (string)netObjects[0];
 
-                OverworldScreen screen = (OverworldScreen)GameCore.GameProvider.GameInstance.GetService<ScreenManager>().CurrentScreen;
-                MessageOverworldUIElement uiElement = new MessageOverworldUIElement(text);
+                var screen = (OverworldScreen)GameCore.GameProvider.GameInstance.GetService<ScreenManager>().CurrentScreen;
+                var uiElement = new MessageOverworldUIElement(text);
 
                 screen.AddUiElement(uiElement);
                 uiElement.IsActive = true;

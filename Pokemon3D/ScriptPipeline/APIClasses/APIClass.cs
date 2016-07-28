@@ -3,9 +3,9 @@ using Pokemon3D.Scripting.Types;
 using Pokemon3D.Scripting.Adapters;
 using System.Threading;
 
-namespace Pokemon3D.ScriptPipeline.APIClasses
+namespace Pokemon3D.ScriptPipeline.ApiClasses
 {
-    abstract class APIClass
+    internal abstract class ApiClass
     {
         /// <summary>
         /// Ensures that the parameters for an API method fulfill the type contract. It also converts all script objects to .Net objects.
@@ -15,7 +15,7 @@ namespace Pokemon3D.ScriptPipeline.APIClasses
             if (parameters.Length >= typeContract.Length)
             {
                 netObjects = new object[parameters.Length];
-                int i = 0;
+                var i = 0;
 
                 while (i < parameters.Length)
                 {
