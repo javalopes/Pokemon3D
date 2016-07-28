@@ -60,7 +60,7 @@ namespace Pokemon3D.DataModel.GameCore
                         Height = 600
                     },
                     EnableFileHotSwapping = false,
-                    CustomGameModeBasePath = "..\\..\\..\\..\\GameModeTemplates"
+                    CustomGameModeBasePath = @"..\..\..\..\GameModeTemplates"
                 };
             }
         }

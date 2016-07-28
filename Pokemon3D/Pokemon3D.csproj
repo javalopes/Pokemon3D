@@ -297,8 +297,7 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /E /I "$(SolutionDir)GameModeTemplates" "$(TargetDir)GameModes"
-xcopy /Y /E /I "$(SolutionDir)i18n" "$(TargetDir)i18n"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y /E /I "$(SolutionDir)i18n" "$(TargetDir)i18n"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\AssimpNet.3.3.1\build\AssimpNet.targets" Condition="Exists('..\packages\AssimpNet.3.3.1\build\AssimpNet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

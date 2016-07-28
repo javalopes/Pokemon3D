@@ -46,6 +46,7 @@ namespace Pokemon3D.GameCore
             }
 
             GameInstance.Exiting += OnGameExiting;
+            GameModePathProvider.CustomPath = _dataModel.CustomGameModeBasePath;
 
             FileObserver.Instance.StartFileObserve(StaticPathProvider.ConfigFile, ReloadFile);
         }
@@ -79,6 +80,7 @@ namespace Pokemon3D.GameCore
             try
             {
                 _dataModel = DataModel<ConfigurationModel>.FromFile(StaticPathProvider.ConfigFile);
+                GameModePathProvider.CustomPath = _dataModel.CustomGameModeBasePath;
                 ConfigFileLoaded?.Invoke(this, EventArgs.Empty);
             }
             catch (DataLoadException)
