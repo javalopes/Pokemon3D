@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Pokemon3D.Scripting.Adapters;
+using Pokemon3D.ScriptPipeline.Prototypes;
 
 namespace Pokemon3D.ScriptPipeline
 {
     [ScriptPrototype(VariableName = "entityComponent")]
-    class EntityComponentWrapper
+    internal class EntityComponentWrapper
     {
         [ScriptVariable]
         public EntityWrapper parent;
@@ -16,29 +17,29 @@ namespace Pokemon3D.ScriptPipeline
         [ScriptVariable]
         public string id;
 
-        [ScriptFunction(ScriptFunctionType.Standard)]
-        public static object setData(object This, object[] parameters)
+        [ScriptFunction(ScriptFunctionType.Standard, VariableName = "setData")]
+        public static object SetData(object This, object[] parameters)
         {
             var instance = (EntityComponentWrapper)This;
             var entity = instance.parent.GetEntity();
             var component = entity.GetComponent(instance.id);
 
-            string dataKey = (string)parameters[0];
-            string dataValue = (string)parameters[1];
+            var dataKey = (string)parameters[0];
+            var dataValue = (string)parameters[1];
 
             component.SetData(dataKey, dataValue);
 
             return dataValue;
         }
 
-        [ScriptFunction(ScriptFunctionType.Standard)]
-        public static object getData(object This, object[] parameters)
+        [ScriptFunction(ScriptFunctionType.Standard, VariableName = "getData")]
+        public static object GetData(object This, object[] parameters)
         {
             var instance = (EntityComponentWrapper)This;
             var entity = instance.parent.GetEntity();
             var component = entity.GetComponent(instance.id);
 
-            string dataKey = (string)parameters[0];
+            var dataKey = (string)parameters[0];
 
             return component.GetDataOrDefault(dataKey, "");
         }

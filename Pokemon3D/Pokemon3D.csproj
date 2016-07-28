@@ -105,12 +105,12 @@
     <Compile Include="Screens\Overworld\OverworldUIElement.cs" />
     <Compile Include="Screens\Transitions\ShrinkOldTransition.cs" />
     <Compile Include="Screens\WorldContainer.cs" />
-    <Compile Include="ScriptPipeline\APIClasses\APIClass.cs" />
-    <Compile Include="ScriptPipeline\APIClasses\APIClassAttribute.cs" />
-    <Compile Include="ScriptPipeline\APIClasses\Message.cs" />
-    <Compile Include="ScriptPipeline\APIClasses\World.cs" />
-    <Compile Include="ScriptPipeline\Entity.cs" />
+    <Compile Include="ScriptPipeline\ApiClasses\ApiClass.cs" />
+    <Compile Include="ScriptPipeline\ApiClasses\APIClassAttribute.cs" />
+    <Compile Include="ScriptPipeline\ApiClasses\Message.cs" />
+    <Compile Include="ScriptPipeline\ApiClasses\World.cs" />
     <Compile Include="ScriptPipeline\EntityComponent.cs" />
+    <Compile Include="ScriptPipeline\Prototypes\Entity.cs" />
     <Compile Include="ScriptPipeline\Prototypes\TypeContract.cs" />
     <Compile Include="ScriptPipeline\Prototypes\Vector2.cs" />
     <Compile Include="ScriptPipeline\Prototypes\Vector3.cs" />

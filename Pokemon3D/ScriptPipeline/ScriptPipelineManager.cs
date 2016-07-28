@@ -9,13 +9,13 @@ using Pokemon3D.Entities;
 using Pokemon3D.Scripting;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
-using Pokemon3D.ScriptPipeline.APIClasses;
+using Pokemon3D.ScriptPipeline.ApiClasses;
 using static Pokemon3D.GameCore.GameProvider;
 using Pokemon3D.UI;
 
 namespace Pokemon3D.ScriptPipeline
 {
-    static class ScriptPipelineManager
+    internal static class ScriptPipelineManager
     {
         public static int ActiveProcessorCount { get; private set; }
 
@@ -32,20 +32,20 @@ namespace Pokemon3D.ScriptPipeline
             _prototypeBuffer = new List<SObject>();
             var processor = new ScriptProcessor();
 
-            foreach (Type t in typeof(ScriptPipelineManager).Assembly.GetTypes().Where(t => t.GetCustomAttributes(typeof(ScriptPrototypeAttribute), true).Length > 0))
+            foreach (var t in typeof(ScriptPipelineManager).Assembly.GetTypes().Where(t => t.GetCustomAttributes(typeof(ScriptPrototypeAttribute), true).Length > 0))
                 _prototypeBuffer.Add(ScriptInAdapter.Translate(processor, t));
         }
 
-        private static void InitializeAPIClasses()
+        private static void InitializeApiClasses()
         {
-            // get all types derived from APIClass that have an APIClass attribute.
+            // get all types derived from APIClass that have an ApiClass attribute.
             // get their public static methods and add them grouped by their type's name to the dictionary.
 
             _apiClasses = new Dictionary<string, MethodInfo[]>();
-            foreach (Type t in typeof(ScriptPipelineManager).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(APIClass)) &&
-                                                                                            t.GetCustomAttributes(typeof(APIClassAttribute), true).Length > 0))
+            foreach (var t in typeof(ScriptPipelineManager).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ApiClass)) &&
+                                                                                           t.GetCustomAttributes(typeof(ApiClassAttribute), true).Length > 0))
             {
-                var attr = (APIClassAttribute)t.GetCustomAttribute(typeof(APIClassAttribute));
+                var attr = (ApiClassAttribute)t.GetCustomAttribute(typeof(ApiClassAttribute));
                 _apiClasses.Add(attr.ClassName, t.GetMethods(BindingFlags.Public | BindingFlags.Static));
             }
         }
@@ -65,7 +65,7 @@ namespace Pokemon3D.ScriptPipeline
         private static SObject ExecuteMethod(ScriptProcessor processor, string className, string methodName, SObject[] parameters)
         {
             if (_apiClasses == null)
-                InitializeAPIClasses();
+                InitializeApiClasses();
 
             if (_apiClasses.ContainsKey(className))
             {
@@ -89,9 +89,8 @@ namespace Pokemon3D.ScriptPipeline
             {
                 try
                 {
-                    //todo: HÜLFE!
                     var gamemode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
-                    string source = Encoding.UTF8.GetString(gamemode.FileLoader.GetFile(gamemode.GetScriptFilePath(scriptFile), false).Data);
+                    var source = Encoding.UTF8.GetString(gamemode.FileLoader.GetFile(gamemode.GetScriptFilePath(scriptFile), false).Data);
 
                     var processor = CreateProcessor();
                     var result = processor.Run(source);
@@ -99,13 +98,15 @@ namespace Pokemon3D.ScriptPipeline
                     if (ScriptContextManipulator.ThrownRuntimeError(processor))
                     {
                         var exObj = ScriptOutAdapter.Translate(result);
-                        if (exObj is ScriptRuntimeException)
-                            throw (ScriptRuntimeException)exObj;
+
+                        var runtimeException = exObj as ScriptRuntimeException;
+                        if (runtimeException != null)
+                            throw runtimeException;
                     }
                 }
                 catch (ArgumentNullException)
                 {
-                    var message = "Failed to run script \"" + scriptFile + "\"";
+                    var message = $"Failed to run script \"{scriptFile}\"";
                     GameLogger.Instance.Log(MessageType.Error, message);
                     GameInstance.GetService<NotificationBar>().PushNotification(NotificationKind.Error, message);
                 }

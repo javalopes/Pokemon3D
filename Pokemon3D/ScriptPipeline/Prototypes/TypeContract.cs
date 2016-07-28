@@ -6,22 +6,12 @@ using System.Threading.Tasks;
 
 namespace Pokemon3D.ScriptPipeline.Prototypes
 {
-    static class TypeContract
+    internal static class TypeContract
     {
         public static bool Ensure(object[] objects, Type[] typeContract)
         {
-            if (objects.Length == typeContract.Length)
-            {
-                for (int i = 0; i < typeContract.Length; i++)
-                {
-                    if (objects[i] != null && objects[i].GetType() != typeContract[i])
-                        return false;
-                }
-
-                return true;
-            }
-
-            return false;
+            if (objects.Length != typeContract.Length) return false;
+            return !typeContract.Where((t, i) => objects[i] != null && objects[i].GetType() != t).Any();
         }
     }
 }

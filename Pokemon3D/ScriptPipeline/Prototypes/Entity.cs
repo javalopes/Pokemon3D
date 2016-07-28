@@ -8,23 +8,25 @@ using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Entities.System;
 using Pokemon3D.Screens;
 
-namespace Pokemon3D.ScriptPipeline
+namespace Pokemon3D.ScriptPipeline.Prototypes
 {
     [ScriptPrototype(VariableName = "entity")]
-    class EntityWrapper
+    internal class EntityWrapper
     {
         [ScriptVariable]
         public string id;
 
-        [ScriptFunction(ScriptFunctionType.Standard)]
-        public static object getComponent(object This, object[] parameters)
+        [ScriptFunction(ScriptFunctionType.Standard, VariableName = "getComponent")]
+        public static object GetComponent(object This, object[] parameters)
         {
             var wrapper = (EntityWrapper)This;
             var entity = wrapper.GetEntity();
 
-            var component = new EntityComponentWrapper();
-            component.parent = wrapper;
-            component.id = (string)parameters[0];
+            var component = new EntityComponentWrapper
+            {
+                parent = wrapper,
+                id = parameters[0] as string
+            };
 
             return component;
         }
@@ -33,15 +35,9 @@ namespace Pokemon3D.ScriptPipeline
         {
             // attempt to get world instance from world container screen:
             var screen = GameCore.GameController.Instance.GetService<ScreenManager>().CurrentScreen;
-            if (screen is WorldContainer)
-            {
-                var world = ((WorldContainer)screen).ActiveWorld;
-                return world.EntitySystem.GetEntity(id);
-            }
-            else
-            {
-                return null;
-            }
+            var container = screen as WorldContainer;
+            var world = container?.ActiveWorld;
+            return world?.EntitySystem.GetEntity(id);
         }
     }
 }

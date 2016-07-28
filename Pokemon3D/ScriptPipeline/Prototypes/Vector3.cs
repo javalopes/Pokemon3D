@@ -8,18 +8,18 @@ using Pokemon3D.Scripting.Adapters;
 namespace Pokemon3D.ScriptPipeline.Prototypes
 {
     [ScriptPrototype(VariableName = "Vector3")]
-    class Vector3Wrapper
+    internal class Vector3Wrapper
     {
-        [ScriptVariable]
-        public double x;
+        [ScriptVariable(VariableName = "x")]
+        public double X;
 
-        [ScriptVariable]
-        public double y;
+        [ScriptVariable(VariableName = "y")]
+        public double Y;
 
-        [ScriptVariable]
-        public double z;
+        [ScriptVariable(VariableName = "z")]
+        public double Z;
 
-        [ScriptFunction(ScriptFunctionType.Constructor)]
-        public static string constructor = "function(x,y,z) { this.x = x; this.y = y; this.z = z; }";
+        [ScriptFunction(ScriptFunctionType.Constructor, VariableName = "constructor")]
+        public static string Constructor = "function(x,y,z) { this.x = x; this.y = y; this.z = z; }";
     }
 }

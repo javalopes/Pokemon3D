@@ -8,15 +8,15 @@ using Pokemon3D.Scripting.Adapters;
 namespace Pokemon3D.ScriptPipeline.Prototypes
 {
     [ScriptPrototype(VariableName = "Vector2")]
-    class Vector2Wrapper
+    internal class Vector2Wrapper
     {
-        [ScriptVariable]
-        public double x;
+        [ScriptVariable(VariableName = "x")]
+        public double X;
 
-        [ScriptVariable]
-        public double y;
+        [ScriptVariable(VariableName = "y")]
+        public double Y;
 
-        [ScriptFunction(ScriptFunctionType.Constructor)]
-        public static string constructor = "function(x,y) { this.x = x; this.y = y; }";
+        [ScriptFunction(ScriptFunctionType.Constructor, VariableName = "constructor")]
+        public static string Constructor = "function(x,y) { this.x = x; this.y = y; }";
     }
 }
