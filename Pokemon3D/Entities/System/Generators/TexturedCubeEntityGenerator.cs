@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using System.Collections.Generic;
-using Pokemon3D.Entities.Maps;
+using Pokemon3D.GameModes.Maps;
 
 namespace Pokemon3D.Entities.System.Generators
 {

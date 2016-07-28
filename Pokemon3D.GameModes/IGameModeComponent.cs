@@ -1,4 +1,4 @@
-﻿namespace Pokemon3D.Entities
+﻿namespace Pokemon3D.GameModes
 {
     /// <summary>
     /// A component of a <see cref="GameMode"/>.

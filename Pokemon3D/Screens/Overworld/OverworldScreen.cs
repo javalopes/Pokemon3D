@@ -17,6 +17,7 @@ using Pokemon3D.Rendering;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Collisions;
 using Pokemon3D.Common.Shapes;
+using Pokemon3D.GameModes;
 
 namespace Pokemon3D.Screens.Overworld
 {

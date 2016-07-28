@@ -4,7 +4,7 @@ using System.IO;
 using Pokemon3D.DataModel;
 using Pokemon3D.Common.Diagnostics;
 
-namespace Pokemon3D.Entities
+namespace Pokemon3D.GameModes
 {
     /// <summary>
     /// Contains global information about the GameMode.

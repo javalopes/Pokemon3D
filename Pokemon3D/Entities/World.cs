@@ -7,6 +7,7 @@ using Pokemon3D.Entities.System;
 using Microsoft.Xna.Framework;
 using static Pokemon3D.GameCore.GameProvider;
 using Pokemon3D.Common.Input;
+using Pokemon3D.GameModes;
 
 namespace Pokemon3D.Entities
 {

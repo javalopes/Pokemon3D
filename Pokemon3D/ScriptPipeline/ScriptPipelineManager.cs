@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using Pokemon3D.Common.Diagnostics;
 using Pokemon3D.Entities;
+using Pokemon3D.GameModes;
 using Pokemon3D.Scripting;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;

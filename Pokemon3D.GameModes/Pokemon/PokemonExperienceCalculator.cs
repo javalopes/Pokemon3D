@@ -1,7 +1,7 @@
 ﻿using Pokemon3D.DataModel.GameMode.Pokemon;
 using static System.Math;
 
-namespace Pokemon3D.Entities.Pokemon
+namespace Pokemon3D.GameModes.Pokemon
 {
     /// <summary>
     /// A class that contains methods to work with Pokémon experience formulas.

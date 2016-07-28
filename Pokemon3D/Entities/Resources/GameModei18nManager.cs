@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Pokemon3D.GameModes;
 
 namespace Pokemon3D.Entities.Resources
 {

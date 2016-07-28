@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.GameCore;
+using Pokemon3D.GameModes;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 using static Pokemon3D.GameCore.GameProvider;

@@ -8,6 +8,7 @@ using static Pokemon3D.GameCore.GameProvider;
 using System.IO;
 using Pokemon3D.Common.FileSystem;
 using Pokemon3D.GameCore;
+using Pokemon3D.GameModes;
 
 namespace Pokemon3D.Entities
 {

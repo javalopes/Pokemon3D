@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Pokemon3D.DataModel.Savegame;
-using Pokemon3D.Entities.Pokemon;
 using Pokemon3D.DataModel.Savegame.Pokemon;
 
-namespace Pokemon3D.Entities
+namespace Pokemon3D.GameModes
 {
     /// <summary>
     /// Exposes the SaveFileModel properties to the API.

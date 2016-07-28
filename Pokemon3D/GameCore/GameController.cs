@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common;
 using Pokemon3D.Common.Diagnostics;
-using Pokemon3D.Entities;
+using Pokemon3D.GameModes;
 using Pokemon3D.UI;
 using Pokemon3D.UI.Localization;
 using System;

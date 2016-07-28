@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Pokemon3D.Screens.Transitions;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Entities;
+using Pokemon3D.GameModes;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Screens.Overworld;
 using Pokemon3D.Rendering.UI;

@@ -4,7 +4,7 @@ using Pokemon3D.Common.DataHandling;
 using Pokemon3D.DataModel.GameMode.Map;
 using System.IO;
 
-namespace Pokemon3D.Entities.Maps
+namespace Pokemon3D.GameModes.Maps
 {
     public class MapFragmentManager
     {
