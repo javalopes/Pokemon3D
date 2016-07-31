@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D", "Pokemon3D\Pokemon3D.csproj", "{5D11A857-65E3-46BB-9550-633D5DC5973F}"
 EndProject
@@ -28,8 +28,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.GameModes", "Pokemon3D.GameModes\Pokemon3D.GameModes.csproj", "{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.GameJolt", "Pokemon3D.GameJolt\Pokemon3D.GameJolt.csproj", "{F4417500-6A78-444C-BE5C-31D8BDB4A1D0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityToJsonMapConverter", "UnityToJsonMapConverter\UnityToJsonMapConverter.csproj", "{DAED1582-E95B-46E6-BB97-BFA6B78575DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -257,24 +255,6 @@ Global
 		{F4417500-6A78-444C-BE5C-31D8BDB4A1D0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F4417500-6A78-444C-BE5C-31D8BDB4A1D0}.Release|x86.ActiveCfg = Release|Any CPU
 		{F4417500-6A78-444C-BE5C-31D8BDB4A1D0}.Release|x86.Build.0 = Release|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Debug|x86.Build.0 = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.DebugRendering|Any CPU.ActiveCfg = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.DebugRendering|Any CPU.Build.0 = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.DebugRendering|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.DebugRendering|Mixed Platforms.Build.0 = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.DebugRendering|x86.ActiveCfg = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.DebugRendering|x86.Build.0 = Debug|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Release|x86.ActiveCfg = Release|Any CPU
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -282,6 +262,5 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{08A6EA0D-4431-4ED7-8C79-D7F7F7B0C7DB} = {3FF6E819-67CC-4545-8380-48FBDABC11E6}
 		{4365490B-CC67-45E5-A113-1120E0D2B3EC} = {3FF6E819-67CC-4545-8380-48FBDABC11E6}
-		{DAED1582-E95B-46E6-BB97-BFA6B78575DE} = {3FF6E819-67CC-4545-8380-48FBDABC11E6}
 	EndGlobalSection
 EndGlobal
