@@ -105,6 +105,8 @@ namespace Pokemon3D.Rendering.Data
             var fileName = Path.GetFileName(textureSlot.FilePath) ?? "";
             var textureFilePath = Path.Combine(modelDirectory, fileName);
 
+            if (!File.Exists(fileName)) return null;
+
             return loaderContext.GetTextureFromRawFolder(textureFilePath);
         }
     }
