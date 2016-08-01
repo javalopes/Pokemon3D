@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Pokemon3D.Screens.Overworld
 {
-    abstract class OverworldUIElement
+    internal abstract class OverworldUIElement
     {
         private bool _isActive = false;
 

@@ -8,7 +8,7 @@ namespace Pokemon3D.Entities.System
     /// <summary>
     /// Contains static methods to convert the string data of entity components to other data types.
     /// </summary>
-    static class TypeConverter
+    internal static class TypeConverter
     {
 
         public static T Convert<T>(string data)

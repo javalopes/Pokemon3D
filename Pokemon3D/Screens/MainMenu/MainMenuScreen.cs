@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Screens.MainMenu
 {
-    class MainMenuScreen : Screen
+    internal class MainMenuScreen : Screen
     {
         private UiOverlay _mainOverlay;
         private SelectionDialog _closeDialog;

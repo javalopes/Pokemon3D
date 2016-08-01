@@ -9,9 +9,9 @@ using Pokemon3D.GameModes;
 
 namespace Pokemon3D.Entities.Resources
 {
-    class GameModei18nManager : TranslationManager
+    internal class GameModei18nManager : TranslationManager
     {
-        private GameMode _gameMode;
+        private readonly GameMode _gameMode;
 
         public GameModei18nManager(GameMode gameMode)
         {

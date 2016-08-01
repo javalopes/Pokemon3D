@@ -8,7 +8,7 @@ namespace Pokemon3D.FileSystem
     /// <summary>
     /// Provides paths to static files of the game.
     /// </summary>
-    class StaticPathProvider : PathProvider
+    internal class StaticPathProvider : PathProvider
     {
         private const string CONFIG_FILE_NAME = "configuration.json";
         private const string SAVE_PATH = "Saves";

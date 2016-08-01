@@ -8,7 +8,7 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Collisions
 {
-    class CollisionManager
+    internal class CollisionManager
     {
         private readonly object _lockObject = new object();
 

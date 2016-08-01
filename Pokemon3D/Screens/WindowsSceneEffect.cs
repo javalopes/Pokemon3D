@@ -7,7 +7,7 @@ using System;
 
 namespace Pokemon3D.Screens
 {
-    class WindowsSceneEffect : SceneEffect
+    internal class WindowsSceneEffect : SceneEffect
     {
         private readonly Effect _basicEffect;
 

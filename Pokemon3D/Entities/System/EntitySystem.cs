@@ -10,7 +10,7 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities.System
 {
-    class EntitySystem
+    internal class EntitySystem
     {
         private readonly object _lockObject = new object();
         private readonly List<Entity> _entities;
@@ -143,10 +143,8 @@ namespace Pokemon3D.Entities.System
         {
             lock (_lockObject)
             {
-                for (var i = 0; i < _entities.Count; i++)
-                {
-                    _entities[i].Update(gameTime);
-                }
+                foreach (Entity e in _entities)
+                    e.Update(gameTime);
             }
         }
 

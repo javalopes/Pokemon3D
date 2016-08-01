@@ -7,7 +7,7 @@ using static Pokemon3D.GameCore.GameProvider;
 namespace Pokemon3D.Entities.System.Components
 {
     [JsonComponentId("scripttrigger")]
-    class ScriptTriggerEntityComponent : EntityComponent
+    internal class ScriptTriggerEntityComponent : EntityComponent
     {
         private string _script;
         private string _trigger;

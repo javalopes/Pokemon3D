@@ -7,7 +7,7 @@ using Pokemon3D.Rendering.UI.Animations;
 
 namespace Pokemon3D.UI
 {
-    class LeftSideButton : UiElement
+    internal class LeftSideButton : UiElement
     {
         private readonly SpriteFont _font;
         private readonly Action<LeftSideButton> _onClick;

@@ -14,12 +14,9 @@ namespace Pokemon3D.Screens.Overworld
 {
     class MessageOverworldUIElement : OverworldUIElement
     {
-        private string _message;
+        private readonly string _message;
 
-        public override bool IsBlocking
-        {
-            get { return true; }
-        }
+        public override bool IsBlocking => true;
 
         public event Action<MessageOverworldUIElement> MessageClosed;
 

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.UI
 {
-    class NotificationBar : UiCompoundElement
+    internal class NotificationBar : UiCompoundElement
     {
         private readonly object _lockObject = new object();
         private readonly int _maxNotifications;

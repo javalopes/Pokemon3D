@@ -2,7 +2,7 @@
 
 namespace Pokemon3D.Entities.System.Generators
 {
-    class EntityGeneratorSupplier
+    internal class EntityGeneratorSupplier
     {
         private readonly Dictionary<string, EntityGenerator> _generators;
 

@@ -8,7 +8,7 @@ namespace Pokemon3D.Entities.System
     /// <summary>
     /// A component of an <see cref="Entity"/>, responsible for the Entity's functionality.
     /// </summary>
-    class EntityComponent
+    internal class EntityComponent
     {
         private bool _isActive;
 
@@ -113,11 +113,7 @@ namespace Pokemon3D.Entities.System
         public T GetDataOrDefault<T>(string key, T defaultValue = default(T))
         {
             string value;
-            if (_data.TryGetValue(key, out value))
-            {
-                return TypeConverter.Convert<T>(value);
-            }
-            return defaultValue;
+            return _data.TryGetValue(key, out value) ? TypeConverter.Convert<T>(value) : defaultValue;
         }
 
         /// <summary>
@@ -157,9 +153,7 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// Is called when the entity has been created in initializing mode and is now read to initialize properly.
         /// </summary>
-        public virtual void OnInitialized()
-        {
-        }
+        public virtual void OnInitialized() { }
 
         protected virtual void OnDataChanged(string key, string oldData, string newData) { }
     }

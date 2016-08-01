@@ -10,14 +10,16 @@ namespace Pokemon3D.UI
     /// <summary>
     /// Draws a projection of a texture on a 3D quad.
     /// </summary>
-    class TextureProjectionQuad
+    internal class TextureProjectionQuad
     {
-        private Vector3 _origin, _upperLeft, _lowerLeft, _upperRight, _lowerRight, _normal, _up, _left;
+        private readonly Vector3 _origin, _up, _normal;
+        private Vector3 _upperLeft, _lowerLeft, _upperRight, _lowerRight;
+        private Vector3 _left;
         private BasicEffect _quadEffect;
         private RenderTarget2D _target;
         private Matrix _projection, _view;
-        private VertexPositionNormalTexture[] _vertices;
-        private short[] _indices;
+        private readonly VertexPositionNormalTexture[] _vertices;
+        private readonly short[] _indices;
         private bool _viewDirty = true;
         private bool _projectionDirty = true;
         private bool _targetDirty = true;
@@ -235,7 +237,7 @@ namespace Pokemon3D.UI
                 new Point(rectangle.X, rectangle.Y + rectangle.Height), // bottom left
                 new Point(rectangle.X + rectangle.Width, rectangle.Y + rectangle.Height), // bottom right
                 new Point(rectangle.X + rectangle.Width, rectangle.Y) // top right
-            }.Select(v => ProjectPoint(v)));
+            }.Select(ProjectPoint));
             return polygon;
         }
 
@@ -255,7 +257,7 @@ namespace Pokemon3D.UI
 
         public Polygon AdjustToScreen(Polygon polygon)
         {
-            polygon.SetPoints(polygon.Points.Select(v => AdjustToScreen(v)));
+            polygon.SetPoints(polygon.Points.Select(AdjustToScreen));
             return polygon;
         }
 

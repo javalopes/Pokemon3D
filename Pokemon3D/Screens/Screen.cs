@@ -5,7 +5,7 @@ namespace Pokemon3D.Screens
     /// <summary>
     /// A screen to represent a scene in the game.
     /// </summary>
-    interface Screen
+    internal interface Screen
     {
         /// <summary>
         /// This is called before the internal renderer draws all entities.

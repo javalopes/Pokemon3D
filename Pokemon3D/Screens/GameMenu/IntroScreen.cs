@@ -9,7 +9,7 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.GameMenu
 {
-    class IntroScreen : Screen
+    internal class IntroScreen : Screen
     {
         private UiOverlay _overlay;
 

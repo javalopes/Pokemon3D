@@ -11,7 +11,7 @@ using static Pokemon3D.GameCore.GameProvider;
 namespace Pokemon3D.Entities.System.Components
 {
     [JsonComponentId("tilemap")]
-    class TilemapEntityComponent : EntityComponent
+    internal class TilemapEntityComponent : EntityComponent
     {
         private DrawableElement _drawableElement;
 

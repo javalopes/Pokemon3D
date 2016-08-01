@@ -4,9 +4,9 @@ using Pokemon3D.Rendering.UI;
 
 namespace Pokemon3D.UI
 {
-    class KeyboardUiInputController : OverlayInputControllerBase
+    internal class KeyboardUiInputController : OverlayInputControllerBase
     {
-        private InputSystem _inputSystem;
+        private readonly InputSystem _inputSystem;
 
         public KeyboardUiInputController()
         {

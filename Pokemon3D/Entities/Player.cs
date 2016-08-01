@@ -13,9 +13,9 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities
 {
-    class Player
+    internal class Player
     {
-        private InputSystem _inputSystem;
+        private readonly InputSystem _inputSystem;
         private readonly Entity _playerEntity;
         private readonly Entity _cameraEntity;
 

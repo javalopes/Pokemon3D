@@ -12,7 +12,7 @@ namespace Pokemon3D.GameCore
     /// <summary>
     /// Contains the global settings of the game, loaded from the configuration.json file.
     /// </summary>
-    class GameConfiguration
+    internal class GameConfiguration
     {
         private ConfigurationModel _dataModel;
 

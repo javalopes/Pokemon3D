@@ -5,7 +5,7 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.GameMenu
 {
-    class GameMenuScreen : Screen
+    internal class GameMenuScreen : Screen
     {
         public void OnOpening(object enterInformation)
         {

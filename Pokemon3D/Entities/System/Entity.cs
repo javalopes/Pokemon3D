@@ -108,9 +108,6 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// Adds an component to the entity.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="component"></param>
-        /// <returns></returns>
         public T AddComponent<T>(T component) where T : EntityComponent
         {
             if (!HasComponent(component.Name))
@@ -124,7 +121,6 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// Removes a component of the entity by name.
         /// </summary>
-        /// <param name="componentName"></param>
         public void RemoveComponent(string componentName)
         {
             if (HasComponent(componentName))
@@ -302,7 +298,6 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// Removes a child from the entity.
         /// </summary>
-        /// <param name="childElement"></param>
         public void RemoveChild(Entity childElement)
         {
             if (_childNodes.Remove(childElement))
@@ -314,7 +309,6 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// Translate the entity with rotation aware around XYZ axis.
         /// </summary>
-        /// <param name="translation"></param>
         public void Translate(Vector3 translation)
         {
             LastTranslation = translation;
@@ -325,7 +319,6 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// Rotates around <see cref="Right"/>
         /// </summary>
-        /// <param name="angle"></param>
         public void RotateX(float angle)
         {
             EulerAngles += new Vector3(angle, 0, 0);
@@ -335,7 +328,6 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// Rotates around <see cref="Up"/>
         /// </summary>
-        /// <param name="angle"></param>
         public void RotateY(float angle)
         {
             EulerAngles += new Vector3(0, angle, 0);
@@ -345,7 +337,6 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// Rotates around <see cref="Forward"/>
         /// </summary>
-        /// <param name="angle"></param>
         public void RotateZ(float angle)
         {
             EulerAngles += new Vector3(0, 0, angle);

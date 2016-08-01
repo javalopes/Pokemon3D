@@ -9,7 +9,7 @@ namespace Pokemon3D.UI
     /// <summary>
     /// Manages a Pokémon sprite sheet.
     /// </summary>
-    class PokemonSpriteSheet
+    internal class PokemonSpriteSheet
     {
         private const int FRAME_LENGTH = 2;
 
@@ -27,7 +27,6 @@ namespace Pokemon3D.UI
             List<Texture2D> frames = new List<Texture2D>();
 
             int pixelCountPerFrame = frameWidth * frameHeight;
-            Color[] frameData;
             bool foundEmptyFrame = false;
 
             for (int y = 0; y < spriteSheet.Height; y += frameHeight)
@@ -38,7 +37,7 @@ namespace Pokemon3D.UI
                     {
                         if (x + frameWidth <= spriteSheet.Width && !foundEmptyFrame)
                         {
-                            frameData = new Color[pixelCountPerFrame];
+                            var frameData = new Color[pixelCountPerFrame];
                             spriteSheet.GetData(0, new Rectangle(x, y, frameWidth, frameHeight), frameData, 0, pixelCountPerFrame);
 
                             if (frameData.All(c => c.A == 0))
@@ -71,9 +70,6 @@ namespace Pokemon3D.UI
             }
         }
 
-        public Texture2D CurrentFrame
-        {
-            get { return _frames[_currentFrame]; }
-        }
+        public Texture2D CurrentFrame => _frames[_currentFrame];
     }
 }

@@ -6,7 +6,7 @@ using Pokemon3D.Rendering.UI.Animations;
 
 namespace Pokemon3D.UI
 {
-    public class Hexagon : UiElement
+    internal class Hexagon : UiElement
     {
         public const int Width = 26;
         public const int Height = 31;

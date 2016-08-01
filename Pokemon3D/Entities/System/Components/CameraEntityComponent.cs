@@ -6,7 +6,7 @@ using static Pokemon3D.GameCore.GameProvider;
 namespace Pokemon3D.Entities.System.Components
 {
     [JsonComponentId("camera")]
-    class CameraEntityComponent : EntityComponent
+    internal class CameraEntityComponent : EntityComponent
     {
         public float NearClipDistance
         {

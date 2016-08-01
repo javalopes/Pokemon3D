@@ -21,7 +21,7 @@ using Pokemon3D.GameModes;
 
 namespace Pokemon3D.Screens.Overworld
 {
-    class OverworldScreen : Screen, WorldContainer
+    internal class OverworldScreen : Screen, WorldContainer
     {
         public World ActiveWorld { get; private set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace Pokemon3D.UI
 {
-    enum NotificationKind
+    internal enum NotificationKind
     {
         Information,
         Warning,

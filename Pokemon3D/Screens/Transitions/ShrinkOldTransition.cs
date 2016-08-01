@@ -1,16 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.Transitions
 {
-    class ShrinkOldTransition : ScreenTransition
+    internal class ShrinkOldTransition : ScreenTransition
     {
         private Texture2D _source;
         private Texture2D _target;

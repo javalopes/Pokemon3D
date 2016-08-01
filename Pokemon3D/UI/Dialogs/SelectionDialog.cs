@@ -8,7 +8,7 @@ using Pokemon3D.Common.Shapes;
 
 namespace Pokemon3D.UI.Dialogs
 {
-    class SelectionDialog : UiCompoundElement
+    internal class SelectionDialog : UiCompoundElement
     {
         private readonly string _title;
         private readonly string _text;

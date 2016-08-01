@@ -4,7 +4,7 @@ using System;
 
 namespace Pokemon3D.Entities.System.Components
 {
-    class FigureMovementAnimationComponent : AnimatorEntityComponent
+    internal class FigureMovementAnimationComponent : AnimatorEntityComponent
     {
         private ModelEntityComponent _modelEntityComponent;
         private const string ForwardAnimation = "WalkForward";

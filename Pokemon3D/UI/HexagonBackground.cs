@@ -8,7 +8,7 @@ namespace Pokemon3D.UI
     /// <summary>
     /// Displays a half-visible background filled with hexagons.
     /// </summary>
-    class HexagonBackground : UiCompoundElement
+    internal class HexagonBackground : UiCompoundElement
     {
         private readonly Texture2D _hexagonTexture;
 

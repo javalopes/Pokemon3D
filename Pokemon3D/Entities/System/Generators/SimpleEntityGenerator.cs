@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Pokemon3D.Entities.System.Generators
 {
-    class SimpleEntityGenerator : EntityGenerator
+    internal class SimpleEntityGenerator : EntityGenerator
     {
         public virtual IEnumerable<Entity> Generate(EntitySystem entitySystem, EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 position)
         {

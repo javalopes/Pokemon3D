@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Pokemon3D.UI.Localization
 {
-    class CoreTranslationManager : TranslationManager
+    internal class CoreTranslationManager : TranslationManager
     {
         public CoreTranslationManager()
         {

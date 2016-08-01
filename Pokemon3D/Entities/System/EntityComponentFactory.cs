@@ -10,7 +10,7 @@ namespace Pokemon3D.Entities.System
     /// <summary>
     /// Factory to create <see cref="EntityComponent"/> instances.
     /// </summary>
-    static class EntityComponentFactory
+    internal static class EntityComponentFactory
     {
         private static Dictionary<string, Type> _componentsByType;
 

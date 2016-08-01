@@ -12,12 +12,12 @@ using Pokemon3D.GameModes;
 
 namespace Pokemon3D.Entities
 {
-    class Map
+    internal class Map
     {
         private readonly World _world;
-        private List<Entity> _allMapEntities;
-        private string _dataPath;
-        private string _id;
+        private readonly List<Entity> _allMapEntities;
+        private readonly string _dataPath;
+        private readonly string _id;
 
         public MapModel Model { get; private set; }
         public bool IsActive { get; private set; }

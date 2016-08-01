@@ -7,7 +7,7 @@ using Pokemon3D.GameModes.Maps;
 
 namespace Pokemon3D.Entities.System.Generators
 {
-    class TexturedCubeEntityGenerator : SimpleEntityGenerator
+    internal class TexturedCubeEntityGenerator : SimpleEntityGenerator
     {
         public override IEnumerable<Entity> Generate(EntitySystem entitySystem, EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 position)
         {

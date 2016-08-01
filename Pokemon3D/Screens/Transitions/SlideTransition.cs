@@ -5,7 +5,7 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.Transitions
 {
-    class SlideTransition : ScreenTransition
+    internal class SlideTransition : ScreenTransition
     {
         private Texture2D _source;
         private Texture2D _target;

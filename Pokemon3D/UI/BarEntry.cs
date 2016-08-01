@@ -8,7 +8,7 @@ using Pokemon3D.Rendering.UI;
 
 namespace Pokemon3D.UI
 {
-    class BarEntry : UiElement
+    internal class BarEntry : UiElement
     {
         private readonly SpriteFont _font;
         private readonly Color _highlightColor;

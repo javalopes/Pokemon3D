@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,18 +12,15 @@ namespace Pokemon3D.Screens.Overworld
 {
     class InteractionPromptOverworldUIElement : OverworldUIElement
     {
-        private Entity _owner;
+        private readonly Entity _owner;
 
         private float _buttonPressed = 0f;
-        private Pie2D _buttonChart = null;
+        private readonly Pie2D _buttonChart = null;
 
         public string Message { get; set; }
         public event Action<InteractionPromptOverworldUIElement> InteractionStarted;
 
-        public override bool IsBlocking
-        {
-            get { return false; }
-        }
+        public override bool IsBlocking => false;
 
         public InteractionPromptOverworldUIElement(Entity owner, string message)
             : base()
@@ -35,10 +28,12 @@ namespace Pokemon3D.Screens.Overworld
             _owner = owner;
             Message = message;
 
-            _buttonChart = new Pie2D(GameInstance.GraphicsDevice, 24, 0f, 20, Vector2.Zero, false);
-            _buttonChart.PrimaryColor = Color.LightGray;
-            _buttonChart.SecondaryColor = Color.Black;
-            _buttonChart.ChartType = PieChartType.RadialFill;
+            _buttonChart = new Pie2D(GameInstance.GraphicsDevice, 24, 0f, 20, Vector2.Zero, false)
+            {
+                PrimaryColor = Color.LightGray,
+                SecondaryColor = Color.Black,
+                ChartType = PieChartType.RadialFill
+            };
         }
 
         public override void Draw(GameTime gameTime)

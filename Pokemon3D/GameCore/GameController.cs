@@ -23,13 +23,12 @@ namespace Pokemon3D.GameCore
     /// <summary>
     /// Wraps around the MonoGame <see cref="Game"/> class.
     /// </summary>
-    class GameController : Game, GameContext
+    internal class GameController : Game, GameContext
     {
+        private readonly Dictionary<Type, object> _services = new Dictionary<Type, object>();
+        private readonly Dispatcher _mainThreadDispatcher;
+        private readonly GameConfiguration _gameConfig;
         private UiOverlay _notificationBarOverlay;
-        private Dictionary<Type, object> _services = new Dictionary<Type, object>();
-        private Dispatcher _mainThreadDispatcher;
-        private Rectangle _currentScreenBounds;
-        private GameConfiguration _gameConfig;
         private SceneRenderer _renderer;
 
         /// <summary>
@@ -56,7 +55,7 @@ namespace Pokemon3D.GameCore
 
         public string VersionInformation => $"{VERSION} {DEVELOPMENT_STAGE}";
 
-        public Rectangle ScreenBounds => _currentScreenBounds;
+        public Rectangle ScreenBounds { get; private set; }
 
         public SaveGame LoadedSave { get; set; }
 
@@ -68,7 +67,7 @@ namespace Pokemon3D.GameCore
             Exiting += OnGameExit;
             Window.ClientSizeChanged += OnClientSizeChanged;
 
-            _currentScreenBounds = Window.ClientBounds;
+            ScreenBounds = Window.ClientBounds;
             Instance = this;
 
             Content.RootDirectory = "Content";
@@ -145,10 +144,10 @@ namespace Pokemon3D.GameCore
 
         private void OnClientSizeChanged(object sender, EventArgs e)
         {
-            if (WindowSizeChanged != null && _currentScreenBounds != Window.ClientBounds)
+            if (WindowSizeChanged != null && ScreenBounds != Window.ClientBounds)
                 WindowSizeChanged(this, EventArgs.Empty);
 
-            _currentScreenBounds = Window.ClientBounds;
+            ScreenBounds = Window.ClientBounds;
         }
 
         public void EnsureExecutedInMainThread(Action action)

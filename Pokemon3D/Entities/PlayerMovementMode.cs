@@ -1,6 +1,6 @@
 namespace Pokemon3D.Entities
 {
-    enum PlayerMovementMode
+    internal enum PlayerMovementMode
     {
         FirstPerson,
         ThirdPerson,

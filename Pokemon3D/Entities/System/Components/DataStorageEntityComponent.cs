@@ -4,7 +4,7 @@
     /// A component to store data in, the default component.
     /// </summary>
     [JsonComponentId("data")]
-    class DataStorageEntityComponent : EntityComponent
+    internal class DataStorageEntityComponent : EntityComponent
     {
         public DataStorageEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         { }

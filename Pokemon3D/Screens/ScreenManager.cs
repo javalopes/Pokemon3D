@@ -12,7 +12,7 @@ namespace Pokemon3D.Screens
     /// <summary>
     /// A component to manage open screens.
     /// </summary>
-    class ScreenManager
+    internal class ScreenManager
     {
         private readonly RenderTarget2D _sourceRenderTarget;
         private readonly RenderTarget2D _targetRenderTarget;

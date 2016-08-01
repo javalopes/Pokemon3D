@@ -15,7 +15,7 @@ using Pokemon3D.Rendering;
 
 namespace Pokemon3D.Screens.GameModeLoading
 {
-    class GameModeLoadingScreen : Screen
+    internal class GameModeLoadingScreen : Screen
     {
         private UiOverlay _overlay;
         private UiElement _pokeballSprite;

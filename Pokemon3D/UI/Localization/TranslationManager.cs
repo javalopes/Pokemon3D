@@ -10,7 +10,7 @@ namespace Pokemon3D.UI.Localization
     /// <summary>
     /// The base class for internationalization Managers.
     /// </summary>
-    abstract class TranslationManager : TranslationProvider
+    internal abstract class TranslationManager : TranslationProvider
     {
         protected const string I18NFileExtension = ".json";
         private const string KeyFormat = "{0}>{1}>{2}";
@@ -39,7 +39,7 @@ namespace Pokemon3D.UI.Localization
             string value;
             if (_translations.TryGetValue(key, out value)) return value;
 
-            return string.Format("@{0}:{1}", sectionId, tokenId);
+            return $"@{sectionId}:{tokenId}";
         }
 
         public void OnLanguageChanged(object sender, EventArgs e)

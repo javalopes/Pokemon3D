@@ -3,7 +3,7 @@ using Pokemon3D.Common.Animations;
 
 namespace Pokemon3D.Entities.System.Components
 {
-    class AnimatorEntityComponent : EntityComponent
+    internal class AnimatorEntityComponent : EntityComponent
     {
         private readonly Animator _animator = new Animator();
 

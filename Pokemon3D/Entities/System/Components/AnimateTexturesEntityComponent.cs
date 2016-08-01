@@ -1,6 +1,5 @@
 ﻿using Pokemon3D.Common.Animations;
 using System.Linq;
-using System;
 
 namespace Pokemon3D.Entities.System.Components
 {
@@ -8,7 +7,7 @@ namespace Pokemon3D.Entities.System.Components
     /// An entity component that flips through the entity's textures at a set interval.
     /// </summary>
     [JsonComponentId("animatedtextures")]
-    class AnimateTexturesEntityComponent : AnimatorEntityComponent
+    internal class AnimateTexturesEntityComponent : AnimatorEntityComponent
     {
         private ModelEntityComponent _modelComponent = null;
 

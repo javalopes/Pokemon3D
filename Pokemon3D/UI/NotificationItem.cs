@@ -1,8 +1,6 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common.Animations;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
@@ -11,7 +9,7 @@ using Pokemon3D.Common.Shapes;
 
 namespace Pokemon3D.UI
 {
-    class NotificationItem : UiElement
+    internal class NotificationItem : UiElement
     {
         private const int ElementPadding = 5;
         private const int ElementMargin = 2;

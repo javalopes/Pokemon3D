@@ -6,7 +6,7 @@ using static Pokemon3D.GameCore.GameProvider;
 namespace Pokemon3D.Entities.System.Components
 {
     [JsonComponentId("collision")]
-    class CollisionEntityComponent : EntityComponent
+    internal class CollisionEntityComponent : EntityComponent
     {
         public Collider Collider { get; }
         public bool ResolvesPosition { get; set; }

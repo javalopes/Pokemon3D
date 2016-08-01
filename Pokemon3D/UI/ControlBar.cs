@@ -10,7 +10,7 @@ namespace Pokemon3D.UI
     /// <summary>
     /// Draws a bar to the bottom part of the screen that can display button functions for the current screen.
     /// </summary>
-    class ControlBar : UiCompoundElement
+    internal class ControlBar : UiCompoundElement
     {
         private int _currentIndex;
 

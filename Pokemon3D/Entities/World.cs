@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
-using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.UI;
 using Pokemon3D.Entities.System;
 using Microsoft.Xna.Framework;
@@ -11,11 +10,11 @@ using Pokemon3D.GameModes;
 
 namespace Pokemon3D.Entities
 {
-    class World
+    internal class World
     {
         private readonly InputSystem _inputSystem;
         private readonly NotificationBar _notificationBar;
-        private Dictionary<string, Map> _allMaps = new Dictionary<string, Map>();
+        private readonly Dictionary<string, Map> _allMaps = new Dictionary<string, Map>();
 
         public Player Player { get; private set; }
         public EntitySystem EntitySystem { get; }

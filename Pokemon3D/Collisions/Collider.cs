@@ -10,7 +10,7 @@ namespace Pokemon3D.Collisions
     /// <summary>
     /// Represents a Collision Shape.
     /// </summary>
-    class Collider
+    internal class Collider
     {
         private Vector3 _position;
         private Vector3 _offsetToCenter;
