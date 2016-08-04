@@ -22,9 +22,9 @@ namespace Pokemon3D.GameModes
     /// <summary>
     /// Contains methods and members that control a GameMode, a collection of maps, scripts and assets.
     /// </summary>
-    public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable, ModelMeshContext
+    public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable
     {
-        private readonly Dictionary<string, Rendering.Data.ModelMesh[]> _meshCache = new Dictionary<string, Rendering.Data.ModelMesh[]>();
+        private readonly Dictionary<string, ModelMesh[]> _meshCache = new Dictionary<string, ModelMesh[]>();
         private readonly Dictionary<string, Mesh> _meshPrimitivesByName = new Dictionary<string, Mesh>(); 
         private readonly Dictionary<string, Texture2D> _textureCache = new Dictionary<string, Texture2D>();
         private readonly Dictionary<string, MapModel> _mapModelsCache = new Dictionary<string, MapModel>(); 
@@ -138,13 +138,13 @@ namespace Pokemon3D.GameModes
             return DataModel<MapModel>.FromByteArray(data.Data);
         }
 
-        public Rendering.Data.ModelMesh[] GetModel(string filePath, Dispatcher mainThreadDispatcher = null)
+        public ModelMesh[] GetModel(string filePath)
         {
-            Rendering.Data.ModelMesh[] meshes;
+            ModelMesh[] meshes;
             if (_meshCache.TryGetValue(filePath, out meshes)) return meshes;
 
             var absolutePath = Path.Combine(ModelPath, filePath);
-            var meshsArray = Rendering.Data.ModelMesh.LoadFromFile(this, absolutePath);
+            var meshsArray = ModelMesh.LoadFromFile(this, absolutePath);
             _meshCache.Add(filePath, meshsArray);
             return meshsArray;
         }

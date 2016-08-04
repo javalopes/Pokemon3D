@@ -71,7 +71,6 @@
     <Compile Include="Compositor\RenderStatistics.cs" />
     <Compile Include="Compositor\SceneRendererFactory.cs" />
     <Compile Include="Data\GeometryData.cs" />
-    <Compile Include="Data\ModelMesh.cs" />
     <Compile Include="Data\Primitives.cs" />
     <Compile Include="Data\Material.cs" />
     <Compile Include="Data\Mesh.cs" />
