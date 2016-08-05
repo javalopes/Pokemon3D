@@ -152,9 +152,9 @@ namespace Pokemon3D.Entities
                 {
                     entity.EulerAngles = new Vector3
                     {
-                        X = MathHelper.ToDegrees(entityPlacing.Rotation.X),
-                        Y = MathHelper.ToDegrees(entityPlacing.Rotation.Y),
-                        Z = MathHelper.ToDegrees(entityPlacing.Rotation.Z)
+                        X = MathHelper.ToRadians(entityPlacing.Rotation.X),
+                        Y = MathHelper.ToRadians(entityPlacing.Rotation.Y),
+                        Z = MathHelper.ToRadians(entityPlacing.Rotation.Z)
                     };
                 }
             }

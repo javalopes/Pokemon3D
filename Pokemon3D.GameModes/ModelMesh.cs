@@ -60,6 +60,14 @@ namespace Pokemon3D.GameModes
                 {
                     var vertexCount = binaryReader.ReadInt32();
                     var indicesCount = binaryReader.ReadInt32();
+                    var textureName = binaryReader.ReadString();
+
+                    var textureFilePath = Path.Combine(Path.GetDirectoryName(filePath) ?? "", Path.GetFileName(textureName) ?? "");
+                    Texture2D texture = null;
+                    if (File.Exists(textureFilePath))
+                    {
+                        texture = gameMode.GetTextureFromRawFolder(textureFilePath);
+                    }
 
                     var geometryData = new GeometryData
                     {
@@ -69,10 +77,10 @@ namespace Pokemon3D.GameModes
 
                     for (var i = 0; i < vertexCount; i++)
                     {
-                        geometryData.Vertices[i] = new VertexPositionNormalTexture(
-                            new Vector3(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle()),
-                            new Vector3(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle()),
-                            new Vector2(binaryReader.ReadSingle(), binaryReader.ReadSingle()));
+                        var position = new Vector3(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle());
+                        var normal = new Vector3(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle());
+                        var uv = new Vector2(binaryReader.ReadSingle(), binaryReader.ReadSingle());
+                        geometryData.Vertices[i] = new VertexPositionNormalTexture(position, normal, uv);
                     }
 
                     for(var i = 0; i < indicesCount; i++)
@@ -83,7 +91,10 @@ namespace Pokemon3D.GameModes
                     return new ModelMesh
                     {
                         Mesh = new Mesh(gameMode.GraphicsDevice, geometryData, PrimitiveType.TriangleList, false),
-                        Material = new Material()
+                        Material = new Material
+                        {
+                            DiffuseTexture = texture
+                        }
                     };
                 }
             }

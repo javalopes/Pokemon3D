@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.DataHandling;
 using Pokemon3D.Common;
 using Mesh = Pokemon3D.Rendering.Data.Mesh;
-using System.Windows.Threading;
 using Pokemon3D.DataModel.GameMode.Pokemon;
 using Pokemon3D.DataModel.GameMode.Items;
 using Pokemon3D.DataModel.GameMode.Map;

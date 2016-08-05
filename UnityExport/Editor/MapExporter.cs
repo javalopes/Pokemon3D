@@ -6,6 +6,7 @@ using Assets.Editor.Data;
 using System.IO;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
@@ -198,7 +199,10 @@ public class MapExporter : EditorWindow
                 }
                 else
                 {
-                    meshReferenceItem.Value = ExportModelTo(meshFilterComponent.sharedMesh ?? meshFilterComponent.mesh, path, GetModelsPath(basicExportPath));
+                    meshReferenceItem.Value = ExportModelTo(meshFilterComponent.sharedMesh ?? meshFilterComponent.mesh,
+                                                            meshRendererComponent.material, 
+                                                            path, 
+                                                            GetModelsPath(basicExportPath));
                 }
             }
 
@@ -221,7 +225,7 @@ public class MapExporter : EditorWindow
         return Path.GetFileName(targetFilePath);
     }
 
-    private static string ExportModelTo(Mesh mesh, string assetPath, string targetFolder)
+    private static string ExportModelTo(Mesh mesh, Material material, string assetPath, string targetFolder)
     {
         var targetFilePath = Path.Combine(targetFolder, (Path.GetFileNameWithoutExtension(assetPath) ?? "") + ".pmesh");
 
@@ -235,7 +239,14 @@ public class MapExporter : EditorWindow
             {
                 binaryWriter.Write((UInt32)mesh.vertexCount);
                 binaryWriter.Write((UInt32)mesh.triangles.Length);
-                
+
+                var textureReference = string.Empty;
+                if(material.mainTexture != null)
+                {
+                    textureReference = Path.GetFileName(AssetDatabase.GetAssetPath(material.mainTexture)) ?? "";
+                }
+                binaryWriter.Write(textureReference);
+
                 Assert.AreEqual(mesh.vertices.Length, mesh.normals.Length);
                 Assert.AreEqual(mesh.normals.Length, mesh.uv.Length);
 
@@ -246,7 +257,7 @@ public class MapExporter : EditorWindow
                     binaryWriter.Write(-mesh.vertices[i].z);
                     binaryWriter.Write(mesh.normals[i].x);
                     binaryWriter.Write(mesh.normals[i].y);
-                    binaryWriter.Write(mesh.normals[i].z);
+                    binaryWriter.Write(-mesh.normals[i].z);
 
                     if(mesh.uv.Length == 0)
                     {
@@ -256,7 +267,7 @@ public class MapExporter : EditorWindow
                     else
                     {
                         binaryWriter.Write(mesh.uv[i].x);
-                        binaryWriter.Write(mesh.uv[i].y);
+                        binaryWriter.Write(1.0f - mesh.uv[i].y);
                     }
                     
                 }
@@ -286,9 +297,9 @@ public class MapExporter : EditorWindow
             Rotation =
                 new Vector3Model
                 {
-                    X = -transform.rotation.x * Mathf.Deg2Rad,
-                    Y = -transform.rotation.y * Mathf.Deg2Rad,
-                    Z = transform.rotation.z * Mathf.Deg2Rad
+                    X = -transform.rotation.eulerAngles.x,
+                    Y = -transform.rotation.eulerAngles.z,
+                    Z = transform.rotation.eulerAngles.y
                 },
             Scale =
                 new Vector3Model
