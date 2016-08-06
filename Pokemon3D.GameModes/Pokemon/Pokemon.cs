@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common;
 using Pokemon3D.DataModel.GameMode.Definitions;
 using Pokemon3D.DataModel.GameMode.Pokemon;
 using Pokemon3D.DataModel.Pokemon;
 using Pokemon3D.DataModel.Savegame.Pokemon;
-using Pokemon3D.Common;
-using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.GameModes.Pokemon
 {
@@ -23,37 +23,26 @@ namespace Pokemon3D.GameModes.Pokemon
 
         private PokemonModel _dataModel;
         private PokemonSaveModel _saveModel;
-
-        private string _activeForm;
-
+        
         #region Data Model Properties
 
         /// <summary>
         /// The effort values of this Pokémon.
         /// </summary>
         /// <remarks>http://bulbapedia.bulbagarden.net/wiki/Effort_values</remarks>
-        public PokemonStatSetModel EVs
-        {
-            get { return _saveModel.EVs; }
-        }
+        public PokemonStatSetModel EVs => _saveModel.EVs;
 
         /// <summary>
         /// The individual values of this Pokémon.
         /// </summary>
         /// <remarks>http://bulbapedia.bulbagarden.net/wiki/Individual_values</remarks>
-        public PokemonStatSetModel IVs
-        {
-            get { return _saveModel.IVs; }
-        }
+        public PokemonStatSetModel IVs => _saveModel.IVs;
 
         /// <summary>
         /// The base stats of this Pokémon.
         /// </summary>
         /// <remarks>http://bulbapedia.bulbagarden.net/wiki/Statistic</remarks>
-        public PokemonStatSetModel BaseStats
-        {
-            get { return ActiveFormModel.BaseStats; }
-        }
+        public PokemonStatSetModel BaseStats => ActiveFormModel.BaseStats;
 
         #region Stats
 
@@ -66,35 +55,17 @@ namespace Pokemon3D.GameModes.Pokemon
             set { _saveModel.HP = value; }
         }
 
-        public int MaxHP
-        {
-            get { return PokemonStatCalculator.CalculateHP(this); }
-        }
+        public int MaxHP => PokemonStatCalculator.CalculateStat(this, PokemonStatType.HP);
 
-        public int Attack
-        {
-            get { return PokemonStatCalculator.CalculateStat(this, PokemonStatType.Attack); }
-        }
+        public int Attack => PokemonStatCalculator.CalculateStat(this, PokemonStatType.Attack);
 
-        public int Defense
-        {
-            get { return PokemonStatCalculator.CalculateStat(this, PokemonStatType.Defense); }
-        }
+        public int Defense => PokemonStatCalculator.CalculateStat(this, PokemonStatType.Defense);
 
-        public int SpecialAttack
-        {
-            get { return PokemonStatCalculator.CalculateStat(this, PokemonStatType.SpecialAttack); }
-        }
+        public int SpecialAttack => PokemonStatCalculator.CalculateStat(this, PokemonStatType.SpecialAttack);
 
-        public int SpecialDefense
-        {
-            get { return PokemonStatCalculator.CalculateStat(this, PokemonStatType.SpecialDefense); }
-        }
+        public int SpecialDefense => PokemonStatCalculator.CalculateStat(this, PokemonStatType.SpecialDefense);
 
-        public int Speed
-        {
-            get { return PokemonStatCalculator.CalculateStat(this, PokemonStatType.Speed); }
-        }
+        public int Speed => PokemonStatCalculator.CalculateStat(this, PokemonStatType.Speed);
 
         #endregion
 
@@ -126,25 +97,17 @@ namespace Pokemon3D.GameModes.Pokemon
 
         public string DisplayName => !string.IsNullOrWhiteSpace(_saveModel.Nickname) ? _saveModel.Nickname : _dataModel.Name;
 
-        public LevelUpMoveModel[] LevelMoves
-        {
-            get
-            {
-                return GetMovePoolModel(ActiveFormModel).LevelMoves;
-            }
-        }
+        public LevelUpMoveModel[] LevelMoves => GetMovePoolModel(ActiveFormModel).LevelMoves;
 
-        public string[] LearnableMoves
-        {
-            get
-            {
-                return GetMovePoolModel(ActiveFormModel).LearnableMoves;
-            }
-        }
+        public string[] LearnableMoves => GetMovePoolModel(ActiveFormModel).LearnableMoves;
         
         public PokemonFormModel ActiveFormModel
         {
-            get { return _dataModel.Forms.Single(x => x.Id == _activeForm); }
+            get
+            {
+                string activeForm = GetActiveFormId();
+                return _dataModel.Forms.Single(x => x.Id == activeForm);
+            }
         }
 
         /// <summary>
@@ -188,25 +151,26 @@ namespace Pokemon3D.GameModes.Pokemon
 
             _dataModel = dataModel;
             _saveModel = saveModel;
-
-            FormChangeTriggerHandle();
         }
 
-        private void FormChangeTriggerHandle()
+        private string GetActiveFormId()
         {
+            if (_dataModel.Forms.Length == 1)
+                return _dataModel.Forms.First().Id;
+
             // determine the current form of the Pokémon here.
             // if no special form applies, set to "Default".
 
             if (_saveModel.IsShiny && _dataModel.Forms.Any(f => f.Id == SHINY_FORM_ID))
             {
-                _activeForm = SHINY_FORM_ID;
+                return SHINY_FORM_ID;
             }
             else
             {
-                _activeForm = DEFAULT_FORM_ID;
+                return DEFAULT_FORM_ID;
             }
         }
-
+        
         /// <summary>
         /// Makes the Pokémon learn all moves that are learnt on Level 1.
         /// </summary>

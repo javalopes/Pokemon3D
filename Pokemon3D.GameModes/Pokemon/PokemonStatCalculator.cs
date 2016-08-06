@@ -7,12 +7,19 @@ namespace Pokemon3D.GameModes.Pokemon
     /// <summary>
     /// Utility class to calculate stats for Pokémon.
     /// </summary>
-    class PokemonStatCalculator
+    internal class PokemonStatCalculator
     {
         /// <summary>
-        /// Returns the max HP stat for a Pokémon.
+        /// Returns a specific stat for a Pokémon.
         /// </summary>
-        public static int CalculateHP(Pokemon pokemon)
+        public static int CalculateStat(Pokemon pokemon, PokemonStatType statType)
+        {
+            return statType == PokemonStatType.HP ? 
+                CalculateHP(pokemon) :
+                InternalCalculateStat(pokemon, statType);
+        }
+        
+        private static int CalculateHP(Pokemon pokemon)
         {
             // HP = 
             // (floor((2 * Base + IV + floor(EV / 4)) * Level) + Level + 10)
@@ -25,10 +32,7 @@ namespace Pokemon3D.GameModes.Pokemon
             return (int)(Floor(((2 * baseHP + IVHP + Floor((double)EVHP / 4)) * level) / 100) + level + 10);
         }
 
-        /// <summary>
-        /// Returns a specific stat for a Pokémon.
-        /// </summary>
-        public static int CalculateStat(Pokemon pokemon, PokemonStatType statType)
+        private static int InternalCalculateStat(Pokemon pokemon, PokemonStatType statType)
         {
             // Stat = 
             // floor((floor(((2 * base + IV + floor(EV / 4)) * level) / 100) + 5) * nature)
