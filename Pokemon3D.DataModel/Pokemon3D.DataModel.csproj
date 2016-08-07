@@ -52,6 +52,11 @@
     <Compile Include="DataType.cs" />
     <Compile Include="GameJolt\FriendModel.cs" />
     <Compile Include="GameJolt\FriendRequestModel.cs" />
+    <Compile Include="GameMode\Battle\AbilityHookType.cs" />
+    <Compile Include="GameMode\Battle\AbilityModel.cs" />
+    <Compile Include="GameMode\Battle\AbilityScriptHookModel.cs" />
+    <Compile Include="GameMode\Battle\MoveHookType.cs" />
+    <Compile Include="GameMode\Battle\MoveScriptHookModel.cs" />
     <Compile Include="GameMode\Map\Entities\EntityComponentDataItemModel.cs" />
     <Compile Include="GameMode\Map\NPCs\RandomNPCBehaviour.cs" />
     <Compile Include="GameMode\Map\NPCs\RandomNPCModel.cs" />
