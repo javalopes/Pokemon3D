@@ -1,29 +1,88 @@
-﻿namespace Pokemon3D.DataModel.GameMode.Battle
+﻿using System;
+
+namespace Pokemon3D.DataModel.GameMode.Battle
 {
     /// <summary>
     /// Which Pokémon a move can target.
     /// </summary>
+    [Flags]
     public enum TargetType
     {
-        OneAdjacentTarget, // One adjacent target, excluding itself.
-        OneAdjacentFoe, // One adjacent foe.
-        OneAdjacentAlly, // One adjacent ally, excluding itself.
+        /// <summary>
+        /// One adjacent target, excluding itself.
+        /// </summary>
+        OneAdjacentTarget = 0,
+        /// <summary>
+        /// One adjacent foe.
+        /// </summary>
+        OneAdjacentFoe = 1 << 0,
+        /// <summary>
+        /// One adjacent ally, excluding itself.
+        /// </summary>
+        OneAdjacentAlly = 1 << 1,
 
-        OneTarget, // One target, excluding itself.
-        OneFoe, // One Foe.
-        OneAlly, // One ally, excluding itself.
+        /// <summary>
+        /// One target, excluding itself.
+        /// </summary>
+        OneTarget = 1 << 2,
+        /// <summary>
+        /// One Foe.
+        /// </summary>
+        OneFoe = 1 << 3,
+        /// <summary>
+        /// One ally, excluding itself.
+        /// </summary>
+        OneAlly = 1 << 4,
 
-        Self, // Only self
+        /// <summary>
+        /// Only itself.
+        /// </summary>
+        Self = 1 << 5,
 
-        AllAdjacentTargets, // All adjacent targets, exluding itself
-        AllAdjacentFoes, // All adjacent foes
-        AllAdjacentAllies, // All adjacent allies, excluding itself.
+        /// <summary>
+        /// All adjacent targets, exluding itself.
+        /// </summary>
+        AllAdjacentTargets = 1 << 6,
+        /// <summary>
+        /// All adjacent foes.
+        /// </summary>
+        AllAdjacentFoes = 1 << 7,
+        /// <summary>
+        /// All adjacent allies, excluding itself.
+        /// </summary>
+        AllAdjacentAllies = 1 << 8,
 
-        AllTargets, // All Targets, excluding itself.
-        AllFoes, // All Foes
-        AllAllies, // All allies, excluding itself.
-        AllOwn, // All own Pokémon (allies + itself)
+        /// <summary>
+        /// All Targets, excluding itself.
+        /// </summary>
+        AllTargets = 1 << 9,
+        /// <summary>
+        /// All Foes.
+        /// </summary>
+        AllFoes = 1 << 10,
+        /// <summary>
+        /// All allies, excluding itself.
+        /// </summary>
+        AllAllies = 1 << 11,
+        /// <summary>
+        /// All own Pokémon (allies + itself).
+        /// </summary>
+        AllOwn = 1 << 12,
 
-        All  // All Pokémon, including itself
+        /// <summary>
+        /// All Pokémon, including itself.
+        /// </summary>
+        All = 1 << 13,
+        
+        // collection entries:
+
+        /// <summary>
+        /// Contains all target types that require a single target.
+        /// </summary>
+        SingleTarget = OneAdjacentTarget | OneAdjacentFoe | OneAdjacentAlly | OneTarget | OneFoe | OneAlly | Self,
+        /// <summary>
+        /// Contains all target types that requires at least one target.
+        /// </summary>
+        MultiTarget = AllAdjacentTargets | AllAdjacentFoes | AllAdjacentAllies | AllTargets | AllFoes | AllAllies | All
     }
 }
