@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Pokemon3D.DataModel.Savegame;
 using Pokemon3D.DataModel.Savegame.Pokemon;
+using Pokemon3D.GameModes.Monsters;
 
 namespace Pokemon3D.GameModes
 {
@@ -19,7 +20,7 @@ namespace Pokemon3D.GameModes
         public SaveGame(SaveFileModel dataModel)
         {
             _dataModel = dataModel;
-            PartyPokemon = new List<Pokemon.Pokemon>();
+            PartyPokemon = new List<Pokemon>();
         }
 
         public string PlayerName => _dataModel.PlayerData.Name;
@@ -30,7 +31,7 @@ namespace Pokemon3D.GameModes
             set { _dataModel.PlayerData.Money = value; }
         }
         
-        public List<Pokemon.Pokemon> PartyPokemon { get; private set; }
+        public List<Pokemon> PartyPokemon { get; private set; }
 
         public PokedexSaveModel[] Pokedexes => _dataModel.Pokedexes;
 

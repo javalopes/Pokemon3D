@@ -7,7 +7,7 @@ using Pokemon3D.DataModel.GameMode.Pokemon;
 using Pokemon3D.DataModel.Pokemon;
 using Pokemon3D.DataModel.Savegame.Pokemon;
 
-namespace Pokemon3D.GameModes.Pokemon
+namespace Pokemon3D.GameModes.Monsters
 {
     /// <summary>
     /// A Pokémon instance that holds the definition and save data of a Pokémon instance.

@@ -2,7 +2,7 @@
 using System.Linq;
 using static System.Math;
 
-namespace Pokemon3D.GameModes.Pokemon
+namespace Pokemon3D.GameModes.Monsters
 {
     /// <summary>
     /// Utility class to calculate stats for Pokémon.

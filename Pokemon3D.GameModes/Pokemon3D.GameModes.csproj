@@ -58,10 +58,10 @@
     <Compile Include="IGameModeComponent.cs" />
     <Compile Include="Maps\MapFragmentManager.cs" />
     <Compile Include="ModelMesh.cs" />
-    <Compile Include="Pokemon\Pokemon.cs" />
-    <Compile Include="Pokemon\PokemonExperienceCalculator.cs" />
-    <Compile Include="Pokemon\PokemonFactory.cs" />
-    <Compile Include="Pokemon\PokemonStatCalculator.cs" />
+    <Compile Include="Monsters\Pokemon.cs" />
+    <Compile Include="Monsters\PokemonExperienceCalculator.cs" />
+    <Compile Include="Monsters\PokemonFactory.cs" />
+    <Compile Include="Monsters\PokemonStatCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveGame.cs" />
   </ItemGroup>

@@ -14,7 +14,7 @@ using Pokemon3D.DataModel.GameMode.Pokemon;
 using Pokemon3D.DataModel.GameMode.Items;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.GameModes.Maps;
-using Pokemon3D.GameModes.Pokemon;
+using Pokemon3D.GameModes.Monsters;
 
 namespace Pokemon3D.GameModes
 {
