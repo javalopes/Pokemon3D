@@ -11,24 +11,6 @@ namespace Pokemon3D.DataModel.GameMode.Battle
     [DataContract(Namespace = "")]
     public class MoveModel : DataModel<MoveModel>
     {
-        /* Members:
-         x Id
-         x Name
-         x Type[]
-         x Targets (TargetType)
-         x Power
-         x Accuracy
-         x PP
-         x Category (Physical etc)
-         - ContestData
-         x Description
-         x CriticalChance
-         x IsHMMove
-         x Priority
-         x TimesToAttack
-         x Tags (can be retrieved by scripts to test for similar attack patterns)
-        */
-
         [DataMember(Order = 0)]
         public string Id;
 
@@ -67,30 +49,34 @@ namespace Pokemon3D.DataModel.GameMode.Battle
 
         [DataMember(Order = 10)]
         public int TimesToAttack;
-        
-        [DataMember(Order = 11)]
-        private string _target;
 
-        public TargetType Target
+        [DataMember(Order = 11, Name = "Targets")]
+        private string _targets;
+
+        public TargetType Targets
         {
-            get { return ConvertStringToEnum<TargetType>(_target); }
-            set { _target = value.ToString(); }
+            get { return ConvertStringToEnum<TargetType>(_targets); }
+            set { _targets = value.ToString(); }
         }
 
         [DataMember(Order = 12)]
         public bool IsHMMove;
 
         [DataMember(Order = 13)]
-        public string ScriptBinding;
+        public MoveScriptHookModel[] ScriptHooks;
 
+        /// <summary>
+        /// Contains additional metadata about the move.
+        /// </summary>
         [DataMember(Order = 14)]
-        public string[] Tags;
+        public string[] Metadata;
 
         public override object Clone()
         {
             var clone = (MoveModel)MemberwiseClone();
             clone.Types = (string[])Types.Clone();
-            clone.Tags = (string[])Tags.Clone();
+            clone.ScriptHooks = (MoveScriptHookModel[])ScriptHooks.Clone();
+            clone.Metadata = (string[])Metadata.Clone();
             return clone;
         }
     }
