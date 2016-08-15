@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.UI;
 using Pokemon3D.Entities.System;
@@ -75,6 +76,14 @@ namespace Pokemon3D.Entities
         {
             foreach(var map in _allMaps) map.Value.Deactivate();
             ActivateMapsWithOffsets(id, new Vector3((float)x, (float)y, (float)z));
+
+            var mapsToUnload = _allMaps.Where(m => !m.Value.IsActive).ToArray();
+            foreach(var mapToUnload in mapsToUnload)
+            {
+                mapToUnload.Value.Unload();
+                _allMaps.Remove(mapToUnload.Key);
+            }
+            
             EntitySystem.InitializeAllPendingEntities();
         }
 

@@ -35,6 +35,8 @@ namespace Pokemon3D.Entities
 
         public void Load(Vector3 basicOffset, bool forceResetCache = false)
         {
+            if (_allMapEntities.Count > 0) throw new InvalidOperationException("Map seems already loaded, call unload first.");
+
             var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
             Model = gameMode.LoadMap(_id);
 
@@ -85,6 +87,15 @@ namespace Pokemon3D.Entities
             {
                 FileObserver.Instance.StartFileObserve(_dataPath, MapChanged);
             }
+        }
+
+        public void Unload()
+        {
+            foreach(var entity in _allMapEntities)
+            {
+                _world.EntitySystem.RemoveEntity(entity);
+            }
+            _allMapEntities.Clear();
         }
 
         public void Deactivate()
