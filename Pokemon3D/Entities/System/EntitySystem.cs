@@ -236,6 +236,23 @@ namespace Pokemon3D.Entities.System
             return template;
         }
 
+        public Entity CreateInstance(Entity template, bool isInitializing = false)
+        {
+            var entity = Entity.CreateInstance(template, isInitializing, OnEntityInitialized);
+            lock (_lockObject)
+            {
+                if (entity.IsInitializing)
+                {
+                    _entitiesToInitialize.Add(entity);
+                }
+                else
+                {
+                    _entities.Add(entity);
+                }
+            }
+            return entity;
+        }
+
         private void OnEntityInitialized(Entity entity)
         {
             lock (_lockObject)

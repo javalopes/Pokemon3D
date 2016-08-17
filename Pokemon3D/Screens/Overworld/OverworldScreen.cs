@@ -253,7 +253,7 @@ namespace Pokemon3D.Screens.Overworld
 
             const int spacing = 5;
             var elementHeight = _debugSpriteFont.LineSpacing + spacing;
-            var height = elementHeight * 3 + spacing;
+            var height = elementHeight * 4 + spacing;
             const int width = 180;
 
             var startPosition = new Vector2(0,GameInstance.ScreenBounds.Height-height);
@@ -272,6 +272,8 @@ namespace Pokemon3D.Screens.Overworld
             spriteBatch.DrawString(_debugSpriteFont, $"Total Drawcalls: {renderStatistics.DrawCalls}", startPosition, Color.White);
             startPosition.Y += elementHeight;
             spriteBatch.DrawString(_debugSpriteFont, $"Entity Count: {ActiveWorld.EntitySystem.EntityCount}", startPosition, Color.White);
+            startPosition.Y += elementHeight;
+            spriteBatch.DrawString(_debugSpriteFont, $"Mesh Instances: {Rendering.Data.Mesh.InstanceCount}", startPosition, Color.White);
             spriteBatch.End();
         }
 

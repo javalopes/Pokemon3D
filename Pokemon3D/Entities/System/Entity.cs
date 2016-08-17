@@ -81,10 +81,21 @@ namespace Pokemon3D.Entities.System
             _onIsInitialized = onIsInitialized;
         }
 
-        public static Entity CreateTemplate(Entity entityToTemplate, bool isInitializing = false, Action<Entity> onIsInitialized = null)
+        public static Entity CreateTemplate(Entity entityToTemplate)
         {
-            var entity = new Entity(isInitializing, onIsInitialized) { IsTemplate = true };
+            var entity = new Entity { IsTemplate = true };
             foreach(var entityComponent in entityToTemplate._components)
+            {
+                entity.AddComponent(entityComponent.Clone(entity));
+            }
+            return entity;
+        }
+
+        public static Entity CreateInstance(Entity template, bool isInitializing = false, Action<Entity> onIsInitialized = null)
+        {
+            if (!template.IsTemplate) throw new InvalidOperationException("Entity is no template");
+            var entity = new Entity(isInitializing, onIsInitialized);
+            foreach (var entityComponent in template._components)
             {
                 entity.AddComponent(entityComponent.Clone(entity));
             }
