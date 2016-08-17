@@ -52,6 +52,11 @@ namespace Pokemon3D.Entities.System.Components
             Camera.IsActive = IsActive;
         }
 
+        public override EntityComponent Clone(Entity target)
+        {
+            throw new global::System.NotImplementedException();
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);

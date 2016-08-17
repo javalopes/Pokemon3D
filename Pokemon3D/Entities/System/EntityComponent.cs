@@ -8,19 +8,19 @@ namespace Pokemon3D.Entities.System
     /// <summary>
     /// A component of an <see cref="Entity"/>, responsible for the Entity's functionality.
     /// </summary>
-    internal class EntityComponent
+    internal abstract class EntityComponent
     {
         private bool _isActive;
 
         /// <summary>
         /// Entity data as dictionary.
         /// </summary>
-        private readonly Dictionary<string, string> _data ;
+        private readonly Dictionary<string, string> _data;
 
         /// <summary>
         /// The original name of this component.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; protected set; }
         
         /// <summary>
         /// The owning parent <see cref="Entity"/> of this component.
@@ -156,5 +156,7 @@ namespace Pokemon3D.Entities.System
         public virtual void OnInitialized() { }
 
         protected virtual void OnDataChanged(string key, string oldData, string newData) { }
+
+        public abstract EntityComponent Clone(Entity target);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.Entities.System.Generators;
 using System.Collections.Generic;
@@ -18,6 +19,9 @@ namespace Pokemon3D.Entities.System
 
         public EntityGeneratorSupplier EntityGeneratorSupplier { get; }
 
+        /// <summary>
+        /// Creates a new empty entity system.
+        /// </summary>
         public EntitySystem()
         {
             _entities = new List<Entity>();
@@ -25,6 +29,14 @@ namespace Pokemon3D.Entities.System
             EntityGeneratorSupplier = new EntityGeneratorSupplier();
         }
 
+        /// <summary>
+        /// Creates an entity reading json data model. It also attaches all known entity components.
+        /// </summary>
+        /// <param name="entityModel">Deserialized entity model.</param>
+        /// <param name="entityPlacing">Placement of entity.</param>
+        /// <param name="position">position of entity.</param>
+        /// <param name="isInitializing">If the entity should be created in initializing mode. This needs to end initializing.</param>
+        /// <returns>Created entity instance.</returns>
         public Entity CreateEntityFromDataModel(EntityModel entityModel, EntityFieldPositionModel entityPlacing, Vector3 position, bool isInitializing = false)
         {
             var entity = CreateEntity(isInitializing);
@@ -71,11 +83,19 @@ namespace Pokemon3D.Entities.System
             return entity;
         }
 
+        /// <summary>
+        /// Counts of total entities.
+        /// </summary>
         public int EntityCount
         {
             get { lock (_lockObject) return _entities.Count; }
         }
 
+        /// <summary>
+        /// Creates a new, empty entity.
+        /// </summary>
+        /// <param name="isInitializing">Create in initializing mode.</param>
+        /// <returns>New empty entity.</returns>
         public Entity CreateEntity(bool isInitializing = false)
         {
             Entity entity;
@@ -95,6 +115,9 @@ namespace Pokemon3D.Entities.System
             return entity;
         }
 
+        /// <summary>
+        /// All entities created in initializing mode are activated.
+        /// </summary>
         public void InitializeAllPendingEntities()
         {
             lock (_lockObject)
@@ -109,14 +132,11 @@ namespace Pokemon3D.Entities.System
             }
         }
 
-        private void OnEntityInitialized(Entity entity)
-        {
-            lock (_lockObject)
-            {
-                if (_entitiesToInitialize.Remove(entity)) _entities.Add(entity);
-            }
-        }
-
+        /// <summary>
+        /// Gets an entity by id.
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <returns>Returns entity or null if not found.</returns>
         public Entity GetEntity(string id)
         {
             Entity entity;
@@ -127,6 +147,10 @@ namespace Pokemon3D.Entities.System
             return entity;
         }
 
+        /// <summary>
+        /// Removes entity from system.
+        /// </summary>
+        /// <param name="entity"></param>
         public void RemoveEntity(Entity entity)
         {
             lock (_lockObject)
@@ -139,15 +163,26 @@ namespace Pokemon3D.Entities.System
             }
         }
 
+        /// <summary>
+        /// Updates all entities.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
             lock (_lockObject)
             {
-                foreach (Entity e in _entities)
-                    e.Update(gameTime);
+                for(var i = 0; i < _entities.Count; i++)
+                {
+                    _entities[i].Update(gameTime);
+                }
             }
         }
 
+        /// <summary>
+        /// Merges a list of entities. These entities must be static and contain a visual component only.
+        /// </summary>
+        /// <param name="entitiesToMerge">Entites to merge.</param>
+        /// <returns>Merged list of entities.</returns>
         public List<Entity> MergeStaticVisualEntities(IList<Entity> entitiesToMerge)
         {
             var entitiesByCategory = entitiesToMerge.Where(
@@ -183,6 +218,30 @@ namespace Pokemon3D.Entities.System
             }
 
             return mergedEntities;
+        }
+
+        /// <summary>
+        /// Creates a copy of an entity. This will be marked as a template for instanciation.
+        /// Template entities are not hold by the entity system.
+        /// </summary>
+        /// <param name="entityToTemplate">Entity to create template of</param>
+        /// <returns>New entity which is marked as template</returns>
+        public Entity CreateTemplate(Entity entityToTemplate)
+        {
+            Entity template;
+            lock (_lockObject)
+            {
+                template = Entity.CreateTemplate(entityToTemplate);
+            }
+            return template;
+        }
+
+        private void OnEntityInitialized(Entity entity)
+        {
+            lock (_lockObject)
+            {
+                if (_entitiesToInitialize.Remove(entity)) _entities.Add(entity);
+            }
         }
 
         private static GeometryDataMerge ConvertEntityToGeometryMerge(Entity entity)

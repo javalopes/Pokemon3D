@@ -10,11 +10,11 @@ namespace Pokemon3D.Entities.System
     /// <summary>
     /// Represents a functional part of a map.
     /// </summary>
-    class Entity
+    internal class Entity
     {
         private readonly List<EntityComponent> _components = new List<EntityComponent>();
         private readonly List<Entity> _childNodes;
-
+        
         private Vector3 _rotationAxis;
         private Vector3 _position;
         private Vector3 _scale;
@@ -27,6 +27,8 @@ namespace Pokemon3D.Entities.System
         private bool _isActive;
         private readonly Action<Entity> _onIsInitialized;
         private Matrix _worldMatrix;
+
+        public bool IsTemplate { get; private set; }
 
         /// <summary>
         /// Parent Entity. Inherits transformation.
@@ -79,11 +81,23 @@ namespace Pokemon3D.Entities.System
             _onIsInitialized = onIsInitialized;
         }
 
+        public static Entity CreateTemplate(Entity entityToTemplate, bool isInitializing = false, Action<Entity> onIsInitialized = null)
+        {
+            var entity = new Entity(isInitializing, onIsInitialized) { IsTemplate = true };
+            foreach(var entityComponent in entityToTemplate._components)
+            {
+                entity.AddComponent(entityComponent.Clone(entity));
+            }
+            return entity;
+        }
+
         /// <summary>
         /// Entity update method to update all of the entity's components.
         /// </summary>
         public void Update(GameTime gameTime)
         {
+            if (IsTemplate) throw new InvalidOperationException("Templates are out of update support.");
+
             HandleIsDirty();
             for (int i = 0; i < _components.Count; i++)
             {
@@ -94,6 +108,8 @@ namespace Pokemon3D.Entities.System
 
         public void EndInitializing(bool suppressInvoke = false)
         {
+            if (IsTemplate) throw new InvalidOperationException("Templates cannot be activated.");
+
             if (!IsInitializing) return;
             IsInitializing = true;
 
