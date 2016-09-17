@@ -29,7 +29,7 @@ namespace Pokemon3D.Scripting.Adapters
             }
             else if (obj is SNumber)
             {
-                return ((SNumber)obj).Value;
+                return TranslateNumber((SNumber)obj);
             }
             else if (obj is SArray)
             {
@@ -65,6 +65,16 @@ namespace Pokemon3D.Scripting.Adapters
             }
         }
 
+        private static object TranslateNumber(SNumber obj)
+        {
+            var value = obj.Value;
+
+            if (Math.Abs(value % 1) < double.Epsilon)
+                return (int)value;
+            else
+                return value;
+        }
+        
         private static object TranslateArray(SArray obj)
         {
             return obj.ArrayMembers.Select(Translate).ToArray();
