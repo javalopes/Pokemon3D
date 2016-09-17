@@ -17,7 +17,7 @@ namespace Pokemon3D.Scripting.Adapters
             FunctionType = functionType;
         }
 
-        internal bool IsStatic { get; set; }
+        public bool IsStatic { get; set; }
 
         internal ScriptFunctionType FunctionType { get; set; }
     }
