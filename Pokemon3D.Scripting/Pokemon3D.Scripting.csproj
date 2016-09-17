@@ -60,6 +60,7 @@
     <Compile Include="Adapters\ScriptFunctionType.cs" />
     <Compile Include="Adapters\ScriptInAdapter.cs" />
     <Compile Include="Adapters\ScriptMemberAttribute.cs" />
+    <Compile Include="Adapters\ScriptObjectLink.cs" />
     <Compile Include="Adapters\ScriptOutAdapter.cs" />
     <Compile Include="Adapters\ScriptPrototypeAttribute.cs" />
     <Compile Include="Adapters\ScriptRuntimeException.cs" />

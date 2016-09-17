@@ -3,6 +3,7 @@ using Pokemon3D.Scripting.Types.Prototypes;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Pokemon3D.Scripting.Adapters;
 
 namespace Pokemon3D.Scripting
 {
@@ -19,7 +20,7 @@ namespace Pokemon3D.Scripting
     /// The delegate for a hardcoded method, with .Net native object types.
     /// </summary>
     /// <param name="parameters">Parameters for this method call.</param>
-    public delegate object DotNetBuiltInMethod(object This, object[] parameters);
+    public delegate object DotNetBuiltInMethod(object This, ScriptObjectLink objLink, object[] parameters);
 
     /// <summary>
     /// Searches for and creates built in method delegates.

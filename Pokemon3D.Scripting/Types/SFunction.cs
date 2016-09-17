@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Pokemon3D.Scripting.Adapters;
 
 namespace Pokemon3D.Scripting.Types
 {
@@ -167,9 +168,9 @@ namespace Pokemon3D.Scripting.Types
                 }
                 else
                 {
-                    var dotNetParams = parameters.Select(p => Adapters.ScriptOutAdapter.Translate(p));
-                    var dotNetReturnObj = DotNetMethod(Adapters.ScriptOutAdapter.Translate(caller), dotNetParams.ToArray());
-                    functionReturnObject = Adapters.ScriptInAdapter.Translate(processor, dotNetReturnObj);
+                    var dotNetParams = parameters.Select(p => ScriptOutAdapter.Translate(p));
+                    var dotNetReturnObj = DotNetMethod(ScriptOutAdapter.Translate(caller), new ScriptObjectLink(processor, caller), dotNetParams.ToArray());
+                    functionReturnObject = ScriptInAdapter.Translate(processor, dotNetReturnObj);
                 }
             }
             else

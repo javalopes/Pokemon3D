@@ -269,7 +269,7 @@ namespace Pokemon3D.Scripting.Adapters
 
                     Delegate methodDelegate = null;
 
-                    if (method.GetParameters().Length == 2)
+                    if (method.GetParameters().Length == 3)
                     {
                         // two parameter means the method is a DotNetBuiltInMethod.
                         methodDelegate = (DotNetBuiltInMethod)Delegate.CreateDelegate(typeof(DotNetBuiltInMethod), method);
