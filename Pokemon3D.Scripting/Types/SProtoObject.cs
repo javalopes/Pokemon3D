@@ -9,8 +9,8 @@ namespace Pokemon3D.Scripting.Types
     /// </summary>
     public class SProtoObject : SObject
     {
-        protected const string PROPERTY_GET_PREFIX = "_get_";
-        protected const string PROPERTY_SET_PREFIX = "_set_";
+        internal const string PROPERTY_GET_PREFIX = "_get_";
+        internal const string PROPERTY_SET_PREFIX = "_set_";
         protected internal const string MEMBER_NAME_PROTOTYPE = "prototype";
         protected internal const string MEMBER_NAME_SUPER = "super";
 

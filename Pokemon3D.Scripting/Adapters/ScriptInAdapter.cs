@@ -262,6 +262,11 @@ namespace Pokemon3D.Scripting.Adapters
                     if (!string.IsNullOrEmpty(attr.VariableName))
                         identifier = attr.VariableName;
 
+                    if (attr.FunctionType == ScriptFunctionType.Getter)
+                        identifier = SProtoObject.PROPERTY_GET_PREFIX + identifier;
+                    if (attr.FunctionType == ScriptFunctionType.Setter)
+                        identifier = SProtoObject.PROPERTY_SET_PREFIX + identifier;
+
                     Delegate methodDelegate = null;
 
                     if (method.GetParameters().Length == 2)
@@ -278,7 +283,9 @@ namespace Pokemon3D.Scripting.Adapters
                     switch (attr.FunctionType)
                     {
                         case ScriptFunctionType.Standard:
-                            prototype.AddMember(processor, new PrototypeMember(identifier, new SFunction(methodDelegate), method.IsStatic, true, false, false));
+                        case ScriptFunctionType.Getter:
+                        case ScriptFunctionType.Setter:
+                            prototype.AddMember(processor, new PrototypeMember(identifier, new SFunction(methodDelegate), attr.IsStatic, true, false, false));
                             break;
                         case ScriptFunctionType.IndexerGet:
                             prototype.IndexerGetFunction = new SFunction(methodDelegate);
