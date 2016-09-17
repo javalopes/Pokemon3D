@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Pokemon3D.Scripting.Types
 {
@@ -8,6 +9,8 @@ namespace Pokemon3D.Scripting.Types
     /// </summary>
     internal class SArray : SProtoObject
     {
+        private const string REGEX_EMPTY_ARRAY = @"\[\s*\]";
+
         /// <summary>
         /// The members of this array.
         /// </summary>
@@ -19,6 +22,8 @@ namespace Pokemon3D.Scripting.Types
         internal new static SObject Parse(ScriptProcessor processor, string exp)
         {
             // Format: [item1, item2, ... itemn]
+
+            if (Regex.IsMatch(exp, REGEX_EMPTY_ARRAY)) return processor.Context.CreateInstance("Array", new SObject[0]);
 
             exp = exp.Remove(exp.Length - 1, 1).Remove(0, 1).Trim(); // Remove [ and ].
 
