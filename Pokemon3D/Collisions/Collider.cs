@@ -54,7 +54,7 @@ namespace Pokemon3D.Collisions
         /// <summary>
         /// Which collision shape it is.
         /// </summary>
-        public ColliderType Type { get; }
+        public ColliderType Type { get; private set; }
 
         /// <summary>
         /// Corresponding BoundingBox when <see cref="Type"/> is set to box
@@ -63,6 +63,11 @@ namespace Pokemon3D.Collisions
         {
             get { return _boundingBox; }
             private set { _boundingBox = value; }
+        }
+
+        private Collider()
+        {
+            
         }
 
         /// <summary>
@@ -79,7 +84,23 @@ namespace Pokemon3D.Collisions
             BoundingBox = new BoundingBox(-size*0.5f, size*0.5f);
             IsActive = true;
         }
-        
+
+        /// <summary>
+        /// Creates a clone of another collider.
+        /// </summary>
+        /// <param name="other">Collider to clone</param>
+        public Collider Clone()
+        {
+            var collider = new Collider();
+            collider.IsActive = IsActive;
+            collider.BoundingBox = BoundingBox;
+            collider.IsTrigger = IsTrigger;
+            collider._offsetToCenter = _offsetToCenter;
+            collider._position = _position;
+            collider.Type = Type;
+            return collider;
+        }
+
         /// <summary>
         /// Sets position of Collider.
         /// </summary>

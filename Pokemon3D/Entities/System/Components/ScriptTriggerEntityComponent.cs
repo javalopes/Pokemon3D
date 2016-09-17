@@ -81,6 +81,11 @@ namespace Pokemon3D.Entities.System.Components
                     break;
             }
         }
+
+        public override EntityComponent Clone(Entity target)
+        {
+            throw new global::System.NotImplementedException();
+        }
     }
 }
 

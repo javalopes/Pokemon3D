@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Pokemon3D.Common.Animations;
 
 namespace Pokemon3D.Entities.System.Components
@@ -36,6 +37,10 @@ namespace Pokemon3D.Entities.System.Components
         {
             _animator.Update(gameTime);
             base.Update(gameTime);
+        }
+        public override EntityComponent Clone(Entity entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -15,6 +15,12 @@ namespace Pokemon3D.Entities.System.Components
     {
         private DrawableElement _drawableElement;
 
+        private TilemapEntityComponent(Entity parent)
+            : base(parent)
+        {
+            
+        }
+
         public TilemapEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
             var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
@@ -102,6 +108,16 @@ namespace Pokemon3D.Entities.System.Components
         public override void OnInitialized()
         {
             _drawableElement.EndInitialzing();
+        }
+
+        public override EntityComponent Clone(Entity target)
+        {
+            var component = new TilemapEntityComponent(target);
+            component._drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(target.IsInitializing);
+            component._drawableElement.Mesh = _drawableElement.Mesh;
+            component._drawableElement.Material = _drawableElement.Material;
+            component.IsActive = target.IsActive;
+            return component;
         }
 
         public override void OnComponentRemove()

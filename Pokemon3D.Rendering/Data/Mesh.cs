@@ -10,6 +10,8 @@ namespace Pokemon3D.Rendering.Data
     /// </summary>
     public class Mesh : IDisposable
     {
+        public static int InstanceCount = 0;
+
         private readonly PrimitiveType _primitiveType;
         private VertexBuffer _vertexBuffer;
         private IndexBuffer _indexBuffer;
@@ -63,6 +65,8 @@ namespace Pokemon3D.Rendering.Data
                 default:
                     throw new ArgumentOutOfRangeException(nameof(primitiveType), primitiveType, null);
             }
+
+            InstanceCount++;
         }
 
         public void Draw()
@@ -116,6 +120,7 @@ namespace Pokemon3D.Rendering.Data
                     _indexBuffer = null;
                 }
             }
+            InstanceCount--;
             // free native resources if there are any.
         }
     }

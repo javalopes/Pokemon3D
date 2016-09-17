@@ -8,8 +8,12 @@ namespace Pokemon3D.Entities.System.Components
     [JsonComponentId("collision")]
     internal class CollisionEntityComponent : EntityComponent
     {
-        public Collider Collider { get; }
+        public Collider Collider { get; private set; }
         public bool ResolvesPosition { get; set; }
+
+        public CollisionEntityComponent(Entity parent) : base(parent)
+        {
+        }
 
         public CollisionEntityComponent(EntityComponentDataCreationStruct structData) : base(structData)
         {
@@ -34,6 +38,16 @@ namespace Pokemon3D.Entities.System.Components
         {
             Collider.SetPosition(Parent.GlobalPosition);
             GameInstance.GetService<CollisionManager>().Add(Collider);
+        }
+
+        public override EntityComponent Clone(Entity target)
+        {
+            return new CollisionEntityComponent(target)
+            {
+                Collider = Collider.Clone(),
+                ResolvesPosition = ResolvesPosition,
+                IsActive = target.IsActive
+            };
         }
 
         public override void OnComponentRemove()

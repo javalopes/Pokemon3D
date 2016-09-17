@@ -14,7 +14,7 @@ namespace Pokemon3D.Entities.System.Components
     [JsonComponentId("visualmodel")]
     internal class ModelEntityComponent : EntityComponent
     {
-        private readonly List<TextureRegion> _regions;
+        private List<TextureRegion> _regions;
         private DrawableElement _drawableElement;
 
         public List<TextureRegion> Regions => _regions;
@@ -25,6 +25,11 @@ namespace Pokemon3D.Entities.System.Components
         {
             get { return _drawableElement.IsBillboard; }
             set { _drawableElement.IsBillboard = value; }
+        }
+
+        private ModelEntityComponent(Entity parent) : base(parent)
+        {
+            
         }
 
         public ModelEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
@@ -97,6 +102,19 @@ namespace Pokemon3D.Entities.System.Components
         public override void OnInitialized()
         {
             _drawableElement.EndInitialzing();
+        }
+
+        public override EntityComponent Clone(Entity target)
+        {
+            var clonedComponent = new ModelEntityComponent(target);
+            clonedComponent._regions = _regions != null ? new List<TextureRegion>(_regions) : null;
+            clonedComponent._drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(target.IsInitializing);
+            clonedComponent._drawableElement.Material = Material;
+            clonedComponent._drawableElement.Mesh = Mesh;
+            clonedComponent.IsBillboard = IsBillboard;
+            clonedComponent.IsActive = target.IsActive;
+
+            return clonedComponent;
         }
 
         public override void OnComponentRemove()
