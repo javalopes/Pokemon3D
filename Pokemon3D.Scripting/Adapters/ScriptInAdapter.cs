@@ -66,10 +66,19 @@ namespace Pokemon3D.Scripting.Adapters
             {
                 return TranslateException((ScriptRuntimeException)objIn);
             }
+            else if (objIn is NetUndefined)
+            {
+                return TranslateUndefined(processor);
+            }
             else
             {
                 return TranslateObject(processor, objIn);
             }
+        }
+
+        private static SObject TranslateUndefined(ScriptProcessor processor)
+        {
+            return GetUndefined(processor);
         }
 
         private static SObject TranslateNull(ScriptProcessor processor)

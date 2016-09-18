@@ -51,6 +51,10 @@ namespace Pokemon3D.Scripting.Adapters
             {
                 return TranslateError((SError)obj);
             }
+            else if (obj is SUndefined)
+            {
+                return NetUndefined.Instance;
+            }
             else if ((obj as SProtoObject)?.Prototype?.MappedType != null)
             {
                 return Translate((SProtoObject)obj, ((SProtoObject)obj).Prototype.MappedType);
