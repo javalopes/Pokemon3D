@@ -1,4 +1,6 @@
-﻿namespace Pokemon3D.Scripting.Types.Prototypes
+﻿using System.Linq;
+
+namespace Pokemon3D.Scripting.Types.Prototypes
 {
     internal class ArrayPrototype : Prototype
     {
@@ -81,6 +83,29 @@
         {
             var arr = (SArray)instance;
             return processor.CreateNumber(arr.ArrayMembers.Length);
+        }
+
+        [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "includes")]
+        public static SObject Includes(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            if (parameters.Length >= 2)
+            {
+                var arr = (SArray)instance;
+                var compare = parameters[0];
+                var comparer = (SFunction)Unbox(parameters[1]);
+
+                return processor.CreateBool(arr.ArrayMembers.Any(m => ((SBool)comparer.Call(processor, This, This, new[] { m, compare })).Value));
+            }
+            
+            if (parameters.Length >= 1)
+            {
+                var arr = (SArray)instance;
+                var compare = parameters[0];
+
+                return processor.CreateBool(arr.ArrayMembers.Any(m => ObjectComparer.LooseEquals(processor, m, compare)));
+            }
+
+            return processor.Undefined;
         }
     }
 }
