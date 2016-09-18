@@ -84,8 +84,8 @@ namespace Pokemon3D.Scripting.Types
         {
             if (isIndexer && accessor.TypeOf() == LITERAL_TYPE_NUMBER)
             {
-                if (Prototype.GetIndexerGetFunction().ToFunction() != IndexerGetFunction)
-                    IndexerGetFunction = Prototype.GetIndexerGetFunction().ToFunction();
+                if (Prototype.GetIndexerGetFunction() != IndexerGetFunction)
+                    IndexerGetFunction = Prototype.GetIndexerGetFunction();
 
                 if (IndexerGetFunction != null)
                 {
@@ -127,8 +127,8 @@ namespace Pokemon3D.Scripting.Types
         {
             if (isIndexer)
             {
-                if (Prototype.GetIndexerSetFunction().ToFunction() != IndexerSetFunction)
-                    IndexerSetFunction = Prototype.GetIndexerSetFunction().ToFunction();
+                if (Prototype.GetIndexerSetFunction() != IndexerSetFunction)
+                    IndexerSetFunction = Prototype.GetIndexerSetFunction();
             }
 
             if (isIndexer && accessor.TypeOf() == LITERAL_TYPE_NUMBER && IndexerSetFunction != null)

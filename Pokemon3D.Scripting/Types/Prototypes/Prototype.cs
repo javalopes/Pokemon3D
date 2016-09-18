@@ -217,11 +217,11 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
             var indexerGetFunction = GetIndexerGetFunction();
             if (indexerGetFunction != null)
-                obj.IndexerGetFunction = indexerGetFunction.ToFunction();
+                obj.IndexerGetFunction = indexerGetFunction;
 
             var indexerSetFunction = GetIndexerSetFunction();
             if (indexerSetFunction != null)
-                obj.IndexerSetFunction = indexerSetFunction.ToFunction();
+                obj.IndexerSetFunction = indexerSetFunction;
 
             if (executeCtor)
             {
@@ -245,21 +245,30 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             return _prototypeMembers.Where(x => !x.Value.IsStatic && x.Value.IsReadOnly && !x.Value.IsIndexerGet && !x.Value.IsIndexerSet).Select(x => x.Value);
         }
 
-        internal PrototypeMember GetIndexerGetFunction()
+        internal SFunction GetIndexerGetFunction()
         {
             foreach (var member in _prototypeMembers.Values)
             {
                 if (member.IsIndexerGet && member.IsFunction)
                 {
-                    return member;
+                    return member.ToFunction();
                 }
             }
-            return null;
+
+            return IndexerGetFunction;
         }
 
-        internal PrototypeMember GetIndexerSetFunction()
+        internal SFunction GetIndexerSetFunction()
         {
-            return _prototypeMembers.Values.FirstOrDefault(member => member.IsIndexerSet && member.IsFunction);
+            foreach (var member in _prototypeMembers.Values)
+            {
+                if (member.IsIndexerSet && member.IsFunction)
+                {
+                    return member.ToFunction();
+                }
+            }
+
+            return IndexerSetFunction;
         }
 
         /// <summary>
