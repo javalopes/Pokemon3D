@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Dynamic;
 
 namespace Pokemon3D.Scripting.Adapters
 {
@@ -70,6 +71,10 @@ namespace Pokemon3D.Scripting.Adapters
             {
                 return TranslateUndefined(processor);
             }
+            else if (objIn is ExpandoObject)
+            {
+                return TranslateExpandoObject(processor, objIn as ExpandoObject);
+            }
             else
             {
                 return TranslateObject(processor, objIn);
@@ -115,6 +120,16 @@ namespace Pokemon3D.Scripting.Adapters
             return exceptionIn.ErrorObject;
         }
 
+        private static SObject TranslateExpandoObject(ScriptProcessor processor, ExpandoObject objIn)
+        {
+            var obj = new SProtoObject();
+            
+            foreach (var member in objIn)
+                obj.AddMember(member.Key, Translate(processor, member.Value));
+
+            return obj;
+        }
+
         private static SObject TranslateObject(ScriptProcessor processor, object objIn)
         {
             var objType = objIn.GetType();
@@ -125,12 +140,22 @@ namespace Pokemon3D.Scripting.Adapters
                 typeName = customNameAttribute.VariableName;
 
             Prototype prototype = null;
+            bool isAnonymousType = false;
 
-            if (processor.Context.IsPrototype(typeName))
-                prototype = processor.Context.GetPrototype(typeName);
+            if (IsObjectAnonymousType(objIn))
+            {
+                // if the object is of an anonymous type, set its prototype as the default object prototype.
+                prototype = processor.Context.GetPrototype("Object");
+                isAnonymousType = true;
+            }
             else
-                prototype = TranslatePrototype(processor, objIn.GetType());
-
+            {
+                if (processor.Context.IsPrototype(typeName))
+                    prototype = processor.Context.GetPrototype(typeName);
+                else
+                    prototype = TranslatePrototype(processor, objIn.GetType());
+            }
+            
             var obj = prototype.CreateInstance(processor, null, false);
 
             // Set the field values of the current instance:
@@ -142,41 +167,68 @@ namespace Pokemon3D.Scripting.Adapters
 
             foreach (var field in fields)
             {
-                var attributes = field.GetCustomAttributes(false);
-
-                foreach (var attr in attributes)
+                if (isAnonymousType)
                 {
-                    if (attr.GetType() == typeof(ScriptVariableAttribute))
+                    var identifier = field.Name;
+                    if (identifier.StartsWith("$"))
+                        identifier = identifier.Remove(0, 1);
+
+                    var fieldContent = field.GetValue(objIn);
+                    
+                    obj.AddMember(identifier, Translate(processor, fieldContent));
+                }
+                else
+                {
+                    var attributes = field.GetCustomAttributes(false);
+
+                    foreach (var attr in attributes)
                     {
-                        var memberAttr = (ScriptMemberAttribute)attr;
+                        if (attr.GetType() == typeof(ScriptVariableAttribute))
+                        {
+                            var memberAttr = (ScriptMemberAttribute)attr;
 
-                        var identifier = field.Name;
-                        if (!string.IsNullOrEmpty(memberAttr.VariableName))
-                            identifier = memberAttr.VariableName;
+                            var identifier = field.Name;
+                            if (!string.IsNullOrEmpty(memberAttr.VariableName))
+                                identifier = memberAttr.VariableName;
 
-                        var fieldContent = field.GetValue(objIn);
+                            var fieldContent = field.GetValue(objIn);
 
-                        obj.SetMember(identifier, Translate(processor, fieldContent));
-                    }
-                    else if (attr.GetType() == typeof(ScriptFunctionAttribute))
-                    {
-                        // When it's a field and a function, we have the source code of the function as value of the field.
-                        // Example: public string MyFunction = "function() { console.log('Hello World'); }";
+                            obj.SetMember(identifier, Translate(processor, fieldContent));
+                        }
+                        else if (attr.GetType() == typeof(ScriptFunctionAttribute))
+                        {
+                            // When it's a field and a function, we have the source code of the function as value of the field.
+                            // Example: public string MyFunction = "function() { console.log('Hello World'); }";
 
-                        var memberAttr = (ScriptMemberAttribute)attr;
+                            var memberAttr = (ScriptMemberAttribute)attr;
 
-                        var identifier = field.Name;
-                        if (!string.IsNullOrEmpty(memberAttr.VariableName))
-                            identifier = memberAttr.VariableName;
+                            var identifier = field.Name;
+                            if (!string.IsNullOrEmpty(memberAttr.VariableName))
+                                identifier = memberAttr.VariableName;
 
-                        var functionCode = field.GetValue(objIn).ToString();
+                            var functionCode = field.GetValue(objIn).ToString();
 
-                        obj.SetMember(identifier, new SFunction(processor, functionCode));
+                            obj.SetMember(identifier, new SFunction(processor, functionCode));
+                        }
                     }
                 }
             }
 
             return obj;
+        }
+
+        private static bool IsObjectAnonymousType(object obj)
+        {
+            // hack to determine if an object is of an anonymous type.
+
+            var type = obj.GetType();
+            string name = type.Name;
+
+            return name.Contains("AnonymousType")
+                && (name.StartsWith("<>") || name.StartsWith("VB$"))
+                && type.IsGenericType
+                && Attribute.IsDefined(type, typeof(CompilerGeneratedAttribute), false)
+                && (type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic;
         }
 
         internal static Prototype TranslatePrototype(ScriptProcessor processor, Type t)
