@@ -14,7 +14,7 @@ namespace Pokemon3D.UI
         private readonly Color _highlightColor;
         public BarEntry()
         {
-            _font = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
+            _font = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.BigFont);
             _highlightColor = new Color(100, 193, 238);
         }
 
@@ -28,15 +28,15 @@ namespace Pokemon3D.UI
             switch (GamePadButton)
             {
                 case Buttons.Start:
-                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_Menu);
+                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.GamePadButtons.Button_Menu);
                 case Buttons.A:
-                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A);
+                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.GamePadButtons.Button_A);
                 case Buttons.B:
-                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_B);
+                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.GamePadButtons.Button_B);
                 case Buttons.X:
-                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_X);
+                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.GamePadButtons.Button_X);
                 case Buttons.Y:
-                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_Y);
+                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.GamePadButtons.Button_Y);
             }
 
             return null;

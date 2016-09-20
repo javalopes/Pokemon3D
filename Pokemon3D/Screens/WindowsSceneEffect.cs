@@ -34,12 +34,12 @@ namespace Pokemon3D.Screens
 
         public WindowsSceneEffect(ContentManager content)
         {
-            _basicEffect = content.Load<Effect>(ResourceNames.Effects.BasicEffect);
-            PostProcessingEffect = content.Load<Effect>(ResourceNames.Effects.PostProcessing);
+            _basicEffect = content.Load<Effect>(ResourceNames.Windows.Effects.BasicEffect);
+            PostProcessingEffect = content.Load<Effect>(ResourceNames.Windows.Effects.PostProcessing);
 
             _shadowCasterTechnique = _basicEffect.Techniques["ShadowCaster"];
             _shadowCasterTransparentTechnique = _basicEffect.Techniques["ShadowCasterTransparent"];
-            ShadowMapDebugEffect = content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
+            ShadowMapDebugEffect = content.Load<Effect>(ResourceNames.Windows.Effects.DebugShadowMap);
 
             _effectsByLightingFlags = new Dictionary<int, EffectTechnique>()
             {

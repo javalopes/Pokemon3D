@@ -35,11 +35,11 @@ namespace Pokemon3D.Screens.GameMenu
         public void OnOpening(object enterInformation)
         {
             _overlay = new UiOverlay();
-            var logoSprite = _overlay.AddElement(new Image(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.SquareLogo_256px)));
+            var logoSprite = _overlay.AddElement(new Image(GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.SquareLogo_256px)));
             logoSprite.SetPosition(new Vector2(GameInstance.ScreenBounds.Width * 0.5f, GameInstance.ScreenBounds.Height * 0.5f));
             logoSprite.SetOriginPercentage(new Vector2(0.5f));
 
-            var highlightSprite = _overlay.AddElement(new Image(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.highlight)));
+            var highlightSprite = _overlay.AddElement(new Image(GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.highlight)));
             highlightSprite.Alpha = 0.0f;
             highlightSprite.AddCustomAnimation("Highlight", new UiCustomDeltaAnimation(1.5f, OnUpdateHighlightPass));
             highlightSprite.CustomAnimationFinshed += CustomAnimationFinished;

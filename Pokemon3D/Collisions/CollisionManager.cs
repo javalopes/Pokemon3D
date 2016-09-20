@@ -59,7 +59,7 @@ namespace Pokemon3D.Collisions
                 PreventDrawCallCount = true
             };
 
-            _lineDrawEffect = GameInstance.Content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
+            _lineDrawEffect = GameInstance.Content.Load<Effect>(ResourceNames.Windows.Effects.DebugShadowMap);
             _worldViewProjection = _lineDrawEffect.Parameters["WorldViewProjection"];
             _modulateColor = _lineDrawEffect.Parameters["Color"];
             _lineTechnique = _lineDrawEffect.Techniques["LineDraw"];
@@ -187,7 +187,7 @@ namespace Pokemon3D.Collisions
                                       observer.ProjectionMatrix;
 
             _worldViewProjection.SetValue(worldViewProjection);
-            //_modulateColor.SetValue(collider.IsTrigger ? ColorTrigger : ColorCollider);
+            _modulateColor.SetValue(collider.IsTrigger ? ColorTrigger : ColorCollider);
 
             _lineDrawEffect.CurrentTechnique.Passes[0].Apply();
             _boundingBoxMesh.Draw();

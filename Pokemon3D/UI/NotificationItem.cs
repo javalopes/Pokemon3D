@@ -29,9 +29,9 @@ namespace Pokemon3D.UI
         
         public NotificationItem(float lifeTime, NotificationKind notificationKind, string message)
         {
-            _spriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NotificationFont);
+            _spriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.NotificationFont);
             _backgroundColor = new Color(70, 70, 70);
-            _notificationIcons = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.NotificationIcons);
+            _notificationIcons = GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.NotificationIcons);
             NotificationKind = notificationKind;
             Message = message;
             

@@ -37,7 +37,7 @@ namespace Pokemon3D.Screens.Overworld
                 ActiveWorld = enterInformation as World;
                 if (ActiveWorld == null) throw new InvalidOperationException("Did not receive loaded data.");
 
-                _debugSpriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
+                _debugSpriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.DebugFont);
 
                 CreateTempSave();
 

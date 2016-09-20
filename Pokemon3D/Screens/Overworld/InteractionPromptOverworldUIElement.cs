@@ -49,7 +49,7 @@ namespace Pokemon3D.Screens.Overworld
                 var position = camera.Viewport.Project(_owner.Position + new Vector3(0, 0.5f, 0), camera.ProjectionMatrix, camera.ViewMatrix, Matrix.Identity);
                 var position2D = new Vector2(position.X, position.Y);
 
-                var font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular);
+                var font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.LargeUIRegular);
                 var fontSize = font.MeasureString(Message);
 
                 shapeRenderer.DrawRectangle(new Rectangle((int)(position2D.X - fontSize.X / 2f - 3), (int)(position2D.Y - 1), (int)fontSize.X + 6, 30), new Color(0, 0, 0, 180));
@@ -62,7 +62,7 @@ namespace Pokemon3D.Screens.Overworld
                 _buttonChart.DrawBatched(spriteBatch);
 
                 shapeRenderer.DrawShape(new Ellipse((int)position2D.X - 24 + 8, (int)position2D.Y + 28 + 8, 32, 32), new Color(64, 200, 64));
-                spriteBatch.Draw(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A), new Rectangle((int)position2D.X - 24 + 8, (int)position2D.Y + 28 + 8, 32, 32), Color.White);
+                spriteBatch.Draw(GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.GamePadButtons.Button_A), new Rectangle((int)position2D.X - 24 + 8, (int)position2D.Y + 28 + 8, 32, 32), Color.White);
             }
         }
 

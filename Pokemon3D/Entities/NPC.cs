@@ -22,7 +22,7 @@ namespace Pokemon3D.Entities
     //        _interactionScriptBinding = dataModel.ScriptBinding;
 
     //        SceneNode.Mesh = new Mesh(Game.GraphicsDevice, Primitives.GenerateQuadForYBillboard());
-    //        var diffuseTexture = Game.Content.Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
+    //        var diffuseTexture = Game.Content.Load<Texture2D>(ResourceNames.Windows.Textures.DefaultGuy);
     //        SceneNode.Material = new Material
     //        {
     //            DiffuseTexture = diffuseTexture,
