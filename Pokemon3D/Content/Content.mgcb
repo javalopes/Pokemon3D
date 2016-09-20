@@ -5,7 +5,7 @@
 /intermediateDir:obj/Windows
 /platform:Windows
 /config:
-/profile:Reach
+/profile:HiDef
 /compress:False
 
 #-------------------------------- References --------------------------------#
@@ -33,7 +33,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/SquareLogo_256px.png
 
@@ -45,7 +44,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/highlight.png
 
@@ -57,20 +55,19 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/guiskin.png
 
 #begin Fonts/BigFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=Color
 /build:Fonts/BigFont.spritefont
 
 #begin Fonts/NormalFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=Color
 /build:Fonts/NormalFont.spritefont
 
 #begin Textures/P3D.png
@@ -81,7 +78,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/P3D.png
 
@@ -94,7 +90,7 @@
 #begin Fonts/DebugFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=Color
 /build:Fonts/DebugFont.spritefont
 
 #begin Textures/DefaultGuy.png
@@ -105,7 +101,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/DefaultGuy.png
 
@@ -117,14 +112,13 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/NotificationIcons.png
 
 #begin Fonts/NotificationFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=Color
 /build:Fonts/NotificationFont.spritefont
 
 #begin Textures/skybox_texture.png
@@ -135,7 +129,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/skybox_texture.png
 
@@ -147,7 +140,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Pokeball.png
 
@@ -159,7 +151,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/Common/Button_Blank.png
 
@@ -171,7 +162,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/Common/Checkbox_Back.png
 
@@ -183,7 +173,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/Common/Checkbox_Mark.png
 
@@ -195,7 +184,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/GamePadButtons/Button_A.png
 
@@ -207,7 +195,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/GamePadButtons/Button_B.png
 
@@ -219,7 +206,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/GamePadButtons/Button_Menu.png
 
@@ -231,7 +217,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/GamePadButtons/Button_X.png
 
@@ -243,7 +228,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/GamePadButtons/Button_Y.png
 
@@ -255,7 +239,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/Common/Hexagon.png
 
@@ -267,7 +250,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/test_background.png
 
@@ -279,7 +261,6 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/Common/Profile.png
 
@@ -291,25 +272,24 @@
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/Common/Profile_Shadow.png
 
 #begin Fonts/SmallUIRegular.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=Color
 /build:Fonts/SmallUIRegular.spritefont
 
 #begin Fonts/NormalUIRegular.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=Color
 /build:Fonts/NormalUIRegular.spritefont
 
 #begin Fonts/LargeUIRegular.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=Color
 /build:Fonts/LargeUIRegular.spritefont
 

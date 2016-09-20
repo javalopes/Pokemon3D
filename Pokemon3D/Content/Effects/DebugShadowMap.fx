@@ -1,4 +1,7 @@
-﻿texture DepthMap;
+﻿
+#include "Macros.fxh"
+
+texture DepthMap;
 
 sampler2D DepthMapSampler = sampler_state {
 	Texture = (DepthMap);
@@ -14,13 +17,7 @@ float4 DebugShadowMapPixelShader(float4 position : SV_Position, float4 color : C
 	return float4(depth.r, depth.r, depth.r, 1.0f);
 }
 
-technique Default
-{
-	pass Pass1
-	{
-		PixelShader = compile ps_4_0 DebugShadowMapPixelShader();
-	}
-}
+TECHNIQUE_PSONLY(Default, DebugShadowMapPixelShader)
 
 float4x4 WorldViewProjection;
 float4 Color = float4(0.0f, 1.0f, 0.0f, 1.0f);
@@ -48,11 +45,4 @@ float4 LineDrawPS(VertexShaderOutput input) : COLOR0
 	return Color;
 }
 
-technique LineDraw
-{
-	pass Pass1
-	{
-		VertexShader = compile vs_4_0 LineDrawVS();
-		PixelShader = compile ps_4_0 LineDrawPS();
-	}
-}
+TECHNIQUE(LineDraw, LineDrawVS, LineDrawPS)
