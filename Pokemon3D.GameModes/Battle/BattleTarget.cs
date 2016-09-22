@@ -48,5 +48,7 @@ namespace Pokemon3D.GameModes.Battle
                     return allPokemon;
             }
         }
+
+        public static bool IsMultiTarget(TargetType target) => TargetType.MultiTarget.HasFlag(target);
     }
 }

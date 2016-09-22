@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Pokemon3D.DataModel.GameMode.Battle;
-using static System.Math;
-
-namespace Pokemon3D.GameModes.Battle
+﻿namespace Pokemon3D.GameModes.Battle
 {
+    /// <summary>
+    /// Describes the position of a Pokémon on the battlefield.
+    /// </summary>
     struct BattleFieldPosition
     {
         /// <summary>
