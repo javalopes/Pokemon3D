@@ -23,8 +23,8 @@
     //        _pokemon = pokemon;
     //        _position = position;
 
-    //        _profileHPIndicatorTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Profile);
-    //        _profileBackTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Profile_Shadow);
+    //        _profileHPIndicatorTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.Common.Profile);
+    //        _profileBackTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.Common.Profile_Shadow);
 
     //        var dataModel = _pokemon.ActiveFormModel.FrontSpriteSheet;
     //        _sheet = new PokemonSpriteSheet(gameMode.GetTexture(dataModel.Source), dataModel.FrameSize.Width, dataModel.FrameSize.Height);

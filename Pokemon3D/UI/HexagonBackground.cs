@@ -15,7 +15,7 @@ namespace Pokemon3D.UI
         public HexagonBackground()
         {
             GameProvider.GameInstance.WindowSizeChanged += HandleWindowSizeChanged;
-            _hexagonTexture = GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Hexagon);
+            _hexagonTexture = GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.Common.Hexagon);
             GenerateHexagons(true);
         }
 

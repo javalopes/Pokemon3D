@@ -161,9 +161,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Effects\BasicEffect.fx" />
-    <None Include="Content\Effects\DebugShadowMap.fx" />
-    <None Include="Content\Effects\PostProcessing.fx" />
     <Content Include="Icon.ico" />
     <Compile Include="ScriptPipeline\ScriptPipelineManager.cs" />
   </ItemGroup>
@@ -172,92 +169,94 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Content\Effects\BasicEffect.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Effects\DebugShadowMap.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Content Include="Content\Textures\SquareLogo_256px.xnb">
+    <Content Include="Content\Windows\Effects\BasicEffect.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\highlight.xnb">
+    <Content Include="Content\Windows\Effects\DebugShadowMap.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\guiskin.xnb">
+    <Content Include="Content\Windows\Effects\PostProcessing.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Fonts\BigFont.xnb">
+    <Content Include="Content\Windows\Fonts\BigFont.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Fonts\NormalFont.xnb">
+    <Content Include="Content\Windows\Fonts\DebugFont.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\P3D.xnb">
+    <Content Include="Content\Windows\Fonts\LargeUIRegular.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Effects\PostProcessing.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Fonts\DebugFont.xnb">
+    <Content Include="Content\Windows\Fonts\NormalFont.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\DefaultGuy.xnb">
+    <Content Include="Content\Windows\Fonts\NormalUIRegular.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\NotificationIcons.xnb">
+    <Content Include="Content\Windows\Fonts\NotificationFont.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Fonts\NotificationFont.xnb">
+    <Content Include="Content\Windows\Fonts\SmallUIRegular.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\skybox_texture.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\Pokeball.xnb">
+    <Content Include="Content\Windows\Textures\DefaultGuy.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\UI\Common\Button_Blank.xnb">
+    <Content Include="Content\Windows\Textures\guiskin.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Content\Fonts\LargeUIRegular.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Fonts\NormalUIRegular.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Fonts\SmallUIRegular.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\test_background.xnb" />
-    <Content Include="Content\Textures\UI\Common\Checkbox_Back.xnb">
+    <Content Include="Content\Windows\Textures\highlight.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\UI\Common\Checkbox_Mark.xnb">
+    <Content Include="Content\Windows\Textures\NotificationIcons.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\UI\Common\Hexagon.xnb">
+    <Content Include="Content\Windows\Textures\P3D.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\UI\GamePadButtons\Button_A.xnb">
+    <Content Include="Content\Windows\Textures\Pokeball.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\UI\GamePadButtons\Button_B.xnb">
+    <Content Include="Content\Windows\Textures\skybox_texture.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\UI\GamePadButtons\Button_Menu.xnb">
+    <Content Include="Content\Windows\Textures\SquareLogo_256px.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\UI\GamePadButtons\Button_X.xnb">
+    <Content Include="Content\Windows\Textures\test_background.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\UI\GamePadButtons\Button_Y.xnb">
+    <Content Include="Content\Windows\Textures\UI\Common\Button_Blank.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\UI\Common\Profile.xnb">
+    <Content Include="Content\Windows\Textures\UI\Common\Checkbox_Back.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\UI\Common\Profile_Shadow.xnb">
+    <Content Include="Content\Windows\Textures\UI\Common\Checkbox_Mark.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Windows\Textures\UI\Common\Hexagon.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Windows\Textures\UI\Common\Profile.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Windows\Textures\UI\Common\Profile_Shadow.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Windows\Textures\UI\GamePadButtons\Button_A.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Windows\Textures\UI\GamePadButtons\Button_B.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Windows\Textures\UI\GamePadButtons\Button_Menu.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Windows\Textures\UI\GamePadButtons\Button_X.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Windows\Textures\UI\GamePadButtons\Button_Y.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

@@ -25,8 +25,8 @@ namespace Pokemon3D.UI.Dialogs
                 AddChildElement(leftSideButton);
             }
 
-            _titleFont = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
-            _textFont = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _titleFont = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.BigFont);
+            _textFont = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.NormalFont);
 
             _title = title;
             _text = text;

@@ -21,10 +21,10 @@
 
     //    public LeftSideCheckbox(string text, Vector2 position, Action<Control> onClick)
     //    {
-    //        _texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
-    //        _backTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Checkbox_Back);
-    //        _markTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Checkbox_Mark);
-    //        _font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+    //        _texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.Common.Button_Blank);
+    //        _backTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.Common.Checkbox_Back);
+    //        _markTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.Common.Checkbox_Mark);
+    //        _font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.NormalFont);
     //        _position = position;
 
     //        Text = text;

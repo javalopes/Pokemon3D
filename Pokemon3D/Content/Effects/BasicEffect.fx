@@ -1,4 +1,7 @@
-﻿//Parameters for normal rendering.
+﻿
+#include "macros.fxh"
+
+//Parameters for normal rendering.
 float4x4 World;
 float4x4 WorldLight;
 float4x4 View;
@@ -267,59 +270,12 @@ float4 LitNoTextureShadowReceiverPCFPS(VertexShaderShadowReceiverOutput input) :
 	return ModulatePreserveAlpha(MaterialColor, lightColor);
 }
 
-technique Lit
-{
-	pass Pass1
-	{
-		VertexShader = compile vs_4_0 LitVS();
-		PixelShader = compile ps_4_0 LitPS();
-	}
-}
-
-technique LitNoTexture
-{
-	pass Pass1
-	{
-		VertexShader = compile vs_4_0 LitNoTextureVS();
-		PixelShader = compile ps_4_0 LitNoTexturePS();
-	}
-}
-
-technique LitShadowReceiver
-{
-	pass Pass1
-	{
-		VertexShader = compile vs_4_0 LitShadowReceiverVS();
-		PixelShader = compile ps_4_0 LitShadowReceiverPS();
-	}
-}
-
-technique LitNoTextureShadowReceiver
-{
-	pass Pass1
-	{
-		VertexShader = compile vs_4_0 LitNoTextureShadowReceiverVS();
-		PixelShader = compile ps_4_0 LitNoTextureShadowReceiverPS();
-	}
-}
-
-technique LitShadowReceiverPCF
-{
-	pass Pass1
-	{
-		VertexShader = compile vs_4_0 LitShadowReceiverVS();
-		PixelShader = compile ps_4_0 LitShadowReceiverPCFPS();
-	}
-}
-
-technique LitNoTextureShadowReceiverPCF
-{
-	pass Pass1
-	{
-		VertexShader = compile vs_4_0 LitNoTextureShadowReceiverVS();
-		PixelShader = compile ps_4_0 LitNoTextureShadowReceiverPCFPS();
-	}
-}
+TECHNIQUE(Lit, LitVS, LitPS)
+TECHNIQUE(LitNoTexture, LitNoTextureVS, LitNoTexturePS)
+TECHNIQUE(LitShadowReceiver, LitShadowReceiverVS, LitShadowReceiverPS)
+TECHNIQUE(LitNoTextureShadowReceiver, LitNoTextureShadowReceiverVS, LitNoTextureShadowReceiverPS)
+TECHNIQUE(LitShadowReceiverPCF, LitShadowReceiverVS, LitShadowReceiverPCFPS)
+TECHNIQUE(LitNoTextureShadowReceiverPCF, LitNoTextureShadowReceiverVS, LitNoTextureShadowReceiverPCFPS)
 
 //----------------------------------------------------------------------------------------
 //Shadow Caster Shader Code. Creates Shadow map.
@@ -396,23 +352,8 @@ float4 ShadowCasterTransparentPS(VSOutputShadowReceiverTransparent input) : SV_T
 	return float4(depthValue, depthValue, depthValue, 1.0f);
 }
 
-technique ShadowCaster
-{
-	pass Pass1
-	{
-		VertexShader = compile vs_4_0 ShadowCasterVS();
-		PixelShader = compile ps_4_0 ShadowCasterPS();
-	}
-}
-
-technique ShadowCasterTransparent
-{
-	pass Pass1
-	{
-		VertexShader = compile vs_4_0 ShadowCasterTransparentVS();
-		PixelShader = compile ps_4_0 ShadowCasterTransparentPS();
-	}
-}
+TECHNIQUE(ShadowCaster, ShadowCasterVS, ShadowCasterPS)
+TECHNIQUE(ShadowCasterTransparent, ShadowCasterTransparentVS, ShadowCasterTransparentPS)
 
 //-----------------------------------------------------------------------------
 // Unlit
@@ -460,29 +401,6 @@ float4 UnlitPSLinearSampled(UnlitOutputVS input) : COLOR0
 	return tex2D(LinearSampler, input.TexCoord);
 }
 
-technique Unlit
-{
-	pass p0
-	{
-		VertexShader = compile vs_4_0 UnlitVS();
-		PixelShader = compile ps_4_0 UnlitPS();
-	}
-}
-
-technique UnlitNoTexture
-{
-	pass p0
-	{
-		VertexShader = compile vs_4_0 UnlitVS();
-		PixelShader = compile ps_4_0 UnlitNoTexturePS();
-	}
-}
-
-technique UnlitLinearSampled
-{
-	pass p0
-	{
-		VertexShader = compile vs_4_0 UnlitVS();
-		PixelShader = compile ps_4_0 UnlitPSLinearSampled();
-	}
-}
+TECHNIQUE(Unlit, UnlitVS, UnlitPS)
+TECHNIQUE(UnlitNoTexture, UnlitVS, UnlitNoTexturePS)
+TECHNIQUE(UnlitLinearSampled, UnlitVS, UnlitPSLinearSampled)

@@ -29,7 +29,7 @@ namespace Pokemon3D.Screens.Overworld
         {
             GameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(GameInstance.ScreenBounds.Width / 2 - 200, 100, 400, 100), Color.Black.Alpha(200));
 
-            var font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular);
+            var font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.LargeUIRegular);
             var fontSize = font.MeasureString(_message);
 
             GameInstance.GetService<SpriteBatch>().DrawString(font, _message, new Vector2(GameInstance.ScreenBounds.Width / 2 - 190, 110), Color.White);
