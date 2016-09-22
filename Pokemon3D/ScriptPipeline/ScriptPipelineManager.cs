@@ -25,6 +25,15 @@ namespace Pokemon3D.ScriptPipeline
         private static List<SObject> _prototypeBuffer;
         private static Dictionary<string, MethodInfo[]> _apiClasses;
 
+        private static Assembly[] GetSourceAssemblies()
+        {
+            return new[]
+            {
+                typeof(ScriptPipelineManager).Assembly,
+                AssemblyReference.Get()
+            };
+        }
+
         private static void InitializePrototypeBuffer()
         {
             // load all defined prototypes once to store them in a buffer.
@@ -33,8 +42,11 @@ namespace Pokemon3D.ScriptPipeline
             _prototypeBuffer = new List<SObject>();
             var processor = new ScriptProcessor();
 
-            foreach (var t in typeof(ScriptPipelineManager).Assembly.GetTypes().Where(t => t.GetCustomAttributes(typeof(ScriptPrototypeAttribute), true).Length > 0))
-                _prototypeBuffer.Add(ScriptInAdapter.Translate(processor, t));
+            foreach (var assembly in GetSourceAssemblies())
+            {
+                foreach (var t in assembly.GetTypes().Where(t => t.GetCustomAttributes(typeof(ScriptPrototypeAttribute), true).Length > 0))
+                    _prototypeBuffer.Add(ScriptInAdapter.Translate(processor, t));
+            }
         }
 
         private static void InitializeApiClasses()
@@ -43,11 +55,15 @@ namespace Pokemon3D.ScriptPipeline
             // get their public static methods and add them grouped by their type's name to the dictionary.
 
             _apiClasses = new Dictionary<string, MethodInfo[]>();
-            foreach (var t in typeof(ScriptPipelineManager).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ApiClass)) &&
-                                                                                           t.GetCustomAttributes(typeof(ApiClassAttribute), true).Length > 0))
+
+            foreach (var assembly in GetSourceAssemblies())
             {
-                var attr = (ApiClassAttribute)t.GetCustomAttribute(typeof(ApiClassAttribute));
-                _apiClasses.Add(attr.ClassName, t.GetMethods(BindingFlags.Public | BindingFlags.Static));
+                foreach (var t in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ApiClass)) &&
+                                                                 t.GetCustomAttributes(typeof(ApiClassAttribute), true).Length > 0))
+                {
+                    var attr = (ApiClassAttribute)t.GetCustomAttribute(typeof(ApiClassAttribute));
+                    _apiClasses.Add(attr.ClassName, t.GetMethods(BindingFlags.Public | BindingFlags.Static));
+                }
             }
         }
 

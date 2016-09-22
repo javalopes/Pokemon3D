@@ -51,6 +51,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyReference.cs" />
     <Compile Include="Battle\BattleController.cs" />
     <Compile Include="Battle\BattleField.cs" />
     <Compile Include="Battle\BattleFieldPosition.cs" />
