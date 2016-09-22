@@ -81,7 +81,7 @@ namespace Pokemon3D.DataModel.GameMode.Battle
         /// </summary>
         SingleTarget = OneAdjacentTarget | OneAdjacentFoe | OneAdjacentAlly | OneTarget | OneFoe | OneAlly | Self,
         /// <summary>
-        /// Contains all target types that requires at least one target.
+        /// Contains all target types that require at least one target.
         /// </summary>
         MultiTarget = AllAdjacentTargets | AllAdjacentFoes | AllAdjacentAllies | AllTargets | AllFoes | AllAllies | All
     }
