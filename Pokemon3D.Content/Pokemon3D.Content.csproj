@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Pokemon3D.Content</RootNamespace>
+    <AssemblyName>Pokemon3D.Content</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceNames.cs">
+      <DependentUpon>ResourceNames.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Content.mgcb">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Content\Effects\Macros.fxh" />
+    <None Include="Content\Fonts\BigFont.spritefont" />
+    <None Include="Content\Fonts\DebugFont.spritefont" />
+    <None Include="Content\Fonts\LargeUIRegular.spritefont" />
+    <None Include="Content\Fonts\NormalFont.spritefont" />
+    <None Include="Content\Fonts\NormalUIRegular.spritefont" />
+    <None Include="Content\Fonts\NotificationFont.spritefont" />
+    <None Include="Content\Fonts\SmallUIRegular.spritefont" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Effects\BasicEffect.fx" />
+    <Content Include="Content\Effects\DebugShadowMap.fx" />
+    <Content Include="Content\Effects\PostProcessing.fx" />
+    <None Include="ResourceNames.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ResourceNames.cs</LastGenOutput>
+    </None>
+    <Content Include="Content\Textures\DefaultGuy.png" />
+    <Content Include="Content\Textures\guiskin.png" />
+    <Content Include="Content\Textures\highlight.png" />
+    <Content Include="Content\Textures\NotificationIcons.png" />
+    <Content Include="Content\Textures\P3D.png" />
+    <Content Include="Content\Textures\Pokeball.png" />
+    <Content Include="Content\Textures\skybox_texture.png" />
+    <Content Include="Content\Textures\SquareLogo_256px.png" />
+    <Content Include="Content\Textures\test_background.png" />
+    <Content Include="Content\Textures\UI\Common\Button_Blank.png" />
+    <Content Include="Content\Textures\UI\Common\Checkbox_Back.png" />
+    <Content Include="Content\Textures\UI\Common\Checkbox_Mark.png" />
+    <Content Include="Content\Textures\UI\Common\Hexagon.png" />
+    <Content Include="Content\Textures\UI\Common\Profile.png" />
+    <Content Include="Content\Textures\UI\Common\Profile_Shadow.png" />
+    <Content Include="Content\Textures\UI\GamePadButtons\Button_A.png" />
+    <Content Include="Content\Textures\UI\GamePadButtons\Button_B.png" />
+    <Content Include="Content\Textures\UI\GamePadButtons\Button_Menu.png" />
+    <Content Include="Content\Textures\UI\GamePadButtons\Button_X.png" />
+    <Content Include="Content\Textures\UI\GamePadButtons\Button_Y.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Content;
 using Pokemon3D.Rendering.Compositor;
-using System.Collections.Generic;
-using System;
 
 namespace Pokemon3D.Screens
 {
@@ -34,12 +34,12 @@ namespace Pokemon3D.Screens
 
         public WindowsSceneEffect(ContentManager content)
         {
-            _basicEffect = content.Load<Effect>(ResourceNames.Windows.Effects.BasicEffect);
-            PostProcessingEffect = content.Load<Effect>(ResourceNames.Windows.Effects.PostProcessing);
+            _basicEffect = content.Load<Effect>(ResourceNames.Effects.BasicEffect);
+            PostProcessingEffect = content.Load<Effect>(ResourceNames.Effects.PostProcessing);
 
             _shadowCasterTechnique = _basicEffect.Techniques["ShadowCaster"];
             _shadowCasterTransparentTechnique = _basicEffect.Techniques["ShadowCasterTransparent"];
-            ShadowMapDebugEffect = content.Load<Effect>(ResourceNames.Windows.Effects.DebugShadowMap);
+            ShadowMapDebugEffect = content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
 
             _effectsByLightingFlags = new Dictionary<int, EffectTechnique>()
             {

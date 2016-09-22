@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Content;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
@@ -17,8 +18,8 @@ namespace Pokemon3D.UI
 
         public LeftSideButton(string text, Vector2 position, Action<LeftSideButton> onClick)
         {
-            _font = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.NormalFont);
-            _texture = GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.UI.Common.Button_Blank);
+            _font = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _texture = GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
 
             Text = text;
             var bounds = Bounds;

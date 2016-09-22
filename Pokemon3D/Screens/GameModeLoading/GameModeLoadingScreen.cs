@@ -1,17 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
-using Pokemon3D.Screens.Transitions;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Content;
 using Pokemon3D.Entities;
 using Pokemon3D.GameModes;
+using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
-using Pokemon3D.Screens.Overworld;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
 using Pokemon3D.Rendering.UI.Controls;
+using Pokemon3D.Screens.Overworld;
+using Pokemon3D.Screens.Transitions;
 using static Pokemon3D.GameCore.GameProvider;
-using Pokemon3D.Rendering;
 
 namespace Pokemon3D.Screens.GameModeLoading
 {
@@ -24,7 +24,7 @@ namespace Pokemon3D.Screens.GameModeLoading
         public void OnOpening(object enterInformation)
         {
             _overlay = new UiOverlay();
-            _pokeballSprite = _overlay.AddElement(new Image(GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.Pokeball)));
+            _pokeballSprite = _overlay.AddElement(new Image(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball)));
             _pokeballSprite.SetPosition(new Vector2(GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height) * 0.5f);
             _pokeballSprite.SetOriginPercentage(new Vector2(0.5f));
             _pokeballSprite.EnterAnimation = new UiScaleAnimation(0.5f, Vector2.Zero, Vector2.One);
@@ -32,7 +32,7 @@ namespace Pokemon3D.Screens.GameModeLoading
             _pokeballSprite.Scale = Vector2.Zero;
             _pokeballSprite.AddCustomAnimation("Rotating", new UiRotationAnimation(0.5f, 0.0f, MathHelper.TwoPi), true);
 
-            var loadingText = _overlay.AddElement(new StaticText(GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.BigFont), "@Loading..."));
+            var loadingText = _overlay.AddElement(new StaticText(GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont), "@Loading..."));
             loadingText.SetPosition(new Vector2(GameInstance.ScreenBounds.Width * 0.5f, 400));
             loadingText.SetOriginPercentage(new Vector2(0.5f, 0.0f));
             loadingText.EnterAnimation = new UiAlphaAnimation(0.4f, 0.0f, 1.0f);

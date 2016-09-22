@@ -9,6 +9,7 @@ using Pokemon3D.Entities.System.Components;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 using System;
+using Pokemon3D.Content;
 using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities
@@ -56,7 +57,7 @@ namespace Pokemon3D.Entities
             _playerEntity = world.EntitySystem.CreateEntity(true);
 
             var mesh = new Mesh(GameInstance.GraphicsDevice, Primitives.GenerateQuadForYBillboard());
-            var diffuseTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.DefaultGuy);
+            var diffuseTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
             var material = new Material
             {
                 DiffuseTexture = diffuseTexture,
@@ -72,7 +73,7 @@ namespace Pokemon3D.Entities
             var cameraComponent = _cameraEntity.AddComponent(new CameraEntityComponent(_cameraEntity, new Skybox(GameInstance)
             {
                 Scale = 50,
-                Texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Windows.Textures.skybox_texture)
+                Texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.skybox_texture)
             }));
             cameraComponent.FarClipDistance = 50.0f;
             Camera = cameraComponent.Camera;

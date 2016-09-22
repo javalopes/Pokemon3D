@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 using Pokemon3D.Common;
+using Pokemon3D.Content;
 using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Collisions
@@ -59,7 +60,7 @@ namespace Pokemon3D.Collisions
                 PreventDrawCallCount = true
             };
 
-            _lineDrawEffect = GameInstance.Content.Load<Effect>(ResourceNames.Windows.Effects.DebugShadowMap);
+            _lineDrawEffect = GameInstance.Content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
             _worldViewProjection = _lineDrawEffect.Parameters["WorldViewProjection"];
             _modulateColor = _lineDrawEffect.Parameters["Color"];
             _lineTechnique = _lineDrawEffect.Techniques["LineDraw"];

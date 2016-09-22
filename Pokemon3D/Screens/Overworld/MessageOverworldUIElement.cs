@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
-using static Pokemon3D.GameCore.GameProvider;
-using Pokemon3D.Common.Shapes;
 using Pokemon3D.Common.Input;
+using Pokemon3D.Common.Shapes;
+using Pokemon3D.Content;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.Overworld
 {
@@ -29,7 +26,7 @@ namespace Pokemon3D.Screens.Overworld
         {
             GameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(GameInstance.ScreenBounds.Width / 2 - 200, 100, 400, 100), Color.Black.Alpha(200));
 
-            var font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.LargeUIRegular);
+            var font = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular);
             var fontSize = font.MeasureString(_message);
 
             GameInstance.GetService<SpriteBatch>().DrawString(font, _message, new Vector2(GameInstance.ScreenBounds.Width / 2 - 190, 110), Color.White);

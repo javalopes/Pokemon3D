@@ -1,23 +1,24 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Pokemon3D.Entities;
-using Pokemon3D.Rendering.Compositor;
-using System;
-using Pokemon3D.Screens.Transitions;
-using Pokemon3D.DataModel.Savegame;
-using Pokemon3D.DataModel.Savegame.Pokemon;
-using Pokemon3D.DataModel.Savegame.Inventory;
-using Pokemon3D.DataModel.Pokemon;
-using Pokemon3D.Screens.MainMenu;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Pokemon3D.GameCore.GameProvider;
-using Pokemon3D.Rendering;
-using Pokemon3D.Common.Input;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Collisions;
+using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Shapes;
+using Pokemon3D.Content;
+using Pokemon3D.DataModel.Pokemon;
+using Pokemon3D.DataModel.Savegame;
+using Pokemon3D.DataModel.Savegame.Inventory;
+using Pokemon3D.DataModel.Savegame.Pokemon;
+using Pokemon3D.Entities;
 using Pokemon3D.GameModes;
+using Pokemon3D.Rendering;
+using Pokemon3D.Rendering.Compositor;
+using Pokemon3D.Screens.MainMenu;
+using Pokemon3D.Screens.Transitions;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.Overworld
 {
@@ -37,7 +38,7 @@ namespace Pokemon3D.Screens.Overworld
                 ActiveWorld = enterInformation as World;
                 if (ActiveWorld == null) throw new InvalidOperationException("Did not receive loaded data.");
 
-                _debugSpriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.DebugFont);
+                _debugSpriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
 
                 CreateTempSave();
 

@@ -93,11 +93,6 @@
     <Compile Include="Entities\PlayerMovementMode.cs" />
     <Compile Include="Entities\World.cs" />
     <Compile Include="GameCore\GameProvider.cs" />
-    <Compile Include="ResourceNames.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ResourceNames.tt</DependentUpon>
-    </Compile>
     <Compile Include="Screens\Battle\BattleScreen.cs" />
     <Compile Include="Screens\GameMenu\GameMenuScreen.cs" />
     <Compile Include="Screens\GameMenu\IntroScreen.cs" />
@@ -165,113 +160,25 @@
     <Compile Include="ScriptPipeline\ScriptPipelineManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Content.mgcb" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
-    <Content Include="Content\Windows\Effects\BasicEffect.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Effects\DebugShadowMap.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Effects\PostProcessing.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Fonts\BigFont.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Fonts\DebugFont.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Fonts\LargeUIRegular.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Fonts\NormalFont.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Fonts\NormalUIRegular.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Fonts\NotificationFont.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Fonts\SmallUIRegular.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\DefaultGuy.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\guiskin.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\highlight.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\NotificationIcons.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\P3D.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\Pokeball.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\skybox_texture.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\SquareLogo_256px.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\test_background.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\UI\Common\Button_Blank.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\UI\Common\Checkbox_Back.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\UI\Common\Checkbox_Mark.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\UI\Common\Hexagon.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\UI\Common\Profile.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\UI\Common\Profile_Shadow.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\UI\GamePadButtons\Button_A.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\UI\GamePadButtons\Button_B.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\UI\GamePadButtons\Button_Menu.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\UI\GamePadButtons\Button_X.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Windows\Textures\UI\GamePadButtons\Button_Y.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="packages.config" />
-    <None Include="ResourceNames.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ResourceNames.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <MonoGameContentReference Include="..\Pokemon3D.Content\Content\Content.mgcb">
+      <Link>Content.mgcb</Link>
+    </MonoGameContentReference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Pokemon3D.Common\Pokemon3D.Common.csproj">
       <Project>{b29dc7f0-2a16-4585-80a2-b4030558ec35}</Project>
       <Name>Pokemon3D.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Pokemon3D.Content\Pokemon3D.Content.csproj">
+      <Project>{d4d6f325-af95-4dc7-9650-acd9f7b198b6}</Project>
+      <Name>Pokemon3D.Content</Name>
     </ProjectReference>
     <ProjectReference Include="..\Pokemon3D.DataModel\Pokemon3D.DataModel.csproj">
       <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
@@ -300,6 +207,7 @@
     <PostBuildEvent>xcopy /Y /E /I "$(SolutionDir)i18n" "$(TargetDir)i18n"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\AssimpNet.3.3.1\build\AssimpNet.targets" Condition="Exists('..\packages\AssimpNet.3.3.1\build\AssimpNet.targets')" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>

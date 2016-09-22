@@ -2,9 +2,10 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common.Shapes;
+using Pokemon3D.Content;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
-using Pokemon3D.Common.Shapes;
 
 namespace Pokemon3D.UI.Dialogs
 {
@@ -25,8 +26,8 @@ namespace Pokemon3D.UI.Dialogs
                 AddChildElement(leftSideButton);
             }
 
-            _titleFont = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.BigFont);
-            _textFont = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Windows.Fonts.NormalFont);
+            _titleFont = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
+            _textFont = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
 
             _title = title;
             _text = text;

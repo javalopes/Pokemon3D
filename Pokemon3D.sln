@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D", "Pokemon3D\Pokemon3D.csproj", "{5D11A857-65E3-46BB-9550-633D5DC5973F}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.GameModes", "Pokemon3D.GameModes\Pokemon3D.GameModes.csproj", "{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.GameJolt", "Pokemon3D.GameJolt\Pokemon3D.GameJolt.csproj", "{F4417500-6A78-444C-BE5C-31D8BDB4A1D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.Content", "Pokemon3D.Content\Pokemon3D.Content.csproj", "{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -255,6 +257,24 @@ Global
 		{F4417500-6A78-444C-BE5C-31D8BDB4A1D0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F4417500-6A78-444C-BE5C-31D8BDB4A1D0}.Release|x86.ActiveCfg = Release|Any CPU
 		{F4417500-6A78-444C-BE5C-31D8BDB4A1D0}.Release|x86.Build.0 = Release|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Debug|x86.Build.0 = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.DebugRendering|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.DebugRendering|Any CPU.Build.0 = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.DebugRendering|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.DebugRendering|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.DebugRendering|x86.ActiveCfg = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.DebugRendering|x86.Build.0 = Debug|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Release|x86.ActiveCfg = Release|Any CPU
+		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

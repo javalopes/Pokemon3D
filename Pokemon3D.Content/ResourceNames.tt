@@ -18,6 +18,7 @@ var baseNamespace = project.Properties.Item("DefaultNamespace").Value.ToString()
 ProjectItem processingParentFolder = null;
 foreach(ProjectItem projectItem in project.ProjectItems)
 {
+	var name = projectItem.Name;
 	if (projectItem.Name == rootFolderName)
 	{
 		processingParentFolder = projectItem;
@@ -53,7 +54,7 @@ public static class <#= className #>
 			{
 				ProcessFolder(projectItem, projectItem.Name, System.IO.Path.Combine(parentPath, projectItem.Name));
 			}
-			else if (IsXnbResource(projectItem))
+			else if (IsResource(projectItem))
 			{
 				ProcessItem(projectItem, parentPath);
 			}
@@ -67,7 +68,7 @@ public static class <#= className #>
 	{
 		foreach(ProjectItem projectItem in parentItem.ProjectItems)
 		{
-			if (IsFolder(projectItem) || IsXnbResource(projectItem)) return true;
+			if (IsFolder(projectItem) || IsResource(projectItem)) return true;
 		}
 		return false;
 	}
@@ -77,9 +78,16 @@ public static class <#= className #>
 		return projectItem.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFolder;
 	}
 
-	bool IsXnbResource(ProjectItem projectItem)
+	bool IsResource(ProjectItem projectItem)
 	{
-		return projectItem.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFile && projectItem.Name.EndsWith(".xnb");
+		if (projectItem.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFile)
+		{
+			return projectItem.Name.EndsWith(".png") ||
+				projectItem.Name.EndsWith(".spritefont") ||
+				projectItem.Name.EndsWith(".fx") ||
+				projectItem.Name.EndsWith(".fxh");
+		}
+		return false;
 	}
 
 	void ProcessItem(ProjectItem currentProjectItem, string parentPath)
