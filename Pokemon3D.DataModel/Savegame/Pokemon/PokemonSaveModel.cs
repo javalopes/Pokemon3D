@@ -31,7 +31,7 @@ namespace Pokemon3D.DataModel.Savegame.Pokemon
         public bool IsShiny;
 
         [DataMember(Order = 4)]
-        public string AbilityId;
+        public int AbilityIndex;
 
         [DataMember(Order = 5)]
         public string NatureId;

@@ -34,6 +34,7 @@ namespace Pokemon3D.GameModes
         private MoveModel[] _moveModels;
         private ItemModel[] _itemModels;
         private PokedexModel[] _pokedexModels;
+        private AbilityModel[] _abilityModels;
 
         public FileProvider FileLoader { get; }
         public GameModeInfo GameModeInfo { get; }
@@ -103,6 +104,9 @@ namespace Pokemon3D.GameModes
 
             var itemsFiles = FileLoader.GetFilesOfFolder(ItemFilesPath);
             _itemModels = itemsFiles.Select(d => DataModel<ItemModel>.FromByteArray(d.Data)).ToArray();
+
+            var abilityFiles = FileLoader.GetFilesOfFolder(AbilityFilesPath);
+            _abilityModels = abilityFiles.Select(d => DataModel<AbilityModel>.FromByteArray(d.Data)).ToArray();
         }
 
         public Texture2D GetTexture(string filePath)
@@ -211,6 +215,11 @@ namespace Pokemon3D.GameModes
         public ItemModel GetItemModel(string id)
         {
             return _itemModels.Single(m => m.Id == id);
+        }
+
+        public AbilityModel GetAbilityModel(string id)
+        {
+            return _abilityModels.Single(m => m.Id == id);
         }
 
         public NatureModel[] GetNatures()

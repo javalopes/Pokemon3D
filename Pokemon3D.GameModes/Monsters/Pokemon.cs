@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common;
+using Pokemon3D.DataModel.GameMode.Battle;
 using Pokemon3D.DataModel.GameMode.Definitions;
 using Pokemon3D.DataModel.GameMode.Pokemon;
 using Pokemon3D.DataModel.Pokemon;
@@ -23,7 +24,7 @@ namespace Pokemon3D.GameModes.Monsters
 
         private PokemonModel _dataModel;
         private PokemonSaveModel _saveModel;
-        
+
         #region Data Model Properties
 
         /// <summary>
@@ -89,6 +90,23 @@ namespace Pokemon3D.GameModes.Monsters
             }
         }
 
+        public AbilityModel Ability
+        {
+            get
+            {
+                if (_saveModel.AbilityIndex == 0)
+                    _saveModel.AbilityIndex = GlobalRandomProvider.Instance.Rnd.Next(0, ActiveFormModel.Abilities.Length);
+
+                string id;
+                if (ActiveFormModel.Abilities.Length <= _saveModel.AbilityIndex)
+                    id = ActiveFormModel.Abilities.Last();
+                else
+                    id = ActiveFormModel.Abilities[_saveModel.AbilityIndex];
+
+                return _gameMode.GetAbilityModel(id);
+            }
+        }
+
         public NatureModel Nature => _gameMode.GetNatureModel(_saveModel.NatureId);
 
         public TypeModel Type1 => _gameMode.GetTypeModel(ActiveFormModel.Type1);
@@ -100,7 +118,7 @@ namespace Pokemon3D.GameModes.Monsters
         public LevelUpMoveModel[] LevelMoves => GetMovePoolModel(ActiveFormModel).LevelMoves;
 
         public string[] LearnableMoves => GetMovePoolModel(ActiveFormModel).LearnableMoves;
-        
+
         public PokemonFormModel ActiveFormModel
         {
             get
@@ -170,7 +188,7 @@ namespace Pokemon3D.GameModes.Monsters
                 return DEFAULT_FORM_ID;
             }
         }
-        
+
         /// <summary>
         /// Makes the Pokémon learn all moves that are learnt on Level 1.
         /// </summary>

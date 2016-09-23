@@ -27,6 +27,7 @@ namespace Pokemon3D.GameModes
 
         private const string PATH_DATA_MOVES = "Moves";
         private const string PATH_DATA_ITEMS = "Items";
+        private const string PATH_DATA_ABILITIES = "Abilities";
 
         /// <summary>
         /// The path to the texture base folder of this GameMode.
@@ -62,6 +63,11 @@ namespace Pokemon3D.GameModes
         /// The absolute path to the directory that contains the item files.
         /// </summary>
         public string ItemFilesPath => Path.Combine(GameModeInfo.DirectoryPath, PATH_DATA, PATH_DATA_ITEMS);
+
+        /// <summary>
+        /// The absolute path to the directory that contains the ability files.
+        /// </summary>
+        public string AbilityFilesPath => Path.Combine(GameModeInfo.DirectoryPath, PATH_DATA, PATH_DATA_ABILITIES);
 
         /// <summary>
         /// The file path to the file containing the nature data.
