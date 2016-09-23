@@ -8,19 +8,19 @@ namespace Pokemon3D.Common.Input
         /// <summary>
         /// The enter key on the <see cref="Microsoft.Xna.Framework.Input.Keyboard"/>.
         /// </summary>
-        EnterKey = 1,
+        EnterKey = 1 << 0,
         /// <summary>
         /// The spacebar key on the <see cref="Microsoft.Xna.Framework.Input.Keyboard"/>.
         /// </summary>
-        SpacebarKey = 2,
+        SpacebarKey = 1 << 1,
         /// <summary>
         /// The left button on the <see cref="Microsoft.Xna.Framework.Input.Mouse"/>.
         /// </summary>
-        LeftClick = 4,
+        LeftClick = 1 << 2,
         /// <summary>
         /// The A button on the <see cref="Microsoft.Xna.Framework.Input.GamePad"/>.
         /// </summary>
-        AButton = 8,
+        AButton = 1 << 3,
         All = EnterKey | SpacebarKey | LeftClick | AButton,
         Buttons = EnterKey | SpacebarKey | AButton
     }

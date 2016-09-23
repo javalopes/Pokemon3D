@@ -11,68 +11,68 @@ namespace Pokemon3D.DataModel.GameMode.Battle
         /// <summary>
         /// One adjacent target, excluding itself.
         /// </summary>
-        OneAdjacentTarget = 0,
+        OneAdjacentTarget = 1 << 0,
         /// <summary>
         /// One adjacent foe.
         /// </summary>
-        OneAdjacentFoe = 1 << 0,
+        OneAdjacentFoe = 1 << 1,
         /// <summary>
         /// One adjacent ally, excluding itself.
         /// </summary>
-        OneAdjacentAlly = 1 << 1,
+        OneAdjacentAlly = 1 << 2,
 
         /// <summary>
         /// One target, excluding itself.
         /// </summary>
-        OneTarget = 1 << 2,
+        OneTarget = 1 << 3,
         /// <summary>
         /// One Foe.
         /// </summary>
-        OneFoe = 1 << 3,
+        OneFoe = 1 << 4,
         /// <summary>
         /// One ally, excluding itself.
         /// </summary>
-        OneAlly = 1 << 4,
+        OneAlly = 1 << 5,
 
         /// <summary>
         /// Only itself.
         /// </summary>
-        Self = 1 << 5,
+        Self = 1 << 6,
 
         /// <summary>
         /// All adjacent targets, exluding itself.
         /// </summary>
-        AllAdjacentTargets = 1 << 6,
+        AllAdjacentTargets = 1 << 7,
         /// <summary>
         /// All adjacent foes.
         /// </summary>
-        AllAdjacentFoes = 1 << 7,
+        AllAdjacentFoes = 1 << 8,
         /// <summary>
         /// All adjacent allies, excluding itself.
         /// </summary>
-        AllAdjacentAllies = 1 << 8,
+        AllAdjacentAllies = 1 << 9,
 
         /// <summary>
         /// All Targets, excluding itself.
         /// </summary>
-        AllTargets = 1 << 9,
+        AllTargets = 1 << 10,
         /// <summary>
         /// All Foes.
         /// </summary>
-        AllFoes = 1 << 10,
+        AllFoes = 1 << 11,
         /// <summary>
         /// All allies, excluding itself.
         /// </summary>
-        AllAllies = 1 << 11,
+        AllAllies = 1 << 12,
         /// <summary>
         /// All own Pokémon (allies + itself).
         /// </summary>
-        AllOwn = 1 << 12,
+        AllOwn = 1 << 13,
 
         /// <summary>
         /// All Pokémon, including itself.
         /// </summary>
-        All = 1 << 13,
+        All = 1 << 14,
         
         // collection entries:
 
