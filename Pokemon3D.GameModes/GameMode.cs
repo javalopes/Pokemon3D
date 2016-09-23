@@ -24,9 +24,9 @@ namespace Pokemon3D.GameModes
     public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable
     {
         private readonly Dictionary<string, ModelMesh[]> _meshCache = new Dictionary<string, ModelMesh[]>();
-        private readonly Dictionary<string, Mesh> _meshPrimitivesByName = new Dictionary<string, Mesh>(); 
+        private readonly Dictionary<string, Mesh> _meshPrimitivesByName = new Dictionary<string, Mesh>();
         private readonly Dictionary<string, Texture2D> _textureCache = new Dictionary<string, Texture2D>();
-        private readonly Dictionary<string, MapModel> _mapModelsCache = new Dictionary<string, MapModel>(); 
+        private readonly Dictionary<string, MapModel> _mapModelsCache = new Dictionary<string, MapModel>();
 
         private PrimitiveModel[] _primitiveModels;
         private NatureModel[] _natureModels;
@@ -100,11 +100,11 @@ namespace Pokemon3D.GameModes
 
             var movesFilePaths = FileLoader.GetFilesOfFolder(MoveFilesPath);
             _moveModels = movesFilePaths.Select(d => DataModel<MoveModel>.FromByteArray(d.Data)).ToArray();
-            
+
             var itemsFiles = FileLoader.GetFilesOfFolder(ItemFilesPath);
             _itemModels = itemsFiles.Select(d => DataModel<ItemModel>.FromByteArray(d.Data)).ToArray();
         }
-                
+
         public Texture2D GetTexture(string filePath)
         {
             return GetTextureFromRawFolder(Path.Combine(TexturePath, filePath));
@@ -114,7 +114,7 @@ namespace Pokemon3D.GameModes
         {
             Texture2D existing;
             if (_textureCache.TryGetValue(filePath, out existing)) return existing;
-            
+
             var data = FileLoader.GetFile(Path.Combine(TexturePath, filePath), false);
 
             Texture2D texture = null;
@@ -126,7 +126,7 @@ namespace Pokemon3D.GameModes
                     texture = Texture2D.FromStream(GraphicsDevice, memoryStream);
                 });
             }
-            
+
             _textureCache.Add(filePath, texture);
             return texture;
         }

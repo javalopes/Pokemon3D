@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.ScriptPipeline.Prototypes;
 
-namespace Pokemon3D.ScriptPipeline
+namespace Pokemon3D.ScriptPipeline.Prototypes
 {
     [ScriptPrototype(VariableName = "entityComponent")]
     internal class EntityComponentWrapper

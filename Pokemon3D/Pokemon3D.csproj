@@ -101,11 +101,9 @@
     <Compile Include="Screens\Overworld\OverworldUIElement.cs" />
     <Compile Include="Screens\Transitions\ShrinkOldTransition.cs" />
     <Compile Include="Screens\WorldContainer.cs" />
-    <Compile Include="ScriptPipeline\ApiClasses\ApiClass.cs" />
-    <Compile Include="ScriptPipeline\ApiClasses\APIClassAttribute.cs" />
     <Compile Include="ScriptPipeline\ApiClasses\Message.cs" />
     <Compile Include="ScriptPipeline\ApiClasses\World.cs" />
-    <Compile Include="ScriptPipeline\EntityComponent.cs" />
+    <Compile Include="ScriptPipeline\Prototypes\EntityComponent.cs" />
     <Compile Include="ScriptPipeline\Prototypes\Entity.cs" />
     <Compile Include="ScriptPipeline\Prototypes\TypeContract.cs" />
     <Compile Include="ScriptPipeline\Prototypes\Vector2.cs" />
@@ -144,7 +142,6 @@
       <HintPath>..\packages\AssimpNet.3.3.1\lib\net45\AssimpNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
     </Reference>

@@ -103,6 +103,10 @@
     <Compile Include="LookupDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Texture2DProvider.cs" />
+    <Compile Include="ScriptPipeline\APIClass.cs" />
+    <Compile Include="ScriptPipeline\APIClassAttribute.cs" />
+    <Compile Include="ScriptPipeline\ParameterHelper.cs" />
+    <Compile Include="ScriptPipeline\TypeContract.cs" />
     <Compile Include="Shapes\Ellipse.cs" />
     <Compile Include="Shapes\GradientShapeTextureProvider.cs" />
     <Compile Include="Shapes\Pie2D.cs" />
@@ -122,6 +126,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pokemon3D.Scripting\Pokemon3D.Scripting.csproj">
+      <Project>{7c228bb5-e710-4170-9c70-8a588040e405}</Project>
+      <Name>Pokemon3D.Scripting</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

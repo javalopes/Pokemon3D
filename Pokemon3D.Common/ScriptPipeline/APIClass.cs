@@ -3,9 +3,9 @@ using Pokemon3D.Scripting.Types;
 using Pokemon3D.Scripting.Adapters;
 using System.Threading;
 
-namespace Pokemon3D.ScriptPipeline.ApiClasses
+namespace Pokemon3D.Common.ScriptPipeline
 {
-    internal abstract class ApiClass
+    public abstract class ApiClass
     {
         /// <summary>
         /// Ensures that the parameters for an API method fulfill the type contract. It also converts all script objects to .Net objects.
@@ -41,9 +41,7 @@ namespace Pokemon3D.ScriptPipeline.ApiClasses
         /// </summary>
         protected static void BlockThreadUntilCondition(Func<bool> condition)
         {
-            ScriptPipelineManager.ThreadBlockingOperationCount++;
             SpinWait.SpinUntil(condition);
-            ScriptPipelineManager.ThreadBlockingOperationCount--;
         }
     }
 }

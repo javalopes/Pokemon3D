@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Pokemon3D.ScriptPipeline.ApiClasses
+namespace Pokemon3D.Common.ScriptPipeline
 {
     [AttributeUsage(AttributeTargets.Class)]
-    internal class ApiClassAttribute : Attribute
+    public class ApiClassAttribute : Attribute
     {
         public string ClassName { get; set; }
     }

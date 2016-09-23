@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 using Pokemon3D.Common.Diagnostics;
-using Pokemon3D.Entities;
+using Pokemon3D.Common.ScriptPipeline;
 using Pokemon3D.GameModes;
 using Pokemon3D.Scripting;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
-using Pokemon3D.ScriptPipeline.ApiClasses;
-using static Pokemon3D.GameCore.GameProvider;
 using Pokemon3D.UI;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.ScriptPipeline
 {
@@ -102,7 +101,7 @@ namespace Pokemon3D.ScriptPipeline
         public static void RunScript(string scriptFile)
         {
             ActiveProcessorCount++;
-            ThreadPool.QueueUserWorkItem(o =>
+            Task.Run(() =>
             {
                 try
                 {
