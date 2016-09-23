@@ -14,25 +14,33 @@ namespace Pokemon3D.GameJolt
     public sealed class ResponseManager
     {
         private ResponseModel _dataModel;
+        private bool _parsingSuccessful;
 
         public ResponseManager(string responseData)
         {
-            _dataModel = DataModel<ResponseModel>.FromString(responseData);
+            try
+            {
+                _dataModel = DataModel<ResponseModel>.FromString(responseData);
+                _parsingSuccessful = true;
+            }
+            catch { }
         }
         
         public bool AllCallsSuccessful
-        {
-            get { return _dataModel.Response.Responses.All(r => r != null && r.Success); }
-        }
-
+            => _parsingSuccessful && _dataModel.Response.Responses.All(r => r != null && r.Success);
+        
         public CallResponseModel[] Responses
         {
-            get { return _dataModel.Response.Responses; }
+            get 
+            {
+                if (_parsingSuccessful)
+                    return _dataModel.Response.Responses;
+                    
+                return new CallResponseModel[0];
+            }
         }
 
         public bool BatchSuccessful
-        {
-            get { return _dataModel.Response.Success; }
-        }
+            => _parsingSuccessful && _dataModel.Response.Success;
     }
 }
