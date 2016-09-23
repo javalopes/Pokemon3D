@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Pokemon3D.Common.ScriptPipeline;
 using Pokemon3D.Scripting.Adapters;
-using Pokemon3D.ScriptPipeline.Prototypes;
 
 namespace Pokemon3D.ScriptPipeline.Prototypes
 {
-    [ScriptPrototype(VariableName = "entityComponent")]
+    [ScriptPrototype(VariableName = "EntityComponent")]
     internal class EntityComponentWrapper
     {
         [ScriptVariable]
@@ -18,30 +13,40 @@ namespace Pokemon3D.ScriptPipeline.Prototypes
         public string id;
 
         [ScriptFunction(ScriptFunctionType.Standard, VariableName = "setData")]
-        public static object SetData(object This, object[] parameters)
+        public static object SetData(object This, ScriptObjectLink objLink, object[] parameters)
         {
-            var instance = (EntityComponentWrapper)This;
-            var entity = instance.parent.GetEntity();
-            var component = entity.GetComponent(instance.id);
+            if (TypeContract.Ensure(parameters, new[] { typeof(string), typeof(string) }))
+            {
+                var instance = (EntityComponentWrapper)This;
+                var entity = instance.parent.GetEntity();
+                var component = entity.GetComponent(instance.id);
 
-            var dataKey = (string)parameters[0];
-            var dataValue = (string)parameters[1];
+                var dataKey = (string)parameters[0];
+                var dataValue = (string)parameters[1];
 
-            component.SetData(dataKey, dataValue);
+                component.SetData(dataKey, dataValue);
 
-            return dataValue;
+                return dataValue;
+            }
+
+            return NetUndefined.Instance;
         }
 
         [ScriptFunction(ScriptFunctionType.Standard, VariableName = "getData")]
-        public static object GetData(object This, object[] parameters)
+        public static object GetData(object This, ScriptObjectLink objLink, object[] parameters)
         {
-            var instance = (EntityComponentWrapper)This;
-            var entity = instance.parent.GetEntity();
-            var component = entity.GetComponent(instance.id);
+            if (TypeContract.Ensure(parameters, typeof(string)))
+            {
+                var instance = (EntityComponentWrapper)This;
+                var entity = instance.parent.GetEntity();
+                var component = entity.GetComponent(instance.id);
 
-            var dataKey = (string)parameters[0];
+                var dataKey = (string)parameters[0];
 
-            return component.GetDataOrDefault(dataKey, "");
+                return component.GetDataOrDefault(dataKey, "");
+            }
+
+            return NetUndefined.Instance;
         }
     }
 }

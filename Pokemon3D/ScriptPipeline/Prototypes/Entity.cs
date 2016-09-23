@@ -1,34 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Pokemon3D.Screens.Overworld;
-using Pokemon3D.Scripting.Adapters;
+﻿using Pokemon3D.Common.ScriptPipeline;
 using Pokemon3D.Entities.System;
 using Pokemon3D.Screens;
+using Pokemon3D.Scripting.Adapters;
 
 namespace Pokemon3D.ScriptPipeline.Prototypes
 {
-    [ScriptPrototype(VariableName = "entity")]
+    [ScriptPrototype(VariableName = "Entity")]
     internal class EntityWrapper
     {
         [ScriptVariable]
         public string id;
 
         [ScriptFunction(ScriptFunctionType.Standard, VariableName = "getComponent")]
-        public static object GetComponent(object This, object[] parameters)
+        public static object GetComponent(object This, ScriptObjectLink objLink, object[] parameters)
         {
-            var wrapper = (EntityWrapper)This;
-            var entity = wrapper.GetEntity();
-
-            var component = new EntityComponentWrapper
+            if (TypeContract.Ensure(parameters, new[] { typeof(string) }))
             {
-                parent = wrapper,
-                id = parameters[0] as string
-            };
+                var wrapper = (EntityWrapper)This;
+                var entity = wrapper.GetEntity();
 
-            return component;
+                var component = new EntityComponentWrapper
+                {
+                    parent = wrapper,
+                    id = parameters[0] as string
+                };
+
+                return component;
+            }
+
+            return NetUndefined.Instance;
         }
 
         public Entity GetEntity()

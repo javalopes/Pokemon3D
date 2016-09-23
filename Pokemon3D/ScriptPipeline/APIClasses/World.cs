@@ -13,7 +13,7 @@ using Pokemon3D.Common.ScriptPipeline;
 
 namespace Pokemon3D.ScriptPipeline.ApiClasses
 {
-    [ApiClass(ClassName = "world")]
+    [ApiClass(ClassName = "World")]
     internal class World : ApiClass
     {
         public static SObject getEntity(ScriptProcessor processor, SObject[] parameters)

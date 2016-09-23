@@ -105,7 +105,6 @@
     <Compile Include="ScriptPipeline\ApiClasses\World.cs" />
     <Compile Include="ScriptPipeline\Prototypes\EntityComponent.cs" />
     <Compile Include="ScriptPipeline\Prototypes\Entity.cs" />
-    <Compile Include="ScriptPipeline\Prototypes\TypeContract.cs" />
     <Compile Include="ScriptPipeline\Prototypes\Vector2.cs" />
     <Compile Include="ScriptPipeline\Prototypes\Vector3.cs" />
     <Compile Include="UI\BarEntry.cs" />

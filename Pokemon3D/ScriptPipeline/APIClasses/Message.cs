@@ -8,13 +8,13 @@ using Pokemon3D.Common.ScriptPipeline;
 
 namespace Pokemon3D.ScriptPipeline.ApiClasses
 {
-    [ApiClass(ClassName = "message")]
+    [ApiClass(ClassName = "Message")]
     internal class Message : ApiClass
     {
         public static SObject show(ScriptProcessor processor, SObject[] parameters)
         {
             object[] netObjects;
-            if (EnsureTypeContract(parameters, new Type[] { typeof(string) }, out netObjects))
+            if (EnsureTypeContract(parameters, new[] { typeof(string) }, out netObjects))
             {
                 var text = (string)netObjects[0];
 
