@@ -52,9 +52,19 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             {
                 var accessor = (int)parameters[0].ToNumber(processor).Value;
 
-                if (accessor >= 0 && accessor < arr.ArrayMembers.Length)
+                if (accessor >= 0)
                 {
-                    arr.ArrayMembers[accessor] = parameters[1];
+                    if (accessor < arr.ArrayMembers.Length)
+                    {
+                        arr.ArrayMembers[accessor] = parameters[1];
+                    }
+                    else
+                    {
+                        var arrMembers = arr.ArrayMembers;
+                        Array.Resize(ref arrMembers, accessor + 1);
+                        arrMembers[accessor] = parameters[1];
+                        arr.ArrayMembers = arrMembers;
+                    }
                 }
             }
 
@@ -72,7 +82,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
                 if (accessor >= 0 && accessor < arr.ArrayMembers.Length)
                 {
-                    return arr.ArrayMembers[accessor];
+                    return arr.ArrayMembers[accessor] ?? 
+                            processor.Undefined;
                 }
             }
 
