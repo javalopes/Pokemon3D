@@ -29,7 +29,7 @@ namespace Pokemon3D.Entities.System.Components
         {
             base.OnComponentAdded();
 
-            if (Parent.IsInitializing) return;
+            if (Parent.IsInitializing || Parent.IsTemplate) return;
             Collider.SetPosition(Parent.GlobalPosition);
             GameInstance.GetService<CollisionManager>().Add(Collider);
         }

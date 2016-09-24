@@ -185,9 +185,9 @@ namespace Pokemon3D.Entities.System
         /// <returns>Merged list of entities.</returns>
         public List<Entity> MergeStaticVisualEntities(IList<Entity> entitiesToMerge)
         {
-            var entitiesByCategory = entitiesToMerge.Where(
-                e => e.IsStatic && e.ComponentCount == 1 && e.HasComponent<ModelEntityComponent>())
-                .GroupBy(e => e.GetComponent<ModelEntityComponent>().Material.CompareId);
+            var entitiesToMergeList = entitiesToMerge.Where(IsVisualEntityToMerge).ToArray();
+            var entitiesNotToMerge = entitiesToMerge.Except(entitiesToMergeList).ToArray();
+            var entitiesByCategory = entitiesToMergeList.GroupBy(e => e.GetComponent<ModelEntityComponent>().Material.CompareId);
 
             var mergedEntities = new List<Entity>();
 
@@ -217,7 +217,12 @@ namespace Pokemon3D.Entities.System
                 mergedEntities.Add(entity);
             }
 
-            return mergedEntities;
+            return mergedEntities.Concat(entitiesNotToMerge).ToList();
+        }
+
+        private static bool IsVisualEntityToMerge(Entity entity)
+        {
+            return entity.IsStatic && entity.ComponentCount == 1 && entity.HasComponent<ModelEntityComponent>();
         }
 
         /// <summary>
