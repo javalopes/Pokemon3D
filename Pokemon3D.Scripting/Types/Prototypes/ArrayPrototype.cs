@@ -5,6 +5,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 {
     internal class ArrayPrototype : Prototype
     {
+        private const string ERROR_SINGLE_MULTIPLE_ELEMENTS = "The sequence contains multiple matching elements.";
+
         public ArrayPrototype() : base("Array")
         {
             Constructor = new PrototypeMember("constructor", new SFunction(constructor));
@@ -18,29 +20,12 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         private static SObject constructor(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
             var arr = (SArray)instance;
-            if (parameters.Length == 1 && parameters[0].TypeOf() == LITERAL_TYPE_NUMBER)
-            {
-                var length = (int)((SNumber)parameters[0]).Value;
 
-                if (length >= 0)
-                {
-                    arr.ArrayMembers = new SObject[length];
-                    for (var i = 0; i < length; i++)
-                    {
-                        arr.ArrayMembers[i] = processor.Undefined;
-                    }
-                }
-                else
-                {
-                    arr.ArrayMembers = new SObject[0];
-                }
-                return arr;
-            }
-            else
-            {
-                arr.ArrayMembers = parameters;
-                return arr;
-            }
+            var length = (int)((SNumber)parameters[0]).Value;
+            arr.ArrayMembers = new SObject[length];
+
+            Array.Copy(parameters, 1, arr.ArrayMembers, 0, parameters.Length - 1);
+            return arr;
         }
 
         [BuiltInMethod(IsIndexerSet = true, MethodName = "IndexerSet")]
@@ -82,7 +67,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
                 if (accessor >= 0 && accessor < arr.ArrayMembers.Length)
                 {
-                    return arr.ArrayMembers[accessor] ?? 
+                    return arr.ArrayMembers[accessor] ??
                             processor.Undefined;
                 }
             }
@@ -100,6 +85,14 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "includes")]
         public static SObject Includes(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
+            if (parameters.Length == 1)
+            {
+                var arr = (SArray)instance;
+                var compare = parameters[0];
+
+                return processor.CreateBool(arr.ArrayMembers.Any(m => ObjectComparer.LooseEquals(processor, m, compare)));
+            }
+
             if (parameters.Length >= 2)
             {
                 var arr = (SArray)instance;
@@ -108,14 +101,6 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
                 return processor.CreateBool(arr.ArrayMembers.Any(m => ((SBool)comparer.Call(processor, This, This, new[] { m, compare })).Value));
             }
-            
-            if (parameters.Length >= 1)
-            {
-                var arr = (SArray)instance;
-                var compare = parameters[0];
-
-                return processor.CreateBool(arr.ArrayMembers.Any(m => ObjectComparer.LooseEquals(processor, m, compare)));
-            }
 
             return processor.Undefined;
         }
@@ -123,12 +108,127 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "any")]
         public static SObject Any(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
+            if (parameters.Length == 0)
+            {
+                var arr = (SArray)instance;
+                return processor.CreateBool(arr.ArrayMembers.Length > 0);
+            }
+
             if (parameters.Length >= 1)
             {
                 var arr = (SArray)instance;
                 var comparer = (SFunction)Unbox(parameters[0]);
 
                 return processor.CreateBool(arr.ArrayMembers.Any(m => ((SBool)comparer.Call(processor, This, This, new[] { m })).Value));
+            }
+            
+            return processor.Undefined;
+        }
+
+        [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "where")]
+        public static SObject Where(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            if (parameters.Length >= 1)
+            {
+                var arr = (SArray)instance;
+                var comparer = (SFunction)Unbox(parameters[0]);
+
+                var results = arr.ArrayMembers.Where((m, i) => ((SBool)comparer.Call(processor, This, This, new[] {m, processor.CreateNumber(i)})).Value);
+                return processor.CreateArray(results.ToArray());
+            }
+
+            return processor.Undefined;
+        }
+
+        [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "first")]
+        public static SObject First(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            if (parameters.Length == 0)
+            {
+                var arr = (SArray)instance;
+
+                if (arr.ArrayMembers.Length == 0)
+                    return processor.Undefined;
+                else
+                    return arr.ArrayMembers[0];
+            }
+
+            if (parameters.Length >= 1)
+            {
+                var arr = (SArray)instance;
+                var comparer = (SFunction)Unbox(parameters[0]);
+
+                var result = arr.ArrayMembers.FirstOrDefault(m => ((SBool)comparer.Call(processor, This, This, new[] { m })).Value);
+                return result ?? processor.Undefined;
+            }
+
+            return processor.Undefined;
+        }
+        
+        [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "last")]
+        public static SObject Last(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            if (parameters.Length == 0)
+            {
+                var arr = (SArray)instance;
+
+                if (arr.ArrayMembers.Length == 0)
+                    return processor.Undefined;
+                else
+                    return arr.ArrayMembers.Last();
+            }
+
+            if (parameters.Length >= 1)
+            {
+                var arr = (SArray)instance;
+                var comparer = (SFunction)Unbox(parameters[0]);
+
+                var result = arr.ArrayMembers.LastOrDefault(m => ((SBool)comparer.Call(processor, This, This, new[] { m })).Value);
+                return result ?? processor.Undefined;
+            }
+
+            return processor.Undefined;
+        }
+        
+        [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "select")]
+        public static SObject Select(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            if (parameters.Length >= 1)
+            {
+                var arr = (SArray)instance;
+                var comparer = (SFunction)Unbox(parameters[0]);
+
+                var result = arr.ArrayMembers.Select(m => comparer.Call(processor, This, This, new[] { m }));
+                return processor.CreateArray(result.ToArray());
+            }
+
+            return processor.Undefined;
+        }
+
+        [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "single")]
+        public static SObject Single(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            if (parameters.Length == 0)
+            {
+                var arr = (SArray)instance;
+
+                if (arr.ArrayMembers.Length == 1)
+                    return arr.ArrayMembers[0];
+                else
+                    return processor.ErrorHandler.ThrowError(ErrorType.UserError, ERROR_SINGLE_MULTIPLE_ELEMENTS);
+            }
+
+            if (parameters.Length >= 1)
+            {
+                var arr = (SArray)instance;
+                var comparer = (SFunction)Unbox(parameters[0]);
+
+                var result = arr.ArrayMembers.Where(m => ((SBool)comparer.Call(processor, This, This, new[] { m })).Value);
+
+                if (result.Count() == 1)
+                    return result.ElementAt(0);
+                else
+                    return processor.ErrorHandler.ThrowError(ErrorType.UserError, ERROR_SINGLE_MULTIPLE_ELEMENTS);
             }
 
             return processor.Undefined;

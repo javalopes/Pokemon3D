@@ -112,7 +112,7 @@ namespace Pokemon3D.Scripting.Adapters
         }
 
         private static SObject TranslateArray(ScriptProcessor processor, Array array) =>
-            processor.Context.CreateInstance("Array", array.Cast<object>().Select((t, i) =>
+            processor.CreateArray(array.Cast<object>().Select((t, i) =>
                     Translate(processor, array.GetValue(i))).ToArray());
 
         private static SObject TranslateException(ScriptRuntimeException exceptionIn)

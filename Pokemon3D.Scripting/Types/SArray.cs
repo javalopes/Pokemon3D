@@ -23,7 +23,7 @@ namespace Pokemon3D.Scripting.Types
         {
             // Format: [item1, item2, ... itemn]
 
-            if (Regex.IsMatch(exp, REGEX_EMPTY_ARRAY)) return processor.Context.CreateInstance("Array", new SObject[0]);
+            if (Regex.IsMatch(exp, REGEX_EMPTY_ARRAY)) return processor.CreateArray(0);
 
             exp = exp.Remove(exp.Length - 1, 1).Remove(0, 1).Trim(); // Remove [ and ].
 
@@ -73,7 +73,7 @@ namespace Pokemon3D.Scripting.Types
             else
                 elements.Add(processor.ExecuteStatement(new ScriptStatement(element)));
 
-            return processor.Context.CreateInstance("Array", elements.ToArray());
+            return processor.CreateArray(elements.ToArray());
         }
         
         internal override string ToScriptSource()

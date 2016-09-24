@@ -697,9 +697,17 @@ namespace Pokemon3D.Scripting
                 {
                     return CreateString(exp.Remove(exp.Length - 1, 1).Remove(0, 1));
                 }
+                else if (exp.All(char.IsDigit))
+                {
+                    double num;
+                    SNumber.TryParse(exp, out num);
+                    return CreateNumber(num);
+                }
 
                 #endregion
 
+                if (exp.Contains("=>"))
+                    exp = EvaluateLambda(exp);
                 if (exp.Contains("."))
                     exp = EvaluateOperator(exp, ".");
                 if (exp.Contains("++"))
@@ -724,8 +732,6 @@ namespace Pokemon3D.Scripting
                     exp = EvaluateOperator(exp, "<=");
                 if (exp.Contains(">="))
                     exp = EvaluateOperator(exp, ">=");
-                if (exp.Contains("=>"))
-                    exp = EvaluateLambda(exp);
                 if (exp.Contains("<"))
                     exp = EvaluateOperator(exp, "<");
                 if (exp.Contains(">"))

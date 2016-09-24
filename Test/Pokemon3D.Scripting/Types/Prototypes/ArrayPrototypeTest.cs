@@ -11,6 +11,41 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
     public class ArrayPrototypeTest
     {
         [TestClass]
+        public class ArrayTests
+        {
+            [TestMethod]
+            public void EmptyArrayInitialize()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = []; arr;");
+
+                Assert.IsTrue(result is SArray);
+                Assert.AreEqual(((SArray)result).ArrayMembers.Length, 0);
+            }
+
+            [TestMethod]
+            public void ArrayLengthInitializer()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = new Array(2); arr;");
+
+                Assert.IsTrue(result is SArray);
+                Assert.AreEqual(((SArray)result).ArrayMembers.Length, 2);
+            }
+
+            [TestMethod]
+            public void SingleElementArrayInitialize()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [3]; arr;");
+
+                Assert.IsTrue(result is SArray);
+                Assert.AreEqual(((SArray)result).ArrayMembers.Length, 1);
+                Assert.IsTrue(((SArray)result).ArrayMembers[0] is SNumber);
+            }
+        }
+
+        [TestClass]
         public class IndexerTest
         {
             [TestMethod]
@@ -134,6 +169,26 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
 
             [TestMethod]
+            public void AnyNoCondition()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.any();");
+
+                Assert.IsTrue(result is SBool);
+                Assert.AreEqual(((SBool)result).Value, true);
+            }
+
+            [TestMethod]
+            public void AnyNoConditionEmptyArray()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = []; arr.any();");
+
+                Assert.IsTrue(result is SBool);
+                Assert.AreEqual(((SBool)result).Value, false);
+            }
+
+            [TestMethod]
             public void AnyEmptyArray()
             {
                 var processor = ScriptProcessorFactory.GetNew();
@@ -161,6 +216,219 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
 
                 Assert.IsTrue(result is SBool);
                 Assert.AreEqual(((SBool)result).Value, true);
+            }
+        }
+
+        [TestClass]
+        public class WhereTest
+        {
+            [TestMethod]
+            public void WhereNoResult()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.where(m => m > 3);");
+
+                Assert.IsTrue(result is SArray);
+                Assert.AreEqual(((SArray)result).ArrayMembers.Length, 0);
+            }
+
+            [TestMethod]
+            public void Where()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.where(m => m > 1);");
+
+                Assert.IsTrue(result is SArray);
+                Assert.AreEqual(((SArray)result).ArrayMembers.Length, 2);
+            }
+        }
+
+        [TestClass]
+        public class SelectTest
+        {
+            [TestMethod]
+            public void SelectIntManipulation()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.select(m => m + 2);");
+
+                Assert.IsTrue(result is SArray);
+
+                var arr = (SArray)result;
+                Assert.AreEqual(arr.ArrayMembers.Length, 3);
+                Assert.IsTrue(arr.ArrayMembers[0] is SNumber);
+                Assert.IsTrue(arr.ArrayMembers[1] is SNumber);
+                Assert.IsTrue(arr.ArrayMembers[2] is SNumber);
+
+                Assert.AreEqual(((SNumber)arr.ArrayMembers[0]).Value, 3);
+                Assert.AreEqual(((SNumber)arr.ArrayMembers[1]).Value, 4);
+                Assert.AreEqual(((SNumber)arr.ArrayMembers[2]).Value, 5);
+            }
+
+            [TestMethod]
+            public void SelectWithUndefined()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, undefined, 3]; arr.select(m => m + 2);");
+
+                Assert.IsTrue(result is SArray);
+
+                var arr = (SArray)result;
+                Assert.AreEqual(arr.ArrayMembers.Length, 3);
+                Assert.IsTrue(arr.ArrayMembers[0] is SNumber);
+                Assert.IsTrue(arr.ArrayMembers[1] is SNumber);
+                Assert.IsTrue(arr.ArrayMembers[2] is SNumber);
+
+                Assert.AreEqual(((SNumber)arr.ArrayMembers[0]).Value, 3);
+                Assert.AreEqual(((SNumber)arr.ArrayMembers[1]).Value, double.NaN);
+                Assert.AreEqual(((SNumber)arr.ArrayMembers[2]).Value, 5);
+            }
+        }
+
+        [TestClass]
+        public class SingleTest
+        {
+            [TestMethod]
+            public void SingleSingleRecord()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1]; arr.single();");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 1);
+            }
+
+            [TestMethod]
+            public void SingleSingleRecordWithFilter()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.single(m => m == 2);");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 2);
+            }
+
+            [TestMethod]
+            public void SingleMultipleRecords()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.single();");
+
+                Assert.IsTrue(result is SError);
+            }
+
+            [TestMethod]
+            public void SingleMultipleRecordsWithFilter()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.single(m => m == 1);");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 1);
+            }
+        }
+
+        [TestClass]
+        public class FirstTest
+        {
+            [TestMethod]
+            public void FirstNoRecord()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = []; arr.first();");
+
+                Assert.IsTrue(result is SUndefined);
+            }
+
+            [TestMethod]
+            public void FirstSingleRecord()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1]; arr.first();");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 1);
+            }
+
+            [TestMethod]
+            public void First()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.first();");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 1);
+            }
+
+            [TestMethod]
+            public void FirstWithFilter()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.first(m => m > 1);");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 2);
+            }
+
+            [TestMethod]
+            public void FirstWithFilterNoResult()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.first(m => m > 3);");
+
+                Assert.IsTrue(result is SUndefined);
+            }
+        }
+
+        [TestClass]
+        public class LastTest
+        {
+            [TestMethod]
+            public void LastNoRecord()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = []; arr.last();");
+
+                Assert.IsTrue(result is SUndefined);
+            }
+
+            [TestMethod]
+            public void LastSingleRecord()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1]; arr.last();");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 1);
+            }
+
+            [TestMethod]
+            public void Last()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.last();");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 3);
+            }
+
+            [TestMethod]
+            public void LastWithFilter()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.last(m => m < 3);");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 2);
+            }
+
+            [TestMethod]
+            public void LastWithFilterNoResult()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = [1, 2, 3]; arr.last(m => m > 3);");
+
+                Assert.IsTrue(result is SUndefined);
             }
         }
     }

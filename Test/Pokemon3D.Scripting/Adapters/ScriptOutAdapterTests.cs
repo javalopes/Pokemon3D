@@ -76,7 +76,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
         {
             var processor = ScriptProcessorFactory.GetNew();
 
-            SObject arrobj = processor.Context.CreateInstance("Array", new SObject[]
+            SObject arrobj = processor.CreateArray(new SObject[]
             {
                 processor.CreateBool(true),
                 processor.CreateString("test"),

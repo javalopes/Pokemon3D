@@ -195,6 +195,23 @@ namespace Pokemon3D.Scripting
             return SBool.Factory(value);
         }
 
+        internal SArray CreateArray(int length)
+        {
+            return Context.CreateInstance("Array", new[] { CreateNumber(length) }) as SArray;
+        }
+
+        internal SArray CreateArray(SObject[] elements)
+        {
+            // the array prototype constructor needs the first element
+            // in the params list to be the desired length of the array:
+
+            var destElements = new SObject[elements.Length + 1];
+            Array.Copy(elements, 0, destElements, 1, elements.Length);
+            destElements[0] = CreateNumber(elements.Length);
+
+            return Context.CreateInstance("Array", destElements) as SArray;
+        }
+
         #region Statement processing
 
         private SObject ProcessStatements()
