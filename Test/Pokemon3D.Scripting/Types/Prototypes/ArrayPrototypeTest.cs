@@ -395,5 +395,36 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.IsTrue(result is SUndefined);
             }
         }
+
+        [TestClass]
+        public class CountTest
+        {
+            [TestMethod]
+            public void CountEmpty()
+            {
+                var result = ScriptProcessorFactory.Run("var arr = []; arr.count();");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 0);
+            }
+
+            [TestMethod]
+            public void Count()
+            {
+                var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.count();");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 3);
+            }
+
+            [TestMethod]
+            public void CountWithFilter()
+            {
+                var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.count(m => m > 1);");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(((SNumber)result).Value, 2);
+            }
+        }
     }
 }

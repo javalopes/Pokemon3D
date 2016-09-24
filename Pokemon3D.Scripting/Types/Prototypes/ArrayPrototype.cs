@@ -233,5 +233,27 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
             return processor.Undefined;
         }
+
+        [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "count")]
+        public static SObject Count(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            if (parameters.Length == 0)
+            {
+                var arr = (SArray)instance;
+                return processor.CreateNumber(arr.ArrayMembers.Length);
+            }
+
+            if (parameters.Length >= 1)
+            {
+                var arr = (SArray)instance;
+                var comparer = (SFunction)Unbox(parameters[0]);
+
+                var result = arr.ArrayMembers.Count(m => ((SBool)comparer.Call(processor, This, This, new[] { m })).Value);
+                return processor.CreateNumber(result);
+            }
+
+            return processor.Undefined;
+        }
+
     }
 }
