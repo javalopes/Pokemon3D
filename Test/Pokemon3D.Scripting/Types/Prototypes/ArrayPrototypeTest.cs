@@ -202,6 +202,47 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
         }
 
         [TestClass]
+        public class AllTest
+        {
+            [TestMethod]
+            public void AllContains()
+            {
+                var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.all(m => m > 0);");
+
+                Assert.IsTrue(result is SBool);
+                Assert.AreEqual(true, ((SBool)result).Value);
+            }
+            
+            [TestMethod]
+            public void AllEmptyArray()
+            {
+                var processor = ScriptProcessorFactory.GetNew();
+                var result = processor.Run("var arr = []; arr.all(m => m == 1);");
+
+                Assert.IsTrue(result is SBool);
+                Assert.AreEqual(true, ((SBool)result).Value);
+            }
+
+            [TestMethod]
+            public void AllUndefinedCheck()
+            {
+                var result = ScriptProcessorFactory.Run("var arr = [1, \"2\", 3]; arr.all(m => m != undefined);");
+
+                Assert.IsTrue(result is SBool);
+                Assert.AreEqual(true, ((SBool)result).Value);
+            }
+
+            [TestMethod]
+            public void AllUndefined()
+            {
+                var result = ScriptProcessorFactory.Run("var arr = [undefined,,,undefined]; arr.all(m => m == undefined);");
+
+                Assert.IsTrue(result is SBool);
+                Assert.AreEqual(true, ((SBool)result).Value);
+            }
+        }
+
+        [TestClass]
         public class WhereTest
         {
             [TestMethod]

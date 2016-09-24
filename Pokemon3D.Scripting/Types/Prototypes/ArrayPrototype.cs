@@ -255,5 +255,19 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             return processor.Undefined;
         }
 
+        [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "all")]
+        public static SObject All(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            if (parameters.Length >= 1)
+            {
+                var arr = (SArray)instance;
+                var comparer = (SFunction)Unbox(parameters[0]);
+
+                var result = arr.ArrayMembers.All(m => ((SBool)comparer.Call(processor, This, This, new[] { m })).Value);
+                return processor.CreateBool(result);
+            }
+
+            return processor.Undefined;
+        }
     }
 }
