@@ -81,6 +81,7 @@
     <Compile Include="StatementProcessor.cs" />
     <Compile Include="StatementType.cs" />
     <Compile Include="StringEscapeHelper.cs" />
+    <Compile Include="TypeContract.cs" />
     <Compile Include="Types\Constants.cs" />
     <Compile Include="ObjectBuffer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
