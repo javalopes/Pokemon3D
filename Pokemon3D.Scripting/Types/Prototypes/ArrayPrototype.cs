@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Pokemon3D.Scripting.Types.Prototypes
 {
@@ -103,6 +104,20 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 var compare = parameters[0];
 
                 return processor.CreateBool(arr.ArrayMembers.Any(m => ObjectComparer.LooseEquals(processor, m, compare)));
+            }
+
+            return processor.Undefined;
+        }
+
+        [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "any")]
+        public static SObject Any(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            if (parameters.Length >= 1)
+            {
+                var arr = (SArray)instance;
+                var comparer = (SFunction)Unbox(parameters[0]);
+
+                return processor.CreateBool(arr.ArrayMembers.Any(m => ((SBool)comparer.Call(processor, This, This, new[] { m })).Value));
             }
 
             return processor.Undefined;
