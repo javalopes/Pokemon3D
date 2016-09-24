@@ -78,6 +78,7 @@
     <Compile Include="Pokemon3D.Common\Line1DTests.cs" />
     <Compile Include="Pokemon3D.Scripting\StringTests.cs" />
     <Compile Include="Pokemon3D.Scripting\Types\Prototypes\ArrayPrototypeTest.cs" />
+    <Compile Include="Pokemon3D.Scripting\Types\Prototypes\StringPrototypeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
