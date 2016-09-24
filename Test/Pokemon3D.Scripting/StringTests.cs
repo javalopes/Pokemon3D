@@ -10,8 +10,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void InterpolationTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("var insert = \"{{World}}\"; var outer = $\"{{Hello}}, {insert}!\"; outer;");
+            var result = ScriptProcessorFactory.Run("var insert = \"{{World}}\"; var outer = $\"{{Hello}}, {insert}!\"; outer;");
 
             Assert.IsTrue(result is SString);
             Assert.AreEqual("{Hello}, {{World}}!", ((SString)result).Value);

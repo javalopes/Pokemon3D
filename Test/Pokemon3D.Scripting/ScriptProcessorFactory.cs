@@ -1,4 +1,5 @@
 ﻿using Pokemon3D.Scripting;
+using Pokemon3D.Scripting.Types;
 
 namespace Test.Pokemon3D.Scripting
 {
@@ -25,6 +26,11 @@ namespace Test.Pokemon3D.Scripting
             processor.Run(source);
 
             return processor;
+        }
+         
+        internal static SObject Run(string source)
+        {
+            return GetNew().Run(source);
         }
     }
 }

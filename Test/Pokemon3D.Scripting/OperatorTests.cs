@@ -10,8 +10,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void AdditionTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("1+4+6");
+            var result = ScriptProcessorFactory.Run("1+4+6");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 11);
@@ -20,8 +19,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void SubtractionTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("12-4-6");
+            var result = ScriptProcessorFactory.Run("12-4-6");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 2);
@@ -30,8 +28,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void MultiplicationTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("5*3*-4");
+            var result = ScriptProcessorFactory.Run("5*3*-4");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, -60);
@@ -40,8 +37,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void DivisionTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("15/5");
+            var result = ScriptProcessorFactory.Run("15/5");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 3);
@@ -50,8 +46,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void IncrementTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("var a = 13; a++; a;");
+            var result = ScriptProcessorFactory.Run("var a = 13; a++; a;");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 14);
@@ -61,8 +56,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void DecrementTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("var b = 13; b--; b;");
+            var result = ScriptProcessorFactory.Run("var b = 13; b--; b;");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 12);
@@ -71,8 +65,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void PowerTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("2**3");
+            var result = ScriptProcessorFactory.Run("2**3");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 8);
@@ -81,8 +74,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void ModuloTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("5%2");
+            var result = ScriptProcessorFactory.Run("5%2");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 1);
@@ -213,8 +205,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void LogicalAndTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("true && false");
+            var result = ScriptProcessorFactory.Run("true && false");
 
             Assert.IsTrue(result is SBool);
             Assert.AreEqual(((SBool)result).Value, false);
@@ -223,8 +214,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void LogicalOrTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("true || false");
+            var result = ScriptProcessorFactory.Run("true || false");
 
             Assert.IsTrue(result is SBool);
             Assert.AreEqual(((SBool)result).Value, true);

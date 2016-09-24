@@ -10,8 +10,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void IfTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("var a = 0; if (a == 0) { a = 5; } a;");
+            var result = ScriptProcessorFactory.Run("var a = 0; if (a == 0) { a = 5; } a;");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 5);
@@ -20,8 +19,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void IfElseTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("var a = 0; if (a > 0) { a = 5; } else { a = 10; } a;");
+            var result = ScriptProcessorFactory.Run("var a = 0; if (a > 0) { a = 5; } else { a = 10; } a;");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 10);
@@ -30,8 +28,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void ForLoopTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("var a = 0; for (var i = 0; i < 10; i++) { a++; } a;");
+            var result = ScriptProcessorFactory.Run("var a = 0; for (var i = 0; i < 10; i++) { a++; } a;");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 10);
@@ -50,8 +47,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void ContinueTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("var a = 0; for (var i = 0; i < 10; i++) { if (i % 2 == 0) { a++; } } a;");
+            var result = ScriptProcessorFactory.Run("var a = 0; for (var i = 0; i < 10; i++) { if (i % 2 == 0) { a++; } } a;");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 5);
@@ -60,8 +56,7 @@ namespace Test.Pokemon3D.Scripting
         [TestMethod]
         public void BreakTests()
         {
-            var processor = ScriptProcessorFactory.GetNew();
-            var result = processor.Run("var a = 0; for (var i = 0; i < 10; i++) { if (i > 5) { break; } a++; } a;");
+            var result = ScriptProcessorFactory.Run("var a = 0; for (var i = 0; i < 10; i++) { if (i > 5) { break; } a++; } a;");
 
             Assert.IsTrue(result is SNumber);
             Assert.AreEqual(((SNumber)result).Value, 6);
