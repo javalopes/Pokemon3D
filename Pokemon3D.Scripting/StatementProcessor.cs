@@ -136,7 +136,12 @@ namespace Pokemon3D.Scripting
                                     var testChar = code[charFindIndex];
                                     if (OBJECT_DISCOVER_TOKEN.Contains(testChar))
                                     {
-                                        foundOperator = true;
+                                        if (testChar == '/' && // next statement is actually a comment, not a / operator (followed by / or *)
+                                            charFindIndex + 1 < code.Length && 
+                                            (code[charFindIndex + 1] == '/' || code[charFindIndex + 1] == '*'))
+                                            charFindIndex = code.Length;
+                                        else
+                                            foundOperator = true;
                                     }
                                     else if (!char.IsWhiteSpace(testChar)) // We found something that is not an operator or whitespace, so this is the end of a compound statement.
                                     {
