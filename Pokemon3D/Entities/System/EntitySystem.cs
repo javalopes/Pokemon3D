@@ -7,7 +7,7 @@ using System.Linq;
 using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.Data;
-using static Pokemon3D.GameCore.GameProvider;
+using static GameProvider;
 
 namespace Pokemon3D.Entities.System
 {

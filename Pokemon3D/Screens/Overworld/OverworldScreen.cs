@@ -18,7 +18,7 @@ using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Screens.MainMenu;
 using Pokemon3D.Screens.Transitions;
-using static Pokemon3D.GameCore.GameProvider;
+using static GameProvider;
 
 namespace Pokemon3D.Screens.Overworld
 {

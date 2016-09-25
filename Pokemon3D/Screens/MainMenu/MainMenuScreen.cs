@@ -5,7 +5,7 @@ using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.GameModeLoading;
 using Pokemon3D.UI;
 using Pokemon3D.UI.Dialogs;
-using static Pokemon3D.GameCore.GameProvider;
+using static GameProvider;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Screens.MainMenu

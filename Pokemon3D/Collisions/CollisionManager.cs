@@ -5,7 +5,7 @@ using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 using Pokemon3D.Common;
 using Pokemon3D.Content;
-using static Pokemon3D.GameCore.GameProvider;
+using static GameProvider;
 
 namespace Pokemon3D.Collisions
 {

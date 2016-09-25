@@ -5,7 +5,7 @@ using Pokemon3D.DataModel.GameCore;
 using Pokemon3D.FileSystem;
 using System;
 using System.IO;
-using static Pokemon3D.GameCore.GameProvider;
+using static GameProvider;
 
 namespace Pokemon3D.GameCore
 {

@@ -6,7 +6,7 @@ using Pokemon3D.Common.Shapes;
 using Pokemon3D.Content;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
-using static Pokemon3D.GameCore.GameProvider;
+using static GameProvider;
 
 namespace Pokemon3D.UI
 {

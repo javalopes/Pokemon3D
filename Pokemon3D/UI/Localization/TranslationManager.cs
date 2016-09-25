@@ -3,7 +3,7 @@ using Pokemon3D.DataModel.i18n;
 using Pokemon3D.GameCore;
 using System;
 using System.Collections.Generic;
-using static Pokemon3D.GameCore.GameProvider;
+using static GameProvider;
 
 namespace Pokemon3D.UI.Localization
 {

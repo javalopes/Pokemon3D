@@ -18,7 +18,7 @@ namespace Pokemon3D.ScriptPipeline.ApiClasses
             {
                 var text = (string)netObjects[0];
 
-                var screen = (OverworldScreen)GameCore.GameProvider.GameInstance.GetService<ScreenManager>().CurrentScreen;
+                var screen = (OverworldScreen)GameProvider.GameInstance.GetService<ScreenManager>().CurrentScreen;
                 var uiElement = new MessageOverworldUIElement(text);
 
                 screen.AddUiElement(uiElement);

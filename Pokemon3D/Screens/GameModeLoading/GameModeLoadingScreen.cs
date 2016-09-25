@@ -11,7 +11,7 @@ using Pokemon3D.Rendering.UI.Animations;
 using Pokemon3D.Rendering.UI.Controls;
 using Pokemon3D.Screens.Overworld;
 using Pokemon3D.Screens.Transitions;
-using static Pokemon3D.GameCore.GameProvider;
+using static GameProvider;
 
 namespace Pokemon3D.Screens.GameModeLoading
 {

@@ -7,7 +7,7 @@ using Pokemon3D.Common.Shapes;
 using Pokemon3D.Content;
 using Pokemon3D.Entities.System;
 using Pokemon3D.ScriptPipeline;
-using static Pokemon3D.GameCore.GameProvider;
+using static GameProvider;
 
 namespace Pokemon3D.Screens.Overworld
 {

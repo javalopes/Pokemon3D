@@ -92,7 +92,7 @@
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\PlayerMovementMode.cs" />
     <Compile Include="Entities\World.cs" />
-    <Compile Include="GameCore\GameProvider.cs" />
+    <Compile Include="GameProvider.cs" />
     <Compile Include="Screens\Battle\BattleScreen.cs" />
     <Compile Include="Screens\GameMenu\GameMenuScreen.cs" />
     <Compile Include="Screens\GameMenu\IntroScreen.cs" />
@@ -103,8 +103,11 @@
     <Compile Include="Screens\WorldContainer.cs" />
     <Compile Include="ScriptPipeline\ApiClasses\Message.cs" />
     <Compile Include="ScriptPipeline\ApiClasses\World.cs" />
+    <Compile Include="ScriptPipeline\Prototypes\BattlePrototype.cs" />
     <Compile Include="ScriptPipeline\Prototypes\EntityComponent.cs" />
     <Compile Include="ScriptPipeline\Prototypes\Entity.cs" />
+    <Compile Include="ScriptPipeline\Prototypes\MovePrototype.cs" />
+    <Compile Include="ScriptPipeline\Prototypes\PokemonPrototype.cs" />
     <Compile Include="ScriptPipeline\Prototypes\Vector2.cs" />
     <Compile Include="ScriptPipeline\Prototypes\Vector3.cs" />
     <Compile Include="UI\BarEntry.cs" />

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Pokemon3D.DataModel.GameMode.Map;
-using Pokemon3D.DataModel.GameMode.Map.Entities;
-using Pokemon3D.Entities.System;
-using static Pokemon3D.GameCore.GameProvider;
 using System.IO;
+using Microsoft.Xna.Framework;
 using Pokemon3D.Common.FileSystem;
-using Pokemon3D.DataModel;
+using Pokemon3D.DataModel.GameMode.Map;
+using Pokemon3D.Entities.System;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
+using static GameProvider;
 
 namespace Pokemon3D.Entities
 {

@@ -6,7 +6,7 @@ using Pokemon3D.Rendering.UI.Animations;
 using Pokemon3D.Rendering.UI.Controls;
 using Pokemon3D.Screens.MainMenu;
 using Pokemon3D.Content;
-using static Pokemon3D.GameCore.GameProvider;
+using static GameProvider;
 
 namespace Pokemon3D.Screens.GameMenu
 {
