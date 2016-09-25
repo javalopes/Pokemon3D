@@ -20,6 +20,7 @@
         Throw,
         Try,
         Catch,
-        Finally
+        Finally,
+        Async
     }
 }

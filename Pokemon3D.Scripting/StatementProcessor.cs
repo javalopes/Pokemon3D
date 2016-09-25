@@ -6,7 +6,7 @@ namespace Pokemon3D.Scripting
 {
     internal class StatementProcessor
     {
-        internal static readonly string[] ControlStatements = { "if", "else", "else if", "while", "for", "function", "class", "try", "catch", "finally" };
+        internal static readonly string[] ControlStatements = { "if", "else", "else if", "while", "for", "function", "class", "try", "catch", "finally", "async" };
 
         private const string OBJECT_DISCOVER_TOKEN = "+*-/&|<>.[(;";
 
@@ -289,6 +289,10 @@ namespace Pokemon3D.Scripting
                 else if (code.StartsWith("finally"))
                 {
                     return StatementType.Finally;
+                }
+                else if (code.StartsWith("async"))
+                {
+                    return StatementType.Async;
                 }
             }
             else

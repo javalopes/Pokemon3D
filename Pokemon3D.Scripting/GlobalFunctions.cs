@@ -1,6 +1,8 @@
 ﻿using Pokemon3D.Scripting.Types;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System;
 
 namespace Pokemon3D.Scripting
 {
@@ -107,7 +109,7 @@ namespace Pokemon3D.Scripting
         {
             if (parameters.Length == 0)
                 return processor.Undefined;
-            
+
             double dbl;
             if (parameters[0] is SNumber)
                 dbl = ((SNumber)parameters[0]).Value;
@@ -130,6 +132,27 @@ namespace Pokemon3D.Scripting
                 dbl = parameters[0].ToNumber(processor).Value;
 
             return processor.CreateBool(!(double.IsNaN(dbl) || double.IsInfinity(dbl)));
+        }
+
+        [BuiltInMethod(MethodName = "sync")]
+        public static SObject DoSync(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            string[] tasks = processor.Context.Parent.AsyncTasks.ToArray();
+            if (parameters.Length >= 1)
+            {
+                var param = SObject.Unbox(parameters[0]);
+                if (param is SString)
+                    tasks = new[] { (param as SString).Value };
+                else if (param is SArray)
+                {
+                    tasks = (param as SArray).ArrayMembers.Select(m => m.ToString(processor).Value).ToArray();
+                }
+            }
+
+            Console.WriteLine($"Sync tasks: ({string.Join(",", tasks)})");
+
+            SpinWait.SpinUntil(() => tasks.All(t => !processor.Context.Parent.AsyncTasks.Contains(t)));
+            return processor.Undefined;
         }
     }
 }

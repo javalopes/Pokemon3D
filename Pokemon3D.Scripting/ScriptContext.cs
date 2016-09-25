@@ -19,6 +19,10 @@ namespace Pokemon3D.Scripting
         /// The object that gets returned when the script references "this".
         /// </summary>
         internal SObject This { get; set; }
+        /// <summary>
+        /// Stores references to async tasks started by the script processor of this context.
+        /// </summary>
+        internal List<string> AsyncTasks { get; } = new List<string>();
 
         private readonly Dictionary<CallbackType, Delegate> _apiCallbacks = new Dictionary<CallbackType, Delegate>();
 

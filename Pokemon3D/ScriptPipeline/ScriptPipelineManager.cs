@@ -68,9 +68,6 @@ namespace Pokemon3D.ScriptPipeline
 
         private static ScriptProcessor CreateProcessor()
         {
-            if (_prototypeBuffer == null)
-                InitializePrototypeBuffer();
-
             var processor = new ScriptProcessor(_prototypeBuffer);
 
             ScriptContextManipulator.SetCallbackExecuteMethod(processor, ExecuteMethod);
@@ -80,9 +77,6 @@ namespace Pokemon3D.ScriptPipeline
 
         private static SObject ExecuteMethod(ScriptProcessor processor, string className, string methodName, SObject[] parameters)
         {
-            if (_apiClasses == null)
-                InitializeApiClasses();
-
             if (_apiClasses.ContainsKey(className))
             {
                 var method = _apiClasses[className].FirstOrDefault(m => m.Name == methodName);
@@ -100,6 +94,11 @@ namespace Pokemon3D.ScriptPipeline
 
         public static void RunScript(string scriptFile)
         {
+            if (_apiClasses == null)
+                InitializeApiClasses();
+            if (_prototypeBuffer == null)
+                InitializePrototypeBuffer();
+
             ActiveProcessorCount++;
             Task.Run(() =>
             {
