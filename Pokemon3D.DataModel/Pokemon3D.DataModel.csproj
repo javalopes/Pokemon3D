@@ -55,6 +55,9 @@
     <Compile Include="GameMode\Battle\AbilityHookType.cs" />
     <Compile Include="GameMode\Battle\AbilityModel.cs" />
     <Compile Include="GameMode\Battle\AbilityScriptHookModel.cs" />
+    <Compile Include="GameMode\Battle\BattleHooksModel.cs" />
+    <Compile Include="GameMode\Battle\BattleHookType.cs" />
+    <Compile Include="GameMode\Battle\BattleScriptHookModel.cs" />
     <Compile Include="GameMode\Battle\MoveHookType.cs" />
     <Compile Include="GameMode\Battle\MoveScriptHookModel.cs" />
     <Compile Include="GameMode\Map\Entities\EntityComponentDataItemModel.cs" />
