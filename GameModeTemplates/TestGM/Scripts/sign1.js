@@ -1,5 +1,5 @@
-using message;
-using world;
+import message from "Message";
+import world from "World";
 
 message.show("Hello World");
 

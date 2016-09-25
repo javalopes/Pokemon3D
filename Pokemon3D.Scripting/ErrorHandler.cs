@@ -37,6 +37,7 @@ namespace Pokemon3D.Scripting
         public const string MESSAGE_SYNTAX_MISSING_CATCH_OR_FINALLY = "missing catch or finally after try";
         public const string MESSAGE_SYNTAX_CATCH_WITHOUT_TRY = "catch without try";
         public const string MESSAGE_SYNTAX_FINALLY_WITHOUT_TRY = "finally without try";
+        public const string MESSAGE_SYNTAX_INVALID_IMPORT_STATEMENT = "invalid import statement";
 
         public const string MESSAGE_SYNTAX_CLASS_EXTENDS_MISSING = "expected identifier after \"extends\" keyword";
         public const string MESSAGE_SYNTAX_CLASS_IDENTIFIER_MISSING = "expected class identifier";

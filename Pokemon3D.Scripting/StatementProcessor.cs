@@ -297,9 +297,9 @@ namespace Pokemon3D.Scripting
                 {
                     return StatementType.Var;
                 }
-                else if (code.StartsWith("using "))
+                else if (code.StartsWith("import "))
                 {
-                    return StatementType.Using;
+                    return StatementType.Import;
                 }
                 else if (code.StartsWith("link "))
                 {

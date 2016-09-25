@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System;
 
 namespace Pokemon3D.Scripting
 {
@@ -22,8 +23,8 @@ namespace Pokemon3D.Scripting
                     return ExecuteElse(statement);
                 case StatementType.ElseIf:
                     return ExecuteElseIf(statement);
-                case StatementType.Using:
-                    return ExecuteUsing(statement);
+                case StatementType.Import:
+                    return ExecuteImport(statement);
                 case StatementType.Var:
                     return ExecuteVar(statement);
                 case StatementType.While:
@@ -301,7 +302,7 @@ namespace Pokemon3D.Scripting
                             ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION,  "end of script" );
                         }
                     }
-                    else if (statements[i].StatementType == StatementType.Using || statements[i].StatementType == StatementType.Link)
+                    else if (statements[i].StatementType == StatementType.Import || statements[i].StatementType == StatementType.Link)
                     {
                         tempStatements.Insert(insertIndex, statements[i]);
                         insertIndex += 1;
@@ -859,16 +860,24 @@ namespace Pokemon3D.Scripting
                 ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "keyword \'else if\'" );
         }
 
-        private SObject ExecuteUsing(ScriptStatement statement)
+        private SObject ExecuteImport(ScriptStatement statement)
         {
+            // import apiClass from "moduleName"
+
             var exp = statement.Code;
+            var parts = exp.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var identifier = exp.Remove(0, "using ".Length).Trim();
+            if (parts.Length < 4 || parts[0] != "import" || parts[2] != "from")
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_INVALID_IMPORT_STATEMENT);
 
-            if (!IsValidIdentifier(identifier))
+            var apiClass = parts[1];
+            var moduleName = exp.Remove(0, exp.IndexOf("\""));
+            moduleName = moduleName.Trim('\"');
+
+            if (!IsValidIdentifier(apiClass))
                 return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
 
-            var apiUsing = new SAPIUsing(identifier);
+            var apiUsing = new SAPIUsing(apiClass, moduleName);
 
             Context.AddAPIUsing(apiUsing);
             return apiUsing;

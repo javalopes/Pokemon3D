@@ -13,9 +13,15 @@ namespace Pokemon3D.Scripting.Types
         /// </summary>
         public string APIClass { get; }
 
-        public SAPIUsing(string apiClass)
+        /// <summary>
+        /// The source of the API class.
+        /// </summary>
+        public string ModuleName { get; }
+
+        public SAPIUsing(string apiClass, string moduleName)
         {
             APIClass = apiClass;
+            ModuleName = moduleName;
         }
 
         internal override void SetMember(ScriptProcessor processor, SObject accessor, bool isIndexer, SObject value)
@@ -23,7 +29,7 @@ namespace Pokemon3D.Scripting.Types
             if (processor.Context.HasCallback(CallbackType.SetMember))
             {
                 var callback = (DSetMember)processor.Context.GetCallback(CallbackType.SetMember);
-                var task = Task.Factory.StartNew(() => callback(processor, APIClass, accessor, isIndexer, value));
+                var task = Task.Factory.StartNew(() => callback(processor, ModuleName, accessor, isIndexer, value));
                 task.Wait();
             }
             else
@@ -37,7 +43,7 @@ namespace Pokemon3D.Scripting.Types
             if (processor.Context.HasCallback(CallbackType.ExecuteMethod))
             {
                 var callback = (DExecuteMethod)processor.Context.GetCallback(CallbackType.ExecuteMethod);
-                var task = Task<SObject>.Factory.StartNew(() => callback(processor, APIClass, methodName, parameters));
+                var task = Task<SObject>.Factory.StartNew(() => callback(processor, ModuleName, methodName, parameters));
                 task.Wait();
 
                 return task.Result;
@@ -54,7 +60,7 @@ namespace Pokemon3D.Scripting.Types
             if (processor.Context.HasCallback(CallbackType.GetMember))
             {
                 var callback = (DGetMember)processor.Context.GetCallback(CallbackType.GetMember);
-                var task = Task<SObject>.Factory.StartNew(() => callback(processor, APIClass, accessor, isIndexer));
+                var task = Task<SObject>.Factory.StartNew(() => callback(processor, ModuleName, accessor, isIndexer));
                 task.Wait();
 
                 return task.Result;
@@ -71,7 +77,7 @@ namespace Pokemon3D.Scripting.Types
             if (processor.Context.HasCallback(CallbackType.HasMember))
             {
                 var callback = (DHasMember)processor.Context.GetCallback(CallbackType.HasMember);
-                var task = Task<bool>.Factory.StartNew(() => callback(processor, APIClass, memberName));
+                var task = Task<bool>.Factory.StartNew(() => callback(processor, ModuleName, memberName));
                 task.Wait();
 
                 return task.Result;

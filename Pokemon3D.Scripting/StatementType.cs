@@ -6,7 +6,7 @@
         If,
         Else,
         ElseIf,
-        Using,
+        Import,
         Var,
         While,
         Return,
