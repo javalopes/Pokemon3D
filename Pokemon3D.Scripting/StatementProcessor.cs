@@ -347,11 +347,7 @@ namespace Pokemon3D.Scripting
         /// </summary>
         private static bool IsAssignmentStatement(string code)
         {
-            if (!code.Contains("=") && !StringEscapeHelper.ContainsWithoutStrings(code, "="))
-            {
-                return false;
-            }
-            else
+            if (StringEscapeHelper.ContainsWithoutStrings(code, "="))
             {
                 // Replace "=" that are not the assignment operator with placeholders:
                 code = code.Replace("===", "---");
@@ -363,6 +359,10 @@ namespace Pokemon3D.Scripting
                 code = code.Replace(">=", "--");
 
                 return StringEscapeHelper.ContainsWithoutStrings(code, "=");
+            }
+            else
+            {
+                return false;
             }
         }
     }
