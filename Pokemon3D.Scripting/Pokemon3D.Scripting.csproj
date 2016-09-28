@@ -56,6 +56,7 @@
     <Compile Include="Adapters\CallbackType.cs" />
     <Compile Include="Adapters\Delegates.cs" />
     <Compile Include="Adapters\NetUndefined.cs" />
+    <Compile Include="Adapters\ReferenceAttribute.cs" />
     <Compile Include="Adapters\ScriptContextManipulator.cs" />
     <Compile Include="Adapters\ScriptFunctionAttribute.cs" />
     <Compile Include="Adapters\ScriptFunctionType.cs" />

@@ -132,13 +132,12 @@ namespace Pokemon3D.Scripting.Adapters
 
             foreach (var field in fields)
             {
-                var attr = field.GetCustomAttribute<ScriptVariableAttribute>(false);
-
-                if (attr != null)
+                var varAttr = field.GetCustomAttribute<ScriptVariableAttribute>(false);
+                if (varAttr != null)
                 {
                     var identifier = field.Name;
-                    if (!string.IsNullOrEmpty(attr.VariableName))
-                        identifier = attr.VariableName;
+                    if (!string.IsNullOrEmpty(varAttr.VariableName))
+                        identifier = varAttr.VariableName;
 
                     var setValue = SObject.Unbox(obj.Members[identifier]);
 
@@ -150,6 +149,18 @@ namespace Pokemon3D.Scripting.Adapters
                     {
                         // This is most likely a type binding issue: Set null if the types don't fit!
                         field.SetValue(instance, null);
+                    }
+                }
+                else
+                {
+                    var refAttr = field.GetCustomAttribute<ReferenceAttribute>(false);
+                    if (refAttr != null)
+                    {
+                        var identifier = field.Name;
+                        if (!string.IsNullOrEmpty(refAttr.VariableName))
+                            identifier = refAttr.VariableName;
+
+                        field.SetValue(instance, obj.ReferenceContainer[identifier]);
                     }
                 }
             }

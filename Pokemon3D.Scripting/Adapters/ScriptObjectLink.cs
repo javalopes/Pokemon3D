@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using Pokemon3D.Scripting.Types;
 
 namespace Pokemon3D.Scripting.Adapters
@@ -37,6 +38,37 @@ namespace Pokemon3D.Scripting.Adapters
             var field = netObject.GetType().GetField(identifier, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             if (field != null)
                 field.SetValue(netObject, value);
+        }
+
+        public void SetReference(string identifier, object reference)
+        {
+            if (_objReference is SProtoObject)
+            {
+                var protoObj = _objReference as SProtoObject;
+
+                if (protoObj.ReferenceContainer == null)
+                    protoObj.ReferenceContainer = new Dictionary<string, object>();
+
+                if (protoObj.ReferenceContainer.ContainsKey(identifier))
+                    protoObj.ReferenceContainer[identifier] = reference;
+                else
+                    protoObj.ReferenceContainer.Add(identifier, reference);
+            }
+        }
+
+        public object GetReference(string identifier)
+        {
+            object returnValue = null;
+
+            if (_objReference is SProtoObject)
+            {
+                var protoObj = _objReference as SProtoObject;
+
+                if (protoObj.ReferenceContainer != null)
+                    protoObj.ReferenceContainer.TryGetValue(identifier, out returnValue);
+            }
+            
+            return returnValue;
         }
     }
 }

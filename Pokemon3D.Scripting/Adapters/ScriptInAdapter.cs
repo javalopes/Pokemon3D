@@ -133,7 +133,7 @@ namespace Pokemon3D.Scripting.Adapters
         private static SObject TranslateObject(ScriptProcessor processor, object objIn)
         {
             var objType = objIn.GetType();
-
+			
             var typeName = objType.Name;
             var customNameAttribute = objType.GetCustomAttribute<ScriptPrototypeAttribute>();
             if (!string.IsNullOrWhiteSpace(customNameAttribute?.VariableName))
@@ -183,9 +183,10 @@ namespace Pokemon3D.Scripting.Adapters
 
                     foreach (var attr in attributes)
                     {
-                        if (attr.GetType() == typeof(ScriptVariableAttribute))
+                        var attrType = attr.GetType();
+                        if (attrType == typeof(ScriptVariableAttribute))
                         {
-                            var memberAttr = (ScriptMemberAttribute)attr;
+                            var memberAttr = attr as ScriptVariableAttribute;
 
                             var identifier = field.Name;
                             if (!string.IsNullOrEmpty(memberAttr.VariableName))
@@ -195,12 +196,12 @@ namespace Pokemon3D.Scripting.Adapters
 
                             obj.SetMember(identifier, Translate(processor, fieldContent));
                         }
-                        else if (attr.GetType() == typeof(ScriptFunctionAttribute))
+                        else if (attrType == typeof(ScriptFunctionAttribute))
                         {
                             // When it's a field and a function, we have the source code of the function as value of the field.
                             // Example: public string MyFunction = "function() { console.log('Hello World'); }";
 
-                            var memberAttr = (ScriptMemberAttribute)attr;
+                            var memberAttr = attr as ScriptFunctionAttribute;
 
                             var identifier = field.Name;
                             if (!string.IsNullOrEmpty(memberAttr.VariableName))
@@ -209,6 +210,16 @@ namespace Pokemon3D.Scripting.Adapters
                             var functionCode = field.GetValue(objIn).ToString();
 
                             obj.SetMember(identifier, new SFunction(processor, functionCode));
+                        }
+                        else if (attrType == typeof(ReferenceAttribute))
+                        {
+                            var memberAttr = attr as ReferenceAttribute;
+
+                            var identifier = field.Name;
+                            if (!string.IsNullOrEmpty(memberAttr.VariableName))
+                                identifier = memberAttr.VariableName;
+
+                            obj.ReferenceContainer.Add(identifier, field.GetValue(objIn));
                         }
                     }
                 }
