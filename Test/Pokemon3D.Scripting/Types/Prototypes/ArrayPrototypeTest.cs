@@ -212,7 +212,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.IsTrue(result is SBool);
                 Assert.AreEqual(true, ((SBool)result).Value);
             }
-            
+
             [TestMethod]
             public void AllEmptyArray()
             {
@@ -465,6 +465,61 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
 
                 Assert.IsTrue(result is SNumber);
                 Assert.AreEqual(2, ((SNumber)result).Value);
+            }
+        }
+
+        [TestClass]
+        public class PushTest
+        {
+            [TestMethod]
+            public void PushSingleItem()
+            {
+                var result = ScriptProcessorFactory.Run("var arr = []; var item = 23; arr.push(item); arr;");
+
+                Assert.IsTrue(result is SArray);
+                Assert.AreEqual(1, ((SArray)result).ArrayMembers.Length);
+                Assert.AreEqual(23, (((SArray)result).ArrayMembers[0] as SNumber).Value);
+            }
+
+            [TestMethod]
+            public void PushArray()
+            {
+                var result = ScriptProcessorFactory.Run("var arr = [23]; var items = [1, 2, 3]; arr.push(items); arr;");
+
+                Assert.IsTrue(result is SArray);
+                Assert.AreEqual(4, ((SArray)result).ArrayMembers.Length);
+                Assert.AreEqual(2, (((SArray)result).ArrayMembers[2] as SNumber).Value);
+            }
+
+            [TestMethod]
+            public void PushMultiple()
+            {
+                var result = ScriptProcessorFactory.Run("var arr = [23]; var items = [1, 2, 3]; var item = 32; arr.push(items, item); arr;");
+
+                Assert.IsTrue(result is SArray);
+                Assert.AreEqual(5, ((SArray)result).ArrayMembers.Length);
+                Assert.AreEqual(32, (((SArray)result).ArrayMembers[4] as SNumber).Value);
+            }
+        }
+
+        [TestClass]
+        public class PopTest
+        {
+            [TestMethod]
+            public void PopItem()
+            {
+                var result = ScriptProcessorFactory.Run("var arr = [32]; arr.pop();");
+
+                Assert.IsTrue(result is SNumber);
+                Assert.AreEqual(32, ((SNumber)result).Value);
+            }
+
+            [TestMethod]
+            public void PopEmpty()
+            {
+                var result = ScriptProcessorFactory.Run("var arr = []; arr.pop();");
+
+                Assert.IsTrue(result is SUndefined);
             }
         }
     }

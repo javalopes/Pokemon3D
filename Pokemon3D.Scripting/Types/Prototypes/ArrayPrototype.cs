@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Pokemon3D.Scripting.Types.Prototypes
@@ -262,9 +263,49 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             {
                 var arr = (SArray)instance;
                 var comparer = (SFunction)Unbox(parameters[0]);
-
+                
                 var result = arr.ArrayMembers.All(m => ((SBool)comparer.Call(processor, This, This, new[] { m })).Value);
                 return processor.CreateBool(result);
+            }
+
+            return processor.Undefined;
+        }
+
+        [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "push")]
+        public static SObject Push(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            if (parameters.Length > 0)
+            {
+                var arr = instance as SArray;
+                var addItems = new List<SObject>(arr.ArrayMembers);
+                foreach (var param in parameters)
+                {
+                    var unboxed = Unbox(param);
+                    if (unboxed is SArray)
+                        addItems.AddRange((unboxed as SArray).ArrayMembers);
+                    else
+                        addItems.Add(unboxed);
+                }
+                
+                arr.ArrayMembers = addItems.ToArray();
+            }
+
+            return processor.Undefined;
+        }
+
+        [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "pop")]
+        public static SObject Pop(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        {
+            var arr = instance as SArray;
+
+            if (arr.ArrayMembers.Length > 0)
+            {
+                var newItems = new SObject[arr.ArrayMembers.Length - 1];
+                var returnItem = arr.ArrayMembers.Last();
+                Array.Copy(arr.ArrayMembers, newItems, arr.ArrayMembers.Length - 1);
+                arr.ArrayMembers = newItems;
+
+                return returnItem;
             }
 
             return processor.Undefined;
