@@ -7,6 +7,7 @@ using Pokemon3D.UI;
 using Pokemon3D.UI.Dialogs;
 using static GameProvider;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common.Localization;
 
 namespace Pokemon3D.Screens.MainMenu
 {
@@ -23,31 +24,32 @@ namespace Pokemon3D.Screens.MainMenu
 
             _mainOverlay = new UiOverlay();
 
+            var translation = GameInstance.GetService<TranslationProvider>();
+
             _mainOverlay.AddElement(new HexagonBackground());
-            _mainOverlay.AddElement(new LeftSideButton("Start new game", new Vector2(26, 45), OnStartNewGame));
-            _mainOverlay.AddElement(new LeftSideButton("Load game", new Vector2(26, 107), OnLoadGame));
-            _mainOverlay.AddElement(new LeftSideButton("GameJolt", new Vector2(26, 169), null));
-            _mainOverlay.AddElement(new LeftSideButton("Options", new Vector2(26, 231), null));
-            _mainOverlay.AddElement(new LeftSideButton("Exit game", new Vector2(26, 293), OnExitGame));
-            //_buttons.AddElement(new LeftSideCheckbox("Checkbox test", new Vector2(26, 355), null));
+            _mainOverlay.AddElement(new LeftSideButton(translation.CreateValue("System", "StartNewGame"), new Vector2(26, 45), OnStartNewGame));
+            _mainOverlay.AddElement(new LeftSideButton(translation.CreateValue("System", "LoadGame"), new Vector2(26, 107), OnLoadGame));
+            _mainOverlay.AddElement(new LeftSideButton(translation.CreateValue("System", "Gamejolt"), new Vector2(26, 169), null));
+            _mainOverlay.AddElement(new LeftSideButton(translation.CreateValue("System", "Options"), new Vector2(26, 231), null));
+            _mainOverlay.AddElement(new LeftSideButton(translation.CreateValue("System", "QuitGame"), new Vector2(26, 293), OnExitGame));
 
             _mainOverlay.AddInputController(new KeyboardUiInputController());
             _mainOverlay.AutoEnumerateTabIndices();
 
-            _closeDialog = new SelectionDialog("Do you really want to exit?", "Any unsaved changes will be lost.", new[]
+            _closeDialog = new SelectionDialog(translation.CreateValue("System", "ReallyQuitGameQuestion"), translation.CreateValue("System", "UnsavedChangesLost"), new[]
             {
-                new LeftSideButton("No", new Vector2(50, 50), b =>
+                new LeftSideButton(translation.CreateValue("System", "No"), new Vector2(50, 50), b =>
                 {
                     _mainOverlay.CloseModal();
                 }),
-                new LeftSideButton("Yes", new Vector2(50, 100), b =>
+                new LeftSideButton(translation.CreateValue("System", "Yes"), new Vector2(50, 100), b =>
                 {
                     GameInstance.GetService<ScreenManager>().NotifyQuitGame();
                 })
             });
 
             var bar = new ControlBar();
-            bar.AddEntry("Select", Buttons.A, Keys.Enter);
+            bar.AddEntry(translation.CreateValue("System", "Select"), Buttons.A, Keys.Enter);
             _mainOverlay.AddElement(bar);
             _mainOverlay.Show();
         }

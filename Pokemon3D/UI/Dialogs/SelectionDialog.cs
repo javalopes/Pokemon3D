@@ -4,22 +4,22 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.Content;
-using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
+using Pokemon3D.Common.Localization;
 
 namespace Pokemon3D.UI.Dialogs
 {
     internal class SelectionDialog : UiCompoundElement
     {
-        private readonly string _title;
-        private readonly string _text;
+        private readonly LocalizedValue _title;
+        private readonly LocalizedValue _text;
 
         private readonly SpriteFont _titleFont;
         private readonly SpriteFont _textFont;
         
         private int _calculatedHeight;
 
-        public SelectionDialog(string title, string text, LeftSideButton[] buttons)
+        public SelectionDialog(LocalizedValue title, LocalizedValue text, LeftSideButton[] buttons)
         {
             foreach (var leftSideButton in buttons)
             {
@@ -51,9 +51,9 @@ namespace Pokemon3D.UI.Dialogs
 
             var controlY = 65;
 
-            if (!string.IsNullOrWhiteSpace(_text))
+            if (!string.IsNullOrWhiteSpace(_text.Value))
             {
-                var textSpace = (int)_textFont.MeasureString(_text).Y + 20;
+                var textSpace = (int)_textFont.MeasureString(_text.Value).Y + 20;
 
                 controlY += textSpace;
                 _calculatedHeight += textSpace;
@@ -77,9 +77,9 @@ namespace Pokemon3D.UI.Dialogs
             shapeRenderer.DrawRectangle(0, 0, GameProvider.GameInstance.ScreenBounds.Width, GameProvider.GameInstance.ScreenBounds.Height, Color.White * 0.4f);
             shapeRenderer.DrawRectangle(0, startY, GameProvider.GameInstance.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
 
-            spriteBatch.DrawString(_titleFont, _title, new Vector2(100, startY + 20), Color.Black);
+            spriteBatch.DrawString(_titleFont, _title.Value, new Vector2(100, startY + 20), Color.Black);
 
-            if (!string.IsNullOrWhiteSpace(_text)) spriteBatch.DrawString(_textFont, _text, new Vector2(120, startY + 65), Color.Black);
+            if (!string.IsNullOrWhiteSpace(_text.Value)) spriteBatch.DrawString(_textFont, _text.Value, new Vector2(120, startY + 65), Color.Black);
             
             base.Draw(spriteBatch);
         }

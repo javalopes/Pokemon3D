@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using static GameProvider;
 
 namespace Pokemon3D.GameCore
@@ -78,6 +79,11 @@ namespace Pokemon3D.GameCore
             if (_translations.TryGetValue(key, out value)) return value;
 
             return $"@{sectionId}:{tokenId}";
+        }
+
+        public LocalizedValue CreateValue(string sectionId, string tokenId)
+        {
+            return new LocalizedValue(this, sectionId, tokenId);
         }
     }
 }

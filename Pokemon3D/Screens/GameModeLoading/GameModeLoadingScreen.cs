@@ -12,6 +12,7 @@ using Pokemon3D.Rendering.UI.Controls;
 using Pokemon3D.Screens.Overworld;
 using Pokemon3D.Screens.Transitions;
 using static GameProvider;
+using Pokemon3D.Common.Localization;
 
 namespace Pokemon3D.Screens.GameModeLoading
 {
@@ -23,6 +24,8 @@ namespace Pokemon3D.Screens.GameModeLoading
 
         public void OnOpening(object enterInformation)
         {
+            var translation = GameInstance.GetService<TranslationProvider>();
+
             _overlay = new UiOverlay();
             _pokeballSprite = _overlay.AddElement(new Image(GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball)));
             _pokeballSprite.SetPosition(new Vector2(GameInstance.ScreenBounds.Width, GameInstance.ScreenBounds.Height) * 0.5f);
@@ -32,7 +35,7 @@ namespace Pokemon3D.Screens.GameModeLoading
             _pokeballSprite.Scale = Vector2.Zero;
             _pokeballSprite.AddCustomAnimation("Rotating", new UiRotationAnimation(0.5f, 0.0f, MathHelper.TwoPi), true);
 
-            var loadingText = _overlay.AddElement(new StaticText(GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont), "@Loading..."));
+            var loadingText = _overlay.AddElement(new StaticText(GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont), translation.CreateValue("System", "GameLoadingMessage")));
             loadingText.SetPosition(new Vector2(GameInstance.ScreenBounds.Width * 0.5f, 400));
             loadingText.SetOriginPercentage(new Vector2(0.5f, 0.0f));
             loadingText.EnterAnimation = new UiAlphaAnimation(0.4f, 0.0f, 1.0f);

@@ -19,5 +19,7 @@ namespace Pokemon3D.Common.Localization
         /// An event that gets fired when the language of the game changes.
         /// </summary>
         event EventHandler LanguageChanged;
+
+        LocalizedValue CreateValue(string sectionId, string tokenId);
     }
 }

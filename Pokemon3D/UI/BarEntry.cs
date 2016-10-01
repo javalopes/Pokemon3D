@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Input;
+using Pokemon3D.Common.Localization;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.Content;
 using Pokemon3D.GameCore;
@@ -19,7 +20,7 @@ namespace Pokemon3D.UI
             _highlightColor = new Color(100, 193, 238);
         }
 
-        public string Text { get; set; }
+        public LocalizedValue Text { get; set; }
         public Buttons GamePadButton { get; set; }
         public Keys KeyboardKey { get; set; }
         public int Index { get; set; }
@@ -47,7 +48,7 @@ namespace Pokemon3D.UI
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            var offset = 11 + Index*(26 + (int) _font.MeasureString(Text).X);
+            var offset = 11 + Index*(26 + (int) _font.MeasureString(Text.Value).X);
 
             if (GameProvider.GameInstance.GetService<InputSystem>().GamePad.IsConnected())
             {
@@ -70,7 +71,7 @@ namespace Pokemon3D.UI
                 offset += boxWidth;
             }
 
-            spriteBatch.DrawString(_font, Text, new Vector2(offset + 10, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
+            spriteBatch.DrawString(_font, Text.Value, new Vector2(offset + 10, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
         }
     }
 }

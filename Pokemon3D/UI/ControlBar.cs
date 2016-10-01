@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Pokemon3D.Common.Localization;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
@@ -14,7 +15,7 @@ namespace Pokemon3D.UI
     {
         private int _currentIndex;
 
-        public void AddEntry(string text, Buttons gamePadButton, Keys keyboardKey)
+        public void AddEntry(LocalizedValue text, Buttons gamePadButton, Keys keyboardKey)
         {
             AddChildElement(new BarEntry
             {

@@ -12,6 +12,10 @@
 				"Val" : "Load Existing Game"
 			},
 			{
+				"Id" : "Gamejolt",
+				"Val" : "Gamejolt"
+			},
+			{
 				"Id" : "Options",
 				"Val" : "Options"
 			},
@@ -46,6 +50,30 @@
 			{
 				"Id" : "LargeShadowMap",
 				"Val" : "Large"
+			},
+			{
+				"Id" : "Yes",
+				"Val" : "Yes"
+			},
+			{
+				"Id" : "No",
+				"Val" : "No"
+			},
+			{
+				"Id" : "ReallyQuitGameQuestion",
+				"Val" : "Do you really want to exit?"
+			},
+			{
+				"Id" : "UnsavedChangesLost",
+				"Val" : "Any unsaved changes will be lost."
+			},
+			{
+				"Id" : "Select",
+				"Val" : "Select"
+			},
+			{
+				"Id" : "GameLoadingMessage",
+				"Val" : "Game is loading ... please wait"
 			}
 		]
 	},
@@ -60,6 +88,10 @@
 			{
 				"Id" : "LoadGame",
 				"Val" : "Spiel laden"
+			},
+			{
+				"Id" : "Gamejolt",
+				"Val" : "Gamejolt"
 			},
 			{
 				"Id" : "Options",
@@ -96,6 +128,30 @@
 			{
 				"Id" : "LargeShadowMap",
 				"Val" : "Gross"
+			},
+			{
+				"Id" : "Yes",
+				"Val" : "Ja"
+			},
+			{
+				"Id" : "No",
+				"Val" : "Nein"
+			},
+			{
+				"Id" : "ReallyQuitGameQuestion",
+				"Val" : "Moechten Sie das Spiel wirklich beenden?"
+			},
+			{
+				"Id" : "UnsavedChangesLost",
+				"Val" : "Alle ungespeicherten Daten gehen verloren."
+			},
+			{
+				"Id" : "Select",
+				"Val" : "Auswaehlen"
+			},
+			{
+				"Id" : "GameLoadingMessage",
+				"Val" : "Spiel wird geladen ... bitte warten"
 			}
 		]
 	}

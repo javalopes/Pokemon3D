@@ -5,6 +5,7 @@ using Pokemon3D.Content;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
+using Pokemon3D.Common.Localization;
 
 namespace Pokemon3D.UI
 {
@@ -14,9 +15,9 @@ namespace Pokemon3D.UI
         private readonly Action<LeftSideButton> _onClick;
         private readonly Texture2D _texture;
 
-        public string Text { get; set; }
+        public LocalizedValue Text { get; set; }
 
-        public LeftSideButton(string text, Vector2 position, Action<LeftSideButton> onClick)
+        public LeftSideButton(LocalizedValue text, Vector2 position, Action<LeftSideButton> onClick)
         {
             _font = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
             _texture = GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
@@ -48,7 +49,7 @@ namespace Pokemon3D.UI
         {
             var bounds = GetBounds();
             spriteBatch.Draw(_texture, bounds, null, Color * Alpha, 0.0f, Vector2.Zero, SpriteEffects.None, 0);
-            spriteBatch.DrawString(_font, Text, new Vector2(bounds.X + 24, bounds.Y + 5), Color.Black);
+            spriteBatch.DrawString(_font, Text.Value, new Vector2(bounds.X + 24, bounds.Y + 5), Color.Black);
         }
     }
 }
