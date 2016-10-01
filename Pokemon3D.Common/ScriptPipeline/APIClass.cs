@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
-using Pokemon3D.Scripting.Adapters;
+using System;
 using System.Threading;
 
 namespace Pokemon3D.Common.ScriptPipeline

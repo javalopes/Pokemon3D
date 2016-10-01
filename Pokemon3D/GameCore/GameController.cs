@@ -4,7 +4,6 @@ using Pokemon3D.Common;
 using Pokemon3D.Common.Diagnostics;
 using Pokemon3D.GameModes;
 using Pokemon3D.UI;
-using Pokemon3D.UI.Localization;
 using System;
 using System.Windows.Threading;
 using Pokemon3D.Collisions;
@@ -17,6 +16,7 @@ using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.MainMenu;
 using System.Threading;
 using System.Collections.Generic;
+using Pokemon3D.Common.Localization;
 
 namespace Pokemon3D.GameCore
 {
@@ -71,6 +71,7 @@ namespace Pokemon3D.GameCore
             Instance = this;
 
             Content.RootDirectory = "Content";
+
             _gameConfig = RegisterService(new GameConfiguration());
             RegisterService(new GraphicsDeviceManager(this)
             {
@@ -100,7 +101,7 @@ namespace Pokemon3D.GameCore
             _inputSystem = RegisterService(new InputSystem());
             RegisterService(new ShapeRenderer(_spriteBatch));
             _screenManager = RegisterService(new ScreenManager());
-            RegisterService(new CoreTranslationManager());
+            RegisterService<TranslationProvider>(new TranslationProviderImp());
             _collisionManager = RegisterService(new CollisionManager());
 
             _notificationBarOverlay = new UiOverlay();
