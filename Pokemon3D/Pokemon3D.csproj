@@ -121,6 +121,7 @@
     <Compile Include="UI\LeftSideCheckbox.cs" />
     <Compile Include="UI\PokemonProfile.cs" />
     <Compile Include="UI\PokemonSpriteSheet.cs" />
+    <Compile Include="UI\RenderStatisticsView.cs" />
     <Compile Include="UI\TextureProjectionQuad.cs" />
     <Compile Include="UI\KeyboardUiInputController.cs" />
     <Compile Include="GameCore\Program.cs" />

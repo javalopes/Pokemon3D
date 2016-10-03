@@ -7,14 +7,14 @@ using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Collisions;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Shapes;
-using Pokemon3D.Content;
 using Pokemon3D.Entities;
 using Pokemon3D.GameModes;
 using Pokemon3D.Rendering;
-using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Screens.MainMenu;
 using Pokemon3D.Screens.Transitions;
 using static GameProvider;
+using Pokemon3D.Rendering.UI;
+using Pokemon3D.UI;
 
 namespace Pokemon3D.Screens.Overworld
 {
@@ -22,7 +22,6 @@ namespace Pokemon3D.Screens.Overworld
     {
         public World ActiveWorld { get; private set; }
 
-        private SpriteFont _debugSpriteFont;
         private bool _showRenderStatistics;
         private readonly List<OverworldUIElement> _uiElements = new List<OverworldUIElement>();
         private InputSystem _inputSystem;
@@ -33,6 +32,8 @@ namespace Pokemon3D.Screens.Overworld
         private ShapeRenderer _shapeRenderer;
         private bool _isLoaded;
 
+        private UiOverlay _renderStatisticsOverlay;
+
         public void OnOpening(object enterInformation)
         {
             if (!_isLoaded)
@@ -40,7 +41,8 @@ namespace Pokemon3D.Screens.Overworld
                 ActiveWorld = enterInformation as World;
                 if (ActiveWorld == null) throw new InvalidOperationException("Did not receive loaded data.");
 
-                _debugSpriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
+                _renderStatisticsOverlay = new UiOverlay();
+                _renderStatisticsOverlay.AddElement(new RenderStatisticsView(ActiveWorld));
 
                 GameInstance.LoadedSave = TestMock.CreateTempSave();
                 GameInstance.LoadedSave.Load(GameInstance.GetService<GameModeManager>().ActiveGameMode);
@@ -59,6 +61,7 @@ namespace Pokemon3D.Screens.Overworld
         public void OnUpdate(GameTime gameTime)
         {
             ActiveWorld.Update(gameTime);
+            _renderStatisticsOverlay.Update(gameTime);
 
             lock (_uiElements)
                 _uiElements.ForEach(e => { if (e.IsActive) e.Update(gameTime); });
@@ -76,6 +79,7 @@ namespace Pokemon3D.Screens.Overworld
             if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.F12))
             {
                 _showRenderStatistics = !_showRenderStatistics;
+                if (_showRenderStatistics) _renderStatisticsOverlay.Show(); else _renderStatisticsOverlay.Hide();
             }
 
             if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.X) || _inputSystem.GamePad.IsButtonDownOnce(Buttons.X))
@@ -87,7 +91,7 @@ namespace Pokemon3D.Screens.Overworld
         public void OnLateDraw(GameTime gameTime)
         {
             _collisionManager.Draw(ActiveWorld.Player.Camera);
-            if (_showRenderStatistics) DrawRenderStatsitics();
+            _renderStatisticsOverlay.Draw(_spriteBatch);
 
             bool anyActive;
             lock (_uiElements)
@@ -116,43 +120,11 @@ namespace Pokemon3D.Screens.Overworld
         {
         }
 
-        private void DrawRenderStatsitics()
-        {
-            var renderStatistics = RenderStatistics.Instance;
-            
-
-            const int spacing = 5;
-            var elementHeight = _debugSpriteFont.LineSpacing + spacing;
-            var height = elementHeight * 4 + spacing;
-            const int width = 180;
-
-            var startPosition = new Vector2(0,GameInstance.ScreenBounds.Height-height);
-
-            _spriteBatch.Begin();
-            _shapeRenderer.DrawRectangle((int)startPosition.X,
-                (int)startPosition.Y,
-                width,
-                height,
-                Color.DarkGreen);
-
-            startPosition.X += spacing;
-            startPosition.Y += spacing;
-            _spriteBatch.DrawString(_debugSpriteFont, $"Average DrawTime[ms]: {renderStatistics.AverageDrawTime:0.00}", startPosition, Color.White);
-            startPosition.Y += elementHeight;
-            _spriteBatch.DrawString(_debugSpriteFont, $"Total Drawcalls: {renderStatistics.DrawCalls}", startPosition, Color.White);
-            startPosition.Y += elementHeight;
-            _spriteBatch.DrawString(_debugSpriteFont, $"Entity Count: {ActiveWorld.EntitySystem.EntityCount}", startPosition, Color.White);
-            startPosition.Y += elementHeight;
-            _spriteBatch.DrawString(_debugSpriteFont, $"Mesh Instances: {Rendering.Data.Mesh.InstanceCount}", startPosition, Color.White);
-            _spriteBatch.End();
-        }
-
         public void OnClosing()
         {
         }
 
         #region overworld ui element handling:
-
         
 
         public void AddUiElement(OverworldUIElement element)

@@ -11,7 +11,7 @@ using static GameProvider;
 
 namespace Pokemon3D.Screens.Overworld
 {
-    class InteractionPromptOverworldUIElement : OverworldUIElement
+    class InteractionPromptOverworldUIElement : MessageOverworldUIElement
     {
         private readonly Entity _owner;
 
@@ -21,10 +21,7 @@ namespace Pokemon3D.Screens.Overworld
         public string Message { get; set; }
         public event Action<InteractionPromptOverworldUIElement> InteractionStarted;
 
-        public override bool IsBlocking => false;
-
-        public InteractionPromptOverworldUIElement(Entity owner, string message)
-            : base()
+        public InteractionPromptOverworldUIElement(Entity owner, string message) : base(message)
         {
             _owner = owner;
             Message = message;
