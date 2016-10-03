@@ -100,6 +100,7 @@
     <Compile Include="Screens\Overworld\InteractionPromptOverworldUIElement.cs" />
     <Compile Include="Screens\Overworld\MessageOverworldUIElement.cs" />
     <Compile Include="Screens\Overworld\OverworldUIElement.cs" />
+    <Compile Include="Screens\Overworld\TestMock.cs" />
     <Compile Include="Screens\Transitions\ShrinkOldTransition.cs" />
     <Compile Include="Screens\WorldContainer.cs" />
     <Compile Include="ScriptPipeline\ApiClasses\Message.cs" />

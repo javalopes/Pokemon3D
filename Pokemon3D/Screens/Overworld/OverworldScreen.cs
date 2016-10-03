@@ -8,10 +8,6 @@ using Pokemon3D.Collisions;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.Content;
-using Pokemon3D.DataModel.Pokemon;
-using Pokemon3D.DataModel.Savegame;
-using Pokemon3D.DataModel.Savegame.Inventory;
-using Pokemon3D.DataModel.Savegame.Pokemon;
 using Pokemon3D.Entities;
 using Pokemon3D.GameModes;
 using Pokemon3D.Rendering;
@@ -28,7 +24,13 @@ namespace Pokemon3D.Screens.Overworld
 
         private SpriteFont _debugSpriteFont;
         private bool _showRenderStatistics;
-
+        private readonly List<OverworldUIElement> _uiElements = new List<OverworldUIElement>();
+        private InputSystem _inputSystem;
+        private ScreenManager _screenManager;
+        private SceneRenderer _sceneRenderer;
+        private CollisionManager _collisionManager;
+        private SpriteBatch _spriteBatch;
+        private ShapeRenderer _shapeRenderer;
         private bool _isLoaded;
 
         public void OnOpening(object enterInformation)
@@ -40,183 +42,51 @@ namespace Pokemon3D.Screens.Overworld
 
                 _debugSpriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
 
-                CreateTempSave();
+                GameInstance.LoadedSave = TestMock.CreateTempSave();
+                GameInstance.LoadedSave.Load(GameInstance.GetService<GameModeManager>().ActiveGameMode);
 
                 _isLoaded = true;
             }
-        }
 
-        private void CreateTempSave()
-        {
-            // creates a temporary save until we get full load/save management done.
-
-            var dataModel = new SaveFileModel
-            {
-                PlayerData = new PlayerModel(),
-                GameMode = "TestGM",
-                Items = new[]
-                {
-                    new InventoryItemModel
-                    {
-                        Amount = 2,
-                        Id = "Potion"
-                    }
-                },
-                Pokedexes = new[]
-                {
-                    new PokedexSaveModel
-                    {
-                        PokedexId = "National",
-                        Entries = new[]
-                        {
-                            new PokedexEntrySaveModel
-                            {
-                                EntryType = PokedexEntryType.Caught,
-                                Forms = new[]
-                                {
-                                    "Default",
-                                    "Shiny"
-                                },
-                                Id = "Bulbasaur"
-                            }
-                        }
-                    }
-                },
-                Pokemon = new[]
-                {
-                    new PokemonSaveModel
-                    {
-                        Id = "Charizard",
-                        HP = 1,
-                        IVs = new PokemonStatSetModel
-                        {
-                            HP = 21,
-                            Atk = 20,
-                            Def = 11,
-                            SpAtk = 15,
-                            SpDef = 30,
-                            Speed = 1
-                        },
-                        EVs = new PokemonStatSetModel
-                        {
-                            HP = 50,
-                            Atk = 255,
-                            Def = 128,
-                            SpAtk = 255,
-                            SpDef = 255,
-                            Speed = 0
-                        },
-                        Experience = 10000
-                    },
-                    new PokemonSaveModel
-                    {
-                        Id = "Bulbasaur",
-                        HP = 5,
-                        IVs = new PokemonStatSetModel
-                        {
-                            HP = 10
-                        },
-                        EVs = new PokemonStatSetModel
-                        {
-                            HP = 0
-                        }
-                    },
-                    new PokemonSaveModel
-                    {
-                        Id = "Charizard",
-                        HP = 12,
-                        IVs = new PokemonStatSetModel
-                        {
-                            HP = 10
-                        },
-                        EVs = new PokemonStatSetModel
-                        {
-                            HP = 0
-                        },
-                        IsShiny = true
-                    },
-                    new PokemonSaveModel
-                    {
-                        Id = "Bulbasaur",
-                        HP = 2,
-                        IVs = new PokemonStatSetModel
-                        {
-                            HP = 10
-                        },
-                        EVs = new PokemonStatSetModel
-                        {
-                            HP = 0
-                        }
-                    },
-                    new PokemonSaveModel
-                    {
-                        Id = "Bulbasaur",
-                        HP = 11,
-                        IVs = new PokemonStatSetModel
-                        {
-                            HP = 10
-                        },
-                        EVs = new PokemonStatSetModel
-                        {
-                            HP = 0
-                        },
-                        IsShiny = true
-                    },
-                    new PokemonSaveModel
-                    {
-                        Id = "Bulbasaur",
-                        HP = 8,
-                        IVs = new PokemonStatSetModel
-                        {
-                            HP = 10
-                        },
-                        EVs = new PokemonStatSetModel
-                        {
-                            HP = 0
-                        }
-                    }
-                }
-            };
-
-            GameInstance.LoadedSave = new SaveGame(dataModel);
-            GameInstance.LoadedSave.Load(GameInstance.GetService<GameModeManager>().ActiveGameMode);
+            _inputSystem = GameInstance.GetService<InputSystem>();
+            _screenManager = GameInstance.GetService<ScreenManager>();
+            _sceneRenderer = GameInstance.GetService<SceneRenderer>();
+            _collisionManager = GameInstance.GetService<CollisionManager>();
+            _spriteBatch = GameInstance.GetService<SpriteBatch>();
+            _shapeRenderer = GameInstance.GetService<ShapeRenderer>();
         }
 
         public void OnUpdate(GameTime gameTime)
         {
-            var inputSystem = GameInstance.GetService<InputSystem>();
-            var screenManager = GameInstance.GetService<ScreenManager>();
-            var sceneRenderer = GameInstance.GetService<SceneRenderer>();
-
             ActiveWorld.Update(gameTime);
 
             lock (_uiElements)
                 _uiElements.ForEach(e => { if (e.IsActive) e.Update(gameTime); });
 
-            if (inputSystem.Keyboard.IsKeyDown(Keys.Escape))
+            if (_inputSystem.Keyboard.IsKeyDown(Keys.Escape))
             {
-                screenManager.SetScreen(typeof(MainMenuScreen), typeof(BlendTransition));
+                _screenManager.SetScreen(typeof(MainMenuScreen), typeof(BlendTransition));
             }
 
-            if (inputSystem.Keyboard.IsKeyDownOnce(Keys.L))
+            if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.L))
             {
-                sceneRenderer.EnablePostProcessing = !sceneRenderer.EnablePostProcessing;
+                _sceneRenderer.EnablePostProcessing = !_sceneRenderer.EnablePostProcessing;
             }
 
-            if (inputSystem.Keyboard.IsKeyDownOnce(Keys.F12))
+            if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.F12))
             {
                 _showRenderStatistics = !_showRenderStatistics;
             }
 
-            if (inputSystem.Keyboard.IsKeyDownOnce(Keys.X) || inputSystem.GamePad.IsButtonDownOnce(Buttons.X))
+            if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.X) || _inputSystem.GamePad.IsButtonDownOnce(Buttons.X))
             {
-                screenManager.SetScreen(typeof(GameMenu.GameMenuScreen));
+                _screenManager.SetScreen(typeof(GameMenu.GameMenuScreen));
             }
         }
 
         public void OnLateDraw(GameTime gameTime)
         {
-            GameInstance.GetService<CollisionManager>().Draw(ActiveWorld.Player.Camera);
+            _collisionManager.Draw(ActiveWorld.Player.Camera);
             if (_showRenderStatistics) DrawRenderStatsitics();
 
             bool anyActive;
@@ -227,19 +97,18 @@ namespace Pokemon3D.Screens.Overworld
 
             if (anyActive)
             {
-                var spriteBatch = GameInstance.GetService<SpriteBatch>();
-                spriteBatch.Begin();
+                _spriteBatch.Begin();
 
                 lock (_uiElements)
                 {
                     _uiElements.ForEach(e => { if (e.IsActive) e.Draw(gameTime); });
                 }
 
-                spriteBatch.End();
+                _spriteBatch.End();
             }
 
 #if DEBUG_RENDERING
-            GameInstance.GetService<SceneRenderer>().LateDebugDraw3D();
+            _sceneRenderer.LateDebugDraw3D();
 #endif
         }
 
@@ -250,7 +119,7 @@ namespace Pokemon3D.Screens.Overworld
         private void DrawRenderStatsitics()
         {
             var renderStatistics = RenderStatistics.Instance;
-            var spriteBatch = GameInstance.GetService<SpriteBatch>();
+            
 
             const int spacing = 5;
             var elementHeight = _debugSpriteFont.LineSpacing + spacing;
@@ -259,8 +128,8 @@ namespace Pokemon3D.Screens.Overworld
 
             var startPosition = new Vector2(0,GameInstance.ScreenBounds.Height-height);
 
-            spriteBatch.Begin();
-            GameInstance.GetService<ShapeRenderer>().DrawRectangle((int)startPosition.X,
+            _spriteBatch.Begin();
+            _shapeRenderer.DrawRectangle((int)startPosition.X,
                 (int)startPosition.Y,
                 width,
                 height,
@@ -268,14 +137,14 @@ namespace Pokemon3D.Screens.Overworld
 
             startPosition.X += spacing;
             startPosition.Y += spacing;
-            spriteBatch.DrawString(_debugSpriteFont, $"Average DrawTime[ms]: {renderStatistics.AverageDrawTime:0.00}", startPosition, Color.White);
+            _spriteBatch.DrawString(_debugSpriteFont, $"Average DrawTime[ms]: {renderStatistics.AverageDrawTime:0.00}", startPosition, Color.White);
             startPosition.Y += elementHeight;
-            spriteBatch.DrawString(_debugSpriteFont, $"Total Drawcalls: {renderStatistics.DrawCalls}", startPosition, Color.White);
+            _spriteBatch.DrawString(_debugSpriteFont, $"Total Drawcalls: {renderStatistics.DrawCalls}", startPosition, Color.White);
             startPosition.Y += elementHeight;
-            spriteBatch.DrawString(_debugSpriteFont, $"Entity Count: {ActiveWorld.EntitySystem.EntityCount}", startPosition, Color.White);
+            _spriteBatch.DrawString(_debugSpriteFont, $"Entity Count: {ActiveWorld.EntitySystem.EntityCount}", startPosition, Color.White);
             startPosition.Y += elementHeight;
-            spriteBatch.DrawString(_debugSpriteFont, $"Mesh Instances: {Rendering.Data.Mesh.InstanceCount}", startPosition, Color.White);
-            spriteBatch.End();
+            _spriteBatch.DrawString(_debugSpriteFont, $"Mesh Instances: {Rendering.Data.Mesh.InstanceCount}", startPosition, Color.White);
+            _spriteBatch.End();
         }
 
         public void OnClosing()
@@ -284,7 +153,7 @@ namespace Pokemon3D.Screens.Overworld
 
         #region overworld ui element handling:
 
-        private readonly List<OverworldUIElement> _uiElements = new List<OverworldUIElement>();
+        
 
         public void AddUiElement(OverworldUIElement element)
         {
