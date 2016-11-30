@@ -8,6 +8,7 @@ namespace Pokemon3D.Rendering
     /// </summary>
     public class Camera
     {
+        public int CameraMask { get; }
         public float NearClipDistance { get; set; }
         public float FarClipDistance { get; set; }
         public float FieldOfView { get; set; }
@@ -21,10 +22,15 @@ namespace Pokemon3D.Rendering
         public BoundingFrustum Frustum { get; }
 
         public Color? ClearColor { get; set; }
+        public float? DepthClear { get; set; }
         public Skybox Skybox { get; set; }
+        public DepthStencilState DepthStencilState { get; set; }
                      
-        internal Camera(Viewport viewport)
+        internal Camera(Viewport viewport, int cameraMask)
         {
+            DepthClear = 1;
+            DepthStencilState = null;
+            CameraMask = cameraMask;
             Viewport = viewport;
             NearClipDistance = 0.1f;
             FarClipDistance = 1000.0f;

@@ -9,7 +9,7 @@ namespace Pokemon3D.Entities.System.Components
     [JsonComponentId("animatedtextures")]
     internal class AnimateTexturesEntityComponent : AnimatorEntityComponent
     {
-        private ModelEntityComponent _modelComponent = null;
+        private ModelEntityComponent _modelComponent;
 
         public AnimateTexturesEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
@@ -24,7 +24,7 @@ namespace Pokemon3D.Entities.System.Components
 
         private void OnUpdateAnimationFrame(int textureIndex)
         {
-            _modelComponent = _modelComponent ?? Parent.GetComponent<ModelEntityComponent>();
+            _modelComponent = _modelComponent ?? ReferringEntity.GetComponent<ModelEntityComponent>();
             if (_modelComponent != null && textureIndex < _modelComponent.Regions.Count)
             {
                 _modelComponent.SetTexture(textureIndex);

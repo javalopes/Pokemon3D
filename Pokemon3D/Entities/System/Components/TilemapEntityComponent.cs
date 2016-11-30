@@ -15,8 +15,8 @@ namespace Pokemon3D.Entities.System.Components
     {
         private DrawableElement _drawableElement;
 
-        private TilemapEntityComponent(Entity parent)
-            : base(parent)
+        private TilemapEntityComponent(Entity referringEntity)
+            : base(referringEntity)
         {
             
         }
@@ -37,12 +37,12 @@ namespace Pokemon3D.Entities.System.Components
                 DiffuseTexture = gameMode.GetTexture(GetData<string>("Texture"))
             };
 
-            _drawableElement.IsActive = Parent.IsActive;
+            _drawableElement.IsActive = ReferringEntity.IsActive;
 
             var geometryData = CreateTilemapData();
             GameInstance.EnsureExecutedInMainThread(() => _drawableElement.Mesh = new Mesh(GameInstance.GraphicsDevice, geometryData, holdGeometryData: false));
 
-            if (!Parent.IsInitializing) _drawableElement.EndInitialzing();
+            if (!ReferringEntity.IsInitializing) _drawableElement.EndInitialzing();
         }
 
         private GeometryData CreateTilemapData()
@@ -129,9 +129,9 @@ namespace Pokemon3D.Entities.System.Components
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            _drawableElement.WorldMatrix = Parent.WorldMatrix;
-            _drawableElement.Scale = Parent.Scale;
-            _drawableElement.GlobalPosition = Parent.GlobalPosition;
+            _drawableElement.WorldMatrix = ReferringEntity.WorldMatrix;
+            _drawableElement.Scale = ReferringEntity.Scale;
+            _drawableElement.GlobalPosition = ReferringEntity.GlobalPosition;
 
             if (_drawableElement.Mesh != null)
             {

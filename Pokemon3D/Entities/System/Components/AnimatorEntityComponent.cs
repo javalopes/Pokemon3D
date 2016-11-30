@@ -8,7 +8,7 @@ namespace Pokemon3D.Entities.System.Components
     {
         private readonly Animator _animator = new Animator();
 
-        public AnimatorEntityComponent(Entity parent) : base(parent)
+        public AnimatorEntityComponent(Entity referringEntity) : base(referringEntity)
         {
 
         }

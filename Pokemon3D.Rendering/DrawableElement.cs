@@ -14,6 +14,7 @@ namespace Pokemon3D.Rendering
     {
         private Action<DrawableElement> _onEndInitializing;
 
+        public int CameraMask { get; }
         public Mesh Mesh { get; set; }
         public Material Material { get; set; }
         public Matrix WorldMatrix { get; set; }
@@ -22,11 +23,12 @@ namespace Pokemon3D.Rendering
         public Vector3 GlobalPosition { get; set; }
         public Vector3 Scale { get; set; }
         public BoundingBox BoundingBox { get; set; }
-
+        
         public bool IsInitializing { get; private set; }
 
-        public DrawableElement(bool initializing = false, Action<DrawableElement> onEndInitializing = null)
+        public DrawableElement(int cameraMask = 1, bool initializing = false, Action<DrawableElement> onEndInitializing = null)
         {
+            CameraMask = cameraMask;
             IsInitializing = initializing;
             _onEndInitializing = onEndInitializing;
             IsActive = true;

@@ -95,8 +95,9 @@ namespace Pokemon3D.Entities.System
         /// Creates a new, empty entity.
         /// </summary>
         /// <param name="isInitializing">Create in initializing mode.</param>
+        /// <param name="addComponents">Delegate for adding components on the fly.</param>
         /// <returns>New empty entity.</returns>
-        public Entity CreateEntity(bool isInitializing = false)
+        public Entity CreateEntity(bool isInitializing = false, Func<Entity, EntityComponent[]> addComponents = null)
         {
             Entity entity;
             lock (_lockObject)
@@ -112,6 +113,14 @@ namespace Pokemon3D.Entities.System
                     _entities.Add(entity);
                 }
             }
+
+            var components = addComponents?.Invoke(entity);
+
+            if (components?.Length > 0)
+            {
+                foreach (var component in components) entity.AddComponent(component);
+            }
+
             return entity;
         }
 

@@ -36,15 +36,15 @@ namespace Pokemon3D.Entities.System.Components
 
         public Camera Camera { get; }
 
-        public CameraEntityComponent(Entity parent, Skybox skybox) : base(parent)
+        public CameraEntityComponent(Entity referringEntity, Skybox skybox, int cameraMask = 1) : base(referringEntity)
         {
-            Camera = GameInstance.GetService<SceneRenderer>().CreateCamera();
+            Camera = GameInstance.GetService<SceneRenderer>().CreateCamera(cameraMask);
             NearClipDistance = 0.1f;
             FarClipDistance = 1000.0f;
             FieldOfView = MathHelper.PiOver4;
             ClearColor = Color.CornflowerBlue;
             Camera.Skybox = skybox;
-            Camera.IsActive = Parent.IsActive;
+            Camera.IsActive = ReferringEntity.IsActive;
         }
 
         public override void OnIsActiveChanged()
@@ -60,8 +60,8 @@ namespace Pokemon3D.Entities.System.Components
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Camera.GlobalEulerAngles = Parent.GlobalEulerAngles;
-            Camera.GlobalPosition = Parent.GlobalPosition;
+            Camera.GlobalEulerAngles = ReferringEntity.GlobalEulerAngles;
+            Camera.GlobalPosition = ReferringEntity.GlobalPosition;
             Camera.Update();
         }
     }

@@ -35,12 +35,13 @@ namespace Pokemon3D.Rendering.Compositor
 
         public void Draw(Camera camera, float yRotationForBillboards)
         {
-            _device.BlendState = BlendState;
-            _device.DepthStencilState = DepthStencilState;
-            _device.RasterizerState = RasterizerState;
-
             var drawableElements = _getDrawableElements();
+            if (drawableElements.Count == 0) return;
 
+            _device.BlendState = BlendState;
+            _device.DepthStencilState = camera.DepthStencilState ?? DepthStencilState;
+            _device.RasterizerState = RasterizerState;
+            
             var nodes = SortNodesBackToFront ? drawableElements.OrderByDescending(n => (camera.GlobalPosition - n.GlobalPosition).LengthSquared()).ToList()
                                              : drawableElements;
 
@@ -48,7 +49,9 @@ namespace Pokemon3D.Rendering.Compositor
             {
                 var element = nodes[i];
 
+                if((element.CameraMask & camera.CameraMask) != camera.CameraMask) return;
                 if (!IsValidForRendering(camera, element)) continue;
+
                 _handleEffect(element.Material);
                 DrawElement(camera, element, yRotationForBillboards);
             }

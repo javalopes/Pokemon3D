@@ -25,13 +25,13 @@ namespace Pokemon3D.Entities.System.Components
             _trigger = GetDataOrDefault("Trigger", "Interaction");
             _message = GetDataOrDefault("Message", "Interact");
 
-            _collider = new Collider(Parent.Scale, isTrigger: true);
-            _collider.SetPosition(Parent.GlobalPosition);
+            _collider = new Collider(ReferringEntity.Scale, isTrigger: true);
+            _collider.SetPosition(ReferringEntity.GlobalPosition);
             GameInstance.GetService<CollisionManager>().Add(_collider);
             _collider.OnTriggerEnter = OnTriggerEnter;
             _collider.OnTriggerLeave = OnTriggerLeave;
 
-            _uiElement = new InteractionPromptOverworldUIElement(Parent, _message);
+            _uiElement = new InteractionPromptOverworldUIElement(ReferringEntity, _message);
             _uiElement.InteractionStarted += InteractionHandler;
         }
 
@@ -55,7 +55,7 @@ namespace Pokemon3D.Entities.System.Components
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            _collider.SetPosition(Parent.Position);
+            _collider.SetPosition(ReferringEntity.Position);
         }
 
         public override void OnComponentRemove()

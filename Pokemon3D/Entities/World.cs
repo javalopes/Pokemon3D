@@ -21,6 +21,8 @@ namespace Pokemon3D.Entities
         private readonly Dictionary<string, Map> _allMaps = new Dictionary<string, Map>();
 
         public Player Player { get; private set; }
+        public Inventory Inventory { get; private set; }
+
         public EntitySystem EntitySystem { get; }
 
         public World()
@@ -41,6 +43,7 @@ namespace Pokemon3D.Entities
             gameMode.Preload();
             
             Player = new Player(this);
+            Inventory = new Inventory(this);
             ActivateMapsWithOffsets(gameMode.GameModeInfo.StartMap, Vector3.Zero);
             EntitySystem.InitializeAllPendingEntities();
         }
@@ -136,7 +139,7 @@ namespace Pokemon3D.Entities
         public void Update(GameTime gameTime)
         {
             EntitySystem.Update(gameTime);
-            Player.Update(gameTime);
+            Inventory.Update();
 
             if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.V))
             {

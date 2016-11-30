@@ -27,7 +27,7 @@ namespace Pokemon3D.Entities.System.Components
             set { _drawableElement.IsBillboard = value; }
         }
 
-        private ModelEntityComponent(Entity parent) : base(parent)
+        private ModelEntityComponent(Entity referringEntity) : base(referringEntity)
         {
             
         }
@@ -82,11 +82,11 @@ namespace Pokemon3D.Entities.System.Components
 
             SetTexture(0);
 
-            _drawableElement.IsActive = Parent.IsActive;
-            if (!Parent.IsInitializing) _drawableElement.EndInitialzing();
+            _drawableElement.IsActive = ReferringEntity.IsActive;
+            if (!ReferringEntity.IsInitializing) _drawableElement.EndInitialzing();
         }
 
-        public ModelEntityComponent(Entity parent, Mesh mesh, Material material, bool isBillboard) : base(parent)
+        public ModelEntityComponent(Entity referringEntity, Mesh mesh, Material material, bool isBillboard) : base(referringEntity)
         {
             _drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(true);
             _drawableElement.Material = material;
@@ -145,23 +145,23 @@ namespace Pokemon3D.Entities.System.Components
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            _drawableElement.WorldMatrix = Parent.WorldMatrix;
-            _drawableElement.Scale = Parent.Scale;
-            _drawableElement.GlobalPosition = Parent.GlobalPosition;
+            _drawableElement.WorldMatrix = ReferringEntity.WorldMatrix;
+            _drawableElement.Scale = ReferringEntity.Scale;
+            _drawableElement.GlobalPosition = ReferringEntity.GlobalPosition;
 
             if (_drawableElement.Mesh != null)
             {
                 if (IsBillboard)
                 {
                     var box = _drawableElement.Mesh.LocalBounds;
-                    box.Min = box.Min * Parent.Scale;
-                    box.Max = box.Max * Parent.Scale;
+                    box.Min = box.Min * ReferringEntity.Scale;
+                    box.Max = box.Max * ReferringEntity.Scale;
                     box.Min.X = MathHelper.Min(box.Min.X, box.Min.Z);
                     box.Min.Z = box.Min.X;
                     box.Max.X = MathHelper.Max(box.Max.X, box.Max.Z);
                     box.Max.Z = box.Max.X;
-                    box.Min += Parent.GlobalPosition;
-                    box.Max += Parent.GlobalPosition;
+                    box.Min += ReferringEntity.GlobalPosition;
+                    box.Max += ReferringEntity.GlobalPosition;
                     _drawableElement.BoundingBox = box;
                 }
                 else

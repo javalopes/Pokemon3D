@@ -23,21 +23,21 @@ namespace Pokemon3D.Entities.System
         public string Name { get; protected set; }
         
         /// <summary>
-        /// The owning parent <see cref="Entity"/> of this component.
+        /// The owning ReferringEntity <see cref="Entity"/> of this component.
         /// </summary>
-        protected Entity Parent { get; }
+        public Entity ReferringEntity { get; }
 
         protected EntityComponent(EntityComponentDataCreationStruct parameters)
         {
             Name = parameters.Name;
             _data = parameters.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            Parent = parameters.Parent;
+            ReferringEntity = parameters.Parent;
             _isActive = true;
         }
 
-        protected EntityComponent(Entity parent)
+        protected EntityComponent(Entity referringEntity)
         {
-            Parent = parent;
+            ReferringEntity = referringEntity;
             _isActive = true;
         }
 
@@ -46,7 +46,7 @@ namespace Pokemon3D.Entities.System
         /// </summary>
         public bool IsActive
         {
-            get { return Parent.IsActive && _isActive; }
+            get { return ReferringEntity.IsActive && _isActive; }
             set
             {
                 if (_isActive != value)

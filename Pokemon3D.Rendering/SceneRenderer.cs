@@ -13,7 +13,7 @@ namespace Pokemon3D.Rendering
 
         RenderSettings RenderSettings { get; }
 
-        DrawableElement CreateDrawableElement(bool initializing);
+        DrawableElement CreateDrawableElement(bool initializing, int cameraMask = 1);
 
         Light CreateDirectionalLight(Vector3 direction);
 
@@ -21,7 +21,7 @@ namespace Pokemon3D.Rendering
 
         void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize);
 
-        Camera CreateCamera();
+        Camera CreateCamera(int cameraMask = 1);
 
         /// <summary>
         /// Ambient Light for all Objects. Default is white.

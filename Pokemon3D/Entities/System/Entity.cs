@@ -4,6 +4,7 @@ using Pokemon3D.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Pokemon3D.Entities.System
 {
@@ -31,7 +32,7 @@ namespace Pokemon3D.Entities.System
         public bool IsTemplate { get; private set; }
 
         /// <summary>
-        /// Parent Entity. Inherits transformation.
+        /// ReferringEntity Entity. Inherits transformation.
         /// </summary>
         public Entity Parent { get; private set; }
 
@@ -139,6 +140,7 @@ namespace Pokemon3D.Entities.System
         {
             if (!HasComponent(component.Name))
             {
+                Debug.Assert(this == component.ReferringEntity, "Component Collection Entity is different to injected entity");
                 _components.Add(component);
                 component.OnComponentAdded();
             }
@@ -300,7 +302,7 @@ namespace Pokemon3D.Entities.System
         /// <summary>
         /// Sets the parent of this entity. old entity will remove it.
         /// </summary>
-        /// <param name="parent">Parent. Can be null to unset parent.</param>
+        /// <param name="parent">ReferringEntity. Can be null to unset parent.</param>
         public void SetParent(Entity parent)
         {
             if (parent == Parent) return;

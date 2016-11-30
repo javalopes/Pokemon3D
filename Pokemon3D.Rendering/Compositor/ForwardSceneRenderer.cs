@@ -36,6 +36,8 @@ namespace Pokemon3D.Rendering.Compositor
         private readonly RenderQueue _shadowCasterQueueSolid;
         private readonly RenderQueue _shadowCasterQueueTransparent;
 
+        public RenderSettings RenderSettings { get; }
+
         public ForwardSceneRenderer(GameContext context, SceneEffect effect, RenderSettings settings) : base(context)
         {
             _device = context.GetService<GraphicsDevice>();
@@ -128,7 +130,8 @@ namespace Pokemon3D.Rendering.Compositor
 
                 for (var i = 0; i < _allCameras.Count; i++)
                 {
-                    if (_allCameras[i].IsActive) DrawSceneForCamera(_allCameras[i]);
+                    var camera = _allCameras[i];
+                    if (camera.IsActive) DrawSceneForCamera(camera);
                 }
             }
 
@@ -136,8 +139,6 @@ namespace Pokemon3D.Rendering.Compositor
             RenderStatistics.Instance.EndFrame();
         }
         
-        public RenderSettings RenderSettings { get; }
-
         private void HandleSolidObjects(Data.Material material)
         {
             var flags = material.GetLightingTypeFlags(RenderSettings);
@@ -241,10 +242,21 @@ namespace Pokemon3D.Rendering.Compositor
 
         private void HandleCameraClearOrSkyPass(Camera camera)
         {
-            var clearFlags = ClearOptions.DepthBuffer;
-            if (camera.ClearColor.HasValue) clearFlags |= ClearOptions.Target;
+            var clearColor = camera.ClearColor.HasValue;
+            var clearDepth = camera.DepthClear.HasValue;
 
-            _device.Clear(clearFlags, camera.ClearColor.GetValueOrDefault(Color.Black), 1.0f, 0);
+            if(clearColor && clearDepth)
+            {
+                _device.Clear(ClearOptions.DepthBuffer | ClearOptions.Target, camera.ClearColor.Value, camera.DepthClear.Value, 0);
+            }
+            else if(clearColor && !clearDepth)
+            {
+                _device.Clear(ClearOptions.Target, camera.ClearColor.Value, 1.0f, 0);
+            }
+            else if(!clearColor && clearDepth)
+            {
+                _device.Clear(ClearOptions.DepthBuffer, Color.Black, camera.DepthClear.Value, 0);
+            }
 
             var skybox = camera.Skybox;
             if (skybox != null)
@@ -296,13 +308,13 @@ namespace Pokemon3D.Rendering.Compositor
             }
         }
 
-        public DrawableElement CreateDrawableElement(bool initializing)
+        public DrawableElement CreateDrawableElement(bool initializing, int cameraMask = 1)
         {
             DrawableElement drawableElement;
 
             lock (_lockObject)
             {
-                drawableElement = new DrawableElement(initializing, OnEndInitializing);
+                drawableElement = new DrawableElement(cameraMask, initializing, OnEndInitializing);
 
                 if (initializing)
                 {
@@ -351,9 +363,9 @@ namespace Pokemon3D.Rendering.Compositor
             }
         }
 
-        public Camera CreateCamera()
+        public Camera CreateCamera(int cameraMask = 1)
         {
-            var camera = new Camera(_device.Viewport);
+            var camera = new Camera(_device.Viewport, cameraMask);
             lock (_lockObject)
             {
                 _allCameras.Add(camera);
