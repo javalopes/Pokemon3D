@@ -38,6 +38,7 @@ namespace Pokemon3D.Entities
             playerEntity.Position = new Vector3(5, 0, 8);
 
             var cameraEntity = world.EntitySystem.CreateEntity(true);
+            cameraEntity.Id = "MainCamera";
             cameraEntity.SetParent(playerEntity);
             _controllerComponent = cameraEntity.AddComponent(new PlayerControllerComponent(cameraEntity));
             var cameraComponent = cameraEntity.AddComponent(new CameraEntityComponent(cameraEntity, new Skybox(GameInstance)

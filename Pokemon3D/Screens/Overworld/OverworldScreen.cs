@@ -118,6 +118,7 @@ namespace Pokemon3D.Screens.Overworld
 
         public void OnEarlyDraw(GameTime gameTime)
         {
+            ActiveWorld.OnEarlyDraw();
         }
 
         public void OnClosing()

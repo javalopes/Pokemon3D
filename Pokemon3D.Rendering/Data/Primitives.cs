@@ -124,5 +124,24 @@ namespace Pokemon3D.Rendering.Data
                 Indices = new ushort[] {0, 1, 2, 1, 3, 2}
             };
         }
+
+        public static GeometryData GenerateQuadForY()
+        {
+            return new GeometryData
+            {
+                Vertices = new[]
+                {
+                    new VertexPositionNormalTexture(new Vector3(-0.5f, -0.5f, 0.0f), Vector3.Backward,
+                        new Vector2(0.0f, 1.0f)),
+                    new VertexPositionNormalTexture(new Vector3(-0.5f, 0.5f, 0.0f), Vector3.Backward,
+                        new Vector2(0.0f, 0.0f)),
+                    new VertexPositionNormalTexture(new Vector3(0.5f, -0.5f, 0.0f), Vector3.Backward,
+                        new Vector2(1.0f, 1.0f)),
+                    new VertexPositionNormalTexture(new Vector3(0.5f, 0.5f, 0.0f), Vector3.Backward,
+                        new Vector2(1.0f, 0.0f)),
+                },
+                Indices = new ushort[] { 0, 1, 2, 1, 3, 2 }
+            };
+        }
     }
 }

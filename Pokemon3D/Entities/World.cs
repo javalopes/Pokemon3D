@@ -139,7 +139,7 @@ namespace Pokemon3D.Entities
         public void Update(GameTime gameTime)
         {
             EntitySystem.Update(gameTime);
-            Inventory.Update();
+            Inventory.Update(gameTime);
 
             if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.V))
             {
@@ -220,6 +220,11 @@ namespace Pokemon3D.Entities
             }
 
             return entity;
+        }
+
+        public void OnEarlyDraw()
+        {
+            Inventory.DrawInventory();
         }
     }
 }

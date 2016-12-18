@@ -29,6 +29,11 @@ namespace Pokemon3D.Entities.System
             EntityGeneratorSupplier = new EntityGeneratorSupplier();
         }
 
+        public Entity GetPendingEntityById(string id)
+        {
+            return _entitiesToInitialize.FirstOrDefault(e => e.Id == id);
+        }
+
         /// <summary>
         /// Creates an entity reading json data model. It also attaches all known entity components.
         /// </summary>

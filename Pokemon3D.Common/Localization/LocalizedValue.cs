@@ -10,6 +10,16 @@ namespace Pokemon3D.Common.Localization
 
         public event Action ValueChanged;
 
+        protected LocalizedValue(string hardcoded)
+        {
+            Value = hardcoded;
+        }
+
+        public static LocalizedValue Static(string hardcoded)
+        {
+            return new LocalizedValue(hardcoded);
+        }
+
         public LocalizedValue(TranslationProvider translationProvider, string section, string key)
         {
             _translationprovider = translationProvider;
