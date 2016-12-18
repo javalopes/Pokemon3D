@@ -10,7 +10,7 @@ namespace Pokemon3D.Rendering.Compositor
 {
     internal class RenderQueue : GameContextObject
     {
-        private GraphicsDevice _device;
+        private readonly GraphicsDevice _device;
         private readonly Action<Material> _handleEffect;
         private readonly Func<IList<DrawableElement>> _getDrawableElements;
 
@@ -44,17 +44,18 @@ namespace Pokemon3D.Rendering.Compositor
             
             var nodes = SortNodesBackToFront ? drawableElements.OrderByDescending(n => (camera.GlobalPosition - n.GlobalPosition).LengthSquared()).ToList()
                                              : drawableElements;
-
+            
             for (var i = 0; i < nodes.Count; i++)
             {
                 var element = nodes[i];
 
-                if((element.CameraMask & camera.CameraMask) != camera.CameraMask) return;
+                if ((element.CameraMask & camera.CameraMask) != camera.CameraMask) continue;
                 if (!IsValidForRendering(camera, element)) continue;
 
                 _handleEffect(element.Material);
                 DrawElement(camera, element, yRotationForBillboards);
             }
+            
         }
 
         protected bool IsValidForRendering(Camera camera, DrawableElement element)

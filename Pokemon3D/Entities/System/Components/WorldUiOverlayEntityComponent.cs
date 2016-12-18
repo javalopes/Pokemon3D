@@ -1,12 +1,9 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Pokemon3D.Common.Input;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
-using Pokemon3D.Rendering.UI;
 using static GameProvider;
 
 namespace Pokemon3D.Entities.System.Components
