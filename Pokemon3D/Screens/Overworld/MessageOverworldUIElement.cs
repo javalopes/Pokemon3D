@@ -5,6 +5,7 @@ using Pokemon3D.Common.Extensions;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.Content;
+using Pokemon3D.GameCore;
 using static GameProvider;
 
 namespace Pokemon3D.Screens.Overworld
@@ -34,7 +35,7 @@ namespace Pokemon3D.Screens.Overworld
 
         public override void Update(GameTime gameTime)
         {
-            if (GameInstance.GetService<InputSystem>().GamePad.IsButtonDownOnce(Microsoft.Xna.Framework.Input.Buttons.A))
+            if (GameInstance.GetService<InputSystem>().IsPressedOnce(ActionNames.MenuAccept))
             {
                 IsActive = false;
                 MessageClosed?.Invoke(this);

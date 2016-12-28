@@ -16,7 +16,10 @@ using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.MainMenu;
 using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Localization;
+using Pokemon3D.DataModel.GameCore;
 
 namespace Pokemon3D.GameCore
 {
@@ -75,8 +78,8 @@ namespace Pokemon3D.GameCore
             _gameConfig = RegisterService(new GameConfiguration());
             RegisterService(new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = _gameConfig.WindowSize.Width,
-                PreferredBackBufferHeight = _gameConfig.WindowSize.Height
+                PreferredBackBufferWidth = _gameConfig.Data.WindowSize.Width,
+                PreferredBackBufferHeight = _gameConfig.Data.WindowSize.Height
             });
             _mainThreadDispatcher = Dispatcher.CurrentDispatcher;
         }
@@ -89,8 +92,8 @@ namespace Pokemon3D.GameCore
 
             var renderSettings = new RenderSettings
             {
-                EnableShadows = _gameConfig.ShadowsEnabled,
-                EnableSoftShadows = _gameConfig.SoftShadows,
+                EnableShadows = _gameConfig.Data.ShadowsEnabled,
+                EnableSoftShadows = _gameConfig.Data.SoftShadows,
                 ShadowMapSize = 1024 // todo: reenable
             };
 
@@ -117,12 +120,98 @@ namespace Pokemon3D.GameCore
             ScreenManager.SetScreen(typeof(IntroScreen));
 #endif
             GraphicsDevice.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
+
+            RegisterInputActions();
+        }
+
+        private static InputActionModel CreateKeyboardAxis(string name, string value)
+        {
+            return new InputActionModel
+            {
+                Name = name,
+                ActionsModel = new[]
+                {
+                    new MappedActionModel
+                    {
+                        InputType = InputType.Keyboard,
+                        IsAxis = true,
+                        AssingedValue = value
+                    }
+                }
+            };
+        }
+
+        private static InputActionModel CreateKeyboardAction(string name, string value)
+        {
+            return CreateKeyboardAction(name, new[] {value});
+        }
+
+        private static InputActionModel CreateKeyboardAction(string name, string[] values)
+        {
+            return new InputActionModel
+            {
+                Name = name,
+                ActionsModel = values.Select(v =>
+                    new MappedActionModel
+                    {
+                        InputType = InputType.Keyboard,
+                        IsAxis = false,
+                        AssingedValue = v
+                    }
+                ).ToArray()
+            };
+        }
+
+        private void RegisterInputActions()
+        {
+            if (_gameConfig.Data.InputActions == null)
+            {
+                _gameConfig.Data.InputActions = new[]
+                {
+                    CreateKeyboardAxis(ActionNames.LeftAxis, "A,D,W,S"),
+                    CreateKeyboardAxis(ActionNames.RightAxis, "Left,Right,Up,Down"),
+                    CreateKeyboardAction(ActionNames.SprintGodMode, "LeftShift"),
+                    CreateKeyboardAction(ActionNames.StraveGodMode, "Space"),
+                    CreateKeyboardAction(ActionNames.MenuUp, new[] { "Up", "W" }),
+                    CreateKeyboardAction(ActionNames.MenuDown, new[] { "Down", "S" }),
+                    CreateKeyboardAction(ActionNames.MenuAccept, new[] { "Enter", "Space" }),
+                    CreateKeyboardAction(ActionNames.OpenInventory, "I"),
+                    CreateKeyboardAction(ActionNames.ToggleRenderStatistics, "F12"),
+                };
+                _gameConfig.Save();
+            }
+
+            foreach (var inputAction in _gameConfig.Data.InputActions)
+            {
+                foreach (var mappedAction in inputAction.ActionsModel)
+                {
+                    if (mappedAction.IsAxis)
+                    {
+                        if (mappedAction.InputType == InputType.Keyboard)
+                        {
+                            var keys =
+                                mappedAction.AssingedValue.Split(',')
+                                    .Select(t => (Keys) Enum.Parse(typeof(Keys), t))
+                                    .ToArray();
+
+                            _inputSystem.RegisterAxis(_inputSystem.KeyboardActionProvider.DefineAxis(inputAction.Name, keys[0], keys[1], keys[2], keys[3]));
+                        }
+                    }
+                    else
+                    {
+                        if (mappedAction.InputType == InputType.Keyboard)
+                        {
+                            _inputSystem.RegisterAction(_inputSystem.KeyboardActionProvider.DefineAction(inputAction.Name, (Keys)Enum.Parse(typeof(Keys), mappedAction.AssingedValue)));
+                        }
+                    }
+                }
+            }
         }
 
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            _inputSystem.Update();
+            _inputSystem.Update(gameTime);
             _collisionManager.Update();
 
             if (!_screenManager.Update(gameTime)) Exit();

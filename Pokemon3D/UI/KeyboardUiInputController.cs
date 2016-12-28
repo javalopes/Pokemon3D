@@ -15,16 +15,15 @@ namespace Pokemon3D.UI
 
         public override void Update(UiFocusContainer container)
         {
-
-            if (_inputSystem.Up(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+            if (_inputSystem.IsPressedOnce(ActionNames.MenuUp))
             {
                 InvokeMoveToPreviousElement();
             }
-            if (_inputSystem.Down(InputDetectionType.PressedOnce, DirectionalInputTypes.All))
+            if (_inputSystem.IsPressedOnce(ActionNames.MenuDown))
             {
                 InvokeMoveToNextElement();
             }
-            if (_inputSystem.Accept(AcceptInputTypes.Buttons))
+            if (_inputSystem.IsPressedOnce(ActionNames.MenuAccept))
             {
                 InvokeAction(container.CurrentElement);
             }

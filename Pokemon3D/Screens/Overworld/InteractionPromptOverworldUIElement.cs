@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.Content;
 using Pokemon3D.Entities.System;
+using Pokemon3D.GameCore;
 using Pokemon3D.ScriptPipeline;
 using static GameProvider;
 
@@ -66,7 +66,7 @@ namespace Pokemon3D.Screens.Overworld
 
         public override void Update(GameTime gameTime)
         {
-            if ((GameInstance.GetService<InputSystem>().GamePad.IsButtonDown(Buttons.A) || GameInstance.GetService<InputSystem>().Keyboard.IsKeyDown(Keys.G)) &&
+            if (GameInstance.GetService<InputSystem>().IsPressedOnce(ActionNames.MenuAccept) &&
                 !Screen.HasBlockingElements &&
                 ScriptPipelineManager.ActiveProcessorCount == 0) // only update these if this are no scripts running.
             {

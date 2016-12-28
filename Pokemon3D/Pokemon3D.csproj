@@ -96,6 +96,7 @@
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\PlayerMovementMode.cs" />
     <Compile Include="Entities\World.cs" />
+    <Compile Include="GameCore\ActionNames.cs" />
     <Compile Include="GameCore\TranslationProviderImp.cs" />
     <Compile Include="GameProvider.cs" />
     <Compile Include="Screens\Battle\BattleScreen.cs" />

@@ -14,12 +14,9 @@ namespace Pokemon3D.GameCore
     /// </summary>
     internal class GameConfiguration
     {
-        private ConfigurationModel _dataModel;
-
         public event EventHandler ConfigFileLoaded;
 
-        public string DisplayLanguage => _dataModel.DisplayLanguage;
-        public SizeModel WindowSize => _dataModel.WindowSize;
+        public ConfigurationModel Data { get; private set; }
 
         public GameConfiguration()
         {
@@ -27,13 +24,13 @@ namespace Pokemon3D.GameCore
             {
                 try
                 {
-                    _dataModel = DataModel<ConfigurationModel>.FromFile(StaticPathProvider.ConfigFile);
+                    Data = DataModel<ConfigurationModel>.FromFile(StaticPathProvider.ConfigFile);
                 }
                 catch (DataLoadException)
                 {
                     GameLogger.Instance.Log(MessageType.Error, "Error trying to load the configuration file of the game. Resetting file.");
 
-                    _dataModel = ConfigurationModel.Default;
+                    Data = ConfigurationModel.Default;
                     Save();
                 }
             }
@@ -41,46 +38,22 @@ namespace Pokemon3D.GameCore
             {
                 GameLogger.Instance.Log(MessageType.Warning, "Configuration file not found. Creating new one.");
 
-                _dataModel = ConfigurationModel.Default;
+                Data = ConfigurationModel.Default;
                 Save();
             }
 
             GameInstance.Exiting += OnGameExiting;
-            GameModePathProvider.CustomPath = _dataModel.CustomGameModeBasePath;
+            GameModePathProvider.CustomPath = Data.CustomGameModeBasePath;
 
             FileObserver.Instance.StartFileObserve(StaticPathProvider.ConfigFile, ReloadFile);
         }
-
-        public bool ShadowsEnabled
-        {
-            get { return _dataModel.ShadowsEnabled; }
-            set { _dataModel.ShadowsEnabled = value; }
-        }
-
-        public bool SoftShadows
-        {
-            get { return _dataModel.SoftShadows; }
-            set { _dataModel.SoftShadows = value; }
-        }
-
-        public bool EnableFileHotSwapping
-        {
-            get { return _dataModel.EnableFileHotSwapping; }
-            set { _dataModel.EnableFileHotSwapping = value; }
-        }
-
-        public ShadowQuality ShadowQuality
-        {
-            get { return _dataModel.ShadowQuality; }
-            set { _dataModel.ShadowQuality = value; }
-        }
-
+        
         private void ReloadFile(object sender, FileSystemEventArgs e)
         {
             try
             {
-                _dataModel = DataModel<ConfigurationModel>.FromFile(StaticPathProvider.ConfigFile);
-                GameModePathProvider.CustomPath = _dataModel.CustomGameModeBasePath;
+                Data = DataModel<ConfigurationModel>.FromFile(StaticPathProvider.ConfigFile);
+                GameModePathProvider.CustomPath = Data.CustomGameModeBasePath;
                 ConfigFileLoaded?.Invoke(this, EventArgs.Empty);
             }
             catch (DataLoadException)
@@ -101,7 +74,7 @@ namespace Pokemon3D.GameCore
         public void Save()
         {
             GameLogger.Instance.Log(MessageType.Message, "Saving configuration file.");
-            _dataModel.ToFile(StaticPathProvider.ConfigFile, DataType.Json);
+            Data.ToFile(StaticPathProvider.ConfigFile, DataType.Json);
         }
     }
 }

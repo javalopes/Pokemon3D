@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Entities.System;
 using Pokemon3D.Entities.System.Components;
+using Pokemon3D.GameCore;
 
 namespace Pokemon3D.Entities.Components
 {
@@ -55,24 +54,7 @@ namespace Pokemon3D.Entities.Components
             var inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
             var currentMouseState = Mouse.GetState();
 
-            var movementDirection = Vector3.Zero;
-            if (inputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
-            {
-                movementDirection.X = -1.0f;
-            }
-            else if (inputSystem.Right(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
-            {
-                movementDirection.X = 1.0f;
-            }
-
-            if (inputSystem.Up(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
-            {
-                movementDirection.Z = 1.0f;
-            }
-            else if (inputSystem.Down(InputDetectionType.HeldDown, DirectionalInputTypes.WASD | DirectionalInputTypes.LeftThumbstick))
-            {
-                movementDirection.Z = -1.0f;
-            }
+            var movementDirection = inputSystem.GetAxis(ActionNames.LeftAxis);
 
             switch (MovementMode)
             {
@@ -102,11 +84,11 @@ namespace Pokemon3D.Entities.Components
             }
         }
 
-        private void HandleGodModeMovement(float elapsedTime, MouseState mouseState, Vector3 movementDirection)
+        private void HandleGodModeMovement(float elapsedTime, MouseState mouseState, Vector2 movementDirection)
         {
             var inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
 
-            var speedFactor = inputSystem.Keyboard.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
+            var speedFactor = inputSystem.IsPressed(ActionNames.SprintGodMode) ? 2.0f : 1.0f;
             var step = Speed * elapsedTime * speedFactor;
 
             if (_mouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Pressed)
@@ -120,57 +102,47 @@ namespace Pokemon3D.Entities.Components
 
             if (movementDirection.LengthSquared() > 0.0f)
             {
-                ReferringEntity.Translate(Vector3.Normalize(movementDirection) * step);
+                var movementNormalized = Vector2.Normalize(movementDirection);
+                ReferringEntity.Translate(new Vector3(movementNormalized.X, 0.0f, movementNormalized.Y) * step);
             }
-            if (inputSystem.Keyboard.IsKeyDown(Keys.Space))
+            if (inputSystem.IsPressed(ActionNames.StraveGodMode))
             {
                 ReferringEntity.Position += Vector3.UnitY * step;
             }
         }
 
-        private void HandleThirdPersonMovement(float elapsedTime, MouseState mouseState, Vector3 movementDirection)
+        private void HandleThirdPersonMovement(float elapsedTime, MouseState mouseState, Vector2 movementDirection)
         {
-            var inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
-
             if (movementDirection.LengthSquared() > 0.0f)
             {
-                ReferringEntity.Parent.Translate(Vector3.Normalize(movementDirection) * Speed * elapsedTime);
+                var movementNormalized = Vector2.Normalize(movementDirection);
+                ReferringEntity.Parent.Translate(new Vector3(movementNormalized.X, 0.0f, movementNormalized.Y) * Speed * elapsedTime);
             }
 
-            if (inputSystem.Left(InputDetectionType.HeldDown, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
+            var rightAxis = GameProvider.GameInstance.GetService<InputSystem>().GetAxis(ActionNames.RightAxis);
+            if (rightAxis.X * rightAxis.X > 0.0f)
             {
-                ReferringEntity.Parent.RotateY(RotationSpeed * elapsedTime);
-            }
-            else if (inputSystem.Right(InputDetectionType.HeldDown, DirectionalInputTypes.ArrowKeys | DirectionalInputTypes.RightThumbstick))
-            {
-                ReferringEntity.Parent.RotateY(-RotationSpeed * elapsedTime);
+                ReferringEntity.Parent.RotateY(rightAxis.X * RotationSpeed * elapsedTime);
             }
         }
 
-        private void HandleFirstPersonMovement(float elapsedTime, MouseState mouseState, Vector3 movementDirection)
+        private void HandleFirstPersonMovement(float elapsedTime, MouseState mouseState, Vector2 movementDirection)
         {
-            var inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
-
             if (movementDirection.LengthSquared() > 0.0f)
             {
-                ReferringEntity.Parent.Translate(Vector3.Normalize(movementDirection) * Speed * elapsedTime);
+                var movementNormalized = Vector2.Normalize(movementDirection);
+                ReferringEntity.Parent.Translate(new Vector3(movementNormalized.X, 0.0f, movementNormalized.Y) * Speed * elapsedTime);
             }
 
-            if (inputSystem.Keyboard.IsKeyDown(Keys.Left))
+            var rightAxis = GameProvider.GameInstance.GetService<InputSystem>().GetAxis(ActionNames.RightAxis);
+
+            if (rightAxis.X*rightAxis.X > 0.0f)
             {
-                ReferringEntity.Parent.RotateY(RotationSpeed * elapsedTime);
+                ReferringEntity.Parent.RotateY(rightAxis.X * RotationSpeed * elapsedTime);
             }
-            else if (inputSystem.Keyboard.IsKeyDown(Keys.Right))
+            if (rightAxis.Y * rightAxis.Y > 0.0f)
             {
-                ReferringEntity.Parent.RotateY(-RotationSpeed * elapsedTime);
-            }
-            if (inputSystem.Keyboard.IsKeyDown(Keys.Up))
-            {
-                ReferringEntity.RotateX(RotationSpeed * elapsedTime);
-            }
-            else if (inputSystem.Keyboard.IsKeyDown(Keys.Down))
-            {
-                ReferringEntity.RotateX(-RotationSpeed * elapsedTime);
+                ReferringEntity.Parent.RotateY(rightAxis.Y * RotationSpeed * elapsedTime);
             }
         }
 

@@ -1,39 +1,50 @@
-﻿using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Pokemon3D.Common.Input
 {
-    public class KeyboardHandler
+    public class KeyboardActionProvider
     {
         private KeyboardState _lastState;
         private KeyboardState _currentState;
         private Keys[] _pressedKeys;
-
-        public KeyboardHandler()
+ 
+        public KeyboardActionProvider()
         {
             _currentState = Keyboard.GetState();
         }
 
-        public bool IsKeyDownOnce(Keys key)
+        public InputAction DefineAction(string name, Keys key)
+        {
+            return new KeyboardInputAction(this, name, key);
+        }
+
+        public AxisAction DefineAxis(string name, Keys left, Keys right, Keys up, Keys down)
+        {
+            return new KeyboardAxisAction(this, name, left, right, up, down);
+        }
+
+        internal bool IsKeyDownOnce(Keys key)
         {
             return _currentState.IsKeyDown(key) && _lastState.IsKeyUp(key);
         }
 
-        public bool IsKeyDown(Keys key)
+        internal bool IsKeyDown(Keys key)
         {
             return _currentState.IsKeyDown(key);
         }
 
-        public bool IsKeyUp(Keys key)
+        internal bool IsKeyUp(Keys key)
         {
             return _currentState.IsKeyUp(key);
         }
 
-        public Keys[] GetPressedKeys()
+        internal Keys[] GetPressedKeys()
         {
             return _pressedKeys;
         }
 
-        public void Update()
+        public void Update(GameTime time)
         {
             _lastState = _currentState;
             _currentState = Keyboard.GetState();

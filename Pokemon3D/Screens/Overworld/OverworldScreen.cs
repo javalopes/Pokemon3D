@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Collisions;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Shapes;
 using Pokemon3D.Entities;
+using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
 using Pokemon3D.Rendering;
-using Pokemon3D.Screens.MainMenu;
-using Pokemon3D.Screens.Transitions;
 using static GameProvider;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.UI;
@@ -66,26 +64,17 @@ namespace Pokemon3D.Screens.Overworld
             lock (_uiElements)
                 _uiElements.ForEach(e => { if (e.IsActive) e.Update(gameTime); });
 
-            if (_inputSystem.Keyboard.IsKeyDown(Keys.Escape))
-            {
-                _screenManager.SetScreen(typeof(MainMenuScreen), typeof(BlendTransition));
-            }
-
-            if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.L))
-            {
-                _sceneRenderer.EnablePostProcessing = !_sceneRenderer.EnablePostProcessing;
-            }
-
-            if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.F12))
+            if (_inputSystem.IsPressedOnce(ActionNames.ToggleRenderStatistics))
             {
                 _showRenderStatistics = !_showRenderStatistics;
                 if (_showRenderStatistics) _renderStatisticsOverlay.Show(); else _renderStatisticsOverlay.Hide();
             }
 
-            if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.X) || _inputSystem.GamePad.IsButtonDownOnce(Buttons.X))
-            {
-                _screenManager.SetScreen(typeof(GameMenu.GameMenuScreen));
-            }
+            //todo: repair
+            //if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.X) || _inputSystem.GamePad.IsButtonDownOnce(Buttons.X))
+            //{
+            //    _screenManager.SetScreen(typeof(GameMenu.GameMenuScreen));
+            //}
         }
 
         public void OnLateDraw(GameTime gameTime)

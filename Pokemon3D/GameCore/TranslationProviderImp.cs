@@ -74,7 +74,7 @@ namespace Pokemon3D.GameCore
 
         public string GetTranslation(string sectionId, string tokenId)
         {
-            var key = string.Format(KeyFormat, GameInstance.GetService<GameConfiguration>().DisplayLanguage, sectionId, tokenId);
+            var key = string.Format(KeyFormat, GameInstance.GetService<GameConfiguration>().Data.DisplayLanguage, sectionId, tokenId);
             string value;
             if (_translations.TryGetValue(key, out value)) return value;
 

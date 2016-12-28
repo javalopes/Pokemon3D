@@ -6,6 +6,7 @@ using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.Entities.System;
 using Pokemon3D.Entities.System.Components;
+using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.UI;
 using static GameProvider;
@@ -48,7 +49,7 @@ namespace Pokemon3D.Entities
 
         public void Update(GameTime gameTime)
         {
-            if (GameInstance.GetService<InputSystem>().Keyboard.IsKeyDownOnce(Keys.P))
+            if (GameInstance.GetService<InputSystem>().IsPressedOnce(ActionNames.OpenInventory))
             {
                 _inventoryOverlayEntity.IsActive = !_inventoryOverlayEntity.IsActive;
             }

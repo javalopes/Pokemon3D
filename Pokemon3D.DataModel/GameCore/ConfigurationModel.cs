@@ -42,6 +42,9 @@ namespace Pokemon3D.DataModel.GameCore
         [DataMember(Order = 8)]
         public string CustomGameModeBasePath;
 
+        [DataMember(Order = 9)]
+        public InputActionModel[] InputActions;
+
         public static ConfigurationModel Default
         {
             get

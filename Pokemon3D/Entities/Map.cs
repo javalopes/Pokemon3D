@@ -71,7 +71,7 @@ namespace Pokemon3D.Entities
             }
             IsActive = true;
 
-            if (GameInstance.GetService<GameConfiguration>().EnableFileHotSwapping)
+            if (GameInstance.GetService<GameConfiguration>().Data.EnableFileHotSwapping)
             {
                 FileObserver.Instance.StartFileObserve(_dataPath, MapChanged);
             }
@@ -94,7 +94,7 @@ namespace Pokemon3D.Entities
                 entity.IsActive = false;
             }
 
-            if (GameInstance.GetService<GameConfiguration>().EnableFileHotSwapping)
+            if (GameInstance.GetService<GameConfiguration>().Data.EnableFileHotSwapping)
             {
                 FileObserver.Instance.StopFileObserve(_dataPath, MapChanged);
             }
@@ -108,14 +108,14 @@ namespace Pokemon3D.Entities
             {
                 entity.IsActive = true;
             }
-            if (GameInstance.GetService<GameConfiguration>().EnableFileHotSwapping)
+            if (GameInstance.GetService<GameConfiguration>().Data.EnableFileHotSwapping)
             {
                 FileObserver.Instance.StartFileObserve(_dataPath, MapChanged);
             }
             IsActive = true;
         }
 
-        private void MapChanged(global::System.Object sender, FileSystemEventArgs e)
+        private void MapChanged(object sender, FileSystemEventArgs e)
         {
             var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
             var mapModel = gameMode.LoadMap(_id, true);

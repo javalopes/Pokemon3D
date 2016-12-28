@@ -1,0 +1,28 @@
+using Microsoft.Xna.Framework.Input;
+
+namespace Pokemon3D.Common.Input
+{
+    internal class KeyboardInputAction : InputAction
+    {
+        private readonly KeyboardActionProvider _actionProvider;
+        private readonly Keys _key;
+
+        public KeyboardInputAction(KeyboardActionProvider actionProvider, string name, Keys key)
+        {
+            _actionProvider = actionProvider;
+            _key = key;
+            Name = name;
+
+        }
+
+        public override bool IsPressed()
+        {
+            return _actionProvider.IsKeyDown(_key);
+        }
+
+        public override bool IsPressedOnce()
+        {
+            return _actionProvider.IsKeyDownOnce(_key);
+        }
+    }
+}

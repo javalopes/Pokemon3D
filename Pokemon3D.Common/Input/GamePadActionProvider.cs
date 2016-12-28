@@ -1,29 +1,29 @@
-﻿using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Pokemon3D.Common.Input
 {
-    public class GamePadHandler
+    public class GamePadActionProvider
     {
         private GamePadState _lastState;
         private GamePadState _currentState;
 
-        public GamePadHandler()
+        public GamePadActionProvider()
         {
             _currentState = GamePad.GetState(PlayerIndex.One);
         }
 
-        public bool IsButtonDownOnce(Buttons button)
+        internal bool IsButtonDownOnce(Buttons button)
         {
             return _currentState.IsButtonDown(button) && _lastState.IsButtonUp(button);
         }
 
-        public bool IsButtonDown(Buttons button)
+        internal bool IsButtonDown(Buttons button)
         {
             return _currentState.IsButtonDown(button);
         }
 
-        public bool IsButtonUp(Buttons button)
+        internal bool IsButtonUp(Buttons button)
         {
             return _currentState.IsButtonUp(button);
         }
@@ -33,7 +33,7 @@ namespace Pokemon3D.Common.Input
             return GamePad.GetState(PlayerIndex.One).IsConnected;
         }
 
-        public void Update()
+        public void Update(GameTime time)
         {
             _lastState = _currentState;
             _currentState = GamePad.GetState(PlayerIndex.One);

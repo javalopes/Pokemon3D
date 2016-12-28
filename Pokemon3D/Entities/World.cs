@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Input;
 using Pokemon3D.UI;
 using Pokemon3D.Entities.System;
 using Microsoft.Xna.Framework;
@@ -141,20 +140,21 @@ namespace Pokemon3D.Entities
             EntitySystem.Update(gameTime);
             Inventory.Update(gameTime);
 
-            if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.V))
-            {
-                if (Player.MovementMode == PlayerMovementMode.GodMode)
-                {
-                    _notificationBar.PushNotification(NotificationKind.Information, "Disabled God Mode");
-                }
-                Player.MovementMode = Player.MovementMode == PlayerMovementMode.FirstPerson ? PlayerMovementMode.ThirdPerson : PlayerMovementMode.FirstPerson;
-            }
+            //todo: repair
+            //if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.V))
+            //{
+            //    if (Player.MovementMode == PlayerMovementMode.GodMode)
+            //    {
+            //        _notificationBar.PushNotification(NotificationKind.Information, "Disabled God Mode");
+            //    }
+            //    Player.MovementMode = Player.MovementMode == PlayerMovementMode.FirstPerson ? PlayerMovementMode.ThirdPerson : PlayerMovementMode.FirstPerson;
+            //}
 
-            if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.F10))
-            {
-                Player.MovementMode = PlayerMovementMode.GodMode;
-                _notificationBar.PushNotification(NotificationKind.Information, "Enabled God Mode");
-            }
+            //if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.F10))
+            //{
+            //    Player.MovementMode = PlayerMovementMode.GodMode;
+            //    _notificationBar.PushNotification(NotificationKind.Information, "Enabled God Mode");
+            //}
         }
 
         public List<Entity> PlaceEntities(EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 offset)
