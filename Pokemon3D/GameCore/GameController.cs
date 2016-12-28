@@ -194,14 +194,14 @@ namespace Pokemon3D.GameCore
                                     .Select(t => (Keys) Enum.Parse(typeof(Keys), t))
                                     .ToArray();
 
-                            _inputSystem.RegisterAxis(_inputSystem.KeyboardActionProvider.DefineAxis(inputAction.Name, keys[0], keys[1], keys[2], keys[3]));
+                            _inputSystem.RegisterAxis(inputAction.Name, keys[0], keys[1], keys[2], keys[3]);
                         }
                     }
                     else
                     {
                         if (mappedAction.InputType == InputType.Keyboard)
                         {
-                            _inputSystem.RegisterAction(_inputSystem.KeyboardActionProvider.DefineAction(inputAction.Name, (Keys)Enum.Parse(typeof(Keys), mappedAction.AssingedValue)));
+                            _inputSystem.RegisterAction(inputAction.Name, (Keys)Enum.Parse(typeof(Keys), mappedAction.AssingedValue));
                         }
                     }
                 }

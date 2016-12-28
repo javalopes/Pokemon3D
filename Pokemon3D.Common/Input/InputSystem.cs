@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Pokemon3D.Common.Input
 {
@@ -10,20 +11,8 @@ namespace Pokemon3D.Common.Input
         private readonly Dictionary<string, List<InputAction>> _inputActionsByName = new Dictionary<string, List<InputAction>>();
         private readonly Dictionary<string, List<AxisAction>> _axisActionsByName = new Dictionary<string, List<AxisAction>>();
 
-        public KeyboardActionProvider KeyboardActionProvider { get; } = new KeyboardActionProvider();
-        public GamePadActionProvider GamePadActionProvider { get; } = new GamePadActionProvider();
-
-        public void RegisterAction(InputAction action)
-        {
-            List<InputAction> referenceList;
-            if (!_inputActionsByName.TryGetValue(action.Name, out referenceList))
-            {
-                referenceList = new List<InputAction>();
-                _inputActionsByName.Add(action.Name, referenceList);
-            }
-
-            referenceList.Add(action);
-        }
+        private KeyboardActionProvider KeyboardActionProvider { get; } = new KeyboardActionProvider();
+        private GamePadActionProvider GamePadActionProvider { get; } = new GamePadActionProvider();
 
         public void Update(GameTime time)
         {
@@ -31,16 +20,37 @@ namespace Pokemon3D.Common.Input
             GamePadActionProvider.Update(time);
         }
 
-        public void RegisterAxis(AxisAction axis)
+        public void RegisterAction(string name, Keys key)
+        {
+            var referenceList = GetOrCreateActionList(name);
+
+            referenceList.Add(new KeyboardInputAction(KeyboardActionProvider, name , key));
+        }
+
+        public void RegisterAxis(string name, Keys left, Keys right, Keys up, Keys down)
+        {
+            var referenceList = GetOrCreateAxisList(name);
+
+            referenceList.Add(new KeyboardAxisAction(KeyboardActionProvider, name, left, right, up, down));
+        }
+
+        private List<InputAction> GetOrCreateActionList(string actionName)
+        {
+            List<InputAction> referenceList;
+            if (_inputActionsByName.TryGetValue(actionName, out referenceList)) return referenceList;
+
+            referenceList = new List<InputAction>();
+            _inputActionsByName.Add(actionName, referenceList);
+            return referenceList;
+        }
+
+        private List<AxisAction> GetOrCreateAxisList(string axisName)
         {
             List<AxisAction> referenceList;
-            if (!_axisActionsByName.TryGetValue(axis.Name, out referenceList))
-            {
-                referenceList = new List<AxisAction>();
-                _axisActionsByName.Add(axis.Name, referenceList);
-            }
-
-            referenceList.Add(axis);
+            if (_axisActionsByName.TryGetValue(axisName, out referenceList)) return referenceList;
+            referenceList = new List<AxisAction>();
+            _axisActionsByName.Add(axisName, referenceList);
+            return referenceList;
         }
 
         public bool IsPressed(string actionName)
