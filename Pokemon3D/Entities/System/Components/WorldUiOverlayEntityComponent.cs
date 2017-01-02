@@ -44,6 +44,11 @@ namespace Pokemon3D.Entities.System.Components
             _drawableElement.EndInitialzing();
         }
 
+        public override void OnComponentRemove()
+        {
+            GameInstance.GetService<SceneRenderer>().RemoveDrawableElement(_drawableElement);
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);

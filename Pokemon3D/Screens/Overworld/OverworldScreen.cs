@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Collisions;
 using Pokemon3D.Common.Input;
-using Pokemon3D.Common.Shapes;
 using Pokemon3D.Entities;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
-using Pokemon3D.Rendering;
 using static GameProvider;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.MainMenu;
@@ -61,13 +58,17 @@ namespace Pokemon3D.Screens.Overworld
         {
             if (gameEvent.Name == GameEvent.GameQuitToMainMenu)
             {
+                ActiveWorld.Clear();
+                ActiveWorld = null;
+                _isLoaded = false;
+
                 _screenManager.SetScreen(typeof(MainMenuScreen), typeof(SlideTransition));
             }
         }
 
         public void OnUpdate(GameTime gameTime)
         {
-            ActiveWorld.Update(gameTime);
+            ActiveWorld?.Update(gameTime);
             _renderStatisticsOverlay.Update(gameTime);
 
             lock (_uiElements)
@@ -82,7 +83,8 @@ namespace Pokemon3D.Screens.Overworld
 
         public void OnLateDraw(GameTime gameTime)
         {
-            _collisionManager.Draw(ActiveWorld.Player.Camera);
+            //todo: use separate camera path
+            //_collisionManager.Draw(ActiveWorld.Player.Camera);
             _renderStatisticsOverlay.Draw(_spriteBatch);
 
             bool anyActive;
@@ -110,7 +112,7 @@ namespace Pokemon3D.Screens.Overworld
 
         public void OnEarlyDraw(GameTime gameTime)
         {
-            ActiveWorld.OnEarlyDraw();
+            ActiveWorld?.OnEarlyDraw();
         }
 
         public void OnClosing()

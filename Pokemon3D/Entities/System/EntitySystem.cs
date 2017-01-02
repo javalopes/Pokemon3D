@@ -4,6 +4,7 @@ using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.Entities.System.Generators;
 using System.Collections.Generic;
 using System.Linq;
+using Pokemon3D.Common.Diagnostics;
 using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.Data;
@@ -290,6 +291,24 @@ namespace Pokemon3D.Entities.System
                 TextureScale = comp.Material.TexcoordScale,
                 Transformation = entity.WorldMatrix
             };
+        }
+
+        public void Clear()
+        {
+            var allEntities = _entities.ToArray();
+
+            foreach (var entity in allEntities)
+            {
+                RemoveEntity(entity);
+            }
+
+            var remainingEntities = _entitiesToInitialize.Except(allEntities).ToArray();
+
+            if (remainingEntities.Length > 0)
+            {
+                GameLogger.Instance.Log(MessageType.Warning, $"Cleanup with {remainingEntities.Length} uninitialized entities.");
+                _entitiesToInitialize.Clear();
+            }
         }
     }
 }

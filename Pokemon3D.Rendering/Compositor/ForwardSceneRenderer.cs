@@ -373,6 +373,14 @@ namespace Pokemon3D.Rendering.Compositor
             return camera;
         }
 
+        public void RemoveCamera(Camera camera)
+        {
+            lock (_lockObject)
+            {
+                _allCameras.Remove(camera);
+            }
+        }
+
         /// <summary>
         /// Ambient Light for all Objects. Default is white.
         /// </summary>
@@ -382,7 +390,15 @@ namespace Pokemon3D.Rendering.Compositor
         {
             if (RenderSettings.EnableShadows) DrawDebugShadowMap(GameContext.GetService<SpriteBatch>(), new Rectangle(0, 0, 128, 128));
         }
-        
+
+        public void RemoveLight(Light light)
+        {
+            lock (_lockObject)
+            {
+                _allLights.Remove(light);
+            }
+        }
+
         public void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize)
         {
             foreach (var camera in _allCameras)

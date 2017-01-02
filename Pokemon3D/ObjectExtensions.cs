@@ -1,12 +1,13 @@
+using System;
 using Pokemon3D.GameCore;
 
 namespace Pokemon3D
 {
     public static class ObjectExtensions
     {
-        public static void SendGameEvent(this object sender, string name)
+        public static void QueueGameEvent(this object sender, string name, TimeSpan? delay = null)
         {
-            GameProvider.GameInstance.SendEvent(new GameEvent(sender, name));
+            GameProvider.GameInstance.QueueGameEvent(new GameEvent(sender, name, delay.GetValueOrDefault(TimeSpan.Zero)));
         }
     }
 }

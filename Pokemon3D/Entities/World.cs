@@ -22,6 +22,7 @@ namespace Pokemon3D.Entities
 
         public Player Player { get; private set; }
         public Inventory Inventory { get; private set; }
+        public Weather Weather { get; private set; }
 
         public EntitySystem EntitySystem { get; }
 
@@ -44,6 +45,7 @@ namespace Pokemon3D.Entities
             
             Player = new Player(this);
             Inventory = new Inventory(this);
+            Weather = new Weather();
             ActivateMapsWithOffsets(gameMode.GameModeInfo.StartMap, Vector3.Zero);
             EntitySystem.InitializeAllPendingEntities();
         }
@@ -225,6 +227,18 @@ namespace Pokemon3D.Entities
         public void OnEarlyDraw()
         {
             Inventory.DrawInventory();
+        }
+
+        public void Clear()
+        {
+            Inventory = null;
+            Player = null;
+            Weather.Clear();
+            Weather = null;
+            _entityTemplatesByFragmentId.Clear();
+            _allMaps.Clear();
+
+            EntitySystem.Clear();
         }
     }
 }

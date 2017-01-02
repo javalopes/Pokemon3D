@@ -86,11 +86,6 @@ namespace Pokemon3D.Screens.GameModeLoading
             renderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
             renderer.EnablePostProcessing = false;
 
-            var mainLight = renderer.CreateDirectionalLight(new Vector3(-1.5f, -1.0f, -0.5f));
-            mainLight.AmbientIntensity = 0.5f;
-            mainLight.DiffuseIntensity = 0.8f;
-            renderer.AmbientLight = new Vector4(0.7f, 0.5f, 0.5f, 1.0f);
-
             var gameModeManager = GameInstance.GetService<GameModeManager>();
             var gameModes = gameModeManager.GetGameModeInfos();
             gameModeManager.ActiveGameMode = gameModeManager.CreateGameMode(gameModes.First(), GameInstance);

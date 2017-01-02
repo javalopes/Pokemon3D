@@ -23,11 +23,15 @@ namespace Pokemon3D.Rendering
 
         Camera CreateCamera(int cameraMask = 1);
 
+        void RemoveCamera(Camera camera);
+
         /// <summary>
         /// Ambient Light for all Objects. Default is white.
         /// </summary>
         Vector4 AmbientLight { get; set; }
 
         void LateDebugDraw3D();
+
+        void RemoveLight(Light mainLight);
     }
 }

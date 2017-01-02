@@ -34,7 +34,7 @@ namespace Pokemon3D.Entities.System.Components
             set { Camera.ClearColor = value; }
         }
 
-        public Camera Camera { get; }
+        public Camera Camera { get; private set; }
 
         public CameraEntityComponent(Entity referringEntity, Skybox skybox, int cameraMask = 1) : base(referringEntity)
         {
@@ -45,6 +45,12 @@ namespace Pokemon3D.Entities.System.Components
             ClearColor = Color.CornflowerBlue;
             Camera.Skybox = skybox;
             Camera.IsActive = ReferringEntity.IsActive;
+        }
+
+        public override void OnComponentRemove()
+        {
+            GameInstance.GetService<SceneRenderer>().RemoveCamera(Camera);
+            Camera = null;
         }
 
         public override void OnIsActiveChanged()

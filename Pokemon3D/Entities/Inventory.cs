@@ -7,9 +7,6 @@ using Pokemon3D.Entities.System;
 using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
-using Pokemon3D.Screens;
-using Pokemon3D.Screens.MainMenu;
-using Pokemon3D.Screens.Transitions;
 using Pokemon3D.UI;
 using static GameProvider;
 
@@ -53,7 +50,7 @@ namespace Pokemon3D.Entities
 
         private void OnQuit(LeftSideButton button)
         {
-            this.SendGameEvent(GameEvent.GameQuitToMainMenu);
+            this.QueueGameEvent(GameEvent.GameQuitToMainMenu);
         }
 
         public void Update(GameTime gameTime)

@@ -63,7 +63,7 @@ namespace Pokemon3D.GameCore
         private CollisionManager _collisionManager;
         private readonly object _lockObject = new object();
 
-        private Queue<GameEvent> _gameEvents = new Queue<GameEvent>();
+        private List<GameEvent> _gameEvents = new List<GameEvent>();
         
 
         public GameController()
@@ -88,11 +88,11 @@ namespace Pokemon3D.GameCore
             _mainThreadDispatcher = Dispatcher.CurrentDispatcher;
         }
 
-        public void SendEvent(GameEvent gameEvent)
+        public void QueueGameEvent(GameEvent gameEvent)
         {
             lock (_lockObject)
             {
-                _gameEvents.Enqueue(gameEvent);
+                _gameEvents.Add(gameEvent);
             }
         }
 
@@ -225,20 +225,23 @@ namespace Pokemon3D.GameCore
         {
             base.Update(gameTime);
 
-            lock (_lockObject)
-            {
-                while (_gameEvents.Count > 0)
-                {
-                    var gameEvent = _gameEvents.Dequeue();
-                    GameEventRaised?.Invoke(gameEvent);
-                }
-            }
+            SendGameMessages(gameTime);
 
             _inputSystem.Update(gameTime);
             _collisionManager.Update();
 
             if (!_screenManager.Update(gameTime)) Exit();
             _notificationBarOverlay.Update(gameTime);
+        }
+
+        private void SendGameMessages(GameTime gameTime)
+        {
+            lock (_lockObject)
+            {
+                foreach (var gameEvent in _gameEvents) gameEvent.Delay -= gameTime.ElapsedGameTime;
+                foreach (var gameEvent in _gameEvents.Where(g => g.Delay <= TimeSpan.Zero)) GameEventRaised?.Invoke(gameEvent);
+                _gameEvents.RemoveAll(g => g.Delay <= TimeSpan.Zero);
+            }
         }
 
         protected override void Draw(GameTime gameTime)

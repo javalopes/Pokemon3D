@@ -70,6 +70,7 @@
     <Compile Include="Entities\Components\FigureMovementAnimationComponent.cs" />
     <Compile Include="Entities\System\Components\TilemapEntityComponent.cs" />
     <Compile Include="Entities\System\Components\WorldUiOverlayEntityComponent.cs" />
+    <Compile Include="Entities\Weather.cs" />
     <Compile Include="FileSystem\i18nPathProvider.cs" />
     <Compile Include="FileSystem\StaticPathProvider.cs" />
     <Compile Include="GameCore\CameraMasks.cs" />
