@@ -41,7 +41,7 @@ namespace Pokemon3D.Entities
             cameraEntity.Id = "MainCamera";
             cameraEntity.SetParent(playerEntity);
             _controllerComponent = cameraEntity.AddComponent(new PlayerControllerComponent(cameraEntity));
-            var cameraComponent = cameraEntity.AddComponent(new CameraEntityComponent(cameraEntity, new Skybox(GameInstance)
+            var cameraComponent = cameraEntity.AddComponent(new CameraEntityComponent(cameraEntity, new Skybox(GameInstance.GraphicsDevice)
             {
                 Scale = 50,
                 Texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.skybox_texture)

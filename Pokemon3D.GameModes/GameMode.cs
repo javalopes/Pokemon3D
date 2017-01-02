@@ -43,10 +43,7 @@ namespace Pokemon3D.GameModes
 
         public bool IsValid { get; }
 
-        public GraphicsDevice GraphicsDevice
-        {
-            get { return GameContext.GetService<GraphicsDevice>(); }
-        }
+        public GraphicsDevice GraphicsDevice => GameContext.GetService<GraphicsDevice>();
 
         /// <summary>
         /// Creates an instance of the <see cref="GameMode"/> class and loads the data model.
@@ -119,7 +116,7 @@ namespace Pokemon3D.GameModes
             Texture2D existing;
             if (_textureCache.TryGetValue(filePath, out existing)) return existing;
 
-            var data = FileLoader.GetFile(Path.Combine(TexturePath, filePath), false);
+            var data = FileLoader.GetFile(Path.Combine(TexturePath, filePath));
 
             Texture2D texture = null;
             using (var memoryStream = new MemoryStream(data.Data))
@@ -196,10 +193,7 @@ namespace Pokemon3D.GameModes
 
         public TypeModel GetTypeModel(string typeId)
         {
-            if (typeId == null)
-                return null;
-
-            return _typeModels.Single(n => n.Id == typeId);
+            return typeId == null ? null : _typeModels.Single(n => n.Id == typeId);
         }
 
         public MoveModel GetMoveModel(string id)

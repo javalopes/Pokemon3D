@@ -47,8 +47,7 @@ namespace Pokemon3D.GameCore
         public const string DEVELOPMENT_STAGE = "Alpha";
         /// <summary>The internal build number of the game. This number will increase with every release.</summary>
         public const string INTERNAL_VERSION = "89";
-        /// <summary>If the debug mode is currently active.</summary>
-        public const bool IS_DEBUG_ACTIVE = true;
+
         private SpriteBatch _spriteBatch;
         private InputSystem _inputSystem;
         private ScreenManager _screenManager;
@@ -56,11 +55,9 @@ namespace Pokemon3D.GameCore
 
         public event EventHandler WindowSizeChanged;
 
-        public string VersionInformation => $"{VERSION} {DEVELOPMENT_STAGE}";
+        public SaveGame LoadedSave { get; set; }
 
         public Rectangle ScreenBounds { get; private set; }
-
-        public SaveGame LoadedSave { get; set; }
 
         public GameController()
         {
@@ -97,6 +94,7 @@ namespace Pokemon3D.GameCore
                 ShadowMapSize = 1024 // todo: reenable
             };
 
+            RegisterService(Window);
             RegisterService(GraphicsDevice);
             _renderer = RegisterService(SceneRendererFactory.Create(this, new WindowsSceneEffect(Content), renderSettings));
             RegisterService(new GameModeManager());
@@ -235,9 +233,10 @@ namespace Pokemon3D.GameCore
         private void OnClientSizeChanged(object sender, EventArgs e)
         {
             if (WindowSizeChanged != null && ScreenBounds != Window.ClientBounds)
+            {
+                ScreenBounds = Window.ClientBounds;
                 WindowSizeChanged(this, EventArgs.Empty);
-
-            ScreenBounds = Window.ClientBounds;
+            }
         }
 
         public void EnsureExecutedInMainThread(Action action)

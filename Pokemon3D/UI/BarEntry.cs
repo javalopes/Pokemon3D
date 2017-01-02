@@ -50,8 +50,8 @@ namespace Pokemon3D.UI
             //todo: repair
             //if (GameProvider.GameInstance.GetService<InputSystem>().GamePad.IsConnected())
             {
-                spriteBatch.Draw(GetTexture(), new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, 32, 32), _highlightColor);
-                offset += 32;
+                //spriteBatch.Draw(GetTexture(), new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, 32, 32), _highlightColor);
+                //offset += 32;
             }
             //else
             //{
@@ -69,7 +69,7 @@ namespace Pokemon3D.UI
             //    offset += boxWidth;
             //}
 
-            spriteBatch.DrawString(_font, Text.Value, new Vector2(offset + 10, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
+            //spriteBatch.DrawString(_font, Text.Value, new Vector2(offset + 10, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
         }
     }
 }

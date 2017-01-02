@@ -4,7 +4,7 @@
     {
         public GameContext GameContext { get; private set; }
 
-        public GameContextObject(GameContext gameContext)
+        protected GameContextObject(GameContext gameContext)
         {
             GameContext = gameContext;
         }

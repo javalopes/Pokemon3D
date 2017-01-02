@@ -1,14 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common;
 using Pokemon3D.Rendering.Data;
 
 namespace Pokemon3D.Rendering
 {
-    public class Skybox : GameContextObject
+    public class Skybox
     {
-        private readonly Mesh _skyBoxModel;
-        
         public DrawableElement DrawableElement { get; }
 
         public Texture2D Texture
@@ -22,12 +19,12 @@ namespace Pokemon3D.Rendering
             get; set;
         }
 
-        public Skybox(GameContext gameContext) : base(gameContext)
+        public Skybox(GraphicsDevice graphicsDevice)
         {
-            DrawableElement = new DrawableElement(0, false, null);
+            DrawableElement = new DrawableElement(0);
 
-            var height = 1.0f / 3.0f;
-            var width = 0.25f;
+            const float height = 1.0f / 3.0f;
+            const float width = 0.25f;
             const float threshold = 0.001f;
             var coords = new[]
             {
@@ -38,9 +35,8 @@ namespace Pokemon3D.Rendering
                 new Vector2(1.0f*width+threshold,0.0f*height+threshold), new Vector2(width-threshold*2, height-threshold*2),
                 new Vector2(1.0f*width+threshold,2.0f*height+threshold), new Vector2(width-threshold*2, height-threshold*2),
             };
-            
-            _skyBoxModel = new Mesh(GameContext.GetService<GraphicsDevice>(), Primitives.GenerateCubeData(coords));
-            DrawableElement.Mesh = _skyBoxModel;
+
+            DrawableElement.Mesh = new Mesh(graphicsDevice, Primitives.GenerateCubeData(coords));
             DrawableElement.Material = new Material
             {
                 CastShadow = false,
