@@ -1,25 +1,27 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.Entities.System;
 using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
+using Pokemon3D.Screens;
+using Pokemon3D.Screens.MainMenu;
+using Pokemon3D.Screens.Transitions;
 using Pokemon3D.UI;
 using static GameProvider;
 
 namespace Pokemon3D.Entities
 {
-    class Inventory
+    internal class Inventory
     {
         private readonly Entity _inventoryOverlayEntity;
-        private GraphicsDevice _device;
-        private WorldUiOverlayEntityComponent _overlayComponent;
-        private UiOverlay _uiOverlay;
-        private SpriteBatch _spriteBatch;
+        private readonly GraphicsDevice _device;
+        private readonly WorldUiOverlayEntityComponent _overlayComponent;
+        private readonly UiOverlay _uiOverlay;
+        private readonly SpriteBatch _spriteBatch;
 
         public Inventory(World world)
         {
@@ -41,10 +43,17 @@ namespace Pokemon3D.Entities
             _uiOverlay.AddElement(new HexagonBackground());
             _uiOverlay.AddElement(new LeftSideButton(LocalizedValue.Static("Pokemon"), new Vector2(26, 45), null));
             _uiOverlay.AddElement(new LeftSideButton(LocalizedValue.Static("Items"), new Vector2(26, 107), null));
-            _uiOverlay.AddElement(new LeftSideButton(LocalizedValue.Static("Save"), new Vector2(26, 107), null));
-            _uiOverlay.AddElement(new LeftSideButton(LocalizedValue.Static("Settings"), new Vector2(26, 169), null));
-            _uiOverlay.AddElement(new LeftSideButton(LocalizedValue.Static("Quit"), new Vector2(26, 231), null));
+            _uiOverlay.AddElement(new LeftSideButton(LocalizedValue.Static("Save"), new Vector2(26, 169), null));
+            _uiOverlay.AddElement(new LeftSideButton(LocalizedValue.Static("Settings"), new Vector2(26, 231), null));
+            _uiOverlay.AddElement(new LeftSideButton(LocalizedValue.Static("Quit"), new Vector2(26, 293), OnQuit));
             _uiOverlay.Show();
+
+            _uiOverlay.AddInputController(new KeyboardUiInputController());
+        }
+
+        private void OnQuit(LeftSideButton button)
+        {
+            GameInstance.GetService<ScreenManager>().SetScreen(typeof(MainMenuScreen), typeof(BlendTransition));
         }
 
         public void Update(GameTime gameTime)

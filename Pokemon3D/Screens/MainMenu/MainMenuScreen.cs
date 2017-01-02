@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Pokemon3D.Screens.Transitions;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.GameModeLoading;
