@@ -24,11 +24,23 @@ namespace Pokemon3D.GameModes
             return gameModes.ToArray();
         }
 
-        public GameMode ActiveGameMode { get; set; }
+        public GameMode ActiveGameMode { get; private set; }
 
-        public GameMode CreateGameMode(GameModeInfo gameModeInfo, GameContext gameContext)
+        public void LoadAndSetGameMode(GameModeInfo gameModeInfo, GameContext gameContext)
         {
-            return new GameMode(gameModeInfo, gameContext, new FileLoader());
+            if (ActiveGameMode != null)
+            {
+                ActiveGameMode.Dispose();
+                ActiveGameMode = null;
+            }
+
+            ActiveGameMode = new GameMode(gameModeInfo, gameContext, new FileLoader());
+        }
+
+        public void UnloadGameMode()
+        {
+            ActiveGameMode?.Dispose();
+            ActiveGameMode = null;
         }
     }
 }

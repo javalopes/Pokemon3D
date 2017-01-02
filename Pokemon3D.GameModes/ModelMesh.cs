@@ -15,7 +15,7 @@ namespace Pokemon3D.GameModes
     /// <summary>
     /// Object Holding a Mesh and Material from a file loaded object.
     /// </summary>
-    public class ModelMesh
+    public class ModelMesh : IDisposable
     {
         public Mesh Mesh { get; private set; }
         public Material Material { get; private set; }
@@ -163,6 +163,28 @@ namespace Pokemon3D.GameModes
             if (!File.Exists(fileName)) return null;
 
             return gameMode.GetTextureFromRawFolder(textureFilePath);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        ~ModelMesh()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                GC.SuppressFinalize(this);
+            }
+
+            Mesh?.Dispose();
+            Mesh = null;
+            Material = null;
         }
     }
 }

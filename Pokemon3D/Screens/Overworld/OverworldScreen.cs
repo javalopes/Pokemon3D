@@ -63,6 +63,7 @@ namespace Pokemon3D.Screens.Overworld
                 _isLoaded = false;
 
                 _screenManager.SetScreen(typeof(MainMenuScreen), typeof(SlideTransition));
+                GameInstance.GetService<GameModeManager>().UnloadGameMode();
             }
         }
 

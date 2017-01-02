@@ -19,7 +19,7 @@ namespace Pokemon3D.Rendering.Data
 
         public int VertexCount { get; }
         public int IndexCount { get; }
-        public GeometryData GeometryData { get; }
+        public GeometryData GeometryData { get; private set; }
         public BoundingBox LocalBounds { get; private set; }
         public bool PreventDrawCallCount { get; set; }
 
@@ -95,33 +95,26 @@ namespace Pokemon3D.Rendering.Data
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         ~Mesh()
         {
             Dispose(false);
         }
-
-        // The bulk of the clean-up code is implemented in Dispose(bool)
+        
         protected void Dispose(bool disposing)
         {
             if (disposing)
             {
-                // free managed resources
-                if (_vertexBuffer != null)
-                {
-                    _vertexBuffer.Dispose();
-                    _vertexBuffer = null;
-                }
-                if (_indexBuffer != null)
-                {
-                    _indexBuffer.Dispose();
-                    _indexBuffer = null;
-                }
+                GC.SuppressFinalize(this);
             }
+
+            _vertexBuffer?.Dispose();
+            _vertexBuffer = null;
+            _indexBuffer?.Dispose();
+            _indexBuffer = null;
+            GeometryData = null;
             InstanceCount--;
-            // free native resources if there are any.
         }
     }
 }

@@ -88,7 +88,7 @@ namespace Pokemon3D.Screens.GameModeLoading
 
             var gameModeManager = GameInstance.GetService<GameModeManager>();
             var gameModes = gameModeManager.GetGameModeInfos();
-            gameModeManager.ActiveGameMode = gameModeManager.CreateGameMode(gameModes.First(), GameInstance);
+            gameModeManager.LoadAndSetGameMode(gameModes.First(), GameInstance);
 
             _world = new World();
             _world.StartNewGameAsync(() => _overlay.Hide());

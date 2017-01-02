@@ -26,7 +26,6 @@ namespace Pokemon3D.GameModes
         private readonly Dictionary<string, ModelMesh[]> _meshCache = new Dictionary<string, ModelMesh[]>();
         private readonly Dictionary<string, Mesh> _meshPrimitivesByName = new Dictionary<string, Mesh>();
         private readonly Dictionary<string, Texture2D> _textureCache = new Dictionary<string, Texture2D>();
-        private readonly Dictionary<string, MapModel> _mapModelsCache = new Dictionary<string, MapModel>();
 
         private PrimitiveModel[] _primitiveModels;
         private NatureModel[] _natureModels;
@@ -155,36 +154,38 @@ namespace Pokemon3D.GameModes
             return _meshPrimitivesByName.TryGetValue(primitiveName, out mesh) ? mesh : null;
         }
 
-        #region Dispose
-
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
-                // free managed resources
-                // MapManager.Dispose();
-                // PrimitiveManager.Dispose();
+                GC.SuppressFinalize(this);
             }
 
-            // todo: free unmanaged resources.
+            foreach (var meshCache in _meshCache)
+            {
+                foreach (var modelMesh in meshCache.Value)
+                {
+                    modelMesh.Dispose();
+                }
+            }
+            _meshCache.Clear();
+
+            foreach (var texture in _textureCache)
+            {
+                texture.Value.Dispose();
+            }
+            _textureCache.Clear();
         }
 
-        /// <summary>
-        /// Frees all resources consumed by this GameMode.
-        /// </summary>
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
-
-        // Add, if this class has unmanaged resources
-        //~GameMode()
-        //{
-        //    Dispose(false);
-        //}
-
-        #endregion
+        
+        ~GameMode()
+        {
+            Dispose(false);
+        }
 
         public NatureModel GetNatureModel(string natureId)
         {
