@@ -28,12 +28,6 @@ namespace Pokemon3D.GameCore
     /// </summary>
     internal class GameController : Game, GameContext
     {
-        private readonly Dictionary<Type, object> _services = new Dictionary<Type, object>();
-        private readonly Dispatcher _mainThreadDispatcher;
-        private readonly GameConfiguration _gameConfig;
-        private UiOverlay _notificationBarOverlay;
-        private SceneRenderer _renderer;
-
         /// <summary>
         /// The singleton instance of the main GameController class.
         /// </summary>
@@ -43,21 +37,28 @@ namespace Pokemon3D.GameCore
         public const string GAME_NAME = "Pokémon3D";
         /// <summary>The current version of the game.</summary>
         public const string VERSION = "1.0";
+
         /// <summary>The development stage of the game.</summary>
         public const string DEVELOPMENT_STAGE = "Alpha";
+
         /// <summary>The internal build number of the game. This number will increase with every release.</summary>
         public const string INTERNAL_VERSION = "89";
-
-        private SpriteBatch _spriteBatch;
-        private InputSystem _inputSystem;
-        private ScreenManager _screenManager;
-        private CollisionManager _collisionManager;
 
         public event EventHandler WindowSizeChanged;
 
         public SaveGame LoadedSave { get; set; }
 
         public Rectangle ScreenBounds { get; private set; }
+
+        private readonly Dictionary<Type, object> _services = new Dictionary<Type, object>();
+        private readonly Dispatcher _mainThreadDispatcher;
+        private readonly GameConfiguration _gameConfig;
+        private UiOverlay _notificationBarOverlay;
+        private SceneRenderer _renderer;
+        private SpriteBatch _spriteBatch;
+        private InputSystem _inputSystem;
+        private ScreenManager _screenManager;
+        private CollisionManager _collisionManager;
 
         public GameController()
         {
@@ -225,16 +226,17 @@ namespace Pokemon3D.GameCore
             base.Draw(gameTime);
         }
 
-        private void OnGameExit(object sender, EventArgs e)
+        private static void OnGameExit(object sender, EventArgs e)
         {
             GameLogger.Instance.Log(MessageType.Message, "Exiting game.");
         }
 
         private void OnClientSizeChanged(object sender, EventArgs e)
         {
-            if (WindowSizeChanged != null && ScreenBounds != Window.ClientBounds)
+            var old = ScreenBounds;
+            ScreenBounds = Window.ClientBounds;
+            if (WindowSizeChanged != null && old != Window.ClientBounds)
             {
-                ScreenBounds = Window.ClientBounds;
                 WindowSizeChanged(this, EventArgs.Empty);
             }
         }
