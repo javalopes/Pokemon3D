@@ -53,7 +53,7 @@ namespace Pokemon3D.Entities
 
         private void OnQuit(LeftSideButton button)
         {
-            GameInstance.GetService<ScreenManager>().SetScreen(typeof(MainMenuScreen), typeof(BlendTransition));
+            this.SendGameEvent(GameEvent.GameQuitToMainMenu);
         }
 
         public void Update(GameTime gameTime)

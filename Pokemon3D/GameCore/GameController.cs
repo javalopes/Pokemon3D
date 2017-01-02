@@ -46,6 +46,8 @@ namespace Pokemon3D.GameCore
 
         public event EventHandler WindowSizeChanged;
 
+        public event Action<GameEvent> GameEventRaised;
+
         public SaveGame LoadedSave { get; set; }
 
         public Rectangle ScreenBounds { get; private set; }
@@ -59,6 +61,10 @@ namespace Pokemon3D.GameCore
         private InputSystem _inputSystem;
         private ScreenManager _screenManager;
         private CollisionManager _collisionManager;
+        private readonly object _lockObject = new object();
+
+        private Queue<GameEvent> _gameEvents = new Queue<GameEvent>();
+        
 
         public GameController()
         {
@@ -80,6 +86,14 @@ namespace Pokemon3D.GameCore
                 PreferredBackBufferHeight = _gameConfig.Data.WindowSize.Height
             });
             _mainThreadDispatcher = Dispatcher.CurrentDispatcher;
+        }
+
+        public void SendEvent(GameEvent gameEvent)
+        {
+            lock (_lockObject)
+            {
+                _gameEvents.Enqueue(gameEvent);
+            }
         }
 
         protected override void LoadContent()
@@ -210,6 +224,16 @@ namespace Pokemon3D.GameCore
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            lock (_lockObject)
+            {
+                while (_gameEvents.Count > 0)
+                {
+                    var gameEvent = _gameEvents.Dequeue();
+                    GameEventRaised?.Invoke(gameEvent);
+                }
+            }
+
             _inputSystem.Update(gameTime);
             _collisionManager.Update();
 

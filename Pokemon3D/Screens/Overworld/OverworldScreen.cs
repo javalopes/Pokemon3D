@@ -13,6 +13,8 @@ using Pokemon3D.GameModes;
 using Pokemon3D.Rendering;
 using static GameProvider;
 using Pokemon3D.Rendering.UI;
+using Pokemon3D.Screens.MainMenu;
+using Pokemon3D.Screens.Transitions;
 using Pokemon3D.UI;
 
 namespace Pokemon3D.Screens.Overworld
@@ -25,10 +27,8 @@ namespace Pokemon3D.Screens.Overworld
         private readonly List<OverworldUIElement> _uiElements = new List<OverworldUIElement>();
         private InputSystem _inputSystem;
         private ScreenManager _screenManager;
-        private SceneRenderer _sceneRenderer;
         private CollisionManager _collisionManager;
         private SpriteBatch _spriteBatch;
-        private ShapeRenderer _shapeRenderer;
         private bool _isLoaded;
 
         private UiOverlay _renderStatisticsOverlay;
@@ -51,10 +51,18 @@ namespace Pokemon3D.Screens.Overworld
 
             _inputSystem = GameInstance.GetService<InputSystem>();
             _screenManager = GameInstance.GetService<ScreenManager>();
-            _sceneRenderer = GameInstance.GetService<SceneRenderer>();
             _collisionManager = GameInstance.GetService<CollisionManager>();
             _spriteBatch = GameInstance.GetService<SpriteBatch>();
-            _shapeRenderer = GameInstance.GetService<ShapeRenderer>();
+
+            GameInstance.GameEventRaised += OnGameEventRaised;
+        }
+
+        private void OnGameEventRaised(GameEvent gameEvent)
+        {
+            if (gameEvent.Name == GameEvent.GameQuitToMainMenu)
+            {
+                _screenManager.SetScreen(typeof(MainMenuScreen), typeof(SlideTransition));
+            }
         }
 
         public void OnUpdate(GameTime gameTime)
@@ -69,12 +77,6 @@ namespace Pokemon3D.Screens.Overworld
             {
                 _showRenderStatistics = !_showRenderStatistics;
                 if (_showRenderStatistics) _renderStatisticsOverlay.Show(); else _renderStatisticsOverlay.Hide();
-            }
-
-            //todo: remove when menu works
-            if (_inputSystem.KeyboardHandler.IsKeyDownOnce(Keys.X) || _inputSystem.GamePadHandler.IsButtonDownOnce(Buttons.X))
-            {
-                _screenManager.SetScreen(typeof(GameMenu.GameMenuScreen));
             }
         }
 
@@ -113,10 +115,8 @@ namespace Pokemon3D.Screens.Overworld
 
         public void OnClosing()
         {
+            GameInstance.GameEventRaised -= OnGameEventRaised;
         }
-
-        #region overworld ui element handling:
-        
 
         public void AddUiElement(OverworldUIElement element)
         {
@@ -139,7 +139,5 @@ namespace Pokemon3D.Screens.Overworld
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -97,10 +97,11 @@
     <Compile Include="Entities\PlayerMovementMode.cs" />
     <Compile Include="Entities\World.cs" />
     <Compile Include="GameCore\ActionNames.cs" />
+    <Compile Include="GameCore\GameEvent.cs" />
+    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="GameCore\TranslationProviderImp.cs" />
     <Compile Include="GameProvider.cs" />
     <Compile Include="Screens\Battle\BattleScreen.cs" />
-    <Compile Include="Screens\GameMenu\GameMenuScreen.cs" />
     <Compile Include="Screens\GameMenu\IntroScreen.cs" />
     <Compile Include="Screens\Overworld\InteractionPromptOverworldUIElement.cs" />
     <Compile Include="Screens\Overworld\MessageOverworldUIElement.cs" />
