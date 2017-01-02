@@ -6,6 +6,10 @@ namespace Pokemon3D.GameCore
     {
         public const string GameQuitToMainMenu = "GAME_QUIT_TO_MAIN_MENU";
 
+        public const string InventoryOpenend = "INVENTORY_OPENEND";
+
+        public const string InventoryClosed = "INVENTORY_CLOSED";
+
         public GameEvent(object sender, string name, TimeSpan delay)
         {
             Sender = sender;

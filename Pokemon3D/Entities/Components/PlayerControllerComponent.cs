@@ -6,6 +6,7 @@ using Pokemon3D.Common.Input;
 using Pokemon3D.Entities.System;
 using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
+using static GameProvider;
 
 namespace Pokemon3D.Entities.Components
 {
@@ -14,6 +15,7 @@ namespace Pokemon3D.Entities.Components
         private MouseState _mouseState;
         private PlayerMovementMode _movementMode;
         private Vector3 _cameraTargetPosition = new Vector3(0, 1, 3);
+        private bool _isInputEnabled;
 
         public float Speed { get; set; }
         public float RotationSpeed { get; set; }
@@ -39,9 +41,29 @@ namespace Pokemon3D.Entities.Components
             : base(referringEntity)
         {
             _movementMode = PlayerMovementMode.ThirdPerson;
+            _isInputEnabled = true;
             referringEntity.Position = _cameraTargetPosition;
             Speed = 2.0f;
             RotationSpeed = 2f;
+
+            GameInstance.GameEventRaised += OnGameEventRaised;
+        }
+
+        public override void OnComponentRemove()
+        {
+            GameInstance.GameEventRaised -= OnGameEventRaised;
+        }
+
+        private void OnGameEventRaised(GameEvent gameEvent)
+        {
+            if (gameEvent.Name == GameEvent.InventoryOpenend)
+            {
+                _isInputEnabled = false;
+            }
+            else if (gameEvent.Name == GameEvent.InventoryClosed)
+            {
+                _isInputEnabled = true;
+            }
         }
 
         public override EntityComponent Clone(Entity target)
@@ -51,6 +73,8 @@ namespace Pokemon3D.Entities.Components
 
         public override void Update(GameTime gameTime)
         {
+            if (!_isInputEnabled) return;
+
             var inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
             var currentMouseState = Mouse.GetState();
 
