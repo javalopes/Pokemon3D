@@ -87,10 +87,10 @@
     <Compile Include="GlobalRandomProvider.cs" />
     <Compile Include="IdObject.cs" />
     <Compile Include="Input\AxisAction.cs" />
-    <Compile Include="Input\GamePadActionProvider.cs" />
+    <Compile Include="Input\GamePadHandler.cs" />
     <Compile Include="Input\InputAction.cs" />
     <Compile Include="Input\InputSystem.cs" />
-    <Compile Include="Input\KeyboardActionProvider.cs" />
+    <Compile Include="Input\KeyboardHandler.cs" />
     <Compile Include="Input\KeyboardAxisAction.cs" />
     <Compile Include="Input\KeyboardInputAction.cs" />
     <Compile Include="Line1D.cs" />

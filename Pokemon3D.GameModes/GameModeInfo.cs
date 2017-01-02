@@ -28,10 +28,10 @@ namespace Pokemon3D.GameModes
                     _gameModeModel = DataModel<GameModeModel>.FromFile(gameModeFile);
                     IsValid = true;
                 }
-                catch (DataLoadException)
+                catch (DataLoadException ex)
                 {
-                    // todo: somehow log the exception, so that the information of the inner exception is preserved.
-                    GameLogger.Instance.Log(MessageType.Error, "An error occurred trying to load the GameMode config file \"" + gameModeFile + "\".");
+                    GameLogger.Instance.Log(MessageType.Error, $"An error occurred trying to load the GameMode config file \"{gameModeFile}\".");
+                    GameLogger.Instance.Log(MessageType.Error, ex.ToString());
                 }
             }
         }

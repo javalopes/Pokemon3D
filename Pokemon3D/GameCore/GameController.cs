@@ -87,12 +87,12 @@ namespace Pokemon3D.GameCore
             base.LoadContent();
 
             IsMouseVisible = true;
-
+            
             var renderSettings = new RenderSettings
             {
                 EnableShadows = _gameConfig.Data.ShadowsEnabled,
                 EnableSoftShadows = _gameConfig.Data.SoftShadows,
-                ShadowMapSize = 1024 // todo: reenable
+                ShadowMapSize = _gameConfig.Data.ShadowMapSize
             };
 
             RegisterService(Window);

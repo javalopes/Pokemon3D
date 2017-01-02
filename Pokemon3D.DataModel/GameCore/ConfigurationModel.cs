@@ -24,14 +24,8 @@ namespace Pokemon3D.DataModel.GameCore
         [DataMember(Order = 4)]
         public bool ShadowsEnabled;
 
-        [DataMember(Order = 5, Name = "ShadowQuality")]
-        private string _shadowQuality;
-
-        public ShadowQuality ShadowQuality
-        {
-            get { return ConvertStringToEnum<ShadowQuality>(_shadowQuality); }
-            set { _shadowQuality = value.ToString(); }
-        }
+        [DataMember(Order = 5)]
+        public int ShadowMapSize;
 
         [DataMember(Order = 6)]
         public bool SoftShadows;
@@ -56,7 +50,7 @@ namespace Pokemon3D.DataModel.GameCore
                     SoundVolume = 100,
                     ShadowsEnabled = true,
                     SoftShadows = true,
-                    ShadowQuality = ShadowQuality.Medium,
+                    ShadowMapSize = 1024,
                     WindowSize = new SizeModel
                     {
                         Width = 1024,

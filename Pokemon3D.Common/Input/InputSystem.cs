@@ -11,27 +11,27 @@ namespace Pokemon3D.Common.Input
         private readonly Dictionary<string, List<InputAction>> _inputActionsByName = new Dictionary<string, List<InputAction>>();
         private readonly Dictionary<string, List<AxisAction>> _axisActionsByName = new Dictionary<string, List<AxisAction>>();
 
-        private KeyboardActionProvider KeyboardActionProvider { get; } = new KeyboardActionProvider();
-        private GamePadActionProvider GamePadActionProvider { get; } = new GamePadActionProvider();
+        public KeyboardHandler KeyboardHandler { get; } = new KeyboardHandler();
+        public GamePadHandler GamePadHandler { get; } = new GamePadHandler();
 
         public void Update(GameTime time)
         {
-            KeyboardActionProvider.Update(time);
-            GamePadActionProvider.Update(time);
+            KeyboardHandler.Update(time);
+            GamePadHandler.Update(time);
         }
 
         public void RegisterAction(string name, Keys key)
         {
             var referenceList = GetOrCreateActionList(name);
 
-            referenceList.Add(new KeyboardInputAction(KeyboardActionProvider, name , key));
+            referenceList.Add(new KeyboardInputAction(KeyboardHandler, name , key));
         }
 
         public void RegisterAxis(string name, Keys left, Keys right, Keys up, Keys down)
         {
             var referenceList = GetOrCreateAxisList(name);
 
-            referenceList.Add(new KeyboardAxisAction(KeyboardActionProvider, name, left, right, up, down));
+            referenceList.Add(new KeyboardAxisAction(KeyboardHandler, name, left, right, up, down));
         }
 
         private List<InputAction> GetOrCreateActionList(string actionName)

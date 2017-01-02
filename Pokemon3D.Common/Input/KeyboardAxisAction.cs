@@ -5,13 +5,13 @@ namespace Pokemon3D.Common.Input
 {
     internal class KeyboardAxisAction : AxisAction
     {
-        private readonly KeyboardActionProvider _actionProvider;
+        private readonly KeyboardHandler _actionProvider;
         private readonly Keys _left;
         private readonly Keys _right;
         private readonly Keys _up;
         private readonly Keys _down;
 
-        public KeyboardAxisAction(KeyboardActionProvider actionProvider, string name, Keys left, Keys right, Keys up, Keys down)
+        public KeyboardAxisAction(KeyboardHandler actionProvider, string name, Keys left, Keys right, Keys up, Keys down)
         {
             _actionProvider = actionProvider;
             _left = left;

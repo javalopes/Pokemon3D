@@ -4,10 +4,10 @@ namespace Pokemon3D.Common.Input
 {
     internal class KeyboardInputAction : InputAction
     {
-        private readonly KeyboardActionProvider _actionProvider;
+        private readonly KeyboardHandler _actionProvider;
         private readonly Keys _key;
 
-        public KeyboardInputAction(KeyboardActionProvider actionProvider, string name, Keys key)
+        public KeyboardInputAction(KeyboardHandler actionProvider, string name, Keys key)
         {
             _actionProvider = actionProvider;
             _key = key;

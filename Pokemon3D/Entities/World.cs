@@ -4,6 +4,7 @@ using System.Linq;
 using Pokemon3D.UI;
 using Pokemon3D.Entities.System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using static GameProvider;
 using Pokemon3D.Common.Input;
 using Pokemon3D.DataModel.GameMode.Map;
@@ -140,21 +141,20 @@ namespace Pokemon3D.Entities
             EntitySystem.Update(gameTime);
             Inventory.Update(gameTime);
 
-            //todo: repair
-            //if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.V))
-            //{
-            //    if (Player.MovementMode == PlayerMovementMode.GodMode)
-            //    {
-            //        _notificationBar.PushNotification(NotificationKind.Information, "Disabled God Mode");
-            //    }
-            //    Player.MovementMode = Player.MovementMode == PlayerMovementMode.FirstPerson ? PlayerMovementMode.ThirdPerson : PlayerMovementMode.FirstPerson;
-            //}
+            if (_inputSystem.KeyboardHandler.IsKeyDownOnce(Keys.V))
+            {
+                if (Player.MovementMode == PlayerMovementMode.GodMode)
+                {
+                    _notificationBar.PushNotification(NotificationKind.Information, "Disabled God Mode");
+                }
+                Player.MovementMode = Player.MovementMode == PlayerMovementMode.FirstPerson ? PlayerMovementMode.ThirdPerson : PlayerMovementMode.FirstPerson;
+            }
 
-            //if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.F10))
-            //{
-            //    Player.MovementMode = PlayerMovementMode.GodMode;
-            //    _notificationBar.PushNotification(NotificationKind.Information, "Enabled God Mode");
-            //}
+            if (_inputSystem.KeyboardHandler.IsKeyDownOnce(Keys.F10))
+            {
+                Player.MovementMode = PlayerMovementMode.GodMode;
+                _notificationBar.PushNotification(NotificationKind.Information, "Enabled God Mode");
+            }
         }
 
         public List<Entity> PlaceEntities(EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 offset)

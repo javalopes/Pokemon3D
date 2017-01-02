@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Localization;
+using Pokemon3D.Common.Shapes;
 using Pokemon3D.Content;
 using Pokemon3D.Rendering.UI;
 
@@ -47,29 +49,28 @@ namespace Pokemon3D.UI
         {
             var offset = 11 + Index*(26 + (int) _font.MeasureString(Text.Value).X);
 
-            //todo: repair
-            //if (GameProvider.GameInstance.GetService<InputSystem>().GamePad.IsConnected())
+            if (GameProvider.GameInstance.GetService<InputSystem>().GamePadHandler.IsConnected())
             {
-                //spriteBatch.Draw(GetTexture(), new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, 32, 32), _highlightColor);
-                //offset += 32;
+                spriteBatch.Draw(GetTexture(), new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, 32, 32), _highlightColor);
+                offset += 32;
             }
-            //else
-            //{
-            //    int boxWidth = 32;
-            //    string displayString = KeyboardKey.ToString();
+            else
+            {
+                var boxWidth = 32;
+                var displayString = KeyboardKey.ToString();
 
-            //    if (_font.MeasureString(displayString).X + 10 > 32)
-            //    {
-            //        boxWidth = (int)(_font.MeasureString(displayString).X + 10);
-            //    }
+                if (_font.MeasureString(displayString).X + 10 > 32)
+                {
+                    boxWidth = (int)(_font.MeasureString(displayString).X + 10);
+                }
 
-            //    GameProvider.GameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor, filled: false);
-            //    spriteBatch.DrawString(_font, displayString, new Vector2(offset + 5, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
+                GameProvider.GameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor, filled: false);
+                spriteBatch.DrawString(_font, displayString, new Vector2(offset + 5, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
 
-            //    offset += boxWidth;
-            //}
+                offset += boxWidth;
+            }
 
-            //spriteBatch.DrawString(_font, Text.Value, new Vector2(offset + 10, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
+            spriteBatch.DrawString(_font, Text.Value, new Vector2(offset + 10, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
         }
     }
 }

@@ -3,13 +3,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Pokemon3D.Common.Input
 {
-    public class KeyboardActionProvider
+    public class KeyboardHandler
     {
         private KeyboardState _lastState;
         private KeyboardState _currentState;
         private Keys[] _pressedKeys;
  
-        public KeyboardActionProvider()
+        public KeyboardHandler()
         {
             _currentState = Keyboard.GetState();
         }
@@ -24,22 +24,22 @@ namespace Pokemon3D.Common.Input
             return new KeyboardAxisAction(this, name, left, right, up, down);
         }
 
-        internal bool IsKeyDownOnce(Keys key)
+        public bool IsKeyDownOnce(Keys key)
         {
             return _currentState.IsKeyDown(key) && _lastState.IsKeyUp(key);
         }
 
-        internal bool IsKeyDown(Keys key)
+        public bool IsKeyDown(Keys key)
         {
             return _currentState.IsKeyDown(key);
         }
 
-        internal bool IsKeyUp(Keys key)
+        public bool IsKeyUp(Keys key)
         {
             return _currentState.IsKeyUp(key);
         }
 
-        internal Keys[] GetPressedKeys()
+        public Keys[] GetPressedKeys()
         {
             return _pressedKeys;
         }

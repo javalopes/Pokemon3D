@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Collisions;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Shapes;
@@ -70,11 +71,11 @@ namespace Pokemon3D.Screens.Overworld
                 if (_showRenderStatistics) _renderStatisticsOverlay.Show(); else _renderStatisticsOverlay.Hide();
             }
 
-            //todo: repair
-            //if (_inputSystem.Keyboard.IsKeyDownOnce(Keys.X) || _inputSystem.GamePad.IsButtonDownOnce(Buttons.X))
-            //{
-            //    _screenManager.SetScreen(typeof(GameMenu.GameMenuScreen));
-            //}
+            //todo: remove when menu works
+            if (_inputSystem.KeyboardHandler.IsKeyDownOnce(Keys.X) || _inputSystem.GamePadHandler.IsButtonDownOnce(Buttons.X))
+            {
+                _screenManager.SetScreen(typeof(GameMenu.GameMenuScreen));
+            }
         }
 
         public void OnLateDraw(GameTime gameTime)
