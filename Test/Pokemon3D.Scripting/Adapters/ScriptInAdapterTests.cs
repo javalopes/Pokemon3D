@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Pokemon3D.Scripting;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
 
 namespace Test.Pokemon3D.Scripting.Adapters
 {
-    [TestClass()]
+    [TestFixture]
     public class ScriptInAdapterTests
     {
-        [TestMethod()]
+        [Test]
         public void StringTranslateTest()
         {
             string testString = "this is a test string!";
@@ -20,7 +20,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
             Assert.AreEqual(testString, ((SString)obj).Value);
         }
 
-        [TestMethod()]
+        [Test]
         public void NumericTranslateTest()
         {
             double testDouble = -72.64;
@@ -32,7 +32,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
             Assert.AreEqual(testDouble, ((SNumber)obj).Value);
         }
 
-        [TestMethod()]
+        [Test]
         public void NullTranslateTest()
         {
             object nullObj = null;
@@ -42,8 +42,8 @@ namespace Test.Pokemon3D.Scripting.Adapters
 
             Assert.IsTrue(obj.GetType() == typeof(SNull), "The type of obj is not SNull, but instead " + obj.GetType().Name);
         }
-
-        [TestMethod()]
+        
+        [Test]
         public void UndefinedTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();
@@ -54,7 +54,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
             Assert.IsTrue(obj.GetType() == typeof(SUndefined));
         }
 
-        [TestMethod()]
+        [Test]
         public void BooleanTranslateTest()
         {
             bool testBool = true;
@@ -66,7 +66,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
             Assert.AreEqual(testBool, ((SBool)obj).Value);
         }
 
-        [TestMethod()]
+        [Test]
         public void ArrayTranslateTest()
         {
             string[] testArray = new string[] { "item1", "item2", "item3" };
@@ -81,7 +81,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
             Assert.AreEqual(testArray.Length, arr.ArrayMembers.Length);
         }
 
-        [TestMethod()]
+        [Test]
         public void ObjectTranslateTest()
         {
             var processor = new ScriptProcessor();

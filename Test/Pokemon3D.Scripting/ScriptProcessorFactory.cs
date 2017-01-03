@@ -6,7 +6,7 @@ namespace Test.Pokemon3D.Scripting
     /// <summary>
     /// A factory to create <see cref="ScriptProcessor"/> instances.
     /// </summary>
-    static class ScriptProcessorFactory
+    internal static class ScriptProcessorFactory
     {
         /// <summary>
         /// Creates a new <see cref="ScriptProcessor"/>.

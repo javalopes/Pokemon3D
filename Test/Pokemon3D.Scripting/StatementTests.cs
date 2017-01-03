@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Pokemon3D.Scripting.Types;
 
 namespace Test.Pokemon3D.Scripting
 {
-    [TestClass]
+    [TestFixture]
     public class StatementTests
     {
-        [TestMethod]
+        [Test]
         public void IfTests()
         {
             var result = ScriptProcessorFactory.Run("var a = 0; if (a == 0) { a = 5; } a;");
@@ -16,7 +15,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, 5);
         }
 
-        [TestMethod]
+        [Test]
         public void IfElseTests()
         {
             var result = ScriptProcessorFactory.Run("var a = 0; if (a > 0) { a = 5; } else { a = 10; } a;");
@@ -25,7 +24,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, 10);
         }
 
-        [TestMethod]
+        [Test]
         public void ForLoopTests()
         {
             var result = ScriptProcessorFactory.Run("var a = 0; for (var i = 0; i < 10; i++) { a++; } a;");
@@ -34,7 +33,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, 10);
         }
 
-        [TestMethod]
+        [Test]
         public void WhileLoopTests()
         {
             var processor = ScriptProcessorFactory.GetNew();
@@ -44,7 +43,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, 10);
         }
 
-        [TestMethod]
+        [Test]
         public void ContinueTests()
         {
             var result = ScriptProcessorFactory.Run("var a = 0; for (var i = 0; i < 10; i++) { if (i % 2 == 0) { a++; } } a;");
@@ -53,7 +52,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, 5);
         }
 
-        [TestMethod]
+        [Test]
         public void BreakTests()
         {
             var result = ScriptProcessorFactory.Run("var a = 0; for (var i = 0; i < 10; i++) { if (i > 5) { break; } a++; } a;");

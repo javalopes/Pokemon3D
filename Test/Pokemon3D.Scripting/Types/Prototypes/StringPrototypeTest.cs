@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Pokemon3D.Scripting.Types;
 
 namespace Test.Pokemon3D.Scripting.Types.Prototypes
 {
     public class StringPrototypeTest
     {
-        [TestClass]
+        [TestFixture]
         public class LengthTest
         {
-            [TestMethod]
+            [Test]
             public void StringLength()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.length;");
@@ -22,7 +17,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hello World".Length, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void EmptyString()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String(''); str.length;");
@@ -32,10 +27,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class EmptyTest
         {
-            [TestMethod]
+            [Test]
             public void Empty()
             {
                 var result = ScriptProcessorFactory.Run("var str = String.empty; str;");
@@ -45,10 +40,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class RemoveTest
         {
-            [TestMethod]
+            [Test]
             public void RemoveBegin()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(6);");
@@ -57,7 +52,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hello ", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void RemoveBeginOutOfRange()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(20);");
@@ -66,7 +61,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hello World", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void RemoveBeginNegative()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(-1);");
@@ -75,7 +70,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void RemoveBeginEnd()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(0, 4);");
@@ -84,7 +79,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("o World", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void RemoveBeginEndOutOfRange()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(0, 20);");
@@ -93,7 +88,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void RemoveBeginEndNegative()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(0, -1);");
@@ -103,10 +98,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class TrimTest
         {
-            [TestMethod]
+            [Test]
             public void Trim()
             {
                 var result = ScriptProcessorFactory
@@ -116,7 +111,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hello World", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void TrimCharacters()
             {
                 var result = ScriptProcessorFactory
@@ -126,7 +121,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hello World", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void TrimStart()
             {
                 var result = ScriptProcessorFactory
@@ -136,7 +131,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hello World ", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void TrimStartCharacters()
             {
                 var result = ScriptProcessorFactory
@@ -146,7 +141,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hello World}", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void TrimEnd()
             {
                 var result = ScriptProcessorFactory
@@ -156,7 +151,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(" Hello World", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void TrimEndCharacters()
             {
                 var result = ScriptProcessorFactory
@@ -167,10 +162,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class CasingTest
         {
-            [TestMethod]
+            [Test]
             public void ToUpper()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.toUpper();");
@@ -179,7 +174,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("HELLO WORLD", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void ToLower()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.toLower();");
@@ -189,10 +184,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class SplitTest
         {
-            [TestMethod]
+            [Test]
             public void SplitEmptyArgs()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello,World'); str.split();");
@@ -203,7 +198,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hello,World", ((SString)((SArray)result).ArrayMembers[0]).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SplitComma()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello,World'); str.split(',');");
@@ -216,7 +211,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("World", ((SString)((SArray)result).ArrayMembers[1]).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SplitMultiple()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello,World;Hi'); str.split([',', ';']);");
@@ -231,7 +226,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hi", ((SString)((SArray)result).ArrayMembers[2]).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SplitWithLimit()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('H,e,l,l,o,W,o,r,l,d'); str.split(',', 2);");
@@ -245,10 +240,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class SliceTest
         {
-            [TestMethod]
+            [Test]
             public void SliceBegin()
             {
                 var result = ScriptProcessorFactory
@@ -258,7 +253,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("World", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SliceBeginOutOfRange()
             {
                 var result = ScriptProcessorFactory
@@ -268,7 +263,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SliceBeginNegative()
             {
                 var result = ScriptProcessorFactory
@@ -278,7 +273,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("rld", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SliceBeginNegativeOutOfRange()
             {
                 var result = ScriptProcessorFactory
@@ -288,7 +283,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hello World", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SliceBeginEnd()
             {
                 var result = ScriptProcessorFactory
@@ -298,7 +293,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("llo ", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SliceBeginEndZero()
             {
                 var result = ScriptProcessorFactory
@@ -308,7 +303,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SliceBeginPositiveEndNegative()
             {
                 var result = ScriptProcessorFactory
@@ -318,7 +313,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("llo Wo", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SliceBeginNegativeEndNegative()
             {
                 var result = ScriptProcessorFactory
@@ -328,7 +323,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("orl", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SliceBeginNegativeEndNegativeOutOfRange()
             {
                 var result = ScriptProcessorFactory
@@ -339,10 +334,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class ReplaceTest
         {
-            [TestMethod]
+            [Test]
             public void Replace()
             {
                 var result = ScriptProcessorFactory
@@ -352,7 +347,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hello World", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void ReplaceMultiple()
             {
                 var result = ScriptProcessorFactory
@@ -362,7 +357,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Hello World, Hello!", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void ReplaceEmptyString()
             {
                 var result = ScriptProcessorFactory
@@ -372,7 +367,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual("Something World", ((SString)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void ReplaceWithEmptyString()
             {
                 var result = ScriptProcessorFactory
@@ -383,10 +378,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class IndexOfTest
         {
-            [TestMethod]
+            [Test]
             public void IndexOfEmptyString()
             {
                 var result = ScriptProcessorFactory
@@ -396,7 +391,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SNumber)result).Value, -1);
             }
 
-            [TestMethod]
+            [Test]
             public void IndexOfOnEmptyString()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String(''); str.indexOf('Hello');");
@@ -405,7 +400,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SNumber)result).Value, -1);
             }
 
-            [TestMethod]
+            [Test]
             public void IndexOfPositive()
             {
                 var result = ScriptProcessorFactory
@@ -415,7 +410,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SNumber)result).Value, 6);
             }
 
-            [TestMethod]
+            [Test]
             public void IndexOfNegative()
             {
                 var result = ScriptProcessorFactory
@@ -426,10 +421,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class LastIndexOfTest
         {
-            [TestMethod]
+            [Test]
             public void LastIndexOfEmptyString()
             {
                 var result = ScriptProcessorFactory
@@ -439,7 +434,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SNumber)result).Value, -1);
             }
 
-            [TestMethod]
+            [Test]
             public void LastIndexOfOnEmptyString()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String(''); str.lastIndexOf('Hello');");
@@ -448,7 +443,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SNumber)result).Value, -1);
             }
 
-            [TestMethod]
+            [Test]
             public void LastIndexOfPositive()
             {
                 var result = ScriptProcessorFactory
@@ -458,7 +453,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SNumber)result).Value, 18);
             }
 
-            [TestMethod]
+            [Test]
             public void LastIndexOfNegative()
             {
                 var result = ScriptProcessorFactory
@@ -469,10 +464,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class StartsWithTest
         {
-            [TestMethod]
+            [Test]
             public void StartsWithPositive()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.startsWith('Hello');");
@@ -481,7 +476,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SBool)result).Value, true);
             }
 
-            [TestMethod]
+            [Test]
             public void StartsWithNegative()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.startsWith('World');");
@@ -490,7 +485,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SBool)result).Value, false);
             }
 
-            [TestMethod]
+            [Test]
             public void StartsWithEmptyString()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.startsWith('');");
@@ -499,7 +494,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SBool)result).Value, false);
             }
 
-            [TestMethod]
+            [Test]
             public void StartsWithEmptyStringOnEmptyString()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String(''); str.startsWith('');");
@@ -509,10 +504,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class EndsWithTest
         {
-            [TestMethod]
+            [Test]
             public void EndsWithPositive()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.endsWith('World');");
@@ -521,7 +516,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SBool)result).Value, true);
             }
 
-            [TestMethod]
+            [Test]
             public void EndsWithNegative()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.endsWith('Hello');");
@@ -530,7 +525,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SBool)result).Value, false);
             }
 
-            [TestMethod]
+            [Test]
             public void EndsWithEmptyString()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.endsWith('');");
@@ -539,7 +534,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SBool)result).Value, false);
             }
 
-            [TestMethod]
+            [Test]
             public void EndsWithEmptyStringOnEmptyString()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String(''); str.endsWith('');");
@@ -549,10 +544,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class IncludesTest
         {
-            [TestMethod]
+            [Test]
             public void IncludesEmptyString()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String(''); str.includes('');");
@@ -561,7 +556,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SBool)result).Value, true);
             }
 
-            [TestMethod]
+            [Test]
             public void IncludesContains()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.includes('Hello');");
@@ -570,7 +565,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SBool)result).Value, true);
             }
 
-            [TestMethod]
+            [Test]
             public void IncludesNotEqualTypes()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello 42 World'); str.includes(42);");
@@ -580,10 +575,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class CharAtTest
         {
-            [TestMethod]
+            [Test]
             public void CharAtString()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.charAt(2);");
@@ -592,7 +587,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "l");
             }
 
-            [TestMethod]
+            [Test]
             public void CharAtEmptyString()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String(''); str.charAt(0);");
@@ -601,7 +596,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "");
             }
 
-            [TestMethod]
+            [Test]
             public void CharAtOutOfRange()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.charAt(42);");
@@ -610,7 +605,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "");
             }
 
-            [TestMethod]
+            [Test]
             public void CharAtNegative()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.charAt(-42);");
@@ -619,7 +614,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "");
             }
 
-            [TestMethod]
+            [Test]
             public void CharAtNoArg()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.charAt();");
@@ -629,10 +624,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class ConcatTest
         {
-            [TestMethod]
+            [Test]
             public void ConcatTwoStrings()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello, '); str.concat('Kevin', ' have a nice day.');");
@@ -641,7 +636,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "Hello, Kevin have a nice day.");
             }
 
-            [TestMethod]
+            [Test]
             public void ConcatNonString()
             {
                 var result = ScriptProcessorFactory.Run("var str = new String('Hello, '); str.concat(42, undefined);");
@@ -651,10 +646,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class RepeatTest
         {
-            [TestMethod]
+            [Test]
             public void Repeat()
             {
                 var result = ScriptProcessorFactory
@@ -664,7 +659,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "AAAA");
             }
 
-            [TestMethod]
+            [Test]
             public void RepeatZero()
             {
                 var result = ScriptProcessorFactory
@@ -674,7 +669,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "");
             }
 
-            [TestMethod]
+            [Test]
             public void RepeatNegative()
             {
                 var result = ScriptProcessorFactory
@@ -685,10 +680,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class PaddingTest
         {
-            [TestMethod]
+            [Test]
             public void PadStartLength()
             {
                 var result = ScriptProcessorFactory
@@ -698,7 +693,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "  abc");
             }
 
-            [TestMethod]
+            [Test]
             public void PadStartCharacter()
             {
                 var result = ScriptProcessorFactory
@@ -708,7 +703,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "foofoofabc");
             }
 
-            [TestMethod]
+            [Test]
             public void PadStartEmptyString()
             {
                 var result = ScriptProcessorFactory
@@ -718,7 +713,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "abc");
             }
 
-            [TestMethod]
+            [Test]
             public void PadStartNegative()
             {
                 var result = ScriptProcessorFactory
@@ -728,7 +723,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, " Hello World");
             }
 
-            [TestMethod]
+            [Test]
             public void PadEndLength()
             {
                 var result = ScriptProcessorFactory
@@ -738,7 +733,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "abc  ");
             }
 
-            [TestMethod]
+            [Test]
             public void PadEndCharacter()
             {
                 var result = ScriptProcessorFactory
@@ -748,7 +743,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "abcfoofoof");
             }
 
-            [TestMethod]
+            [Test]
             public void PadEndEmptyString()
             {
                 var result = ScriptProcessorFactory
@@ -758,7 +753,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(((SString)result).Value, "Hello World");
             }
 
-            [TestMethod]
+            [Test]
             public void PadEndNegative()
             {
                 var result = ScriptProcessorFactory

@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Pokemon3D.Scripting.Adapters;
+﻿using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
 using System;
+using NUnit.Framework;
 
 namespace Test.Pokemon3D.Scripting.Adapters
 {
-    [TestClass]
+    [TestFixture]
     public class ScriptOutAdapterTests
     {
-        [TestMethod]
+        [Test]
         public void SStringTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();
@@ -21,7 +21,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
             Assert.IsTrue((string)obj == testString.Value);
         }
 
-        [TestMethod]
+        [Test]
         public void SNumberTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();
@@ -34,7 +34,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
             Assert.IsTrue((double)obj == testNumber.Value);
         }
 
-        [TestMethod]
+        [Test]
         public void SBoolTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();
@@ -47,7 +47,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
             Assert.IsTrue((bool)obj == testBool.Value);
         }
 
-        [TestMethod]
+        [Test]
         public void SNullTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();
@@ -59,7 +59,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
             Assert.IsTrue(obj == null);
         }
 
-        [TestMethod]
+        [Test]
         public void SUndefinedTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();
@@ -71,7 +71,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
             Assert.IsTrue(obj is SUndefined);
         }
 
-        [TestMethod]
+        [Test]
         public void SArrayTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();

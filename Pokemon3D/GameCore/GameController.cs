@@ -20,6 +20,7 @@ using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.DataModel.GameCore;
+using Pokemon3D.Screens.GameMenu;
 
 namespace Pokemon3D.GameCore
 {
@@ -130,7 +131,7 @@ namespace Pokemon3D.GameCore
 #if DEBUG
             GetService<ScreenManager>().SetScreen(typeof(MainMenuScreen));
 #else
-            ScreenManager.SetScreen(typeof(IntroScreen));
+            GetService<ScreenManager>().SetScreen(typeof(IntroScreen));
 #endif
             GraphicsDevice.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
 

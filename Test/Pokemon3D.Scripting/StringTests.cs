@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Pokemon3D.Scripting.Types;
 
 namespace Test.Pokemon3D.Scripting
 {
-    [TestClass]
+    [TestFixture]
     public class StringTests
     {
-        [TestMethod]
+        [Test]
         public void InterpolationTests()
         {
             var result = ScriptProcessorFactory.Run("var insert = \"{{World}}\"; var outer = $\"{{Hello}}, {insert}!\"; outer;");

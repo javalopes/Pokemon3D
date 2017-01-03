@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Pokemon3D.Scripting.Types;
 
 namespace Test.Pokemon3D.Scripting.Types.Prototypes
 {
     public class ArrayPrototypeTest
     {
-        [TestClass]
+        [TestFixture]
         public class ArrayTests
         {
-            [TestMethod]
+            [Test]
             public void EmptyArrayInitialize()
             {
                 var result = ScriptProcessorFactory.Run("var arr = []; arr;");
@@ -22,7 +17,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(0, ((SArray)result).ArrayMembers.Length);
             }
 
-            [TestMethod]
+            [Test]
             public void ArrayLengthInitializer()
             {
                 var result = ScriptProcessorFactory.Run("var arr = new Array(2); arr;");
@@ -31,7 +26,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(2, ((SArray)result).ArrayMembers.Length);
             }
 
-            [TestMethod]
+            [Test]
             public void SingleElementArrayInitialize()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [3]; arr;");
@@ -42,10 +37,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class IndexerTest
         {
-            [TestMethod]
+            [Test]
             public void IndexerGet()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr[1];");
@@ -54,7 +49,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(2, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void IndexerGetOutOfRange()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr[3];");
@@ -62,7 +57,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.IsTrue(result is SUndefined);
             }
 
-            [TestMethod]
+            [Test]
             public void IndexerSet()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 0, 3]; arr[1] = 2; arr[1];");
@@ -71,7 +66,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(2, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void IndexerSetOutOfRange()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr[3] = 4; arr[3];");
@@ -80,7 +75,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(4, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void IndexerSetOutOfRangeAccessEmptyMember()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr[4] = 5; arr[3];");
@@ -89,10 +84,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class LengthTest
         {
-            [TestMethod]
+            [Test]
             public void LengthEmptyArray()
             {
                 var result = ScriptProcessorFactory.Run("var arr = []; arr.length;");
@@ -101,7 +96,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(0, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void Length()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1,,2]; arr.length;");
@@ -111,10 +106,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class IncludesTest
         {
-            [TestMethod]
+            [Test]
             public void IncludesContains()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.includes(1);");
@@ -123,7 +118,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(true, ((SBool)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void IncludesNotEqualType()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, \"2\", 3]; arr.includes(2);");
@@ -132,7 +127,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(true, ((SBool)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void IncludesCustomComparer()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, \"2\", 3]; arr.includes(2, (m, o => m === o));");
@@ -142,10 +137,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class AnyTest
         {
-            [TestMethod]
+            [Test]
             public void AnyContains()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.any(m => m == 1);");
@@ -154,7 +149,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(true, ((SBool)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void AnyNoCondition()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.any();");
@@ -163,7 +158,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(true, ((SBool)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void AnyNoConditionEmptyArray()
             {
                 var result = ScriptProcessorFactory.Run("var arr = []; arr.any();");
@@ -172,7 +167,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(false, ((SBool)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void AnyEmptyArray()
             {
                 var processor = ScriptProcessorFactory.GetNew();
@@ -182,7 +177,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(false, ((SBool)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void AnyUndefinedCheck()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, \"2\", 3]; arr.any(m => m == undefined);");
@@ -191,7 +186,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(false, ((SBool)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void AnyUndefined()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, \"2\", 3, undefined]; arr.any(m => m == undefined);");
@@ -201,10 +196,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class AllTest
         {
-            [TestMethod]
+            [Test]
             public void AllContains()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.all(m => m > 0);");
@@ -212,8 +207,8 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.IsTrue(result is SBool);
                 Assert.AreEqual(true, ((SBool)result).Value);
             }
-
-            [TestMethod]
+            
+            [Test]
             public void AllEmptyArray()
             {
                 var processor = ScriptProcessorFactory.GetNew();
@@ -223,7 +218,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(true, ((SBool)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void AllUndefinedCheck()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, \"2\", 3]; arr.all(m => m != undefined);");
@@ -232,7 +227,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(true, ((SBool)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void AllUndefined()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [undefined,,,undefined]; arr.all(m => m == undefined);");
@@ -242,10 +237,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class WhereTest
         {
-            [TestMethod]
+            [Test]
             public void WhereNoResult()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.where(m => m > 3);");
@@ -254,7 +249,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(0, ((SArray)result).ArrayMembers.Length);
             }
 
-            [TestMethod]
+            [Test]
             public void Where()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.where(m => m > 1);");
@@ -264,10 +259,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class SelectTest
         {
-            [TestMethod]
+            [Test]
             public void SelectIntManipulation()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.select(m => m + 2);");
@@ -285,7 +280,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(5, ((SNumber)arr.ArrayMembers[2]).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SelectWithUndefined()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, undefined, 3]; arr.select(m => m + 2);");
@@ -304,10 +299,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class SingleTest
         {
-            [TestMethod]
+            [Test]
             public void SingleSingleRecord()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1]; arr.single();");
@@ -316,7 +311,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(1, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SingleSingleRecordWithFilter()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.single(m => m == 2);");
@@ -325,7 +320,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(2, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void SingleMultipleRecords()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.single();");
@@ -333,7 +328,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.IsTrue(result is SError);
             }
 
-            [TestMethod]
+            [Test]
             public void SingleMultipleRecordsWithFilter()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.single(m => m == 1);");
@@ -343,10 +338,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class FirstTest
         {
-            [TestMethod]
+            [Test]
             public void FirstNoRecord()
             {
                 var result = ScriptProcessorFactory.Run("var arr = []; arr.first();");
@@ -354,7 +349,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.IsTrue(result is SUndefined);
             }
 
-            [TestMethod]
+            [Test]
             public void FirstSingleRecord()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1]; arr.first();");
@@ -363,7 +358,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(1, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void First()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.first();");
@@ -372,7 +367,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(1, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void FirstWithFilter()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.first(m => m > 1);");
@@ -381,7 +376,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(2, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void FirstWithFilterNoResult()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.first(m => m > 3);");
@@ -390,10 +385,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class LastTest
         {
-            [TestMethod]
+            [Test]
             public void LastNoRecord()
             {
                 var result = ScriptProcessorFactory.Run("var arr = []; arr.last();");
@@ -401,7 +396,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.IsTrue(result is SUndefined);
             }
 
-            [TestMethod]
+            [Test]
             public void LastSingleRecord()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1]; arr.last();");
@@ -410,7 +405,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(1, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void Last()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.last();");
@@ -419,7 +414,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(3, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void LastWithFilter()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.last(m => m < 3);");
@@ -428,7 +423,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(2, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void LastWithFilterNoResult()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.last(m => m > 3);");
@@ -437,10 +432,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class CountTest
         {
-            [TestMethod]
+            [Test]
             public void CountEmpty()
             {
                 var result = ScriptProcessorFactory.Run("var arr = []; arr.count();");
@@ -449,7 +444,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(0, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void Count()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.count();");
@@ -458,7 +453,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(3, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void CountWithFilter()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [1, 2, 3]; arr.count(m => m > 1);");
@@ -468,10 +463,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class PushTest
         {
-            [TestMethod]
+            [Test]
             public void PushSingleItem()
             {
                 var result = ScriptProcessorFactory.Run("var arr = []; var item = 23; arr.push(item); arr;");
@@ -481,7 +476,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(23, (((SArray)result).ArrayMembers[0] as SNumber).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void PushArray()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [23]; var items = [1, 2, 3]; arr.push(items); arr;");
@@ -491,7 +486,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(2, (((SArray)result).ArrayMembers[2] as SNumber).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void PushMultiple()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [23]; var items = [1, 2, 3]; var item = 32; arr.push(items, item); arr;");
@@ -502,10 +497,10 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class PopTest
         {
-            [TestMethod]
+            [Test]
             public void PopItem()
             {
                 var result = ScriptProcessorFactory.Run("var arr = [32]; arr.pop();");
@@ -514,7 +509,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
                 Assert.AreEqual(32, ((SNumber)result).Value);
             }
 
-            [TestMethod]
+            [Test]
             public void PopEmpty()
             {
                 var result = ScriptProcessorFactory.Run("var arr = []; arr.pop();");

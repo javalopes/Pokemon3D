@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Pokemon3D.Scripting.Types;
 
 namespace Test.Pokemon3D.Scripting
 {
-    [TestClass]
+    [TestFixture]
     public class OperatorTests
     {
-        [TestMethod]
+        [Test]
         public void AdditionTests()
         {
             var result = ScriptProcessorFactory.Run("1+4+6");
@@ -16,7 +15,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, 11);
         }
 
-        [TestMethod]
+        [Test]
         public void SubtractionTests()
         {
             var result = ScriptProcessorFactory.Run("12-4-6");
@@ -25,7 +24,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, 2);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiplicationTests()
         {
             var result = ScriptProcessorFactory.Run("5*3*-4");
@@ -34,7 +33,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, -60);
         }
 
-        [TestMethod]
+        [Test]
         public void DivisionTests()
         {
             var result = ScriptProcessorFactory.Run("15/5");
@@ -43,7 +42,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, 3);
         }
 
-        [TestMethod]
+        [Test]
         public void IncrementTests()
         {
             var result = ScriptProcessorFactory.Run("var a = 13; a++; a;");
@@ -53,7 +52,7 @@ namespace Test.Pokemon3D.Scripting
 
         }
 
-        [TestMethod]
+        [Test]
         public void DecrementTests()
         {
             var result = ScriptProcessorFactory.Run("var b = 13; b--; b;");
@@ -62,7 +61,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, 12);
         }
 
-        [TestMethod]
+        [Test]
         public void PowerTests()
         {
             var result = ScriptProcessorFactory.Run("2**3");
@@ -71,7 +70,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, 8);
         }
 
-        [TestMethod]
+        [Test]
         public void ModuloTests()
         {
             var result = ScriptProcessorFactory.Run("5%2");
@@ -80,13 +79,12 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SNumber)result).Value, 1);
         }
 
-        [TestMethod]
+        [Test]
         public void SmallerThanTests()
         {
-            SObject result = null;
             var processor = ScriptProcessorFactory.GetNew();
 
-            result = processor.Run("2 < 3");
+            var result = processor.Run("2 < 3");
 
             Assert.IsTrue(result is SBool);
             Assert.AreEqual(((SBool)result).Value, true);
@@ -102,13 +100,12 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SBool)result).Value, false);
         }
 
-        [TestMethod]
+        [Test]
         public void SmallerThanOrEqualsTests()
         {
-            SObject result = null;
             var processor = ScriptProcessorFactory.GetNew();
 
-            result = processor.Run("2 <= 3");
+            var result = processor.Run("2 <= 3");
 
             Assert.IsTrue(result is SBool);
             Assert.AreEqual(((SBool)result).Value, true);
@@ -124,13 +121,12 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SBool)result).Value, false);
         }
 
-        [TestMethod]
+        [Test]
         public void GreaterThanTests()
         {
-            SObject result = null;
             var processor = ScriptProcessorFactory.GetNew();
 
-            result = processor.Run("3 > 2");
+            var result = processor.Run("3 > 2");
 
             Assert.IsTrue(result is SBool);
             Assert.AreEqual(((SBool)result).Value, true);
@@ -146,13 +142,12 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SBool)result).Value, false);
         }
 
-        [TestMethod]
+        [Test]
         public void GreaterThanOrEqualsTests()
         {
-            SObject result = null;
             var processor = ScriptProcessorFactory.GetNew();
 
-            result = processor.Run("3 >= 2");
+            var result = processor.Run("3 >= 2");
 
             Assert.IsTrue(result is SBool);
             Assert.AreEqual(((SBool)result).Value, true);
@@ -168,13 +163,12 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SBool)result).Value, false);
         }
 
-        [TestMethod]
+        [Test]
         public void EqualsTests()
         {
-            SObject result = null;
             var processor = ScriptProcessorFactory.GetNew();
 
-            result = processor.Run("2 == 2");
+            var result = processor.Run("2 == 2");
 
             Assert.IsTrue(result is SBool);
             Assert.AreEqual(((SBool)result).Value, true);
@@ -185,13 +179,12 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SBool)result).Value, true);
         }
 
-        [TestMethod]
+        [Test]
         public void NotEqualsTests()
         {
-            SObject result = null;
             var processor = ScriptProcessorFactory.GetNew();
 
-            result = processor.Run("2 != 3");
+            var result = processor.Run("2 != 3");
 
             Assert.IsTrue(result is SBool);
             Assert.AreEqual(((SBool)result).Value, true);
@@ -202,7 +195,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SBool)result).Value, true);
         }
 
-        [TestMethod]
+        [Test]
         public void LogicalAndTests()
         {
             var result = ScriptProcessorFactory.Run("true && false");
@@ -211,7 +204,7 @@ namespace Test.Pokemon3D.Scripting
             Assert.AreEqual(((SBool)result).Value, false);
         }
 
-        [TestMethod]
+        [Test]
         public void LogicalOrTests()
         {
             var result = ScriptProcessorFactory.Run("true || false");
