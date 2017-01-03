@@ -12,63 +12,58 @@ namespace Test.Pokemon3D.Scripting.Adapters
         public void SStringTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();
-
-            SString testString = processor.CreateString("this is a test string!");
+            var testString = processor.CreateString("this is a test string!");
 
             var obj = ScriptOutAdapter.Translate(testString);
 
-            Assert.IsTrue(obj.GetType() == typeof(string));
-            Assert.IsTrue((string)obj == testString.Value);
+            Assert.That(obj, Is.InstanceOf<string>());
+            Assert.That((string)obj, Is.EqualTo(testString.Value));
         }
 
         [Test]
         public void SNumberTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();
-
-            SNumber testNumber = processor.CreateNumber(-72.65);
+            var testNumber = processor.CreateNumber(-72.65);
 
             var obj = ScriptOutAdapter.Translate(testNumber);
-
-            Assert.IsTrue(obj.GetType() == typeof(double));
-            Assert.IsTrue((double)obj == testNumber.Value);
+            
+            Assert.That(obj, Is.InstanceOf<double>());
+            Assert.That((double)obj, Is.EqualTo(testNumber.Value));
         }
 
         [Test]
         public void SBoolTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();
-
-            SBool testBool = processor.CreateBool(true);
+            var testBool = processor.CreateBool(true);
 
             var obj = ScriptOutAdapter.Translate(testBool);
 
-            Assert.IsTrue(obj.GetType() == typeof(bool));
-            Assert.IsTrue((bool)obj == testBool.Value);
+            Assert.That(obj, Is.InstanceOf<bool>());
+            Assert.That((bool)obj, Is.EqualTo(testBool.Value));
         }
 
         [Test]
         public void SNullTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();
+            var @null = (SNull)processor.Null;
 
-            SNull Null = (SNull)processor.Null;
+            var obj = ScriptOutAdapter.Translate(@null);
 
-            var obj = ScriptOutAdapter.Translate(Null);
-
-            Assert.IsTrue(obj == null);
+            Assert.That(obj, Is.Null);
         }
 
         [Test]
         public void SUndefinedTranslateTest()
         {
             var processor = ScriptProcessorFactory.GetNew();
+            var undefined = (SUndefined)processor.Undefined;
 
-            SUndefined Undefined = (SUndefined)processor.Undefined;
+            var obj = ScriptOutAdapter.Translate(undefined);
 
-            var obj = ScriptOutAdapter.Translate(Undefined);
-
-            Assert.IsTrue(obj is SUndefined);
+            Assert.That(obj, Is.InstanceOf<SUndefined>());
         }
 
         [Test]
@@ -82,16 +77,12 @@ namespace Test.Pokemon3D.Scripting.Adapters
                 processor.CreateString("test"),
                 processor.CreateNumber(-1234.3)
             });
-
-            Assert.IsTrue(arrobj is SArray);
+            Assert.That(arrobj, Is.InstanceOf<SArray>());
 
             var obj = ScriptOutAdapter.Translate(arrobj);
 
-            Assert.IsTrue(obj.GetType().IsArray);
-
-            var arr = (Array)obj;
-
-            Assert.IsTrue(arr.Length == 3);
+            Assert.That(obj.GetType().IsArray);
+            Assert.IsTrue(((Array)obj).Length == 3);
         }
     }
 }

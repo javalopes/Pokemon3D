@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Pokemon3D.Scripting;
 using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
@@ -11,25 +12,25 @@ namespace Test.Pokemon3D.Scripting.Adapters
         [Test]
         public void StringTranslateTest()
         {
-            string testString = "this is a test string!";
+            const string testString = "this is a test string!";
             var processor = ScriptProcessorFactory.GetNew();
 
             var obj = ScriptInAdapter.Translate(processor, testString);
 
-            Assert.IsTrue(obj.GetType() == typeof(SString));
-            Assert.AreEqual(testString, ((SString)obj).Value);
+            Assert.That(obj, Is.InstanceOf<SString>());
+            Assert.That(testString, Is.EqualTo(((SString)obj).Value));
         }
 
         [Test]
         public void NumericTranslateTest()
         {
-            double testDouble = -72.64;
+            const double testDouble = -72.64;
             var processor = ScriptProcessorFactory.GetNew();
 
             var obj = ScriptInAdapter.Translate(processor, testDouble);
 
-            Assert.IsTrue(obj.GetType() == typeof(SNumber));
-            Assert.AreEqual(testDouble, ((SNumber)obj).Value);
+            Assert.That(obj, Is.InstanceOf<SNumber>());
+            Assert.That(testDouble, Is.EqualTo(((SNumber)obj).Value));
         }
 
         [Test]
@@ -40,7 +41,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
 
             var obj = ScriptInAdapter.Translate(processor, nullObj);
 
-            Assert.IsTrue(obj.GetType() == typeof(SNull), "The type of obj is not SNull, but instead " + obj.GetType().Name);
+            Assert.That(obj, Is.InstanceOf<SNull>(), "The type of obj is not SNull, but instead " + obj.GetType().Name);
         }
         
         [Test]
@@ -50,35 +51,33 @@ namespace Test.Pokemon3D.Scripting.Adapters
             var undefined = processor.Undefined;
 
             var obj = ScriptInAdapter.Translate(processor, undefined);
+            
+            Assert.That(obj, Is.InstanceOf<SUndefined>());
 
-            Assert.IsTrue(obj.GetType() == typeof(SUndefined));
         }
 
         [Test]
         public void BooleanTranslateTest()
         {
-            bool testBool = true;
+            const bool testBool = true;
             var processor = ScriptProcessorFactory.GetNew();
 
             var obj = ScriptInAdapter.Translate(processor, testBool);
 
-            Assert.IsTrue(obj.GetType() == typeof(SBool));
-            Assert.AreEqual(testBool, ((SBool)obj).Value);
+            Assert.That(obj, Is.InstanceOf<SBool>());
+            Assert.That(testBool, Is.EqualTo(((SBool)obj).Value));
         }
 
         [Test]
         public void ArrayTranslateTest()
         {
-            string[] testArray = new string[] { "item1", "item2", "item3" };
+            var testArray = new[] { "item1", "item2", "item3" };
             var processor = ScriptProcessorFactory.GetNew();
 
             var obj = ScriptInAdapter.Translate(processor, testArray);
 
-            Assert.IsTrue(obj.GetType() == typeof(SArray));
-
-            var arr = (SArray)obj;
-
-            Assert.AreEqual(testArray.Length, arr.ArrayMembers.Length);
+            Assert.That(obj, Is.InstanceOf<SArray>());
+            Assert.That(testArray.Length, Is.EqualTo(((SArray)obj).ArrayMembers.Length));
         }
 
         [Test]
@@ -89,14 +88,14 @@ namespace Test.Pokemon3D.Scripting.Adapters
 
             processor.Run("var p = new Pokemon(); p.SetName(\"Pika\");");
 
-            object objp = ScriptContextManipulator.GetVariableTranslated(processor, "p");
+            var objp = ScriptContextManipulator.GetVariableTranslated(processor, "p");
+            
+            Assert.That(objp, Is.InstanceOf<Pokemon>());
 
-            Assert.IsTrue(objp.GetType() == typeof(Pokemon));
+            var p = (Pokemon)objp;
 
-            Pokemon p = (Pokemon)objp;
-
-            Assert.AreEqual("Pikachu", p.OriginalName);
-            Assert.AreEqual("Pika", p.Name);
+            Assert.That("Pikachu", Is.EqualTo(p.OriginalName));
+            Assert.That("Pika", Is.EqualTo(p.Name));
         }
 
         // Test class to create instances of.
@@ -104,6 +103,7 @@ namespace Test.Pokemon3D.Scripting.Adapters
         {
             [ScriptVariable]
             public string Name = "Pikachu";
+
             [ScriptVariable]
             public string OriginalName = "";
 
