@@ -28,6 +28,8 @@ namespace Pokemon3D.Rendering.Data
 
         public bool CastShadow { get; set; }
 
+        public bool UseLinearTextureSampling { get; set; }
+
         public bool ReceiveShadow { get; set; }
 
         public Vector2 TexcoordScale { get; set; }
@@ -37,7 +39,7 @@ namespace Pokemon3D.Rendering.Data
         public bool IsUnlit { get; set; }
 
         public string CompareId =>
-            $"{((DiffuseTexture?.Name) ?? "null").GetHashCode()}_{(UseTransparency ? "1" : "0")}_{(ReceiveShadow ? "1" : "0")}_{(IsUnlit ? "1" : "0")}";
+            $"{((DiffuseTexture?.Name) ?? "null").GetHashCode()}_{(UseTransparency ? "1" : "0")}_{(ReceiveShadow ? "1" : "0")}_{(IsUnlit ? "1" : "0")}_{(UseLinearTextureSampling ? "1" : "0")}";
 
         internal Material Clone()
         {
@@ -56,12 +58,13 @@ namespace Pokemon3D.Rendering.Data
 
         public int GetLightingTypeFlags(RenderSettings renderSettings)
         {
-            int flags = 0;
+            var flags = 0;
 
             if (!IsUnlit) flags |= LightTechniqueFlag.Lit;
             if (ReceiveShadow && renderSettings.EnableShadows) flags |= LightTechniqueFlag.ReceiveShadows;
             if (ReceiveShadow && renderSettings.EnableShadows && renderSettings.EnableSoftShadows) flags |= LightTechniqueFlag.SoftShadows;
             if (DiffuseTexture != null) flags |= LightTechniqueFlag.UseTexture;
+            if (UseLinearTextureSampling) flags |= LightTechniqueFlag.LinearTextureSampling;
 
             return flags;
         }

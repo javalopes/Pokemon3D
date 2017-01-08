@@ -41,7 +41,9 @@ namespace Pokemon3D.Rendering
             {
                 CastShadow = false,
                 ReceiveShadow = false,
-                UseTransparency = false
+                UseTransparency = false,
+                UseLinearTextureSampling = true,
+                IsUnlit = true
             };
             Scale = 1.0f;
         }

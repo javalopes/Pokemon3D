@@ -172,9 +172,13 @@ namespace Pokemon3D.Rendering.Compositor
                 _device.DepthStencilState = DepthStencilState.None;
                 _device.BlendState = BlendState.Opaque;
 
-                //todo: repair
-                //_effectProcessor.ActivateLightingTechnique(LightTechniqueFlag.UseTexture | LightTechniqueFlag.LinearTextureSampling);
-                //RenderQueue.DrawElement(camera, skybox.DrawableElement, _effectProcessor, 0.0f);
+                _effectProcessor.World = skybox.DrawableElement.GetWorldMatrix(camera.GlobalEulerAngles.Y);
+                var passes = _effectProcessor.ApplyByMaterial(skybox.DrawableElement.Material, RenderSettings);
+                for (var i = 0; i < passes.Count; i++)
+                {
+                    passes[i].Apply();
+                    skybox.DrawableElement.Mesh.Draw();
+                }
 
                 _device.DepthStencilState = DepthStencilState.Default;
             }
