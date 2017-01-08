@@ -35,7 +35,8 @@ namespace Pokemon3D.Entities.System.Components
                 DiffuseTexture = _renderTarget,
                 ReceiveShadow = false,
                 UseTransparency = false,
-                IsUnlit = true
+                IsUnlit = true,
+                UseLinearTextureSampling = true
             };
         }
 
