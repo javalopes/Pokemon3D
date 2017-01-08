@@ -55,6 +55,7 @@ namespace Pokemon3D.Entities
             overlayCamera.Camera.ClearColor = null;
             overlayCamera.Camera.DepthClear = 1.0f;
             overlayCamera.Camera.DepthStencilState = DepthStencilState.Default;
+            overlayCamera.Camera.UseCulling = false;
         }
 
         public PlayerMovementMode MovementMode

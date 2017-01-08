@@ -25,6 +25,7 @@ namespace Pokemon3D.Rendering
         public float? DepthClear { get; set; }
         public Skybox Skybox { get; set; }
         public DepthStencilState DepthStencilState { get; set; }
+        public bool UseCulling { get; set; }
                      
         internal Camera(Viewport viewport, int cameraMask)
         {
@@ -38,6 +39,7 @@ namespace Pokemon3D.Rendering
             Frustum = new BoundingFrustum(Matrix.Identity);
             ClearColor = Color.CornflowerBlue;
             IsActive = true;
+            UseCulling = true;
         }
 
         public void Update()

@@ -52,9 +52,9 @@ namespace Pokemon3D.Rendering.Compositor
             
         }
 
-        private bool IsValidForRendering(Camera camera, DrawableElement element)
+        private static bool IsValidForRendering(Camera camera, DrawableElement element)
         {
-            return element.IsActive && camera.Frustum.Contains(element.BoundingBox) != ContainmentType.Disjoint;
+            return element.IsActive && (!camera.UseCulling || camera.Frustum.Contains(element.BoundingBox) != ContainmentType.Disjoint);
         }
 
         protected virtual EffectPassCollection GetPasses(Material material, RenderSettings renderSettings)
