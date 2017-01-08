@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -65,9 +66,12 @@ namespace Pokemon3D.Screens
             set { _ambientLight.SetValue(value); }
         }
 
+        public Effect PostProcessingEffect { get; }
+
         public WindowsEffectProcessor(ContentManager content)
         {
             _basicEffect = content.Load<Effect>(ResourceNames.Effects.BasicEffect);
+            PostProcessingEffect = content.Load<Effect>(ResourceNames.Effects.PostProcessing);
 
             _shadowCasterTechnique = _basicEffect.Techniques["ShadowCaster"];
             _shadowCasterTransparentTechnique = _basicEffect.Techniques["ShadowCasterTransparent"];

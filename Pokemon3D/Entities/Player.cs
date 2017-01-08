@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.Entities.System.Components;
@@ -15,7 +16,7 @@ namespace Pokemon3D.Entities
     {
         private readonly PlayerControllerComponent _controllerComponent;
 
-        public Camera Camera { get; private set; }
+        public Camera Camera { get; }
 
         public Player(World world)
         {
@@ -50,12 +51,30 @@ namespace Pokemon3D.Entities
             cameraComponent.FarClipDistance = 50.0f;
             Camera = cameraComponent.Camera;
 
+            var defaultPostProcessors = GameInstance.GetService<SceneRenderer>().DefaultPostProcessors;
+            Camera.PostProcess.Add(defaultPostProcessors.HorizontalBlur);
+            Camera.PostProcess.Add(defaultPostProcessors.VerticalBlur);
+
             var overlayCamera = cameraEntity.AddComponent(new CameraEntityComponent(cameraEntity, null, CameraMasks.UiOverlays));
             overlayCamera.Camera.FarClipDistance = 100.0f;
             overlayCamera.Camera.ClearColor = null;
             overlayCamera.Camera.DepthClear = 1.0f;
             overlayCamera.Camera.DepthStencilState = DepthStencilState.Default;
             overlayCamera.Camera.UseCulling = false;
+
+            GameInstance.GameEventRaised += GameInstanceOnGameEventRaised;
+        }
+
+        private void GameInstanceOnGameEventRaised(GameEvent gameEvent)
+        {
+            if (gameEvent.Name == GameEvent.InventoryOpenend)
+            {
+                Camera.PostProcess.IsActive = true;
+            }
+            else if (gameEvent.Name == GameEvent.InventoryClosed)
+            {
+                Camera.PostProcess.IsActive = false;
+            }
         }
 
         public PlayerMovementMode MovementMode

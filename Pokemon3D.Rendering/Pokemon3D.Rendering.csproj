@@ -62,8 +62,14 @@
     <Compile Include="Compositor\EffectProcessor.cs" />
     <Compile Include="Compositor\ForwardSceneRenderer.cs" />
     <Compile Include="Compositor\LightTechniqueFlag.cs" />
+    <Compile Include="Compositor\PostProcessing\HorizontalBlurEffect.cs" />
+    <Compile Include="Compositor\PostProcessing\PostProcess.cs" />
+    <Compile Include="Compositor\PostProcessing\PostProcessEffect.cs" />
+    <Compile Include="Compositor\PostProcessing\PostProcessEffectBase.cs" />
+    <Compile Include="Compositor\PostProcessing\VerticalBlurEffect.cs" />
     <Compile Include="Compositor\RenderQueue.cs" />
     <Compile Include="Compositor\ShadowCasterRenderQueue.cs" />
+    <Compile Include="DefaultPostProcessors.cs" />
     <Compile Include="RenderSettings.cs" />
     <Compile Include="Compositor\RenderStatistics.cs" />
     <Compile Include="Compositor\SceneRendererFactory.cs" />

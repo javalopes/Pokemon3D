@@ -75,7 +75,7 @@ namespace Pokemon3D.GameCore
             Exiting += OnGameExit;
             Window.ClientSizeChanged += OnClientSizeChanged;
 
-            ScreenBounds = Window.ClientBounds;
+            ScreenBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
             Instance = this;
 
             Content.RootDirectory = "Content";
@@ -262,7 +262,7 @@ namespace Pokemon3D.GameCore
         private void OnClientSizeChanged(object sender, EventArgs e)
         {
             var old = ScreenBounds;
-            ScreenBounds = Window.ClientBounds;
+            ScreenBounds = new Rectangle(0,0,Window.ClientBounds.Width, Window.ClientBounds.Height);
             if (WindowSizeChanged != null && old != Window.ClientBounds)
             {
                 WindowSizeChanged(this, EventArgs.Empty);

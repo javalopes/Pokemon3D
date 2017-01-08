@@ -48,5 +48,7 @@ namespace Pokemon3D.Rendering.Compositor
         EffectPassCollection ApplyByMaterial(Material material, RenderSettings renderSettings);
 
         EffectPassCollection GetShadowDepthPass(Material material);
+
+        Effect PostProcessingEffect { get; }
     }
 }

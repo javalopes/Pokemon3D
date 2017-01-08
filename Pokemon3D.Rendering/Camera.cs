@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Rendering.Compositor;
+using Pokemon3D.Rendering.Compositor.PostProcessing;
 
 namespace Pokemon3D.Rendering
 {
@@ -26,6 +28,7 @@ namespace Pokemon3D.Rendering
         public Skybox Skybox { get; set; }
         public DepthStencilState DepthStencilState { get; set; }
         public bool UseCulling { get; set; }
+        public PostProcess PostProcess { get; }
                      
         internal Camera(Viewport viewport, int cameraMask)
         {
@@ -40,6 +43,7 @@ namespace Pokemon3D.Rendering
             ClearColor = Color.CornflowerBlue;
             IsActive = true;
             UseCulling = true;
+            PostProcess = new PostProcess();
         }
 
         public void Update()

@@ -13,33 +13,31 @@ namespace Pokemon3D.Rendering.Compositor
     {
         private readonly object _lockObject = new object();
 
-        private readonly List<Light> _allLights; 
-        private readonly List<DrawableElement> _initializingDrawables;
-        private readonly List<DrawableElement> _allDrawables;
-        private readonly List<Camera> _allCameras;
+        private readonly List<Light> _allLights = new List<Light>();
+        private readonly List<DrawableElement> _initializingDrawables = new List<DrawableElement>();
+        private readonly List<DrawableElement> _allDrawables = new List<DrawableElement>();
+        private readonly List<Camera> _allCameras = new List<Camera>();
+        private readonly List<DrawableElement> _allShadowCasters = new List<DrawableElement>();
 
         private readonly GraphicsDevice _device;
         private readonly EffectProcessor _effectProcessor;
+        private readonly SpriteBatch _spriteBatch;
         
         private readonly List<RenderQueue> _renderQueues = new List<RenderQueue>();
 
-        private readonly List<DrawableElement> _allShadowCasters = new List<DrawableElement>();
         private readonly RenderQueue _shadowCasterQueueSolid;
         private readonly RenderQueue _shadowCasterQueueTransparent;
         private readonly RenderQueue _solidObjectsQueue;
         private readonly RenderQueue _transparentObjectsQueue;
 
-        public RenderSettings RenderSettings { get; }
-
+        private readonly RenderTarget2D _cameraOutputRenderTarget;
+        
         public ForwardSceneRenderer(GameContext context, EffectProcessor effectProcessor, RenderSettings settings) : base(context)
         {
             _device = context.GetService<GraphicsDevice>();
             _effectProcessor = effectProcessor;
+            _spriteBatch = new SpriteBatch(_device);
             RenderSettings = settings;
-            _allDrawables = new List<DrawableElement>();
-            _initializingDrawables = new List<DrawableElement>();
-            _allCameras = new List<Camera>();
-            _allLights = new List<Light>();
 
             _shadowCasterQueueSolid = new ShadowCasterRenderQueue(context, _effectProcessor)
             {
@@ -72,13 +70,22 @@ namespace Pokemon3D.Rendering.Compositor
                 RasterizerState = RasterizerState.CullCounterClockwise,
                 SortNodesBackToFront = true
             });
+            
+            _cameraOutputRenderTarget = new RenderTarget2D(context.GetService<GraphicsDevice>(),
+                                                           context.ScreenBounds.Width, 
+                                                           context.ScreenBounds.Height, 
+                                                           false, 
+                                                           SurfaceFormat.Color, 
+                                                           DepthFormat.Depth24);
+
+            DefaultPostProcessors = new DefaultPostProcessors(context, _effectProcessor);
         }
 
-        private RenderQueue AddRenderQueue(RenderQueue renderQueue)
-        {
-            _renderQueues.Add(renderQueue);
-            return renderQueue;
-        }
+        public RenderSettings RenderSettings { get; }
+
+        public DefaultPostProcessors DefaultPostProcessors { get; }
+
+        public Vector4 AmbientLight { get; set; }
 
         public void Draw()
         {
@@ -95,10 +102,100 @@ namespace Pokemon3D.Rendering.Compositor
                     if (camera.IsActive) DrawSceneForCamera(camera);
                 }
             }
-            
+
             RenderStatistics.Instance.EndFrame();
         }
+        
+        public DrawableElement CreateDrawableElement(bool initializing, int cameraMask = 1)
+        {
+            DrawableElement drawableElement;
 
+            lock (_lockObject)
+            {
+                drawableElement = new DrawableElement(cameraMask, initializing, OnEndInitializing);
+
+                if (initializing)
+                {
+                    _initializingDrawables.Add(drawableElement);
+                }
+                else
+                {
+                    _allDrawables.Add(drawableElement);
+                }
+            }
+
+            return drawableElement;
+        }
+
+        public Light CreateDirectionalLight(Vector3 direction)
+        {
+            Light light;
+            lock (_lockObject)
+            {
+                light = new Light
+                {
+                    Direction = direction,
+                    Type = LightType.Directional,
+                    ShadowMap = new RenderTarget2D(_device, RenderSettings.ShadowMapSize, RenderSettings.ShadowMapSize, false, SurfaceFormat.Single, DepthFormat.Depth24)
+                };
+                _allLights.Add(light);
+            }
+            return light;
+        }
+
+        public void RemoveDrawableElement(DrawableElement element)
+        {
+            lock (_lockObject)
+            {
+                if (!_initializingDrawables.Remove(element)) _allDrawables.Remove(element);
+            }
+        }
+
+        public Camera CreateCamera(int cameraMask = 1)
+        {
+            var camera = new Camera(_device.Viewport, cameraMask);
+            lock (_lockObject)
+            {
+                _allCameras.Add(camera);
+            }
+            return camera;
+        }
+
+        public void RemoveCamera(Camera camera)
+        {
+            lock (_lockObject)
+            {
+                _allCameras.Remove(camera);
+            }
+        }
+        
+        public void LateDebugDraw3D()
+        {
+            //if (RenderSettings.EnableShadows) DrawDebugShadowMap(GameContext.GetService<SpriteBatch>(), new Rectangle(0, 0, 128, 128));
+        }
+
+        public void RemoveLight(Light light)
+        {
+            lock (_lockObject)
+            {
+                _allLights.Remove(light);
+            }
+        }
+
+        public void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize)
+        {
+            foreach (var camera in _allCameras)
+            {
+                camera.OnViewSizeChanged(oldSize, newSize);
+            }
+        }
+        
+        private RenderQueue AddRenderQueue(RenderQueue renderQueue)
+        {
+            _renderQueues.Add(renderQueue);
+            return renderQueue;
+        }
+        
         private void DrawSceneForCamera(Camera camera)
         {
             _device.Viewport = camera.Viewport;
@@ -107,6 +204,13 @@ namespace Pokemon3D.Rendering.Compositor
             if (light != null)
             {
                 DrawShadowCastersToDepthmap(light, camera);
+            }
+
+            RenderTargetBinding[] renderTargetBindings = null;
+            if (camera.PostProcess.ShouldProcess)
+            {
+                renderTargetBindings = _device.GetRenderTargets();
+                _device.SetRenderTarget(_cameraOutputRenderTarget);
             }
 
             HandleCameraClearOrSkyPass(camera);
@@ -124,6 +228,19 @@ namespace Pokemon3D.Rendering.Compositor
                 var renderQueue = _renderQueues[i];
                 if (!renderQueue.IsEnabled) continue;
                 renderQueue.Draw(camera, RenderSettings, camera.GlobalEulerAngles.Y);
+            }
+
+            if (camera.PostProcess.ShouldProcess)
+            {
+                var invScreenSize = new Vector2(1.0f / GameContext.ScreenBounds.Width, 1.0f / GameContext.ScreenBounds.Height);
+
+                var resultTarget = camera.PostProcess.ProcessChain(_spriteBatch, invScreenSize, _cameraOutputRenderTarget);
+
+                _device.SetRenderTargets(renderTargetBindings);
+                
+                _spriteBatch.Begin();
+                _spriteBatch.Draw(resultTarget, GameContext.ScreenBounds, Color.White);
+                _spriteBatch.End();
             }
         }
 
@@ -220,51 +337,7 @@ namespace Pokemon3D.Rendering.Compositor
             }
         }
 
-        public DrawableElement CreateDrawableElement(bool initializing, int cameraMask = 1)
-        {
-            DrawableElement drawableElement;
-
-            lock (_lockObject)
-            {
-                drawableElement = new DrawableElement(cameraMask, initializing, OnEndInitializing);
-
-                if (initializing)
-                {
-                    _initializingDrawables.Add(drawableElement);
-                }
-                else
-                {
-                    _allDrawables.Add(drawableElement);
-                }
-            }
-
-            return drawableElement;
-        }
-
-        public Light CreateDirectionalLight(Vector3 direction)
-        {
-            Light light;
-            lock (_lockObject)
-            {
-                light = new Light
-                {
-                    Direction = direction,
-                    Type = LightType.Directional,
-                    ShadowMap = new RenderTarget2D(_device, RenderSettings.ShadowMapSize, RenderSettings.ShadowMapSize, false, SurfaceFormat.Single, DepthFormat.Depth24)
-                };
-                _allLights.Add(light);
-            }
-            return light;
-        }
-
-        public void RemoveDrawableElement(DrawableElement element)
-        {
-            lock (_lockObject)
-            {
-                if (!_initializingDrawables.Remove(element)) _allDrawables.Remove(element);
-            }
-        }
-
+       
         private void OnEndInitializing(DrawableElement element)
         {
             lock (_lockObject)
@@ -273,50 +346,6 @@ namespace Pokemon3D.Rendering.Compositor
                 {
                     _allDrawables.Add(element);
                 }
-            }
-        }
-
-        public Camera CreateCamera(int cameraMask = 1)
-        {
-            var camera = new Camera(_device.Viewport, cameraMask);
-            lock (_lockObject)
-            {
-                _allCameras.Add(camera);
-            }
-            return camera;
-        }
-
-        public void RemoveCamera(Camera camera)
-        {
-            lock (_lockObject)
-            {
-                _allCameras.Remove(camera);
-            }
-        }
-
-        /// <summary>
-        /// Ambient Light for all Objects. Default is white.
-        /// </summary>
-        public Vector4 AmbientLight { get; set; }
-
-        public void LateDebugDraw3D()
-        {
-            //if (RenderSettings.EnableShadows) DrawDebugShadowMap(GameContext.GetService<SpriteBatch>(), new Rectangle(0, 0, 128, 128));
-        }
-
-        public void RemoveLight(Light light)
-        {
-            lock (_lockObject)
-            {
-                _allLights.Remove(light);
-            }
-        }
-
-        public void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize)
-        {
-            foreach (var camera in _allCameras)
-            {
-                camera.OnViewSizeChanged(oldSize, newSize);
             }
         }
     }
