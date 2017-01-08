@@ -19,43 +19,29 @@ namespace Pokemon3D.Rendering.Compositor
         private readonly List<Camera> _allCameras;
 
         private readonly GraphicsDevice _device;
-        private readonly SceneEffect _sceneEffect;
-        private RenderTargetBinding[] _oldBindings;
+        private readonly EffectProcessor _effectProcessor;
+        
+        private readonly List<RenderQueue> _renderQueues = new List<RenderQueue>();
 
-        private readonly List<DrawableElement> _solidObjects = new List<DrawableElement>();
-        private readonly List<DrawableElement> _transparentObjects = new List<DrawableElement>();
-        private readonly List<DrawableElement> _shadowCastersObjectsSolid = new List<DrawableElement>();
-        private readonly List<DrawableElement> _shadowCastersObjectsTransparent = new List<DrawableElement>();
-        private readonly List<PostProcessingStep> _postProcessingSteps = new List<PostProcessingStep>();
-
-        private RenderTarget2D _activeInputSource;
-        private RenderTarget2D _activeRenderTarget;
-        private readonly RenderTarget2D _directionalLightShadowMap;
-
-        private readonly List<RenderQueue> _renderQueues;
+        private readonly List<DrawableElement> _allShadowCasters = new List<DrawableElement>();
         private readonly RenderQueue _shadowCasterQueueSolid;
         private readonly RenderQueue _shadowCasterQueueTransparent;
+        private readonly RenderQueue _solidObjectsQueue;
+        private readonly RenderQueue _transparentObjectsQueue;
 
         public RenderSettings RenderSettings { get; }
 
-        public ForwardSceneRenderer(GameContext context, SceneEffect effect, RenderSettings settings) : base(context)
+        public ForwardSceneRenderer(GameContext context, EffectProcessor effectProcessor, RenderSettings settings) : base(context)
         {
             _device = context.GetService<GraphicsDevice>();
-            _sceneEffect = effect;
+            _effectProcessor = effectProcessor;
             RenderSettings = settings;
             _allDrawables = new List<DrawableElement>();
             _initializingDrawables = new List<DrawableElement>();
             _allCameras = new List<Camera>();
             _allLights = new List<Light>();
 
-            _directionalLightShadowMap = new RenderTarget2D(_device, RenderSettings.ShadowMapSize, RenderSettings.ShadowMapSize, false, SurfaceFormat.Single, DepthFormat.Depth24);
-
-            var width = context.ScreenBounds.Width;
-            var height = context.ScreenBounds.Height;
-            _activeInputSource = new RenderTarget2D(_device, width, height, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
-            _activeRenderTarget = new RenderTarget2D(_device, width, height, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
-
-            _shadowCasterQueueSolid = new RenderQueue(context, HandleShadowCasterObjects, GetShadowCasterSceneNodes, _sceneEffect)
+            _shadowCasterQueueSolid = new ShadowCasterRenderQueue(context, _effectProcessor)
             {
                 BlendState = BlendState.Opaque,
                 DepthStencilState = DepthStencilState.Default,
@@ -63,7 +49,7 @@ namespace Pokemon3D.Rendering.Compositor
                 IsEnabled = true,
                 SortNodesBackToFront = false,
             };
-            _shadowCasterQueueTransparent = new RenderQueue(context, HandleShadowCasterObjects, GetShadowCasterSceneNodesTransparent, _sceneEffect)
+            _shadowCasterQueueTransparent = new ShadowCasterRenderQueue(context, _effectProcessor)
             {
                 BlendState = BlendState.AlphaBlend,
                 DepthStencilState = DepthStencilState.DepthRead,
@@ -72,61 +58,36 @@ namespace Pokemon3D.Rendering.Compositor
                 SortNodesBackToFront = true,
             };
 
-            _renderQueues = new List<RenderQueue>
+            _solidObjectsQueue = AddRenderQueue(new RenderQueue(context, _effectProcessor)
             {
-                new RenderQueue(context, HandleSolidObjects, GetSolidObjects, _sceneEffect)
-                {
-                    DepthStencilState = DepthStencilState.Default,
-                    BlendState = BlendState.Opaque,
-                    RasterizerState = RasterizerState.CullCounterClockwise,
-                },
-                new RenderQueue(context, HandleEffectTransparentObjects, GetTransparentObjects, _sceneEffect)
-                {
-                    DepthStencilState = DepthStencilState.DepthRead,
-                    BlendState = BlendState.AlphaBlend,
-                    RasterizerState = RasterizerState.CullCounterClockwise,
-                    SortNodesBackToFront = true
-                }
-            };
+                DepthStencilState = DepthStencilState.Default,
+                BlendState = BlendState.Opaque,
+                RasterizerState = RasterizerState.CullCounterClockwise,
+            });
+
+            _transparentObjectsQueue = AddRenderQueue(new RenderQueue(context, _effectProcessor)
+            {
+                DepthStencilState = DepthStencilState.DepthRead,
+                BlendState = BlendState.AlphaBlend,
+                RasterizerState = RasterizerState.CullCounterClockwise,
+                SortNodesBackToFront = true
+            });
         }
 
-        private IList<DrawableElement> GetShadowCasterSceneNodesTransparent()
+        private RenderQueue AddRenderQueue(RenderQueue renderQueue)
         {
-            return _shadowCastersObjectsTransparent;
-        }
-
-        private IList<DrawableElement> GetShadowCasterSceneNodes()
-        {
-            return _shadowCastersObjectsSolid;
-        }
-
-        public bool EnablePostProcessing { get; set; }
-
-        private IList<DrawableElement> GetTransparentObjects()
-        {
-            return _transparentObjects;
-        }
-
-        private IList<DrawableElement> GetSolidObjects()
-        {
-            return _solidObjects;
-        }
-        
-        public void AddPostProcessingStep(PostProcessingStep step)
-        {
-            step.Initialize(_sceneEffect.PostProcessingEffect);
-            _postProcessingSteps.Add(step);
+            _renderQueues.Add(renderQueue);
+            return renderQueue;
         }
 
         public void Draw()
         {
             RenderStatistics.Instance.StartFrame();
-            PreparePostProcessing();
 
             lock (_lockObject)
             {
                 UpdateNodeLists();
-                _sceneEffect.AmbientLight = AmbientLight;
+                _effectProcessor.AmbientLight = AmbientLight;
 
                 for (var i = 0; i < _allCameras.Count; i++)
                 {
@@ -134,90 +95,35 @@ namespace Pokemon3D.Rendering.Compositor
                     if (camera.IsActive) DrawSceneForCamera(camera);
                 }
             }
-
-            DoPostProcessing();
+            
             RenderStatistics.Instance.EndFrame();
-        }
-        
-        private void HandleSolidObjects(Data.Material material)
-        {
-            var flags = material.GetLightingTypeFlags(RenderSettings);
-            _sceneEffect.ActivateLightingTechnique(flags);
-        }
-
-        private void HandleEffectTransparentObjects(Data.Material material)
-        {
-            _sceneEffect.ActivateLightingTechnique(LightTechniqueFlag.UseTexture);
-        }
-
-        private void HandleShadowCasterObjects(Data.Material material)
-        {
-            _sceneEffect.ActivateShadowDepthMapPass(material.UseTransparency);
-        }
-
-        private void PreparePostProcessing()
-        {
-            if (!EnablePostProcessing || !_postProcessingSteps.Any()) return;
-
-            _oldBindings = _device.GetRenderTargets();
-            _device.SetRenderTarget(_activeRenderTarget);
-        }
-
-        private void DoPostProcessing()
-        {
-            if (!EnablePostProcessing) return;
-
-            for (var i = 0; i <  _postProcessingSteps.Count; i++)
-            {
-                var temp = _activeRenderTarget;
-                _activeRenderTarget = _activeInputSource;
-                _activeInputSource = temp;
-                _device.SetRenderTarget(_activeRenderTarget);
-
-                _postProcessingSteps[i].Process(GameContext, _activeInputSource, _activeRenderTarget);
-            }
-
-            _device.SetRenderTargets(_oldBindings);
-
-            var spriteBatch = GameContext.GetService<SpriteBatch>();
-            spriteBatch.Begin();
-            spriteBatch.Draw(_activeRenderTarget, Vector2.Zero, Color.White);
-            spriteBatch.End();
-        }
-
-        private void DrawDebugShadowMap(SpriteBatch spriteBatch, Rectangle target)
-        {
-            spriteBatch.Begin(effect: _sceneEffect.ShadowMapDebugEffect);
-            spriteBatch.Draw(_directionalLightShadowMap, target, Color.White);
-            spriteBatch.End();
         }
 
         private void DrawSceneForCamera(Camera camera)
         {
             _device.Viewport = camera.Viewport;
-
             var light = _allLights.FirstOrDefault();
-
-            if (light != null) DrawShadowCastersToDepthmap(light, camera);
-            HandleCameraClearOrSkyPass(camera);
-
-            _sceneEffect.ShadowMap = _directionalLightShadowMap;
-            _sceneEffect.ShadowScale = 1.0f/_directionalLightShadowMap.Width;
-            _sceneEffect.View = camera.ViewMatrix;
-            _sceneEffect.Projection = camera.ProjectionMatrix;
 
             if (light != null)
             {
-                _sceneEffect.LightDirection = light.Direction;
-                _sceneEffect.AmbientIntensity = light.AmbientIntensity;
-                _sceneEffect.DiffuseIntensity = light.DiffuseIntensity;
+                DrawShadowCastersToDepthmap(light, camera);
+            }
+
+            HandleCameraClearOrSkyPass(camera);
+            
+            _effectProcessor.View = camera.ViewMatrix;
+            _effectProcessor.Projection = camera.ProjectionMatrix;
+            
+            if (light != null)
+            {
+                _effectProcessor.SetLights(_allLights);
             }
             
             for (var i = 0; i < _renderQueues.Count; i++)
             {
                 var renderQueue = _renderQueues[i];
                 if (!renderQueue.IsEnabled) continue;
-                renderQueue.Draw(camera, camera.GlobalEulerAngles.Y);
+                renderQueue.Draw(camera, RenderSettings, camera.GlobalEulerAngles.Y);
             }
         }
 
@@ -225,17 +131,17 @@ namespace Pokemon3D.Rendering.Compositor
         {
             if (!RenderSettings.EnableShadows) return;
 
-            light.UpdateLightViewMatrixForCamera(camera, _shadowCastersObjectsSolid);
-            _sceneEffect.ShadowMap = null;
-            _sceneEffect.LightViewProjection = light.LightViewMatrix;
+            //todo: calculating shadow volumne for all visible elements causes performance problems.
+            //todo: improve performance and switch back to _allShadowCasters.
+            light.UpdateLightViewMatrixForCamera(camera, _solidObjectsQueue.Elements);
 
             var oldRenderTargets = _device.GetRenderTargets();
-            _device.SetRenderTarget(_directionalLightShadowMap);
+            _device.SetRenderTarget(light.ShadowMap);
             _device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             
             var angle = (float)Math.Atan2(light.Direction.Z, light.Direction.X) - MathHelper.Pi/4*3;
-            _shadowCasterQueueSolid.Draw(camera, angle);
-           _shadowCasterQueueTransparent.Draw(camera, angle);
+            _shadowCasterQueueSolid.Draw(camera, RenderSettings, angle);
+            _shadowCasterQueueTransparent.Draw(camera, RenderSettings, angle);
 
             _device.SetRenderTargets(oldRenderTargets);
         }
@@ -266,8 +172,9 @@ namespace Pokemon3D.Rendering.Compositor
                 _device.DepthStencilState = DepthStencilState.None;
                 _device.BlendState = BlendState.Opaque;
 
-                _sceneEffect.ActivateLightingTechnique(LightTechniqueFlag.UseTexture | LightTechniqueFlag.LinearTextureSampling);
-                RenderQueue.DrawElement(camera, skybox.DrawableElement, _sceneEffect, 0.0f);
+                //todo: repair
+                //_effectProcessor.ActivateLightingTechnique(LightTechniqueFlag.UseTexture | LightTechniqueFlag.LinearTextureSampling);
+                //RenderQueue.DrawElement(camera, skybox.DrawableElement, _effectProcessor, 0.0f);
 
                 _device.DepthStencilState = DepthStencilState.Default;
             }
@@ -275,10 +182,10 @@ namespace Pokemon3D.Rendering.Compositor
 
         private void UpdateNodeLists()
         {
-            _solidObjects.Clear();
-            _transparentObjects.Clear();
-            _shadowCastersObjectsSolid.Clear();
-            _shadowCastersObjectsTransparent.Clear();
+            _solidObjectsQueue.Elements.Clear();
+            _transparentObjectsQueue.Elements.Clear();
+            _shadowCasterQueueSolid.Elements.Clear();
+            _shadowCasterQueueSolid.Elements.Clear();
 
             for (var i = 0; i < _allDrawables.Count; i++)
             {
@@ -287,23 +194,24 @@ namespace Pokemon3D.Rendering.Compositor
 
                 if (node.Material.CastShadow)
                 {
+                    _allShadowCasters.Add(node);
                     if (node.Material.UseTransparency)
                     {
-                        _shadowCastersObjectsTransparent.Add(node);
+                        _shadowCasterQueueSolid.Elements.Add(node);
                     }
                     else
                     {
-                        _shadowCastersObjectsSolid.Add(node);
+                        _shadowCasterQueueSolid.Elements.Add(node);
                     }
                 }
 
                 if (node.Material.UseTransparency)
                 {
-                    _transparentObjects.Add(node);
+                    _transparentObjectsQueue.Elements.Add(node);
                 }
                 else
                 {
-                    _solidObjects.Add(node);
+                    _solidObjectsQueue.Elements.Add(node);
                 }
             }
         }
@@ -337,7 +245,8 @@ namespace Pokemon3D.Rendering.Compositor
                 light = new Light
                 {
                     Direction = direction,
-                    Type = LightType.Directional
+                    Type = LightType.Directional,
+                    ShadowMap = new RenderTarget2D(_device, RenderSettings.ShadowMapSize, RenderSettings.ShadowMapSize, false, SurfaceFormat.Single, DepthFormat.Depth24)
                 };
                 _allLights.Add(light);
             }
@@ -388,7 +297,7 @@ namespace Pokemon3D.Rendering.Compositor
 
         public void LateDebugDraw3D()
         {
-            if (RenderSettings.EnableShadows) DrawDebugShadowMap(GameContext.GetService<SpriteBatch>(), new Rectangle(0, 0, 128, 128));
+            //if (RenderSettings.EnableShadows) DrawDebugShadowMap(GameContext.GetService<SpriteBatch>(), new Rectangle(0, 0, 128, 128));
         }
 
         public void RemoveLight(Light light)

@@ -1,49 +1,44 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common;
-using Pokemon3D.Rendering.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Pokemon3D.Rendering.Data;
 
 namespace Pokemon3D.Rendering.Compositor
 {
     internal class RenderQueue : GameContextObject
     {
         private readonly GraphicsDevice _device;
-        private readonly Action<Material> _handleEffect;
-        private readonly Func<IList<DrawableElement>> _getDrawableElements;
 
-        protected SceneEffect SceneEffect { get; }
+        protected EffectProcessor EffectProcessor { get; }
         public BlendState BlendState { get; set; }
         public RasterizerState RasterizerState { get; set; }
         public DepthStencilState DepthStencilState { get; set; }
         public bool SortNodesBackToFront { get; set; }
+
+        public List<DrawableElement> Elements { get; }
+            
         public bool IsEnabled { get; set; }
 
-        public RenderQueue(GameContext context, 
-                           Action<Material> handleEffect,
-                           Func<IList<DrawableElement>> getDrawableElements,
-                           SceneEffect sceneEffect) : base(context)
+        public RenderQueue(GameContext context, EffectProcessor effectProcessor) : base(context)
         {
-            _handleEffect = handleEffect;
-            _getDrawableElements = getDrawableElements;
-            SceneEffect = sceneEffect;
+            EffectProcessor = effectProcessor;
             IsEnabled = true;
             _device = context.GetService<GraphicsDevice>();
+            Elements = new List<DrawableElement>();
         }
 
-        public void Draw(Camera camera, float yRotationForBillboards)
-        {
-            var drawableElements = _getDrawableElements();
-            if (drawableElements.Count == 0) return;
+        public void Draw(Camera camera, RenderSettings renderSettings, float yRotationForBillboards)
+        { 
+            if (Elements.Count == 0) return;
 
             _device.BlendState = BlendState;
             _device.DepthStencilState = camera.DepthStencilState ?? DepthStencilState;
             _device.RasterizerState = RasterizerState;
             
-            var nodes = SortNodesBackToFront ? drawableElements.OrderByDescending(n => (camera.GlobalPosition - n.GlobalPosition).LengthSquared()).ToList()
-                                             : drawableElements;
+            var nodes = SortNodesBackToFront ? Elements.OrderByDescending(n => (camera.GlobalPosition - n.GlobalPosition).LengthSquared()).ToList()
+                                             : Elements;
             
             for (var i = 0; i < nodes.Count; i++)
             {
@@ -52,34 +47,31 @@ namespace Pokemon3D.Rendering.Compositor
                 if ((element.CameraMask & camera.CameraMask) != camera.CameraMask) continue;
                 if (!IsValidForRendering(camera, element)) continue;
 
-                _handleEffect(element.Material);
-                DrawElement(camera, element, yRotationForBillboards);
+                DrawElement(camera, element, EffectProcessor, renderSettings, yRotationForBillboards);
             }
             
         }
 
-        protected bool IsValidForRendering(Camera camera, DrawableElement element)
+        private bool IsValidForRendering(Camera camera, DrawableElement element)
         {
             return element.IsActive && camera.Frustum.Contains(element.BoundingBox) != ContainmentType.Disjoint;
         }
 
-        private void DrawElement(Camera camera, DrawableElement element, float yRotationForBillboards)
+        protected virtual EffectPassCollection GetPasses(Material material, RenderSettings renderSettings)
         {
-            DrawElement(camera, element, SceneEffect, yRotationForBillboards);
+            return EffectProcessor.ApplyByMaterial(material, renderSettings);
         }
 
-        internal static void DrawElement(Camera camera, DrawableElement element, SceneEffect sceneEffect, float yRotationForBillboards)
+        private void DrawElement(Camera camera, DrawableElement element, EffectProcessor effectProcessor, RenderSettings renderSettings, float yRotationForBillboards)
         {
-            sceneEffect.World = element.GetWorldMatrix(camera.GlobalEulerAngles.Y);
-            sceneEffect.WorldLight = element.GetWorldMatrix(yRotationForBillboards);
-            sceneEffect.DiffuseTexture = element.Material.DiffuseTexture;
-            sceneEffect.TexcoordScale = element.Material.TexcoordScale;
-            sceneEffect.TexcoordOffset = element.Material.TexcoordOffset;
-            sceneEffect.MaterialColor = element.Material.Color;
+            effectProcessor.World = element.GetWorldMatrix(camera.GlobalEulerAngles.Y);
+            effectProcessor.WorldLight = element.GetWorldMatrix(yRotationForBillboards);
 
-            for (var i = 0; i < sceneEffect.CurrentTechniquePasses.Count; i++)
+            var passes = GetPasses(element.Material, renderSettings);
+
+            for (var i = 0; i < passes.Count; i++)
             {
-                sceneEffect.CurrentTechniquePasses[i].Apply();
+                passes[i].Apply();
                 element.Mesh.Draw();
             }
         }

@@ -373,6 +373,14 @@ struct UnlitOutputVS
 	float3 Normal   : TEXCOORD1;
 };
 
+struct UnlitShadowReceiverOutput
+{
+	float4 Position : POSITION0;
+	float2 TexCoord : TEXCOORD0;
+	float3 Normal   : TEXCOORD1;
+	float4 LightPosition : TEXCOORD2;
+};
+
 UnlitOutputVS UnlitVS(UnlitInputVS input)
 {
 	UnlitOutputVS output;
@@ -382,6 +390,22 @@ UnlitOutputVS UnlitVS(UnlitInputVS input)
 	output.Position = mul(viewPosition, Projection);
 	output.Normal = mul(input.Normal, (float3x3)World);
 	output.TexCoord = TransformTexcoord(input.TexCoord);
+
+	return output;
+}
+
+UnlitShadowReceiverOutput UnlitShadowReceiverVS(UnlitInputVS input)
+{
+	UnlitShadowReceiverOutput output;
+
+	float4 worldPosition = mul(input.Position, World);
+	float4 viewPosition = mul(worldPosition, View);
+	output.Position = mul(viewPosition, Projection);
+	output.Normal = mul(input.Normal, (float3x3)World);
+	output.TexCoord = TransformTexcoord(input.TexCoord);
+
+	float4 lightWorldPos = mul(input.Position, WorldLight);
+	output.LightPosition = mul(lightWorldPos, LightViewProjection);
 
 	return output;
 }
@@ -401,6 +425,26 @@ float4 UnlitPSLinearSampled(UnlitOutputVS input) : COLOR0
 	return tex2D(LinearSampler, input.TexCoord);
 }
 
+float4 UnlitLitShadowReceiverPS(UnlitShadowReceiverOutput input) : COLOR0
+{
+	float shadowFactor = CalculateShadowFactor(input.LightPosition);
+	float4 lightColor = CalculateAmbientDiffuseLighting(input.Normal, LightDirection, shadowFactor);
+	float4 colorFromTexture = tex2D(DiffuseSampler, input.TexCoord);
+
+	return ModulatePreserveAlpha(colorFromTexture, lightColor);
+}
+
+float4 UnlitLitShadowReceiverPCFPS(UnlitShadowReceiverOutput input) : COLOR0
+{
+	float shadowFactor = CalculateShadowFactorPCF(input.LightPosition);
+	float4 lightColor = CalculateAmbientDiffuseLighting(input.Normal, LightDirection, shadowFactor);
+	float4 colorFromTexture = tex2D(DiffuseSampler, input.TexCoord);
+
+	return ModulatePreserveAlpha(colorFromTexture, lightColor);
+}
+
 TECHNIQUE(Unlit, UnlitVS, UnlitPS)
+TECHNIQUE(UnlitShadowReceiver, UnlitShadowReceiverVS, UnlitLitShadowReceiverPS)
+TECHNIQUE(UnlitShadowReceiverPCF, UnlitShadowReceiverVS, UnlitLitShadowReceiverPCFPS)
 TECHNIQUE(UnlitNoTexture, UnlitVS, UnlitNoTexturePS)
 TECHNIQUE(UnlitLinearSampled, UnlitVS, UnlitPSLinearSampled)

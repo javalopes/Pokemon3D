@@ -81,11 +81,6 @@ namespace Pokemon3D.Screens.GameModeLoading
 
         private void StartCreateNewGame()
         {
-            var renderer = GameInstance.GetService<SceneRenderer>();
-            renderer.AddPostProcessingStep(new HorizontalBlurPostProcessingStep());
-            renderer.AddPostProcessingStep(new VerticalBlurPostProcessingStep());
-            renderer.EnablePostProcessing = false;
-
             var gameModeManager = GameInstance.GetService<GameModeManager>();
             var gameModes = gameModeManager.GetGameModeInfos();
             gameModeManager.LoadAndSetGameMode(gameModes.First(), GameInstance);

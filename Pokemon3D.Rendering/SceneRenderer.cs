@@ -1,14 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using Pokemon3D.Rendering.Compositor;
 
 namespace Pokemon3D.Rendering
 {
     public interface SceneRenderer
     {
-        bool EnablePostProcessing { get; set; }
-
-        void AddPostProcessingStep(PostProcessingStep step);
-
         void Draw();
 
         RenderSettings RenderSettings { get; }

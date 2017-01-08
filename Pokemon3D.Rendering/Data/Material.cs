@@ -54,7 +54,7 @@ namespace Pokemon3D.Rendering.Data
             };
         }
 
-        internal int GetLightingTypeFlags(RenderSettings renderSettings)
+        public int GetLightingTypeFlags(RenderSettings renderSettings)
         {
             int flags = 0;
 

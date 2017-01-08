@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Rendering
 {
@@ -53,6 +54,8 @@ namespace Pokemon3D.Rendering
             AmbientIntensity = 0.1f;
             DiffuseIntensity = 0.9f;
         }
+
+        public RenderTarget2D ShadowMap { get; set; }
 
         /// <summary>
         /// Calculates the Viewprojection Matrix of light to draw shadow map. This depends on Light Type.

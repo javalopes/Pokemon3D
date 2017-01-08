@@ -112,7 +112,7 @@ namespace Pokemon3D.GameCore
 
             RegisterService(Window);
             RegisterService(GraphicsDevice);
-            _renderer = RegisterService(SceneRendererFactory.Create(this, new WindowsSceneEffect(Content), renderSettings));
+            _renderer = RegisterService(SceneRendererFactory.Create(this, new WindowsEffectProcessor(Content), renderSettings));
             RegisterService(new GameModeManager());
             _spriteBatch = RegisterService(new SpriteBatch(GraphicsDevice));
             _inputSystem = RegisterService(new InputSystem());

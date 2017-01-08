@@ -29,7 +29,8 @@ namespace Pokemon3D.Entities
                 DiffuseTexture = diffuseTexture,
                 UseTransparency = true,
                 TexcoordScale = diffuseTexture.GetTexcoordsFromPixelCoords(32, 32),
-                IsUnlit = true
+                IsUnlit = true,
+                ReceiveShadow = false
             };
             
             playerEntity.AddComponent(new ModelEntityComponent(playerEntity, mesh, material, true));
