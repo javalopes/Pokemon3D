@@ -123,347 +123,102 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
             Assert.That(((SNumber)result).Value, Is.EqualTo(expectedResult));
         }
 
-        [TestFixture]
-        public class LastIndexOfTest
+        [TestCase("str.lastIndexOf('');", "Hello World Hello World", -1)]
+        [TestCase("str.lastIndexOf('Hello');", "", -1)]
+        [TestCase("str.lastIndexOf('World');", "Hello World Hello World", 18)]
+        [TestCase("str.lastIndexOf('something');", "Hello World Hello World", -1)]
+        public void LastIndexOf(string function, string input, double expectedResult)
         {
-            [Test]
-            public void LastIndexOfEmptyString()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World Hello World'); str.lastIndexOf('');");
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
 
-                Assert.IsTrue(result is SNumber);
-                Assert.AreEqual(((SNumber)result).Value, -1);
-            }
-
-            [Test]
-            public void LastIndexOfOnEmptyString()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String(''); str.lastIndexOf('Hello');");
-
-                Assert.IsTrue(result is SNumber);
-                Assert.AreEqual(((SNumber)result).Value, -1);
-            }
-
-            [Test]
-            public void LastIndexOfPositive()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World Hello World'); str.lastIndexOf('World');");
-
-                Assert.IsTrue(result is SNumber);
-                Assert.AreEqual(((SNumber)result).Value, 18);
-            }
-
-            [Test]
-            public void LastIndexOfNegative()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World Hello World'); str.lastIndexOf('something');");
-
-                Assert.IsTrue(result is SNumber);
-                Assert.AreEqual(((SNumber)result).Value, -1);
-            }
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(expectedResult));
         }
 
-        [TestFixture]
-        public class StartsWithTest
+        [TestCase("str.startsWith('Hello');", "Hello World", true)]
+        [TestCase("str.startsWith('World');", "Hello World", false)]
+        [TestCase("str.startsWith('');", "Hello World", false)]
+        [TestCase("str.startsWith('');", "", true)]
+        public void StartsWith(string function, string input, bool expectedResult)
         {
-            [Test]
-            public void StartsWithPositive()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.startsWith('Hello');");
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
 
-                Assert.IsTrue(result is SBool);
-                Assert.AreEqual(((SBool)result).Value, true);
-            }
-
-            [Test]
-            public void StartsWithNegative()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.startsWith('World');");
-
-                Assert.IsTrue(result is SBool);
-                Assert.AreEqual(((SBool)result).Value, false);
-            }
-
-            [Test]
-            public void StartsWithEmptyString()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.startsWith('');");
-
-                Assert.IsTrue(result is SBool);
-                Assert.AreEqual(((SBool)result).Value, false);
-            }
-
-            [Test]
-            public void StartsWithEmptyStringOnEmptyString()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String(''); str.startsWith('');");
-
-                Assert.IsTrue(result is SBool);
-                Assert.AreEqual(((SBool)result).Value, true);
-            }
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.EqualTo(expectedResult));
         }
 
-        [TestFixture]
-        public class EndsWithTest
+        [TestCase("str.endsWith('World');", "Hello World", true)]
+        [TestCase("str.endsWith('Hello');", "Hello World", false)]
+        [TestCase("str.endsWith('');", "Hello World", false)]
+        [TestCase("str.endsWith('');", "", true)]
+        public void EndsWith(string function, string input, bool expectedResult)
         {
-            [Test]
-            public void EndsWithPositive()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.endsWith('World');");
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
 
-                Assert.IsTrue(result is SBool);
-                Assert.AreEqual(((SBool)result).Value, true);
-            }
-
-            [Test]
-            public void EndsWithNegative()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.endsWith('Hello');");
-
-                Assert.IsTrue(result is SBool);
-                Assert.AreEqual(((SBool)result).Value, false);
-            }
-
-            [Test]
-            public void EndsWithEmptyString()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.endsWith('');");
-
-                Assert.IsTrue(result is SBool);
-                Assert.AreEqual(((SBool)result).Value, false);
-            }
-
-            [Test]
-            public void EndsWithEmptyStringOnEmptyString()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String(''); str.endsWith('');");
-
-                Assert.IsTrue(result is SBool);
-                Assert.AreEqual(((SBool)result).Value, true);
-            }
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.EqualTo(expectedResult));
         }
 
-        [TestFixture]
-        public class IncludesTest
+        [TestCase("str.includes('');", "", true)]
+        [TestCase("str.includes('Hello');", "Hello World", true)]
+        [TestCase("str.includes('42');", "Hello 42 World", true)]
+        public void Includes(string function, string input, bool expectedResult)
         {
-            [Test]
-            public void IncludesEmptyString()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String(''); str.includes('');");
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
 
-                Assert.IsTrue(result is SBool);
-                Assert.AreEqual(((SBool)result).Value, true);
-            }
-
-            [Test]
-            public void IncludesContains()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.includes('Hello');");
-
-                Assert.IsTrue(result is SBool);
-                Assert.AreEqual(((SBool)result).Value, true);
-            }
-
-            [Test]
-            public void IncludesNotEqualTypes()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello 42 World'); str.includes(42);");
-
-                Assert.IsTrue(result is SBool);
-                Assert.AreEqual(((SBool)result).Value, true);
-            }
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.EqualTo(expectedResult));
         }
 
-        [TestFixture]
-        public class CharAtTest
+        [TestCase("str.charAt(2);", "Hello World", "l")]
+        [TestCase("str.charAt(0);", "", "")]
+        [TestCase("str.charAt(42);", "Hello World", "")]
+        [TestCase("str.charAt(-42);", "Hello World", "")]
+        [TestCase("str.charAt();", "Hello World", "H")]
+        public void CharAt(string function, string input, string expectedResult)
         {
-            [Test]
-            public void CharAtString()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.charAt(2);");
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
 
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "l");
-            }
-
-            [Test]
-            public void CharAtEmptyString()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String(''); str.charAt(0);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "");
-            }
-
-            [Test]
-            public void CharAtOutOfRange()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.charAt(42);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "");
-            }
-
-            [Test]
-            public void CharAtNegative()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.charAt(-42);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "");
-            }
-
-            [Test]
-            public void CharAtNoArg()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.charAt();");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "H");
-            }
+            Assert.That(result, Is.InstanceOf<SString>());
+            Assert.That(((SString)result).Value, Is.EqualTo(expectedResult));
         }
 
-        [TestFixture]
-        public class ConcatTest
+        [TestCase("str.concat('Kevin', ' have a nice day.');", "Hello, ", "Hello, Kevin have a nice day.")]
+        [TestCase("str.concat(42, undefined);", "Hello, ", "Hello, 42undefined")]
+        public void Concat(string function, string input, string expectedResult)
         {
-            [Test]
-            public void ConcatTwoStrings()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello, '); str.concat('Kevin', ' have a nice day.');");
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
 
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "Hello, Kevin have a nice day.");
-            }
-
-            [Test]
-            public void ConcatNonString()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello, '); str.concat(42, undefined);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "Hello, 42undefined");
-            }
+            Assert.That(result, Is.InstanceOf<SString>());
+            Assert.That(((SString)result).Value, Is.EqualTo(expectedResult));
         }
 
-        [TestFixture]
-        public class RepeatTest
+        [TestCase("str.repeat(4);", "A", "AAAA")]
+        [TestCase("str.repeat(0);", "A", "")]
+        [TestCase("str.repeat(-1);", "A", "")]
+        public void Repeat(string function, string input, string expectedResult)
         {
-            [Test]
-            public void Repeat()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('A'); str.repeat(4);");
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
 
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "AAAA");
-            }
-
-            [Test]
-            public void RepeatZero()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('A'); str.repeat(0);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "");
-            }
-
-            [Test]
-            public void RepeatNegative()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('A'); str.repeat(-1);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "");
-            }
+            Assert.That(result, Is.InstanceOf<SString>());
+            Assert.That(((SString)result).Value, Is.EqualTo(expectedResult));
         }
 
-        [TestFixture]
-        public class PaddingTest
+        [TestCase("str.padStart(5);", "abc", "  abc")]
+        [TestCase("str.padStart(10, 'foo');", "abc", "foofoofabc")]
+        [TestCase("str.padStart(5, '');", "abc", "abc")]
+        [TestCase("str.padStart(-1);", " Hello World", " Hello World")]
+        [TestCase("str.padEnd(5);", "abc", "abc  ")]
+        [TestCase("str.padEnd(10, 'foo');", "abc", "abcfoofoof")]
+        [TestCase("str.padEnd(2, '');", "Hello World", "Hello World")]
+        [TestCase("str.padEnd(-1);", "Hello World ", "Hello World ")]
+        public void Padding(string function, string input, string expectedResult)
         {
-            [Test]
-            public void PadStartLength()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('abc'); str.padStart(5);");
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
 
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "  abc");
-            }
+            Assert.That(result, Is.InstanceOf<SString>());
+            Assert.That(((SString)result).Value, Is.EqualTo(expectedResult));
 
-            [Test]
-            public void PadStartCharacter()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('abc'); str.padStart(10, 'foo');");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "foofoofabc");
-            }
-
-            [Test]
-            public void PadStartEmptyString()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('abc'); str.padStart(5, '');");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "abc");
-            }
-
-            [Test]
-            public void PadStartNegative()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String(' Hello World'); str.padStart(-1);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, " Hello World");
-            }
-
-            [Test]
-            public void PadEndLength()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('abc'); str.padEnd(5);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "abc  ");
-            }
-
-            [Test]
-            public void PadEndCharacter()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('abc'); str.padEnd(10, 'foo');");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "abcfoofoof");
-            }
-
-            [Test]
-            public void PadEndEmptyString()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World'); str.padEnd(2, '');");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "Hello World");
-            }
-
-            [Test]
-            public void PadEndNegative()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World '); str.padEnd(-1);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(((SString)result).Value, "Hello World ");
-            }
         }
     }
 }
