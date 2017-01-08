@@ -11,8 +11,9 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("1+4+6");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 11);
+
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(11));
         }
 
         [Test]
@@ -20,8 +21,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("12-4-6");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 2);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(2));
         }
 
         [Test]
@@ -29,8 +30,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("5*3*-4");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, -60);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(-60));
         }
 
         [Test]
@@ -38,8 +39,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("15/5");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 3);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(3));
         }
 
         [Test]
@@ -47,8 +48,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("var a = 13; a++; a;");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 14);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(14));
 
         }
 
@@ -57,8 +58,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("var b = 13; b--; b;");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 12);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(12));
         }
 
         [Test]
@@ -66,8 +67,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("2**3");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 8);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(8));
         }
 
         [Test]
@@ -75,8 +76,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("5%2");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 1);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(1));
         }
 
         [Test]
@@ -86,18 +87,18 @@ namespace Test.Pokemon3D.Scripting
 
             var result = processor.Run("2 < 3");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
 
             result = processor.Run("3 < -5");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, false);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.False);
 
             result = processor.Run("\"test\" < -5");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, false);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.False);
         }
 
         [Test]
@@ -107,18 +108,18 @@ namespace Test.Pokemon3D.Scripting
 
             var result = processor.Run("2 <= 3");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
 
             result = processor.Run("3 <= 3");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
 
             result = processor.Run("\"test\" <= 0");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, false);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.False);
         }
 
         [Test]
@@ -128,18 +129,18 @@ namespace Test.Pokemon3D.Scripting
 
             var result = processor.Run("3 > 2");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
 
             result = processor.Run("1 > -5");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
 
             result = processor.Run("\"test\" > -5");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, false);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.False);
         }
 
         [Test]
@@ -149,18 +150,18 @@ namespace Test.Pokemon3D.Scripting
 
             var result = processor.Run("3 >= 2");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
 
             result = processor.Run("3 >= 3");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
 
             result = processor.Run("\"test\" >= 0");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, false);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.False);
         }
 
         [Test]
@@ -170,13 +171,13 @@ namespace Test.Pokemon3D.Scripting
 
             var result = processor.Run("2 == 2");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
 
             result = processor.Run("2 === 2");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
         }
 
         [Test]
@@ -186,13 +187,13 @@ namespace Test.Pokemon3D.Scripting
 
             var result = processor.Run("2 != 3");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
 
             result = processor.Run("2 !== 3");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
         }
 
         [Test]
@@ -200,8 +201,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("true && false");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, false);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.False);
         }
 
         [Test]
@@ -209,8 +210,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("true || false");
 
-            Assert.IsTrue(result is SBool);
-            Assert.AreEqual(((SBool)result).Value, true);
+            Assert.That(result, Is.InstanceOf<SBool>());
+            Assert.That(((SBool)result).Value, Is.True);
         }
     }
 }

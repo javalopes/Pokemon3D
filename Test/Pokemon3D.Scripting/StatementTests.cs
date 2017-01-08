@@ -11,8 +11,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("var a = 0; if (a == 0) { a = 5; } a;");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 5);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(5));
         }
 
         [Test]
@@ -20,8 +20,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("var a = 0; if (a > 0) { a = 5; } else { a = 10; } a;");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 10);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(10));
         }
 
         [Test]
@@ -29,8 +29,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("var a = 0; for (var i = 0; i < 10; i++) { a++; } a;");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 10);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(10));
         }
 
         [Test]
@@ -39,8 +39,8 @@ namespace Test.Pokemon3D.Scripting
             var processor = ScriptProcessorFactory.GetNew();
             var result = processor.Run("var a = 0; while (a < 10) { a++; } a;");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 10);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(10));
         }
 
         [Test]
@@ -48,8 +48,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("var a = 0; for (var i = 0; i < 10; i++) { if (i % 2 == 0) { a++; } } a;");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 5);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(5));
         }
 
         [Test]
@@ -57,8 +57,8 @@ namespace Test.Pokemon3D.Scripting
         {
             var result = ScriptProcessorFactory.Run("var a = 0; for (var i = 0; i < 10; i++) { if (i > 5) { break; } a++; } a;");
 
-            Assert.IsTrue(result is SNumber);
-            Assert.AreEqual(((SNumber)result).Value, 6);
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(6));
         }
     }
 }

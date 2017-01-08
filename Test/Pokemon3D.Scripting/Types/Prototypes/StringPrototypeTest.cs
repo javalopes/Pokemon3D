@@ -3,422 +3,124 @@ using Pokemon3D.Scripting.Types;
 
 namespace Test.Pokemon3D.Scripting.Types.Prototypes
 {
+    [TestFixture]
     public class StringPrototypeTest
     {
-        [TestFixture]
-        public class LengthTest
+        [TestCase("Hello World")]
+        [TestCase("")]
+        public void StringLengthIsCorrect(string value)
         {
-            [Test]
-            public void StringLength()
+            var result = ScriptProcessorFactory.Run($"var str = new String('{value}'); str.length;");
+
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(value.Length));
+        }
+
+        [Test]
+        public void EmptyStringWorks()
+        {
+            var result = ScriptProcessorFactory.Run("var str = String.empty; str;");
+
+            Assert.That(result, Is.InstanceOf<SString>());
+            Assert.That(((SString)result).Value, Is.EqualTo(""));
+        }
+
+        [TestCase("str.remove(6);", "Hello ")]
+        [TestCase("str.remove(20);", "Hello World")]
+        [TestCase("str.remove(-1);", "")]
+        [TestCase("str.remove(0, 4);", "o World")]
+        [TestCase("str.remove(0, 20);", "")]
+        [TestCase("str.remove(0, -1);", "Hello World")]
+        public void RemoveWorks(string script, string expectedResult)
+        {
+            var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); " + script);
+
+            Assert.That(result, Is.InstanceOf<SString>());
+            Assert.That(((SString)result).Value, Is.EqualTo(expectedResult));
+        }
+
+        [TestCase("str.trim();", " Hello World ", "Hello World")]
+        [TestCase("str.trim(['{', '}']);", "{Hello World}", "Hello World")]
+        [TestCase("str.trimStart();", " Hello World ", "Hello World ")]
+        [TestCase("str.trimStart(['{', '}']);", "{Hello World}", "Hello World}")]
+        [TestCase("str.trimEnd();", " Hello World ", " Hello World")]
+        [TestCase("str.trimEnd(['{', '}']);", "{Hello World}", "{Hello World")]
+        public void TrimWorks(string script, string input, string expectedResult)
+        {
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}');" + script);
+
+            Assert.That(result, Is.InstanceOf<SString>());
+            Assert.That(((SString)result).Value, Is.EqualTo(expectedResult));
+        }
+
+        [TestCase("str.toUpper();", "HELLO WORLD")]
+        [TestCase("str.toLower();", "hello world")]
+        public void Casing(string function, string expectedResult)
+        {
+            var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); " + function);
+
+            Assert.That(result, Is.InstanceOf<SString>());
+            Assert.That(((SString)result).Value, Is.EqualTo(expectedResult));
+        }
+
+        [TestCase("str.split();", "Hello,World", new[] { "Hello,World" })]
+        [TestCase(" str.split(',');", "Hello,World", new[] { "Hello", "World" })]
+        [TestCase("str.split([',', ';']);", "Hello,World;Hi", new[] { "Hello", "World", "Hi" })]
+        [TestCase("str.split(',', 2);", "H,e,l,l,o,W,o,r,l,d", new[] { "H", "e" })]
+        public void Split(string function, string input, string[] expectedValues)
+        {
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
+
+            Assert.That(result, Is.InstanceOf<SArray>());
+
+            var resultAsArray = (SArray) result;
+
+            Assert.That(resultAsArray.ArrayMembers.Length, Is.EqualTo(expectedValues.Length));
+            for (var i = 0; i < expectedValues.Length; i++)
             {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.length;");
-
-                Assert.IsTrue(result is SNumber);
-                Assert.AreEqual("Hello World".Length, ((SNumber)result).Value);
-            }
-
-            [Test]
-            public void EmptyString()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String(''); str.length;");
-
-                Assert.IsTrue(result is SNumber);
-                Assert.AreEqual(0, ((SNumber)result).Value);
+                Assert.That(((SString)resultAsArray.ArrayMembers[i]).Value, Is.EqualTo(expectedValues[i]));
             }
         }
 
-        [TestFixture]
-        public class EmptyTest
+        [TestCase("str.slice(6);", "Hello World", "World")]
+        [TestCase("str.slice(20);", "Hello World", "")]
+        [TestCase("str.slice(-3);", "Hello World", "rld")]
+        [TestCase("str.slice(-20);", "Hello World", "Hello World")]
+        [TestCase("str.slice(2, 6);", "Hello World", "llo ")]
+        [TestCase("str.slice(0, 0);", "Hello World", "")]
+        [TestCase("str.slice(2, -3);", "Hello World", "llo Wo")]
+        [TestCase("str.slice(-4, -1);", "Hello World", "orl")]
+        [TestCase("str.slice(-20, -1);", "Hello World", "Hello Worl")]
+        public void Slice(string function, string input, string expectedResult)
         {
-            [Test]
-            public void Empty()
-            {
-                var result = ScriptProcessorFactory.Run("var str = String.empty; str;");
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
 
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("", ((SString)result).Value);
-            }
+            Assert.That(result, Is.InstanceOf<SString>());
+            Assert.That(((SString)result).Value, Is.EqualTo(expectedResult));
         }
 
-        [TestFixture]
-        public class RemoveTest
+        [TestCase("str.replace('Something', 'Hello');", "Something World", "Hello World")]
+        [TestCase("str.replace('Something', 'Hello');", "Something World, Something!", "Hello World, Hello!")]
+        [TestCase("str.replace('', 'Hello');", "Something World", "Something World")]
+        [TestCase("str.replace('Something', '');", "Something World", " World")]
+        public void Replace(string function, string input, string expectedResult)
         {
-            [Test]
-            public void RemoveBegin()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(6);");
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
 
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Hello ", ((SString)result).Value);
-            }
-
-            [Test]
-            public void RemoveBeginOutOfRange()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(20);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Hello World", ((SString)result).Value);
-            }
-
-            [Test]
-            public void RemoveBeginNegative()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(-1);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("", ((SString)result).Value);
-            }
-
-            [Test]
-            public void RemoveBeginEnd()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(0, 4);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("o World", ((SString)result).Value);
-            }
-
-            [Test]
-            public void RemoveBeginEndOutOfRange()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(0, 20);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("", ((SString)result).Value);
-            }
-
-            [Test]
-            public void RemoveBeginEndNegative()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.remove(0, -1);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Hello World", ((SString)result).Value);
-            }
+            Assert.That(result, Is.InstanceOf<SString>());
+            Assert.That(((SString)result).Value, Is.EqualTo(expectedResult));
         }
 
-        [TestFixture]
-        public class TrimTest
+        [TestCase("str.indexOf('');", "Hello World Hello World", -1)]
+        [TestCase("str.indexOf('Hello');", "", -1)]
+        [TestCase("str.indexOf('World');", "Hello World Hello World", 6)]
+        [TestCase("str.indexOf('something');", "Hello World Hello World", -1)]
+        public void IndexOf(string function, string input, double expectedResult)
         {
-            [Test]
-            public void Trim()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String(' Hello World '); str.trim();");
+            var result = ScriptProcessorFactory.Run($"var str = new String('{input}'); " + function);
 
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Hello World", ((SString)result).Value);
-            }
-
-            [Test]
-            public void TrimCharacters()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('{Hello World}'); str.trim(['{', '}']);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Hello World", ((SString)result).Value);
-            }
-
-            [Test]
-            public void TrimStart()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String(' Hello World '); str.trimStart();");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Hello World ", ((SString)result).Value);
-            }
-
-            [Test]
-            public void TrimStartCharacters()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('{Hello World}'); str.trimStart(['{', '}']);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Hello World}", ((SString)result).Value);
-            }
-
-            [Test]
-            public void TrimEnd()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String(' Hello World '); str.trimEnd();");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(" Hello World", ((SString)result).Value);
-            }
-
-            [Test]
-            public void TrimEndCharacters()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('{Hello World}'); str.trimEnd(['{', '}']);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("{Hello World", ((SString)result).Value);
-            }
-        }
-
-        [TestFixture]
-        public class CasingTest
-        {
-            [Test]
-            public void ToUpper()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.toUpper();");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("HELLO WORLD", ((SString)result).Value);
-            }
-
-            [Test]
-            public void ToLower()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello World'); str.toLower();");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("hello world", ((SString)result).Value);
-            }
-        }
-
-        [TestFixture]
-        public class SplitTest
-        {
-            [Test]
-            public void SplitEmptyArgs()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello,World'); str.split();");
-
-                Assert.IsTrue(result is SArray);
-                Assert.AreEqual(1, ((SArray)result).ArrayMembers.Length);
-                Assert.IsTrue(((SArray)result).ArrayMembers[0] is SString);
-                Assert.AreEqual("Hello,World", ((SString)((SArray)result).ArrayMembers[0]).Value);
-            }
-
-            [Test]
-            public void SplitComma()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello,World'); str.split(',');");
-
-                Assert.IsTrue(result is SArray);
-                Assert.AreEqual(2, ((SArray)result).ArrayMembers.Length);
-                Assert.IsTrue(((SArray)result).ArrayMembers[0] is SString);
-                Assert.IsTrue(((SArray)result).ArrayMembers[1] is SString);
-                Assert.AreEqual("Hello", ((SString)((SArray)result).ArrayMembers[0]).Value);
-                Assert.AreEqual("World", ((SString)((SArray)result).ArrayMembers[1]).Value);
-            }
-
-            [Test]
-            public void SplitMultiple()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('Hello,World;Hi'); str.split([',', ';']);");
-
-                Assert.IsTrue(result is SArray);
-                Assert.AreEqual(3, ((SArray)result).ArrayMembers.Length);
-                Assert.IsTrue(((SArray)result).ArrayMembers[0] is SString);
-                Assert.IsTrue(((SArray)result).ArrayMembers[1] is SString);
-                Assert.IsTrue(((SArray)result).ArrayMembers[2] is SString);
-                Assert.AreEqual("Hello", ((SString)((SArray)result).ArrayMembers[0]).Value);
-                Assert.AreEqual("World", ((SString)((SArray)result).ArrayMembers[1]).Value);
-                Assert.AreEqual("Hi", ((SString)((SArray)result).ArrayMembers[2]).Value);
-            }
-
-            [Test]
-            public void SplitWithLimit()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String('H,e,l,l,o,W,o,r,l,d'); str.split(',', 2);");
-
-                Assert.IsTrue(result is SArray);
-                Assert.AreEqual(2, ((SArray)result).ArrayMembers.Length);
-                Assert.IsTrue(((SArray)result).ArrayMembers[0] is SString);
-                Assert.IsTrue(((SArray)result).ArrayMembers[1] is SString);
-                Assert.AreEqual("H", ((SString)((SArray)result).ArrayMembers[0]).Value);
-                Assert.AreEqual("e", ((SString)((SArray)result).ArrayMembers[1]).Value);
-            }
-        }
-
-        [TestFixture]
-        public class SliceTest
-        {
-            [Test]
-            public void SliceBegin()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World'); str.slice(6);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("World", ((SString)result).Value);
-            }
-
-            [Test]
-            public void SliceBeginOutOfRange()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World'); str.slice(20);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("", ((SString)result).Value);
-            }
-
-            [Test]
-            public void SliceBeginNegative()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World'); str.slice(-3);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("rld", ((SString)result).Value);
-            }
-
-            [Test]
-            public void SliceBeginNegativeOutOfRange()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World'); str.slice(-20);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Hello World", ((SString)result).Value);
-            }
-
-            [Test]
-            public void SliceBeginEnd()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World'); str.slice(2, 6);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("llo ", ((SString)result).Value);
-            }
-
-            [Test]
-            public void SliceBeginEndZero()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World'); str.slice(0, 0);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("", ((SString)result).Value);
-            }
-
-            [Test]
-            public void SliceBeginPositiveEndNegative()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World'); str.slice(2, -3);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("llo Wo", ((SString)result).Value);
-            }
-
-            [Test]
-            public void SliceBeginNegativeEndNegative()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World'); str.slice(-4, -1);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("orl", ((SString)result).Value);
-            }
-
-            [Test]
-            public void SliceBeginNegativeEndNegativeOutOfRange()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World'); str.slice(-20, -1);");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Hello Worl", ((SString)result).Value);
-            }
-        }
-
-        [TestFixture]
-        public class ReplaceTest
-        {
-            [Test]
-            public void Replace()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Something World'); str.replace('Something', 'Hello');");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Hello World", ((SString)result).Value);
-            }
-
-            [Test]
-            public void ReplaceMultiple()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Something World, Something!'); str.replace('Something', 'Hello');");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Hello World, Hello!", ((SString)result).Value);
-            }
-
-            [Test]
-            public void ReplaceEmptyString()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Something World'); str.replace('', 'Hello');");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual("Something World", ((SString)result).Value);
-            }
-
-            [Test]
-            public void ReplaceWithEmptyString()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Something World'); str.replace('Something', '');");
-
-                Assert.IsTrue(result is SString);
-                Assert.AreEqual(" World", ((SString)result).Value);
-            }
-        }
-
-        [TestFixture]
-        public class IndexOfTest
-        {
-            [Test]
-            public void IndexOfEmptyString()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World Hello World'); str.indexOf('');");
-
-                Assert.IsTrue(result is SNumber);
-                Assert.AreEqual(((SNumber)result).Value, -1);
-            }
-
-            [Test]
-            public void IndexOfOnEmptyString()
-            {
-                var result = ScriptProcessorFactory.Run("var str = new String(''); str.indexOf('Hello');");
-
-                Assert.IsTrue(result is SNumber);
-                Assert.AreEqual(((SNumber)result).Value, -1);
-            }
-
-            [Test]
-            public void IndexOfPositive()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World Hello World'); str.indexOf('World');");
-
-                Assert.IsTrue(result is SNumber);
-                Assert.AreEqual(((SNumber)result).Value, 6);
-            }
-
-            [Test]
-            public void IndexOfNegative()
-            {
-                var result = ScriptProcessorFactory
-                    .Run("var str = new String('Hello World Hello World'); str.indexOf('something');");
-
-                Assert.IsTrue(result is SNumber);
-                Assert.AreEqual(((SNumber)result).Value, -1);
-            }
+            Assert.That(result, Is.InstanceOf<SNumber>());
+            Assert.That(((SNumber)result).Value, Is.EqualTo(expectedResult));
         }
 
         [TestFixture]
