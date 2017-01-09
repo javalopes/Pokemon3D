@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{3C20AD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9D5D8CAD-8179-43E7-B756-FC80CC5983D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.Master.Server", "Pokemon3D.Master.Server\Pokemon3D.Master.Server.csproj", "{7D3656E9-8270-47DB-87C4-9CC223216DBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -241,6 +243,24 @@ Global
 		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Release|x86.ActiveCfg = Release|Any CPU
 		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6}.Release|x86.Build.0 = Release|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Debug|x86.Build.0 = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.DebugRendering|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.DebugRendering|Any CPU.Build.0 = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.DebugRendering|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.DebugRendering|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.DebugRendering|x86.ActiveCfg = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.DebugRendering|x86.Build.0 = Debug|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Release|x86.ActiveCfg = Release|Any CPU
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -257,5 +277,6 @@ Global
 		{54DE5A5D-F265-4359-ADD6-F5B6E0CA6EAA} = {532D91C8-10AD-4AF1-9E46-DFEB23696991}
 		{F4417500-6A78-444C-BE5C-31D8BDB4A1D0} = {F1CC8252-DD44-48C9-9C2B-33519B586201}
 		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6} = {F1CC8252-DD44-48C9-9C2B-33519B586201}
+		{7D3656E9-8270-47DB-87C4-9CC223216DBE} = {3C20AD38-0F44-4E5D-8952-1A54BFFE483E}
 	EndGlobalSection
 EndGlobal
