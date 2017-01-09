@@ -13,7 +13,7 @@ namespace Pokemon3D.Master.Server.Services
 
         public void Unregister(InstanceData instanceData)
         {
-            _instances.Add(instanceData);
+            _instances.RemoveAll(i => i.Name == instanceData.Name && i.IpAddress == instanceData.IpAddress);
         }
 
         public IEnumerable<InstanceData> GetRegisteredInstances()

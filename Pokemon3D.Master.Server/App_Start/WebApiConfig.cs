@@ -9,9 +9,7 @@ namespace Pokemon3D.Master.Server
     {
         public static void Register(HttpConfiguration config)
         {
-            var container = new UnityContainer();
-            container.RegisterType<IRegistrationService, RegistrationService>(new HierarchicalLifetimeManager());
-            config.DependencyResolver = new UnityResolver(container);
+            UnityConfig.RegisterComponents();
             
             config.MapHttpAttributeRoutes();
 
