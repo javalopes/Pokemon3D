@@ -7,7 +7,7 @@ using Pokemon3D.Common.ScriptPipeline;
 using Pokemon3D.DataModel.GameMode.Battle;
 using Pokemon3D.GameModes;
 using Pokemon3D.Scripting.Adapters;
-using static GameProvider;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.ScriptPipeline.Prototypes
 {

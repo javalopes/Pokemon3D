@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Pokemon3D.GameModes;
 using Pokemon3D.GameModes.Monsters;
 using Pokemon3D.Scripting.Adapters;
-using static GameProvider;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.ScriptPipeline.Prototypes
 {

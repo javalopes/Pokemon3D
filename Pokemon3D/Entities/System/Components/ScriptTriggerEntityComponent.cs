@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Collisions;
 using Pokemon3D.Screens;
-using Pokemon3D.Screens.Overworld;
-using static GameProvider;
+using Pokemon3D.UI;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Entities.System.Components
 {
@@ -13,7 +13,7 @@ namespace Pokemon3D.Entities.System.Components
         private string _trigger;
         private readonly string _message;
 
-        private readonly InteractionPromptOverworldUIElement _uiElement;
+        private readonly InteractionPromptOverworldUiElement _uiElement;
         private bool _addedUIElement = false;
 
         private readonly Collider _collider;
@@ -31,25 +31,29 @@ namespace Pokemon3D.Entities.System.Components
             _collider.OnTriggerEnter = OnTriggerEnter;
             _collider.OnTriggerLeave = OnTriggerLeave;
 
-            _uiElement = new InteractionPromptOverworldUIElement(ReferringEntity, _message);
+            _uiElement = new InteractionPromptOverworldUiElement(ReferringEntity.GlobalPosition, _message);
             _uiElement.InteractionStarted += InteractionHandler;
         }
 
         private void OnTriggerLeave(Collider collider)
         {
             if (collider.Tag != "Player") return;
-            _uiElement.IsActive = false;
+            _uiElement.Hide();
         }
 
         private void OnTriggerEnter(Collider collider)
         {
             if (collider.Tag != "Player") return;
 
-            var overworldScreen = (OverworldScreen)GameInstance.GetService<ScreenManager>().CurrentScreen;
+            var currentScreen = GameInstance.GetService<ScreenManager>().CurrentScreen;
 
-            overworldScreen.AddUiElement(_uiElement);
-            _uiElement.IsActive = true;
-            _uiElement.Message = _message;
+            if (!_addedUIElement)
+            {
+                currentScreen.AddOverlay(_uiElement);
+                _addedUIElement = true;
+            }
+
+            _uiElement.Show();
         }
 
         public override void Update(GameTime gameTime)
@@ -63,11 +67,12 @@ namespace Pokemon3D.Entities.System.Components
             if (_addedUIElement)
             {
                 var screen = GameInstance.GetService<ScreenManager>().CurrentScreen;
-                if (screen is OverworldScreen) ((OverworldScreen)screen).RemoveUiElement(_uiElement);
+                if (screen is OverworldScreen) screen.RemoveOverlay(_uiElement);
+                _addedUIElement = false;
             }
         }
 
-        private void InteractionHandler(InteractionPromptOverworldUIElement uiElement)
+        private void InteractionHandler(InteractionPromptOverworldUiElement uiElement)
         {
             ScriptPipeline.ScriptPipelineManager.RunScript(_script);
         }

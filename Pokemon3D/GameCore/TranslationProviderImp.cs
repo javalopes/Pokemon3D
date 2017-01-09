@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using static GameProvider;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.GameCore
 {

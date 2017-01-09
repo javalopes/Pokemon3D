@@ -6,7 +6,7 @@ using Pokemon3D.Common.Input;
 using Pokemon3D.Entities.System;
 using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
-using static GameProvider;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Entities.Components
 {

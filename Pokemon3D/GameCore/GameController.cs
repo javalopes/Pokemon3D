@@ -13,14 +13,12 @@ using Pokemon3D.Screens;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering.UI;
-using Pokemon3D.Screens.MainMenu;
 using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.DataModel.GameCore;
-using Pokemon3D.Screens.GameMenu;
 
 namespace Pokemon3D.GameCore
 {

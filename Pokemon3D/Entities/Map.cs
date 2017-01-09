@@ -7,7 +7,7 @@ using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.Entities.System;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
-using static GameProvider;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Entities
 {

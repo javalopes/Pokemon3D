@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
-using static GameProvider;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Screens.Transitions
 {
@@ -19,7 +19,7 @@ namespace Pokemon3D.Screens.Transitions
             _target = target;
             IsFinished = false;
             _elapsedTime = 0.0f;
-            _transitionTime = 1.0f;
+            _transitionTime = 0.4f;
         }
 
         public bool IsFinished { get; private set; }

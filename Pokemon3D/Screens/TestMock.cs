@@ -3,13 +3,8 @@ using Pokemon3D.DataModel.Savegame;
 using Pokemon3D.DataModel.Savegame.Inventory;
 using Pokemon3D.DataModel.Savegame.Pokemon;
 using Pokemon3D.GameModes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Pokemon3D.Screens.Overworld
+namespace Pokemon3D.Screens
 {
     static class TestMock
     {

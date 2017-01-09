@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Pokemon3D.Rendering.Compositor
 {
-    class ForwardSceneRenderer : GameContextObject, SceneRenderer
+    internal class ForwardSceneRenderer : GameContextObject, SceneRenderer
     {
         private readonly object _lockObject = new object();
 
@@ -141,6 +141,11 @@ namespace Pokemon3D.Rendering.Compositor
                 _allLights.Add(light);
             }
             return light;
+        }
+
+        public Camera GetMainCamera()
+        {
+            return _allCameras.Single(c => c.IsMain);
         }
 
         public void RemoveDrawableElement(DrawableElement element)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Pokemon3D.Rendering.UI;
 
 namespace Pokemon3D.Screens
 {
@@ -33,5 +34,18 @@ namespace Pokemon3D.Screens
         /// </summary>
         /// <param name="enterInformation">Context information from previous screen</param>
         void OnOpening(object enterInformation);
+
+        /// <summary>
+        /// Adds an ui overlay container for possible drawing
+        /// </summary>
+        /// <param name="overlay">overlay</param>
+        /// <returns>overlay</returns>
+        UiOverlay AddOverlay(UiOverlay overlay);
+
+        /// <summary>
+        /// Removes overlay
+        /// </summary>
+        /// <param name="overlay">overlay</param>
+        void RemoveOverlay(UiOverlay overlay);
     }
 }

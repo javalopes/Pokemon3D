@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Pokemon3D.Scripting.Types;
 using Pokemon3D.Scripting;
 using Pokemon3D.Scripting.Adapters;
-using Pokemon3D.Screens.Overworld;
 using Pokemon3D.Screens;
 using Pokemon3D.ScriptPipeline.Prototypes;
 using Pokemon3D.Common.ScriptPipeline;

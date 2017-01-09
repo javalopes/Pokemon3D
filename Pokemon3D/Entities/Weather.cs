@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Rendering;
-using static GameProvider;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Entities
 {

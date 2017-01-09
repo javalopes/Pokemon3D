@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
-using static GameProvider;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Entities.System.Components
 {

@@ -8,7 +8,7 @@ using Pokemon3D.Common.Diagnostics;
 using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.Data;
-using static GameProvider;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Entities.System
 {

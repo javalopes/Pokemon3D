@@ -16,6 +16,8 @@ namespace Pokemon3D.Rendering
 
         Camera CreateCamera(int cameraMask = 1);
 
+        Camera GetMainCamera();
+
         void RemoveDrawableElement(DrawableElement element);
 
         void RemoveCamera(Camera camera);

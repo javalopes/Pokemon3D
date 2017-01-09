@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Pokemon3D.Rendering.UI;
 
-namespace Pokemon3D.Screens.Battle
+namespace Pokemon3D.Screens
 {
     internal class BattleScreen : Screen
     {
@@ -27,6 +23,15 @@ namespace Pokemon3D.Screens.Battle
         public void OnOpening(object enterInformation)
         {
 
+        }
+
+        public UiOverlay AddOverlay(UiOverlay overlay)
+        {
+            return overlay;
+        }
+
+        public void RemoveOverlay(UiOverlay overlay)
+        {
         }
 
         public void OnUpdate(GameTime gameTime)

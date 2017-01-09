@@ -29,6 +29,7 @@ namespace Pokemon3D.Rendering
         public DepthStencilState DepthStencilState { get; set; }
         public bool UseCulling { get; set; }
         public PostProcess PostProcess { get; }
+        public bool IsMain { get; set; }
                      
         internal Camera(Viewport viewport, int cameraMask)
         {
@@ -56,6 +57,11 @@ namespace Pokemon3D.Rendering
         internal void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize)
         {
             Viewport = new Viewport(0,0,newSize.Width, newSize.Height);
+        }
+
+        public Vector3 ProjectWorldToScreen(Vector3 worldPosition)
+        {
+            return Viewport.Project(worldPosition, ProjectionMatrix, ViewMatrix, Matrix.Identity);
         }
     }
 }

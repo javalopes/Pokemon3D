@@ -86,6 +86,11 @@ namespace Pokemon3D.Rendering.UI
             _waitForShowed = false;
         }
 
+        protected void ApplyOffset(Vector2 offset)
+        {
+            _uiElements.ForEach(u => u.Offset = offset);
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();

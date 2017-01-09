@@ -8,15 +8,14 @@ using Pokemon3D.Rendering.Data;
 using Pokemon3D.Content;
 using Pokemon3D.Entities.Components;
 using Pokemon3D.GameCore;
-using static GameProvider;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Entities
 {
     internal class Player
     {
         private readonly PlayerControllerComponent _controllerComponent;
-
-        public Camera Camera { get; }
+        private readonly CameraEntityComponent _mainCameraComponent;
 
         public Player(World world)
         {
@@ -43,17 +42,17 @@ namespace Pokemon3D.Entities
             cameraEntity.Id = "MainCamera";
             cameraEntity.SetParent(playerEntity);
             _controllerComponent = cameraEntity.AddComponent(new PlayerControllerComponent(cameraEntity));
-            var cameraComponent = cameraEntity.AddComponent(new CameraEntityComponent(cameraEntity, new Skybox(GameInstance.GraphicsDevice)
+            _mainCameraComponent = cameraEntity.AddComponent(new CameraEntityComponent(cameraEntity, new Skybox(GameInstance.GraphicsDevice)
             {
                 Scale = 50,
                 Texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.skybox_texture)
             }));
-            cameraComponent.FarClipDistance = 50.0f;
-            Camera = cameraComponent.Camera;
+            _mainCameraComponent.FarClipDistance = 50.0f;
+            _mainCameraComponent.Camera.IsMain = true;
 
             var defaultPostProcessors = GameInstance.GetService<SceneRenderer>().DefaultPostProcessors;
-            Camera.PostProcess.Add(defaultPostProcessors.HorizontalBlur);
-            Camera.PostProcess.Add(defaultPostProcessors.VerticalBlur);
+            _mainCameraComponent.Camera.PostProcess.Add(defaultPostProcessors.HorizontalBlur);
+            _mainCameraComponent.Camera.PostProcess.Add(defaultPostProcessors.VerticalBlur);
 
             var overlayCamera = cameraEntity.AddComponent(new CameraEntityComponent(cameraEntity, null, CameraMasks.UiOverlays));
             overlayCamera.Camera.FarClipDistance = 100.0f;
@@ -69,11 +68,11 @@ namespace Pokemon3D.Entities
         {
             if (gameEvent.Name == GameEvent.InventoryOpenend)
             {
-                Camera.PostProcess.IsActive = true;
+                _mainCameraComponent.Camera.PostProcess.IsActive = true;
             }
             else if (gameEvent.Name == GameEvent.InventoryClosed)
             {
-                Camera.PostProcess.IsActive = false;
+                _mainCameraComponent.Camera.PostProcess.IsActive = false;
             }
         }
 
