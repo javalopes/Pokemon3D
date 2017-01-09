@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D590336E-FD67-45F0-97CB-3090894FB64C}</ProjectGuid>
+    <ProjectGuid>{AB3F85DB-BEAD-4E25-AF0E-6C78B2193CCD}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestServer</RootNamespace>
-    <AssemblyName>TestServer</AssemblyName>
+    <RootNamespace>Pokemon3D.Server.Console</RootNamespace>
+    <AssemblyName>Pokemon3D.Server.Console</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,25 +52,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pokemon3D.Common\Pokemon3D.Common.csproj">
-      <Project>{b29dc7f0-2a16-4585-80a2-b4030558ec35}</Project>
-      <Name>Pokemon3D.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Pokemon3D.DataModel\Pokemon3D.DataModel.csproj">
-      <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
-      <Name>Pokemon3D.DataModel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Pokemon3D.Server\Pokemon3D.Server.csproj">
       <Project>{a6096166-5bb9-43d6-95c2-9a622cf66726}</Project>
       <Name>Pokemon3D.Server</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /E /I "$(SolutionDir)GameModeTemplates" "$(TargetDir)GameModes"</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
