@@ -9,6 +9,7 @@ namespace Pokemon3D.Server
     {
         private readonly GameServerConfiguration _configuration;
         private readonly IRestClient _restClient;
+        public int _gameServerId;
 
         public event Action<string> OnMessage;
 
@@ -17,28 +18,40 @@ namespace Pokemon3D.Server
             _configuration = configuration;
             _restClient = restClient;
             _restClient.BaseUrl = new Uri(_configuration.MasterServerUrl);
+            _gameServerId = -1;
         }
 
         public bool Start()
         {
-            InvokeMessage($"Starting Server {_configuration.Name}...");
-
-            var gameServerData = new GameServerRegistrationData
+            var result = false;
+            try
             {
-                Name = _configuration.Name,
-                IpAddress = "127.0.0.1"
-            };
+                InvokeMessage($"Starting Server {_configuration.Name}...");
 
-            var response = SendPostRequest("/api/gameserver/register", gameServerData);
-            if (response.StatusCode == HttpStatusCode.OK)
+                var gameServerData = new GameServerRegistrationData
+                {
+                    Name = _configuration.Name,
+                    IpAddress = "127.0.0.1"
+                };
+
+                var response = SendPostRequest("/api/gameserver/register", gameServerData);
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    _gameServerId = int.Parse(response.Content);
+                    InvokeMessage($"Registered successfully with id = {_gameServerId}");
+                    result = true;
+                }
+                else
+                {
+                    InvokeMessage($"Registration not successful [{response.StatusCode}]: " + response.ErrorMessage);
+                }
+            }
+            catch (Exception ex)
             {
-                InvokeMessage("Registered successfully");
-                return true;
+                InvokeMessage("Unhandled exception occurred: " + ex);
             }
 
-            InvokeMessage($"Registration not successful [{response.StatusCode}]: " + response.ErrorMessage);
-
-            return false;
+            return result;
         }
 
         private IRestResponse SendPostRequest(string requestUriPart, object toSend)
@@ -54,7 +67,10 @@ namespace Pokemon3D.Server
 
         public void Stop()
         {
-            
+            if (_gameServerId != -1)
+            {
+                SendPostRequest("/api/gameserver/unregister", _gameServerId);
+            }
         }
 
         private void InvokeMessage(string message)
