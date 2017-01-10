@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Pokemon3D.Master.Server.DataContracts;
 using RestSharp;
 
 namespace Pokemon3D.Server
@@ -18,21 +19,37 @@ namespace Pokemon3D.Server
             _restClient.BaseUrl = new Uri(_configuration.MasterServerUrl);
         }
 
-        public void Start()
+        public bool Start()
         {
             InvokeMessage($"Starting Server {_configuration.Name}...");
 
-            var jsonToSend = $"\"Name\" = \"{_configuration.Name}\", \"IpAddress\" =\"127.0.0.1\"";
+            var gameServerData = new GameServerRegistrationData
+            {
+                Name = _configuration.Name,
+                IpAddress = "127.0.0.1"
+            };
 
-            var request = new RestRequest("/api/gameserver/register");
-            request.AddParameter("application/json; charset=utf-8", jsonToSend, ParameterType.RequestBody);
-            request.RequestFormat = DataFormat.Json;
-
-            var response = _restClient.Post(request);
+            var response = SendPostRequest("/api/gameserver/register", gameServerData);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 InvokeMessage("Registered successfully");
+                return true;
             }
+
+            InvokeMessage($"Registration not successful [{response.StatusCode}]: " + response.ErrorMessage);
+
+            return false;
+        }
+
+        private IRestResponse SendPostRequest(string requestUriPart, object toSend)
+        {
+            var request = new RestRequest(requestUriPart);
+            var jsonToSend = request.JsonSerializer.Serialize(toSend);
+
+            request.AddParameter("application/json; charset=utf-8", jsonToSend, ParameterType.RequestBody);
+            request.RequestFormat = DataFormat.Json;
+
+            return _restClient.Post(request);
         }
 
         public void Stop()

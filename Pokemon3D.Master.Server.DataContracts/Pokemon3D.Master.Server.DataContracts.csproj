@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A6096166-5BB9-43D6-95C2-9A622CF66726}</ProjectGuid>
+    <ProjectGuid>{F84C24C5-463D-4263-A4BF-5794169E8EDF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pokemon3D.Server</RootNamespace>
-    <AssemblyName>Pokemon3D.Server</AssemblyName>
+    <RootNamespace>Pokemon3D.Master.Server.DataContracts</RootNamespace>
+    <AssemblyName>Pokemon3D.Master.Server.DataContracts</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -29,14 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,28 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileRequestHandler.cs" />
-    <Compile Include="GameServer.cs" />
-    <Compile Include="GameServerConfiguration.cs" />
+    <Compile Include="GameServerData.cs" />
+    <Compile Include="GameServerRegistrationData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HttpServer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Pokemon3D.Common\Pokemon3D.Common.csproj">
-      <Project>{b29dc7f0-2a16-4585-80a2-b4030558ec35}</Project>
-      <Name>Pokemon3D.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Pokemon3D.DataModel\Pokemon3D.DataModel.csproj">
-      <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
-      <Name>Pokemon3D.DataModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Pokemon3D.Master.Server.DataContracts\Pokemon3D.Master.Server.DataContracts.csproj">
-      <Project>{f84c24c5-463d-4263-a4bf-5794169e8edf}</Project>
-      <Name>Pokemon3D.Master.Server.DataContracts</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

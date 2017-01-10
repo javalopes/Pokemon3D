@@ -3,7 +3,7 @@ using RestSharp;
 
 namespace Pokemon3D.Server.Console
 {
-    class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
@@ -21,7 +21,8 @@ namespace Pokemon3D.Server.Console
             bool cancel = false;
             System.Console.CancelKeyPress += (s,e) => cancel = true;
 
-            gameServer.Start();
+            var startedSuccessfully = gameServer.Start();
+            cancel = !startedSuccessfully;
 
             while (!cancel)
             {
@@ -29,6 +30,12 @@ namespace Pokemon3D.Server.Console
             }
 
             gameServer.Stop();
+
+            if (!startedSuccessfully)
+            {
+                System.Console.WriteLine("Press enter to quit...");
+                System.Console.ReadLine();
+            }
         }
     }
 }

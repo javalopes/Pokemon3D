@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Pokemon3D.Master.Server.DataContracts;
 
 namespace Pokemon3D.Master.Server.Services
 {
     public interface IRegistrationService
     {
-        void Register(InstanceData instanceData);
+        int Register(GameServerRegistrationData instanceData);
 
-        void Unregister(InstanceData instanceData);
+        void Unregister(int id);
 
-        IEnumerable<InstanceData> GetRegisteredInstances();
+        IEnumerable<GameServerData> GetRegisteredInstances();
     }
 }

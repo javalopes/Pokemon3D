@@ -1,6 +1,6 @@
-﻿namespace Pokemon3D.Master.Server.Services
+﻿namespace Pokemon3D.Master.Server.DataContracts
 {
-    public class InstanceData
+    public class GameServerRegistrationData
     {
         public string Name { get; set; }
         public string IpAddress { get; set; }

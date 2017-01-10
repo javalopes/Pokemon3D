@@ -1,22 +1,32 @@
 ﻿using System.Collections.Generic;
+using Pokemon3D.Master.Server.DataContracts;
 
 namespace Pokemon3D.Master.Server.Services
 {
     public class RegistrationService : IRegistrationService
     {
-        private readonly List<InstanceData> _instances = new List<InstanceData>();
+        private readonly List<GameServerData> _instances = new List<GameServerData>();
+        private int _nextId = 0;
 
-        public void Register(InstanceData instanceData)
+        public int Register(GameServerRegistrationData instanceData)
         {
-            _instances.Add(instanceData);
+            var current = _nextId;
+            _nextId++;
+            _instances.Add(new GameServerData
+            {
+                Id = current,
+                IpAddress = instanceData.IpAddress,
+                Name = instanceData.Name
+            });
+            return current;
         }
 
-        public void Unregister(InstanceData instanceData)
+        public void Unregister(int id)
         {
-            _instances.RemoveAll(i => i.Name == instanceData.Name && i.IpAddress == instanceData.IpAddress);
+            _instances.RemoveAll(i => i.Id == id);
         }
 
-        public IEnumerable<InstanceData> GetRegisteredInstances()
+        public IEnumerable<GameServerData> GetRegisteredInstances()
         {
             return _instances;
         }
