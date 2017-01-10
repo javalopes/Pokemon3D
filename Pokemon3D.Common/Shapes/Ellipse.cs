@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
 namespace Pokemon3D.Common.Shapes
@@ -114,12 +110,12 @@ namespace Pokemon3D.Common.Shapes
 
         public override bool Equals(object obj)
         {
-            return obj is Ellipse ? Equals((Ellipse)obj) : false;
+            return obj is Ellipse && Equals((Ellipse)obj);
         }
 
         public override int GetHashCode()
         {
-            int hash = 27;
+            var hash = 27;
             hash = (13 * hash) + _bounds.GetHashCode();
             return hash;
         }

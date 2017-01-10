@@ -9,8 +9,8 @@ namespace Pokemon3D.Scripting.Adapters
     /// </summary>
     public sealed class ScriptObjectLink
     {
-        private SObject _objReference;
-        private ScriptProcessor _processor;
+        private readonly SObject _objReference;
+        private readonly ScriptProcessor _processor;
 
         internal ScriptObjectLink(ScriptProcessor processor, SObject obj)
         {
@@ -23,7 +23,7 @@ namespace Pokemon3D.Scripting.Adapters
         /// </summary>
         public void SetMember(string identifier, object value)
         {
-            SObject data = ScriptInAdapter.Translate(_processor, value);
+            var data = ScriptInAdapter.Translate(_processor, value);
 
             _objReference.SetMember(_processor, _processor.CreateString(identifier), false, data);
         }
@@ -36,38 +36,32 @@ namespace Pokemon3D.Scripting.Adapters
             SetMember(identifier, value);
 
             var field = netObject.GetType().GetField(identifier, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            if (field != null)
-                field.SetValue(netObject, value);
+            field?.SetValue(netObject, value);
         }
 
         public void SetReference(string identifier, object reference)
         {
-            if (_objReference is SProtoObject)
-            {
-                var protoObj = _objReference as SProtoObject;
+            if (!(_objReference is SProtoObject)) return;
+            var protoObj = (SProtoObject) _objReference;
 
-                if (protoObj.ReferenceContainer == null)
-                    protoObj.ReferenceContainer = new Dictionary<string, object>();
+            if (protoObj.ReferenceContainer == null)
+                protoObj.ReferenceContainer = new Dictionary<string, object>();
 
-                if (protoObj.ReferenceContainer.ContainsKey(identifier))
-                    protoObj.ReferenceContainer[identifier] = reference;
-                else
-                    protoObj.ReferenceContainer.Add(identifier, reference);
-            }
+            if (protoObj.ReferenceContainer.ContainsKey(identifier))
+                protoObj.ReferenceContainer[identifier] = reference;
+            else
+                protoObj.ReferenceContainer.Add(identifier, reference);
         }
 
         public object GetReference(string identifier)
         {
             object returnValue = null;
 
-            if (_objReference is SProtoObject)
-            {
-                var protoObj = _objReference as SProtoObject;
+            var protoObj = _objReference as SProtoObject;
 
-                if (protoObj.ReferenceContainer != null)
-                    protoObj.ReferenceContainer.TryGetValue(identifier, out returnValue);
-            }
-            
+            if (protoObj?.ReferenceContainer != null)
+                protoObj.ReferenceContainer.TryGetValue(identifier, out returnValue);
+
             return returnValue;
         }
     }

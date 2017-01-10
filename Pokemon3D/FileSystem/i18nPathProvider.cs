@@ -6,9 +6,9 @@ namespace Pokemon3D.FileSystem
     /// <summary>
     /// A file provider for localization files.
     /// </summary>
-    internal class i18nPathProvider : PathProvider
+    internal class I18NPathProvider : PathProvider
     {
-        const string I18NDirectory = "i18n";
+        private const string I18NDirectory = "i18n";
         
         /// <summary>
         /// The lookup path for localization files.

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Common
 {

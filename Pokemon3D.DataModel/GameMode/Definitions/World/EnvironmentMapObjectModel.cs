@@ -9,7 +9,7 @@ namespace Pokemon3D.DataModel.GameMode.Definitions.World
     /// A data model for a misc environment map object for decoration.
     /// </summary>
     [DataContract(Namespace = "")]
-    sealed public class EnvironmentMapObjectModel : DataModel<EnvironmentMapObjectModel>
+    public sealed class EnvironmentMapObjectModel : DataModel<EnvironmentMapObjectModel>
     {
         [DataMember(Order = 0)]
         public Vector2Model Position;

@@ -7,22 +7,22 @@ namespace Pokemon3D.Scripting
     /// </summary>
     internal static class ObjectBuffer
     {
-        internal const string OBJ_PREFIX = "§";
+        internal const string ObjPrefix = "§";
 
-        private static readonly object _syncRoot = new object();
+        private static readonly object SyncRoot = new object();
 
-        private static readonly List<object> _buffer = new List<object>();
+        private static readonly List<object> Buffer = new List<object>();
 
         internal static int GetObjectId(object obj)
         {
             int objId;
 
-            lock (_syncRoot)
+            lock (SyncRoot)
             {
-                if (!_buffer.Contains(obj))
-                    _buffer.Add(obj);
+                if (!Buffer.Contains(obj))
+                    Buffer.Add(obj);
 
-                objId = _buffer.IndexOf(obj);
+                objId = Buffer.IndexOf(obj);
             }
 
             return objId;
@@ -32,9 +32,9 @@ namespace Pokemon3D.Scripting
         {
             bool result;
 
-            lock (_syncRoot)
+            lock (SyncRoot)
             {
-                result = _buffer.Count > id;
+                result = Buffer.Count > id;
             }
 
             return result;
@@ -44,9 +44,9 @@ namespace Pokemon3D.Scripting
         {
             object result;
 
-            lock (_syncRoot)
+            lock (SyncRoot)
             {
-                result = _buffer[id];
+                result = Buffer[id];
             }
 
             return result;

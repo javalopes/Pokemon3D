@@ -1,7 +1,6 @@
 ﻿using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Scripting.Types;
 using Pokemon3D.Scripting.Types.Prototypes;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -20,7 +19,7 @@ namespace Pokemon3D.Scripting
                 case StatementType.If:
                     return ExecuteIf(statement);
                 case StatementType.Else:
-                    return ExecuteElse(statement);
+                    return ExecuteElse();
                 case StatementType.ElseIf:
                     return ExecuteElseIf(statement);
                 case StatementType.Import:
@@ -42,17 +41,17 @@ namespace Pokemon3D.Scripting
                 case StatementType.Link:
                     return ExecuteLink(statement);
                 case StatementType.Continue:
-                    return ExecuteContinue(statement);
+                    return ExecuteContinue();
                 case StatementType.Break:
-                    return ExecuteBreak(statement);
+                    return ExecuteBreak();
                 case StatementType.Throw:
                     return ExecuteThrow(statement);
                 case StatementType.Try:
                     return ExecuteTry(statement);
                 case StatementType.Catch:
-                    return ExecuteCatch(statement);
+                    return ExecuteCatch();
                 case StatementType.Finally:
-                    return ExecuteFinally(statement);
+                    return ExecuteFinally();
                 case StatementType.Async:
                     return ExecuteAsync(statement);
             }
@@ -65,8 +64,8 @@ namespace Pokemon3D.Scripting
             // statement inside async block gets executed in its own thread.
             // cannot rely on any variables from outside being set on time.
 
-            string taskName = statement.Code.Remove(0, statement.Code.IndexOf("(") + 1);
-            taskName = taskName.Remove(taskName.LastIndexOf(")")).Trim();
+            string taskName = statement.Code.Remove(0, statement.Code.IndexOf("(", StringComparison.Ordinal) + 1);
+            taskName = taskName.Remove(taskName.LastIndexOf(")", StringComparison.Ordinal)).Trim();
 
             if (string.IsNullOrWhiteSpace(taskName))
                 taskName = Guid.NewGuid().ToString();
@@ -92,16 +91,16 @@ namespace Pokemon3D.Scripting
             return Undefined;
         }
 
-        private SObject ExecuteCatch(ScriptStatement statement)
+        private SObject ExecuteCatch()
         {
             // The script processor can only reach this, when a catch statement exists without a try statement:
-            return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CATCH_WITHOUT_TRY);
+            return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxCatchWithoutTry);
         }
 
-        private SObject ExecuteFinally(ScriptStatement statement)
+        private SObject ExecuteFinally()
         {
             // The script processor can only reach this, when a finally statement exists without a try statement:
-            return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_FINALLY_WITHOUT_TRY);
+            return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxFinallyWithoutTry);
         }
 
         private SObject ExecuteTry(ScriptStatement statement)
@@ -109,7 +108,7 @@ namespace Pokemon3D.Scripting
             var exp = statement.Code;
 
             if (exp != "try")
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_BEFORE_TRY);
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingBeforeTry);
 
             _index++;
             if (_statements.Length > _index)
@@ -159,10 +158,10 @@ namespace Pokemon3D.Scripting
                                         errorVarName = catchCode.Trim();
                                     }
 
-                                    if (Regex.IsMatch(catchCode, REGEX_CATCHCONDITION))
+                                    if (Regex.IsMatch(catchCode, RegexCatchcondition))
                                     {
-                                        errorVarName = catchCode.Remove(catchCode.IndexOf(" "));
-                                        string conditionCode = catchCode.Remove(0, catchCode.IndexOf("if") + 3);
+                                        errorVarName = catchCode.Remove(catchCode.IndexOf(" ", StringComparison.Ordinal));
+                                        string conditionCode = catchCode.Remove(0, catchCode.IndexOf("if", StringComparison.Ordinal) + 3);
 
                                         var processor = new ScriptProcessor(Context, GetLineNumber());
                                         processor.Context.AddVariable(errorVarName, errorObject);
@@ -188,7 +187,7 @@ namespace Pokemon3D.Scripting
                             }
                             else
                             {
-                                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
                             }
                         }
                         else
@@ -240,7 +239,7 @@ namespace Pokemon3D.Scripting
                         }
                         else
                         {
-                            return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                            return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
                         }
                     }
                     else
@@ -252,13 +251,13 @@ namespace Pokemon3D.Scripting
                 }
 
                 if (!foundCatch && !foundFinally) // when no catch or finally block has been found, throw an error.
-                    return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_CATCH_OR_FINALLY);
+                    return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingCatchOrFinally);
                 else
                     return returnObject;
             }
             else
             {
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
             }
         }
 
@@ -268,7 +267,7 @@ namespace Pokemon3D.Scripting
 
             if (exp == "throw")
             {
-                return ErrorHandler.ThrowError(ErrorType.UserError, ErrorHandler.MESSAGE_USER_ERROR);
+                return ErrorHandler.ThrowError(ErrorType.UserError, ErrorHandler.MessageUserError);
             }
             else
             {
@@ -284,13 +283,13 @@ namespace Pokemon3D.Scripting
             }
         }
 
-        private SObject ExecuteContinue(ScriptStatement statement)
+        private SObject ExecuteContinue()
         {
             _continueIssued = true;
             return Undefined;
         }
 
-        private SObject ExecuteBreak(ScriptStatement statement)
+        private SObject ExecuteBreak()
         {
             _breakIssued = true;
             return Undefined;
@@ -333,7 +332,7 @@ namespace Pokemon3D.Scripting
                         }
                         else
                         {
-                            ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                            ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
                         }
                     }
                     else if (statements[i].StatementType == StatementType.Import || statements[i].StatementType == StatementType.Link)
@@ -351,7 +350,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                return ErrorHandler.ThrowError(ErrorType.APIError, ErrorHandler.MESSAGE_API_NOT_SUPPORTED);
+                return ErrorHandler.ThrowError(ErrorType.ApiError, ErrorHandler.MessageApiNotSupported);
             }
         }
 
@@ -378,12 +377,12 @@ namespace Pokemon3D.Scripting
                 }
                 else
                 {
-                    return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_COMPOUND, classBodyStatement.Code[0]);
+                    return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedCompound, classBodyStatement.Code[0]);
                 }
             }
             else
             {
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
             }
         }
 
@@ -392,12 +391,12 @@ namespace Pokemon3D.Scripting
             // function <name> ()
             var exp = statement.Code;
             exp = exp.Remove(0, "function".Length).Trim();
-            var functionName = exp.Remove(exp.IndexOf("("));
+            var functionName = exp.Remove(exp.IndexOf("(", StringComparison.Ordinal));
 
             if (!IsValidIdentifier(functionName))
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingVarName);
 
-            var functionExpression = "function " + exp.Remove(0, exp.IndexOf("("));
+            var functionExpression = "function " + exp.Remove(0, exp.IndexOf("(", StringComparison.Ordinal));
 
             // The function's body is the next statement:
 
@@ -420,7 +419,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
             }
         }
 
@@ -428,19 +427,19 @@ namespace Pokemon3D.Scripting
         {
             var exp = statement.Code;
 
-            var forCode = exp.Remove(0, exp.IndexOf("for") + "for".Length).Trim().Remove(0, 1); // Remove "for" and "(".
+            var forCode = exp.Remove(0, exp.IndexOf("for", StringComparison.Ordinal) + "for".Length).Trim().Remove(0, 1); // Remove "for" and "(".
             forCode = forCode.Remove(forCode.Length - 1, 1); // Remove ")".
 
             var forStatements = StatementProcessor.GetStatements(this, forCode);
 
             if (forStatements.Length == 0)
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, ")");
-            else if (forStatements.Length == 1)
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_FOR_INITIALIZER);
-            else if (forStatements.Length == 2)
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_FOR_CONDITION);
-            else if (forStatements.Length > 3)
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_FOR_CONTROL);
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, ")");
+            if (forStatements.Length == 1)
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingForInitializer);
+            if (forStatements.Length == 2)
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingForCondition);
+            if (forStatements.Length > 3)
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingForControl);
 
             var processor = new ScriptProcessor(Context, GetLineNumber());
 
@@ -492,7 +491,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
             }
         }
 
@@ -552,11 +551,8 @@ namespace Pokemon3D.Scripting
 
             // This means it's a function call, which cannot be assigned to:
             if (leftSide.EndsWith(")") || leftSide.Length == 0)
-                return ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MESSAGE_REFERENCE_INVALID_ASSIGNMENT_LEFT);
+                return ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MessageReferenceInvalidAssignmentLeft);
 
-            SObject memberHost = null;
-            SObject accessor = null;
-            SObject value = null;
             var isIndexer = false;
             var host = "";
             var member = "";
@@ -649,10 +645,10 @@ namespace Pokemon3D.Scripting
             }
 
             // When it's an indexer, we parse it as statement:
-            accessor = isIndexer ? SObject.Unbox(ExecuteStatement(new ScriptStatement(member))) : CreateString(member);
+            var accessor = isIndexer ? SObject.Unbox(ExecuteStatement(new ScriptStatement(member))) : CreateString(member);
 
-            memberHost = ExecuteStatement(new ScriptStatement(host));
-            value = SObject.Unbox(ExecuteStatement(new ScriptStatement(rightSide)));
+            var memberHost = ExecuteStatement(new ScriptStatement(host));
+            var value = SObject.Unbox(ExecuteStatement(new ScriptStatement(rightSide)));
 
             if (assignmentOperator == "=")
             {
@@ -792,11 +788,11 @@ namespace Pokemon3D.Scripting
         {
             var exp = statement.Code;
 
-            var condition = exp.Remove(0, exp.IndexOf("if") + "if".Length).Trim().Remove(0, 1); // Remove "if" and "(".
+            var condition = exp.Remove(0, exp.IndexOf("if", StringComparison.Ordinal) + "if".Length).Trim().Remove(0, 1); // Remove "if" and "(".
             condition = condition.Remove(condition.Length - 1, 1).Trim(); // Remove ")".
 
             if (condition.Length == 0)
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, ")");
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, ")");
 
             var conditionResult = ExecuteStatement(new ScriptStatement(condition));
             statement.StatementResult = conditionResult;
@@ -841,11 +837,11 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
             }
         }
 
-        private SObject ExecuteElse(ScriptStatement statement)
+        private SObject ExecuteElse()
         {
             // Search for an if statement:
             var searchIndex = _index - 2;
@@ -860,7 +856,7 @@ namespace Pokemon3D.Scripting
             }
 
             if (!foundIf)
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "keyword \'else\'");
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "keyword \'else\'");
 
             _index++;
 
@@ -871,7 +867,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
             }
         }
 
@@ -891,7 +887,7 @@ namespace Pokemon3D.Scripting
 
             return foundIf ?
                 ExecuteIf(statement) :
-                ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "keyword \'else if\'");
+                ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "keyword \'else if\'");
         }
 
         private SObject ExecuteImport(ScriptStatement statement)
@@ -902,18 +898,18 @@ namespace Pokemon3D.Scripting
             var parts = exp.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length < 4 || parts[0] != "import" || parts[2] != "from")
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_INVALID_IMPORT_STATEMENT);
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxInvalidImportStatement);
 
             var apiClass = parts[1];
-            var moduleName = exp.Remove(0, exp.IndexOf("\""));
+            var moduleName = exp.Remove(0, exp.IndexOf("\"", StringComparison.Ordinal));
             moduleName = moduleName.Trim('\"');
 
             if (!IsValidIdentifier(apiClass))
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingVarName);
 
             var apiUsing = new SAPIUsing(apiClass, moduleName);
 
-            Context.AddAPIUsing(apiUsing);
+            Context.AddApiUsing(apiUsing);
             return apiUsing;
         }
 
@@ -926,14 +922,14 @@ namespace Pokemon3D.Scripting
 
             if (identifier.Contains("="))
             {
-                var assignment = identifier.Remove(0, identifier.IndexOf("=") + 1).Trim();
-                identifier = identifier.Remove(identifier.IndexOf("=")).Trim();
+                var assignment = identifier.Remove(0, identifier.IndexOf("=", StringComparison.Ordinal) + 1).Trim();
+                identifier = identifier.Remove(identifier.IndexOf("=", StringComparison.Ordinal)).Trim();
 
                 data = SObject.Unbox(ExecuteStatement(new ScriptStatement(assignment)));
             }
 
             if (!IsValidIdentifier(identifier))
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingVarName);
 
             var variable = new SVariable(identifier, data);
             Context.AddVariable(variable);
@@ -945,11 +941,11 @@ namespace Pokemon3D.Scripting
         {
             var exp = statement.Code;
 
-            var condition = exp.Remove(0, exp.IndexOf("while") + "while".Length).Trim().Remove(0, 1); // Remove "while" and "(".
+            var condition = exp.Remove(0, exp.IndexOf("while", StringComparison.Ordinal) + "while".Length).Trim().Remove(0, 1); // Remove "while" and "(".
             condition = condition.Remove(condition.Length - 1, 1).Trim(); // Remove ")".
 
             if (condition.Length == 0)
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, ")");
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, ")");
 
             _index++;
 
@@ -984,7 +980,7 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
             }
         }
 

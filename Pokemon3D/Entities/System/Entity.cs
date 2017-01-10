@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Pokemon3D.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
@@ -422,7 +421,6 @@ namespace Pokemon3D.Entities.System
                 HandleIsDirty();
                 return _worldMatrix;
             }
-            private set { _worldMatrix = value; }
         }
 
         /// <summary>

@@ -7,13 +7,11 @@ namespace Pokemon3D.Common
     /// </summary>
     public class GlobalRandomProvider : Singleton<GlobalRandomProvider>
     {
-        private Random _random;
-
         public GlobalRandomProvider()
         {
-            _random = new Random();
+            Rnd = new Random();
         }
 
-        public Random Rnd { get { return _random; } }
+        public Random Rnd { get; }
     }
 }

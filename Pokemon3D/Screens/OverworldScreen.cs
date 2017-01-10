@@ -1,7 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Collisions;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Entities;
 using Pokemon3D.GameCore;

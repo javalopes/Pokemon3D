@@ -118,7 +118,6 @@ namespace Pokemon3D.Entities
         private void MapChanged(object sender, FileSystemEventArgs e)
         {
             var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
-            var mapModel = gameMode.LoadMap(_id, true);
             foreach (var entity in _allMapEntities)
             {
                 _world.EntitySystem.RemoveEntity(entity);

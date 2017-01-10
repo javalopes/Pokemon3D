@@ -10,7 +10,7 @@ namespace Pokemon3D.Rendering.Data
     /// </summary>
     public class Mesh : IDisposable
     {
-        public static int InstanceCount = 0;
+        public static int InstanceCount;
 
         private readonly PrimitiveType _primitiveType;
         private VertexBuffer _vertexBuffer;

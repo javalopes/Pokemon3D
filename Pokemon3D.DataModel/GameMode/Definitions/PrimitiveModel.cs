@@ -12,7 +12,10 @@ namespace Pokemon3D.DataModel.GameMode.Definitions
     public class PrimitiveModel : DataModel<PrimitiveModel>
     {
         /// <summary>
-        /// Referenced in: <see cref="Map.Entities.EntityRenderModeModel.PrimitiveModelId"/>.
+        /// Referenced in: <see>
+        ///         <cref>Map.Entities.EntityRenderModeModel.PrimitiveModelId</cref>
+        ///     </see>
+        ///     .
         /// </summary>
         [DataMember(Order = 0)]
         public string Id;

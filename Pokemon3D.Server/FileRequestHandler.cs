@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Net;
 using System.IO;
 using Pokemon3D.DataModel;
 using Pokemon3D.DataModel.Requests;
@@ -12,12 +9,9 @@ namespace Pokemon3D.Server
 {
     class FileRequestHandler
     {
-        private string _gameModeFolder;
+        private readonly string _gameModeFolder;
 
-        private static string StartupPath
-        {
-            get { return AppDomain.CurrentDomain.BaseDirectory; }
-        }
+        private static string StartupPath => AppDomain.CurrentDomain.BaseDirectory;
 
         public FileRequestHandler(string gameModeFolder)
         {
@@ -33,7 +27,7 @@ namespace Pokemon3D.Server
             {
                 var dataModels = Directory.GetFiles(path).Select(file => new FileContentModel()
                 {
-                    FileName = Path.Combine(requestPath, Path.GetFileName(file)),
+                    FileName = Path.Combine(requestPath, Path.GetFileName(file) ?? ""),
                     FileContent = File.ReadAllText(file)
                 }).ToArray();
                 string returnStr = "[";

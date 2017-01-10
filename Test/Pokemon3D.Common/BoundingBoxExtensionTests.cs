@@ -1,6 +1,4 @@
-﻿
-using System.Linq.Expressions;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using NUnit.Framework;
 using Pokemon3D.Common.Extensions;
 

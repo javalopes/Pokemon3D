@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Pokemon3D.Common.ScriptPipeline;
+﻿using Pokemon3D.Common.ScriptPipeline;
 using Pokemon3D.DataModel.GameMode.Battle;
 using Pokemon3D.GameModes;
 using Pokemon3D.Scripting.Adapters;

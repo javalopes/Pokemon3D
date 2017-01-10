@@ -16,7 +16,7 @@ namespace Pokemon3D.GameModes
         public GameModeInfo(string directory)
         {
             DirectioryName = Path.GetFileName(directory);
-            DirectoryPath = Path.Combine(GameModePathProvider.GameModeFolder, DirectioryName);
+            DirectoryPath = Path.Combine(GameModePathProvider.GameModeFolder, DirectioryName ?? "");
 
             IsValid = false;
             string gameModeFile = GameModePathProvider.GetGameModeFile(directory);
@@ -44,7 +44,7 @@ namespace Pokemon3D.GameModes
         /// <summary>
         /// The name of this GameMode's folder (not full path).
         /// </summary>
-        public string DirectioryName { get; private set; }
+        public string DirectioryName { get; }
 
         /// <summary>
         /// Name of the Game Mode.

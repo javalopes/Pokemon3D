@@ -1,11 +1,13 @@
-﻿namespace Pokemon3D.Scripting.Types
+﻿using System;
+
+namespace Pokemon3D.Scripting.Types
 {
     internal class SString : SProtoObject
     {
-        internal const string STRING_LENGTH_PROPERTY_NAME = "length";
+        internal const string StringLengthPropertyName = "length";
 
-        private const string STRING_NORMAL_FORMAT = "\"{0}\"";
-        private const string STRING_UNESCAPED_FORMAT = "@\"{0}\"";
+        private const string StringNormalFormat = "\"{0}\"";
+        private const string StringUnescapedFormat = "@\"{0}\"";
 
         private static string Unescape(string val)
         {
@@ -13,13 +15,13 @@
             {
                 var searchOffset = 0;
 
-                while (val.IndexOf("\\", searchOffset) > -1)
+                while (val.IndexOf("\\", searchOffset, StringComparison.Ordinal) > -1)
                 {
-                    var cIndex = val.IndexOf("\\");
+                    var cIndex = val.IndexOf("\\", StringComparison.Ordinal);
 
                     if (cIndex < val.Length - 1) //When the \ is not the last character:
                     {
-                        char escapeSequenceChar = val[cIndex + 1];
+                        var escapeSequenceChar = val[cIndex + 1];
                         string insert;
 
                         switch (escapeSequenceChar)
@@ -80,9 +82,9 @@
             {
                 var searchOffset = 0;
 
-                while (val.IndexOf("{", searchOffset) > -1 && val.IndexOf("}", searchOffset) > -1)
+                while (val.IndexOf("{", searchOffset, StringComparison.Ordinal) > -1 && val.IndexOf("}", searchOffset, StringComparison.Ordinal) > -1)
                 {
-                    var startIndex = val.IndexOf("{", searchOffset);
+                    var startIndex = val.IndexOf("{", searchOffset, StringComparison.Ordinal);
 
                     if (startIndex < val.Length - 2)
                     {
@@ -120,7 +122,7 @@
                         }
                         else
                         {
-                            var endIndex = val.IndexOf("}", startIndex);
+                            var endIndex = val.IndexOf("}", startIndex, StringComparison.Ordinal);
                             if (endIndex > -1)
                             {
                                 var interpolationSequence = val.Substring(startIndex, endIndex - startIndex + 1);
@@ -188,9 +190,9 @@
         internal override string ToScriptSource()
         {
             if (Escaped)
-                return string.Format(STRING_NORMAL_FORMAT, Value);
+                return string.Format(StringNormalFormat, Value);
             else
-                return string.Format(STRING_UNESCAPED_FORMAT, Value);
+                return string.Format(StringUnescapedFormat, Value);
         }
 
         internal override SString ToString(ScriptProcessor processor)
@@ -209,26 +211,13 @@
             {
                 return processor.CreateNumber(0);
             }
-            else
-            {
-                var dblResult = 0D;
-                if (double.TryParse(Value, out dblResult))
-                {
-                    return processor.CreateNumber(dblResult);
-                }
-                else
-                {
-                    return processor.CreateNumber(double.NaN);
-                }
-            }
+            double dblResult;
+            return processor.CreateNumber(double.TryParse(Value, out dblResult) ? dblResult : double.NaN);
         }
 
         internal override string TypeOf()
         {
-            if (Prototype == null)
-                return LITERAL_TYPE_STRING;
-            else
-                return base.TypeOf();
+            return Prototype == null ? LITERAL_TYPE_STRING : base.TypeOf();
         }
 
         internal override double SizeOf()

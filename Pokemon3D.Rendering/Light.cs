@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
+// ReSharper disable once ForCanBeConvertedToForeach
 namespace Pokemon3D.Rendering
 {
     /// <summary>
@@ -71,7 +72,7 @@ namespace Pokemon3D.Rendering
             switch (Type)
             {
                 case LightType.Directional:
-                    UpdateLightMatrixForDirectionalLight(camera, shadowCasters);
+                    UpdateLightMatrixForDirectionalLight(shadowCasters);
                     break;
                 case LightType.Point:
                     throw new NotImplementedException();
@@ -81,7 +82,7 @@ namespace Pokemon3D.Rendering
             
         }
 
-        private void UpdateLightMatrixForDirectionalLight(Camera camera, IList<DrawableElement> shadowCasters)
+        private void UpdateLightMatrixForDirectionalLight(IList<DrawableElement> shadowCasters)
         {
             var directionNormalized = Vector3.Normalize(Direction);
             var lightViewMatrix = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.Up);

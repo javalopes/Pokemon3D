@@ -9,7 +9,7 @@ namespace Pokemon3D.DataModel.GameMode.Definitions.World
     /// A base data model for the map objects.
     /// </summary>
     [DataContract(Namespace = "")]
-    abstract public class MapObjectModel : DataModel<MapObjectModel>
+    public abstract class MapObjectModel : DataModel<MapObjectModel>
     {
         [DataMember(Order = 0)]
         public string Name;

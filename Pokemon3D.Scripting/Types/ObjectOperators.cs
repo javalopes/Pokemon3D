@@ -139,7 +139,7 @@ namespace Pokemon3D.Scripting.Types
             }
             else
             {
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_INVALID_INCREMENT);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxInvalidIncrement);
                 return "";
             }
         }
@@ -156,7 +156,7 @@ namespace Pokemon3D.Scripting.Types
             }
             else
             {
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_INVALID_DECREMENT);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxInvalidDecrement);
                 return "";
             }
         }

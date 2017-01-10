@@ -30,7 +30,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 }
                 else
                 {
-                    return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_REFERENCE_NO_PROTOTYPE, protoParam.TypeOf());
+                    return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MessageReferenceNoPrototype, protoParam.TypeOf());
                 }
             }
 
@@ -43,7 +43,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             }
             else
             {
-                return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_REFERENCE_NO_PROTOTYPE, LITERAL_UNDEFINED);
+                return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MessageReferenceNoPrototype, LITERAL_UNDEFINED);
             }
         }
 
@@ -119,10 +119,10 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             }
 
             if ((isIndexerSet || isIndexerGet) && !(defaultValue is SFunction))
-                processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_GETTER_SETTER_NOT_A_FUNCTION);
+                processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MessageTypeGetterSetterNotAFunction);
 
             if (!ScriptProcessor.IsValidIdentifier(memberName))
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingVarName);
 
             prototype.AddMember(processor, new PrototypeMember(memberName, defaultValue, isStatic, isReadOnly, isIndexerGet, isIndexerSet));
 

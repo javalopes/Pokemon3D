@@ -11,13 +11,7 @@
 
         public static NetUndefined Instance
         {
-            get
-            {
-                if (_instance == null)
-                    _instance = new NetUndefined();
-
-                return _instance;
-            }
+            get { return _instance ?? (_instance = new NetUndefined()); }
         }
     }
 }

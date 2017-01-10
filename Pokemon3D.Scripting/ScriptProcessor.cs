@@ -14,7 +14,7 @@ namespace Pokemon3D.Scripting
     public partial class ScriptProcessor
     {
         // Set this to true to have script exceptions crash the application.
-        internal const bool DEBUG_CRASH_MODE = false;
+        internal bool DebugCrashMode = false;
 
         private struct ElementCapture
         {
@@ -24,8 +24,8 @@ namespace Pokemon3D.Scripting
             public int Depth;
         }
 
-        private const string IDENTIFIER_SEPARATORS = "-+*/=!%&|<>,";
-        private const string CALL_LITERAL = "call";
+        private const string IdentifierSeparators = "-+*/=!%&|<>,";
+        private const string CallLiteral = "call";
 
         /// <summary>
         /// The <see cref="Pokemon3D.Scripting.ErrorHandler"/> associated with this <see cref="ScriptProcessor"/>.
@@ -56,12 +56,12 @@ namespace Pokemon3D.Scripting
         private ScriptStatement[] _statements;
         private int _index;
         private string _source;
-        private readonly bool _hasParent = false;
-        private readonly int _parentLineNumber = 0;
+        private readonly bool _hasParent;
+        private readonly int _parentLineNumber;
 
-        private bool _returnIssued = false;
-        private bool _continueIssued = false;
-        private bool _breakIssued = false;
+        private bool _returnIssued;
+        private bool _continueIssued;
+        private bool _breakIssued;
 
         /// <summary>
         /// The <see cref="ScriptContext"/> associated with this <see cref="ScriptProcessor"/>.
@@ -115,7 +115,7 @@ namespace Pokemon3D.Scripting
             SObject returnObject;
             ErrorHandler.Clean();
 
-            if (_hasParent || DEBUG_CRASH_MODE)
+            if (_hasParent || DebugCrashMode)
             {
                 returnObject = ProcessStatements();
             }
@@ -150,7 +150,7 @@ namespace Pokemon3D.Scripting
             return !(string.IsNullOrEmpty(identifier) ||
                 !char.IsLetter(identifier[0]) ||
                 ReservedKeywords.Contains(identifier) ||
-                identifier == CALL_LITERAL);
+                identifier == CallLiteral);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace Pokemon3D.Scripting
 
         internal SArray CreateArray(int length)
         {
-            return Context.CreateInstance("Array", new[] { CreateNumber(length) }) as SArray;
+            return Context.CreateInstance("Array", new SObject[] { CreateNumber(length) }) as SArray;
         }
 
         internal SArray CreateArray(SObject[] elements)
@@ -287,7 +287,7 @@ namespace Pokemon3D.Scripting
                     var result = "";
 
                     if (string.IsNullOrWhiteSpace(elementLeft))
-                        ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, op);
+                        ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, op);
 
                     var objectLeft = ToScriptObject(elementLeft);
 
@@ -301,7 +301,7 @@ namespace Pokemon3D.Scripting
                         elementRight = captureRight.Identifier.Trim();
 
                         if (string.IsNullOrWhiteSpace(elementRight))
-                            ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                            ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
 
                         if (op != ".")
                             objectRight = ToScriptObject(elementRight);
@@ -392,7 +392,7 @@ namespace Pokemon3D.Scripting
 
         private string EvaluateLambda(string exp)
         {
-            if (StringEscapeHelper.ContainsWithoutStrings(exp, "=>") && Regex.IsMatch(exp, REGEX_LAMBDA))
+            if (StringEscapeHelper.ContainsWithoutStrings(exp, "=>") && Regex.IsMatch(exp, RegexLambda))
                 return BuildLambdaFunction(exp);
             else
                 return exp;
@@ -531,13 +531,13 @@ namespace Pokemon3D.Scripting
             {
                 returnObject = SArray.Parse(this, exp);
             }
-            else if (exp.StartsWith("function") && Regex.IsMatch(exp, REGEX_FUNCTION))
+            else if (exp.StartsWith("function") && Regex.IsMatch(exp, RegexFunction))
             {
                 returnObject = new SFunction(this, exp);
             }
-            else if (Context.IsAPIUsing(exp))
+            else if (Context.IsApiUsing(exp))
             {
-                returnObject = Context.GetAPIUsing(exp);
+                returnObject = Context.GetApiUsing(exp);
             }
             else if (Context.IsVariable(exp))
             {
@@ -555,10 +555,10 @@ namespace Pokemon3D.Scripting
             {
                 returnObject = Context.CreateInstance(exp);
             }
-            else if (exp.StartsWith(ObjectBuffer.OBJ_PREFIX))
+            else if (exp.StartsWith(ObjectBuffer.ObjPrefix))
             {
-                var strId = exp.Remove(0, ObjectBuffer.OBJ_PREFIX.Length);
-                var id = 0;
+                var strId = exp.Remove(0, ObjectBuffer.ObjPrefix.Length);
+                int id;
 
                 if (int.TryParse(strId, out id) && ObjectBuffer.HasObject(id))
                 {
@@ -566,12 +566,12 @@ namespace Pokemon3D.Scripting
                 }
                 else
                 {
-                    returnObject = ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_INVALID_TOKEN, exp);
+                    returnObject = ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxInvalidToken, exp);
                 }
             }
             else
             {
-                returnObject = ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MESSAGE_REFERENCE_NOT_DEFINED, exp);
+                returnObject = ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MessageReferenceNotDefined, exp);
             }
 
             if (isNegative)
@@ -582,8 +582,8 @@ namespace Pokemon3D.Scripting
 
         private static bool IsDotOperatorDecimalSeparator(string elementLeft, string elementRight)
         {
-            return Regex.IsMatch(elementLeft.Trim(), REGEX_NUMLEFTDOT) &&
-                   Regex.IsMatch(elementRight.Trim(), REGEX_NUMRIGHTDOT);
+            return Regex.IsMatch(elementLeft.Trim(), RegexNumleftdot) &&
+                   Regex.IsMatch(elementRight.Trim(), RegexNumrightdot);
         }
 
         /// <summary>
@@ -719,7 +719,7 @@ namespace Pokemon3D.Scripting
 
                                 if (parenthesesCode.Length > 0)
                                 {
-                                    if (parenthesesCode.Contains("=>") && Regex.IsMatch(parenthesesCode, REGEX_LAMBDA))
+                                    if (parenthesesCode.Contains("=>") && Regex.IsMatch(parenthesesCode, RegexLambda))
                                     {
                                         newExpression.Append(BuildLambdaFunction(parenthesesCode));
                                     }
@@ -776,12 +776,12 @@ namespace Pokemon3D.Scripting
         /// </summary>
         private static string BuildLambdaFunction(string lambdaCode)
         {
-            var signatureCode = lambdaCode.Remove(lambdaCode.IndexOf("=>")).Trim();
+            var signatureCode = lambdaCode.Remove(lambdaCode.IndexOf("=>", StringComparison.Ordinal)).Trim();
             var signatureBuilder = new StringBuilder();
 
             if (signatureCode != "()")
             {
-                var signature = signatureCode.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var signature = signatureCode.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var t in signature)
                 {
@@ -792,7 +792,7 @@ namespace Pokemon3D.Scripting
                 }
             }
 
-            var code = lambdaCode.Remove(0, lambdaCode.IndexOf("=>") + 2).Trim();
+            var code = lambdaCode.Remove(0, lambdaCode.IndexOf("=>", StringComparison.Ordinal) + 2).Trim();
 
             // code without a code block ({ ... }) are a single statement that is implied to follow a "return" statement.
             // e.g. (a) => a + 1 -> function(a) { return a + 1; }
@@ -802,11 +802,11 @@ namespace Pokemon3D.Scripting
 
             if (code.StartsWith("{") && code.EndsWith("}"))
             {
-                return $"function({signatureBuilder.ToString()}){code}";
+                return $"function({signatureBuilder}){code}";
             }
             else
             {
-                return $"function({signatureBuilder.ToString()}){{return {code};}}";
+                return $"function({signatureBuilder}){{return {code};}}";
             }
         }
 
@@ -850,12 +850,12 @@ namespace Pokemon3D.Scripting
                         if (t == '.')
                         {
                             // Check if the '.' is not a decimal separator:
-                            if (!Regex.IsMatch(identifier.Trim(), REGEX_NUMLEFTDOT))
+                            if (!Regex.IsMatch(identifier.Trim(), RegexNumleftdot))
                             {
                                 foundSeparatorChar = true;
                             }
                         }
-                        else if (IDENTIFIER_SEPARATORS.Contains(t))
+                        else if (IdentifierSeparators.Contains(t))
                         {
                             foundSeparatorChar = true;
                         }
@@ -919,12 +919,12 @@ namespace Pokemon3D.Scripting
                         if (t == '.')
                         {
                             // Check if the '.' is not a decimal separator:
-                            if (!Regex.IsMatch(identifier.Trim(), REGEX_NUMRIGHTDOT))
+                            if (!Regex.IsMatch(identifier.Trim(), RegexNumrightdot))
                             {
                                 foundSeparatorChar = true;
                             }
                         }
-                        else if (IDENTIFIER_SEPARATORS.Contains(t))
+                        else if (IdentifierSeparators.Contains(t))
                         {
                             foundSeparatorChar = true;
                         }
@@ -1083,7 +1083,7 @@ namespace Pokemon3D.Scripting
                 }
                 else
                 {
-                    return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of string");
+                    return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of string");
                 }
             }
             else
@@ -1146,7 +1146,7 @@ namespace Pokemon3D.Scripting
             argumentCode = argumentCode.Remove(argumentCode.Length - 1, 1).Trim();
             var parameters = ParseParameters(argumentCode);
 
-            if (methodName == CALL_LITERAL && owner is SFunction)
+            if (methodName == CallLiteral && owner is SFunction)
             {
                 This = Context.This;
             }
@@ -1162,7 +1162,7 @@ namespace Pokemon3D.Scripting
                 }
                 else
                 {
-                    return ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_NOT_A_FUNCTION, methodName);
+                    return ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MessageTypeNotAFunction, methodName);
                 }
             }
             else

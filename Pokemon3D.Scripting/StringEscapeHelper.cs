@@ -17,13 +17,13 @@ namespace Pokemon3D.Scripting
         {
             if (ignoreStart)
             {
-                _index = startIndex;
+                Index = startIndex;
             }
             else
             {
-                if (_hasStrings)
+                if (HasStringsValue)
                 {
-                    while (startIndex > _index)
+                    while (startIndex > Index)
                     {
                         CheckNext();
                     }
@@ -38,16 +38,16 @@ namespace Pokemon3D.Scripting
 
         internal override void CheckStartAt(int startIndex)
         {
-            if (_hasStrings)
+            if (HasStringsValue)
             {
-                if (startIndex < _index)
+                if (startIndex < Index)
                 {
-                    _index = 0;
+                    Index = 0;
                     CheckStartAt(startIndex);
                 }
                 else
                 {
-                    while (startIndex > _index)
+                    while (startIndex > Index)
                     {
                         CheckNext();
                     }
@@ -58,26 +58,26 @@ namespace Pokemon3D.Scripting
 
         protected sealed override void CheckNext()
         {
-            var t = _expression[_index];
+            var t = Expression[Index];
 
-            if (_endOfString)
+            if (EndOfString)
             {
-                _endOfString = false;
-                _isString = false;
+                EndOfString = false;
+                IsStringValue = false;
             }
 
-            if (t == STRING_DELIMITER_SINGLE || t == STRING_DELIMITER_DOUBLE)
+            if (t == StringDelimiterSingle || t == StringDelimiterDouble)
             {
-                if (!_isString)
+                if (!IsStringValue)
                 {
-                    _isString = true;
-                    _startChar = t;
+                    IsStringValue = true;
+                    StartChar = t;
                 }
                 else
                 {
-                    if (!_isEscaped && t == _startChar)
+                    if (!_isEscaped && t == StartChar)
                     {
-                        _endOfString = true;
+                        EndOfString = true;
                     }
                     else
                     {
@@ -95,7 +95,7 @@ namespace Pokemon3D.Scripting
                     _isEscaped = false;
             }
 
-            _index++;
+            Index++;
         }
     }
 
@@ -112,13 +112,13 @@ namespace Pokemon3D.Scripting
         {
             if (ignoreStart)
             {
-                _index = startIndex;
+                Index = startIndex;
             }
             else
             {
-                if (_hasStrings)
+                if (HasStringsValue)
                 {
-                    while (startIndex < _index)
+                    while (startIndex < Index)
                     {
                         CheckNext();
                     }
@@ -133,16 +133,16 @@ namespace Pokemon3D.Scripting
 
         internal override void CheckStartAt(int startIndex)
         {
-            if (_hasStrings)
+            if (HasStringsValue)
             {
-                if (startIndex > _index)
+                if (startIndex > Index)
                 {
-                    _index = _expression.Length - 1;
+                    Index = Expression.Length - 1;
                     CheckStartAt(startIndex);
                 }
                 else
                 {
-                    while (startIndex < _index)
+                    while (startIndex < Index)
                     {
                         CheckNext();
                     }
@@ -153,22 +153,22 @@ namespace Pokemon3D.Scripting
 
         protected override void CheckNext()
         {
-            var t = _expression[_index];
+            var t = Expression[Index];
 
-            if (_endOfString)
+            if (EndOfString)
             {
-                _endOfString = false;
-                _isString = false;
+                EndOfString = false;
+                IsStringValue = false;
             }
 
-            if (t == STRING_DELIMITER_SINGLE || t == STRING_DELIMITER_DOUBLE)
+            if (t == StringDelimiterSingle || t == StringDelimiterDouble)
             {
-                if (_isString && t == _startChar)
+                if (IsStringValue && t == StartChar)
                 {
-                    var cIndex = _index - 1;
+                    var cIndex = Index - 1;
                     var isEscaped = false;
 
-                    while (cIndex >= 0 && _expression[cIndex] == '\\')
+                    while (cIndex >= 0 && Expression[cIndex] == '\\')
                     {
                         isEscaped = !isEscaped;
                         cIndex--;
@@ -176,17 +176,17 @@ namespace Pokemon3D.Scripting
 
                     if (!isEscaped)
                     {
-                        _endOfString = true;
+                        EndOfString = true;
                     }
                 }
-                else if (!_isString)
+                else if (!IsStringValue)
                 {
-                    _isString = true;
-                    _startChar = t;
+                    IsStringValue = true;
+                    StartChar = t;
                 }
             }
 
-            _index--;
+            Index--;
         }
     }
 
@@ -195,33 +195,33 @@ namespace Pokemon3D.Scripting
     /// </summary>
     internal abstract class StringEscapeHelper
     {
-        protected internal const char STRING_DELIMITER_SINGLE = '\'';
-        protected internal const char STRING_DELIMITER_DOUBLE = '\"';
+        protected internal const char StringDelimiterSingle = '\'';
+        protected internal const char StringDelimiterDouble = '\"';
 
-        protected bool _isString = false;
-        protected string _expression;
-        protected int _index;
-        protected char _startChar;
-        protected bool _endOfString;
-        protected bool _hasStrings;
+        protected bool IsStringValue;
+        protected string Expression;
+        protected int Index;
+        protected char StartChar;
+        protected bool EndOfString;
+        protected bool HasStringsValue;
 
         protected internal StringEscapeHelper(string expression)
         {
-            _expression = expression;
-            _hasStrings = HasStrings(expression);
+            Expression = expression;
+            HasStringsValue = HasStrings(expression);
         }
 
         /// <summary>
         /// Returns if the <see cref="StringEscapeHelper"/> is currently positioned within a string.
         /// </summary>
-        internal bool IsString => _isString;
+        internal bool IsString => IsStringValue;
 
         /// <summary>
         /// Jumps to the given index, ignoring all chars in between the current index and the new one.
         /// </summary>
         internal void JumpTo(int index)
         {
-            _index = index;
+            Index = index;
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Pokemon3D.Scripting
 
         protected static bool HasStrings(string expression)
         {
-            return expression.Contains(STRING_DELIMITER_SINGLE) || expression.Contains(STRING_DELIMITER_DOUBLE);
+            return expression.Contains(StringDelimiterSingle) || expression.Contains(StringDelimiterDouble);
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace Pokemon3D.Scripting
                     var index = 0;
                     var escaped = false;
                     var isString = false;
-                    var startChar = STRING_DELIMITER_SINGLE;
+                    var startChar = StringDelimiterSingle;
 
                     var sb = new StringBuilder();
 
@@ -263,7 +263,7 @@ namespace Pokemon3D.Scripting
                     {
                         var t = expression[index];
 
-                        if (t == STRING_DELIMITER_SINGLE || t == STRING_DELIMITER_DOUBLE)
+                        if (t == StringDelimiterSingle || t == StringDelimiterDouble)
                         {
                             if (!isString)
                             {

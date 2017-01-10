@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace Pokemon3D.Common.Shapes
 {
@@ -24,7 +19,7 @@ namespace Pokemon3D.Common.Shapes
 
         /// <summary>
         /// Calculates the area of this shape.
-        /// </summary
+        /// </summary>
         double GetArea();
 
         /// <summary>

@@ -1,28 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace Pokemon3D.Common.FileSystem
 {
     public class LogPathProvider : PathProvider
     {
-        const string LOG_FILE_EXTENSION = ".txt";
-        const string LOG_FILE_PREFIX = "log_";
-        const string LOG_DIRECTORY = "Logs";
+        private const string LogFileExtension = ".txt";
+        const string LogFilePrefix = "log_";
+        public const string LogDirectoryName = "Logs";
 
         /// <summary>
         /// The directory logs are placed in.
         /// </summary>
-        public static string LogDirectory
-        {
-            get
-            {
-                return Path.Combine(StartupPath, LOG_DIRECTORY);
-            }
-        }
+        public static string LogDirectory => Path.Combine(StartupPath, LogDirectoryName);
 
         /// <summary>
         /// Returns the path to the current log file.
@@ -37,7 +28,7 @@ namespace Pokemon3D.Common.FileSystem
                 */
 
                 var now = DateTime.Now;
-                StringBuilder sb = new StringBuilder(LOG_FILE_PREFIX);
+                StringBuilder sb = new StringBuilder(LogFilePrefix);
 
                 //D2 formats the number with a leading zero, if needed.
                 sb.Append(now.Year.ToString());
@@ -45,7 +36,7 @@ namespace Pokemon3D.Common.FileSystem
                 sb.Append(now.Month.ToString("D2"));
                 sb.Append("-");
                 sb.Append(now.Day.ToString("D2"));
-                sb.Append(LOG_FILE_EXTENSION); //Append file ending.
+                sb.Append(LogFileExtension); //Append file ending.
 
                 //Combine the startup path and the file name constructed by the string builder:
                 return Path.Combine(LogDirectory, sb.ToString());

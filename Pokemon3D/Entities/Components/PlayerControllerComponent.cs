@@ -75,7 +75,7 @@ namespace Pokemon3D.Entities.Components
         {
             if (!_isInputEnabled) return;
 
-            var inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
+            var inputSystem = GameInstance.GetService<InputSystem>();
             var currentMouseState = Mouse.GetState();
 
             var movementDirection = inputSystem.GetAxis(ActionNames.LeftAxis);
@@ -83,10 +83,10 @@ namespace Pokemon3D.Entities.Components
             switch (MovementMode)
             {
                 case PlayerMovementMode.FirstPerson:
-                    HandleFirstPersonMovement(gameTime.GetSeconds(), currentMouseState, movementDirection);
+                    HandleFirstPersonMovement(gameTime.GetSeconds(), movementDirection);
                     break;
                 case PlayerMovementMode.ThirdPerson:
-                    HandleThirdPersonMovement(gameTime.GetSeconds(), currentMouseState, movementDirection);
+                    HandleThirdPersonMovement(gameTime.GetSeconds(), movementDirection);
                     break;
                 case PlayerMovementMode.GodMode:
                     HandleGodModeMovement(gameTime.GetSeconds(), currentMouseState, movementDirection);
@@ -110,7 +110,7 @@ namespace Pokemon3D.Entities.Components
 
         private void HandleGodModeMovement(float elapsedTime, MouseState mouseState, Vector2 movementDirection)
         {
-            var inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
+            var inputSystem = GameInstance.GetService<InputSystem>();
 
             var speedFactor = inputSystem.IsPressed(ActionNames.SprintGodMode) ? 2.0f : 1.0f;
             var step = Speed * elapsedTime * speedFactor;
@@ -135,7 +135,7 @@ namespace Pokemon3D.Entities.Components
             }
         }
 
-        private void HandleThirdPersonMovement(float elapsedTime, MouseState mouseState, Vector2 movementDirection)
+        private void HandleThirdPersonMovement(float elapsedTime, Vector2 movementDirection)
         {
             if (movementDirection.LengthSquared() > 0.0f)
             {
@@ -143,14 +143,14 @@ namespace Pokemon3D.Entities.Components
                 ReferringEntity.Parent.Translate(new Vector3(movementNormalized.X, 0.0f, movementNormalized.Y) * Speed * elapsedTime);
             }
 
-            var rightAxis = GameProvider.GameInstance.GetService<InputSystem>().GetAxis(ActionNames.RightAxis);
+            var rightAxis = GameInstance.GetService<InputSystem>().GetAxis(ActionNames.RightAxis);
             if (rightAxis.X * rightAxis.X > 0.0f)
             {
                 ReferringEntity.Parent.RotateY(rightAxis.X * RotationSpeed * elapsedTime);
             }
         }
 
-        private void HandleFirstPersonMovement(float elapsedTime, MouseState mouseState, Vector2 movementDirection)
+        private void HandleFirstPersonMovement(float elapsedTime, Vector2 movementDirection)
         {
             if (movementDirection.LengthSquared() > 0.0f)
             {
@@ -158,7 +158,7 @@ namespace Pokemon3D.Entities.Components
                 ReferringEntity.Parent.Translate(new Vector3(movementNormalized.X, 0.0f, movementNormalized.Y) * Speed * elapsedTime);
             }
 
-            var rightAxis = GameProvider.GameInstance.GetService<InputSystem>().GetAxis(ActionNames.RightAxis);
+            var rightAxis = GameInstance.GetService<InputSystem>().GetAxis(ActionNames.RightAxis);
 
             if (rightAxis.X*rightAxis.X > 0.0f)
             {

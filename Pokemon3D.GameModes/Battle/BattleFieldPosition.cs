@@ -24,7 +24,7 @@
 
         public override bool Equals(object obj)
         {
-            return obj is BattleFieldPosition ? (BattleFieldPosition)obj == this : false;
+            return obj is BattleFieldPosition && (BattleFieldPosition)obj == this;
         }
 
         public static bool operator ==(BattleFieldPosition pos1, BattleFieldPosition pos2)

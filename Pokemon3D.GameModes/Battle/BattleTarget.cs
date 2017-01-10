@@ -43,7 +43,6 @@ namespace Pokemon3D.GameModes.Battle
                 case TargetType.AllOwn:
                     return allPokemon.Where(p => p.Position.Y == userPos.Y);
 
-                case TargetType.All:
                 default:
                     return allPokemon;
             }

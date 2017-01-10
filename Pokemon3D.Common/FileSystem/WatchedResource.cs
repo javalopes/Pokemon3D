@@ -6,9 +6,9 @@ namespace Pokemon3D.Common.FileSystem
     {
         public string ResourcePath { get; protected set; }
         
-        protected FileSystemWatcher _watcher;
+        protected FileSystemWatcher Watcher;
 
-        public WatchedResource(string resourcePath)
+        protected WatchedResource(string resourcePath)
         {
             ResourcePath = resourcePath;
         }

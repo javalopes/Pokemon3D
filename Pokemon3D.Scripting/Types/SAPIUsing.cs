@@ -34,7 +34,7 @@ namespace Pokemon3D.Scripting.Types
             }
             else
             {
-                processor.ErrorHandler.ThrowError(ErrorType.APIError, ErrorHandler.MESSAGE_API_NOT_SUPPORTED);
+                processor.ErrorHandler.ThrowError(ErrorType.ApiError, ErrorHandler.MessageApiNotSupported);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Pokemon3D.Scripting.Types
             }
             else
             {
-                processor.ErrorHandler.ThrowError(ErrorType.APIError, ErrorHandler.MESSAGE_API_NOT_SUPPORTED);
+                processor.ErrorHandler.ThrowError(ErrorType.ApiError, ErrorHandler.MessageApiNotSupported);
                 return processor.Undefined;
             }
         }
@@ -67,7 +67,7 @@ namespace Pokemon3D.Scripting.Types
             }
             else
             {
-                processor.ErrorHandler.ThrowError(ErrorType.APIError, ErrorHandler.MESSAGE_API_NOT_SUPPORTED);
+                processor.ErrorHandler.ThrowError(ErrorType.ApiError, ErrorHandler.MessageApiNotSupported);
                 return processor.Undefined;
             }
         }

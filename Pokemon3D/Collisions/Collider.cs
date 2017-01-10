@@ -88,7 +88,6 @@ namespace Pokemon3D.Collisions
         /// <summary>
         /// Creates a clone of another collider.
         /// </summary>
-        /// <param name="other">Collider to clone</param>
         public Collider Clone()
         {
             var collider = new Collider();

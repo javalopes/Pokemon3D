@@ -1,4 +1,6 @@
-﻿namespace Pokemon3D
+﻿using Pokemon3D.GameCore;
+
+namespace Pokemon3D
 {
     /// <summary>
     /// A static class to provide a shorthand access to the global game instance.
@@ -14,7 +16,7 @@
         /// <summary>
         /// The active <see cref="GameController"/> instance.
         /// </summary>
-        public static Pokemon3D.GameCore.GameController GameInstance => Pokemon3D.GameCore.GameController.Instance;
+        public static GameController GameInstance => GameController.Instance;
     }
 }
 

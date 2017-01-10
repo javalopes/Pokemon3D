@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 using Pokemon3D.Common;
-using Pokemon3D.Content;
 using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Collisions

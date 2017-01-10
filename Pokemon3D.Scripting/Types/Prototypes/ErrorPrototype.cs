@@ -8,7 +8,7 @@
 
         public ErrorPrototype(ScriptProcessor processor) : base("Error")
         {
-            Constructor = new PrototypeMember(CLASS_METHOD_CTOR, new SFunction(constructor));
+            Constructor = new PrototypeMember(ClassMethodCtor, new SFunction(constructor));
 
             AddMember(processor, new PrototypeMember(MEMBER_NAME_MESSAGE, processor.Undefined));
             AddMember(processor, new PrototypeMember(MEMBER_NAME_TYPE, processor.Undefined));

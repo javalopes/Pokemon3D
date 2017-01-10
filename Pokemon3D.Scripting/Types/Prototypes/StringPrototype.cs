@@ -146,7 +146,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 if (!str.Value.Contains(search.Value) || search.Value == "")
                     return processor.CreateNumber(-1);
 
-                return processor.CreateNumber(str.Value.IndexOf(search.Value));
+                return processor.CreateNumber(str.Value.IndexOf(search.Value, StringComparison.Ordinal));
             }
 
             return processor.Undefined;
@@ -163,7 +163,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 if (!str.Value.Contains(search.Value) || search.Value == "")
                     return processor.CreateNumber(-1);
 
-                return processor.CreateNumber(str.Value.LastIndexOf(search.Value));
+                return processor.CreateNumber(str.Value.LastIndexOf(search.Value, StringComparison.Ordinal));
             }
 
             return processor.Undefined;
@@ -313,7 +313,6 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         public static SObject Split(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
             int limit = -1;
-            string[] split;
             string[] delimiters;
             string str = (instance as SString).Value;
 
@@ -340,7 +339,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 return processor.CreateArray(new[] { processor.CreateString(str) });
             }
 
-            split = str.Split(delimiters, StringSplitOptions.None);
+            var split = str.Split(delimiters, StringSplitOptions.None);
             if (limit >= 0 && split.Length > limit)
             {
                 var result = new string[limit];

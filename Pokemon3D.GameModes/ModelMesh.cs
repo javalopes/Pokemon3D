@@ -62,7 +62,7 @@ namespace Pokemon3D.GameModes
                     var indicesCount = binaryReader.ReadInt32();
                     var textureName = binaryReader.ReadString();
 
-                    var textureFilePath = Path.Combine(Path.GetDirectoryName(filePath) ?? "", Path.GetFileName(textureName) ?? "");
+                    var textureFilePath = Path.Combine(Path.GetDirectoryName(filePath) ?? "", Path.GetFileName(textureName));
                     Texture2D texture = null;
                     if (File.Exists(textureFilePath))
                     {
@@ -100,7 +100,7 @@ namespace Pokemon3D.GameModes
             }
         }
 
-        public ModelMesh(GameMode gameMode, Assimp.Scene assimpScene, Assimp.Mesh assimpMesh, string modelDirectory)
+        public ModelMesh(GameMode gameMode, Scene assimpScene, Assimp.Mesh assimpMesh, string modelDirectory)
         {
             var geometryData = GenerateGeometryDataFromAssimpMesh(assimpMesh);
 
@@ -140,7 +140,7 @@ namespace Pokemon3D.GameModes
             return geometryData;
         }
 
-        private Material GenerateMaterialFromMesh(int materialIndex, GameMode gameMode, Assimp.Scene assimpScene, string modelDirectory)
+        private Material GenerateMaterialFromMesh(int materialIndex, GameMode gameMode, Scene assimpScene, string modelDirectory)
         {
             var assimpMaterial = assimpScene.Materials[materialIndex];
 
@@ -157,7 +157,7 @@ namespace Pokemon3D.GameModes
         {
             if (string.IsNullOrEmpty(textureSlot.FilePath)) return null;
 
-            var fileName = Path.GetFileName(textureSlot.FilePath) ?? "";
+            var fileName = Path.GetFileName(textureSlot.FilePath);
             var textureFilePath = Path.Combine(modelDirectory, fileName);
 
             if (!File.Exists(fileName)) return null;

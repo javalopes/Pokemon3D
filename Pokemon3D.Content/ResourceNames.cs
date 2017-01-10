@@ -1,4 +1,5 @@
 ﻿
+// ReSharper disable InconsistentNaming
 namespace Pokemon3D.Content
 {
     public static class ResourceNames

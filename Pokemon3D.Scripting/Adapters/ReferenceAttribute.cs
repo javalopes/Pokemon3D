@@ -2,7 +2,7 @@
 
 namespace Pokemon3D.Scripting.Adapters
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field)]
     public class ReferenceAttribute : ScriptMemberAttribute
     { }
 }

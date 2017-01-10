@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using Pokemon3D.Common.FileSystem;
 
 namespace Pokemon3D.FileSystem
@@ -10,17 +8,17 @@ namespace Pokemon3D.FileSystem
     /// </summary>
     internal class StaticPathProvider : PathProvider
     {
-        private const string CONFIG_FILE_NAME = "configuration.json";
-        private const string SAVE_PATH = "Saves";
+        private const string ConfigFileName = "configuration.json";
+        private const string SaveDirectory = "Saves";
 
         /// <summary>
         /// The path to the main configuration file of the game.
         /// </summary>
-        public static string ConfigFile => Path.Combine(StartupPath, CONFIG_FILE_NAME);
+        public static string ConfigFile => Path.Combine(StartupPath, ConfigFileName);
 
         /// <summary>
         /// The path to the save files.
         /// </summary>
-        public static string SavePath => Path.Combine(StartupPath, SAVE_PATH);
+        public static string SavePath => Path.Combine(StartupPath, SaveDirectory);
     }
 }

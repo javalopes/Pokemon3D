@@ -29,6 +29,7 @@ foreach(ProjectItem projectItem in project.ProjectItems)
 if (processingParentFolder != null)
 {
 #>
+// ReSharper disable InconsistentNaming
 namespace <#= baseNamespace #>
 {<#
 	PushIndent("    ");

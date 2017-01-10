@@ -9,7 +9,7 @@ namespace Pokemon3D.Scripting.Adapters
     /// 
     /// This can also be applied to string fields, creating source functions.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Field)]
     public class ScriptFunctionAttribute : ScriptMemberAttribute
     {
         public ScriptFunctionAttribute(ScriptFunctionType functionType)

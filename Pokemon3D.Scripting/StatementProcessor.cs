@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -8,7 +9,7 @@ namespace Pokemon3D.Scripting
     {
         internal static readonly string[] ControlStatements = { "if", "else", "else if", "while", "for", "function", "class", "try", "catch", "finally", "async" };
 
-        private const string OBJECT_DISCOVER_TOKEN = "+*-/&|<>.[(;";
+        private const string ObjectDiscoverToken = "+*-/&|<>.[(;";
 
         internal static ScriptStatement[] GetStatements(ScriptProcessor processor, string code)
         {
@@ -50,8 +51,8 @@ namespace Pokemon3D.Scripting
                         if (t == '/' && index + 1 < code.Length && code[index + 1] == '/')
                         {
                             // We jump to the end of the line and ignore everything between the current index and the end of the line:
-                            if (code.IndexOf("\n", index + 1) > -1)
-                                index = code.IndexOf("\n", index + 1) + 1;
+                            if (code.IndexOf("\n", index + 1, StringComparison.Ordinal) > -1)
+                                index = code.IndexOf("\n", index + 1, StringComparison.Ordinal) + 1;
                             else
                                 index = code.Length;
 
@@ -134,7 +135,7 @@ namespace Pokemon3D.Scripting
                                 while (!foundOperator && charFindIndex < code.Length)
                                 {
                                     var testChar = code[charFindIndex];
-                                    if (OBJECT_DISCOVER_TOKEN.Contains(testChar))
+                                    if (ObjectDiscoverToken.Contains(testChar))
                                     {
                                         if (testChar == '/' && // next statement is actually a comment, not a / operator (followed by / or *)
                                             charFindIndex + 1 < code.Length && 
@@ -230,13 +231,13 @@ namespace Pokemon3D.Scripting
             }
 
             if (isCompoundStatement)
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_END_OF_COMPOUND_STATEMENT);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingEndOfCompoundStatement);
 
             if (isComment)
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_UNTERMINATED_COMMENT);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxUnterminatedComment);
 
             if (isControlStatement)
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
 
             // an executable statement not closed with ";" is getting added here:
             var leftOver = statement.ToString().Trim();

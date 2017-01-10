@@ -5,7 +5,7 @@
     /// </summary>
     public sealed class ParameterHelper
     {
-        private object[] _stack;
+        private readonly object[] _stack;
         private int _index;
 
         public ParameterHelper(object[] parameters)

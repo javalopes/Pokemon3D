@@ -94,7 +94,7 @@ namespace Pokemon3D.Common.Shapes
         /// </summary>
         public override bool Equals(object obj)
         {
-            return obj is Plane2D ? Equals((Plane2D)obj) : false;
+            return obj is Plane2D && Equals((Plane2D)obj);
         }
 
         /// <summary>

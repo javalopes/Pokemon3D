@@ -15,15 +15,14 @@ namespace Pokemon3D.GameModes.Monsters
     /// </summary>
     public class Pokemon
     {
-        private const string DEFAULT_FORM_ID = "Default";
-        private const string SHINY_FORM_ID = "Shiny";
-        private const int POKEMON_MAX_LEVEL = 100;
-        private const int POKEMON_MAX_MOVE_COUNT = 4;
+        private const string DefaultFormId = "Default";
+        private const string ShinyFormId = "Shiny";
+        private const int PokemonMaxLevel = 100;
+        private const int PokemonMaxMoveCount = 4;
 
-        private GameMode _gameMode;
-
-        private PokemonModel _dataModel;
-        private PokemonSaveModel _saveModel;
+        private readonly GameMode _gameMode;
+        private readonly PokemonModel _dataModel;
+        private readonly PokemonSaveModel _saveModel;
 
         #region Data Model Properties
 
@@ -50,13 +49,13 @@ namespace Pokemon3D.GameModes.Monsters
         /// <summary>
         /// The current health points of this Pokémon.
         /// </summary>
-        public int HP
+        public int Hp
         {
             get { return _saveModel.HP; }
             set { _saveModel.HP = value; }
         }
 
-        public int MaxHP => PokemonStatCalculator.CalculateStat(this, PokemonStatType.HP);
+        public int MaxHp => PokemonStatCalculator.CalculateStat(this, PokemonStatType.HP);
 
         public int Attack => PokemonStatCalculator.CalculateStat(this, PokemonStatType.Attack);
 
@@ -147,11 +146,11 @@ namespace Pokemon3D.GameModes.Monsters
 
         #region Textures
 
-        private const string KEY_FORMAT = "{0}\\{1}\\{2}";
+        private const string KeyFormat = "{0}\\{1}\\{2}";
 
         private Texture2D GetMenuTexture(string pokemonId, string formId, string textureSource)
         {
-            var key = string.Format(KEY_FORMAT, pokemonId, formId, textureSource);
+            var key = string.Format(KeyFormat, pokemonId, formId, textureSource);
 
             return _gameMode.GetTexture(key);
         }
@@ -179,13 +178,13 @@ namespace Pokemon3D.GameModes.Monsters
             // determine the current form of the Pokémon here.
             // if no special form applies, set to "Default".
 
-            if (_saveModel.IsShiny && _dataModel.Forms.Any(f => f.Id == SHINY_FORM_ID))
+            if (_saveModel.IsShiny && _dataModel.Forms.Any(f => f.Id == ShinyFormId))
             {
-                return SHINY_FORM_ID;
+                return ShinyFormId;
             }
             else
             {
-                return DEFAULT_FORM_ID;
+                return DefaultFormId;
             }
         }
 
@@ -204,19 +203,19 @@ namespace Pokemon3D.GameModes.Monsters
         {
             // target level can only be 100 max.
             int targetLevel = Level + levels;
-            if (targetLevel > POKEMON_MAX_LEVEL)
-                targetLevel = POKEMON_MAX_LEVEL;
+            if (targetLevel > PokemonMaxLevel)
+                targetLevel = PokemonMaxLevel;
 
             while (Level < targetLevel)
             {
-                int currentMaxHP = MaxHP;
+                int currentMaxHp = MaxHp;
 
                 Level += 1;
 
                 // The Pokémon could have a higher Max HP after the level up, so we accommodate for that by raising the current HP:
-                int HPDifference = MaxHP - currentMaxHP;
-                if (HPDifference > 0)
-                    Heal(HPDifference);
+                int hpDifference = MaxHp - currentMaxHp;
+                if (hpDifference > 0)
+                    Heal(hpDifference);
 
                 // learn potential level up moves:
                 if (learnRandomMove)
@@ -230,41 +229,39 @@ namespace Pokemon3D.GameModes.Monsters
         /// <returns>Returns true if the Pokémon learned a move.</returns>
         private bool LearnMove(int level)
         {
-            var levelMoves = LevelMoves.Where(x => x.Level == level);
+            var levelMoves = LevelMoves.Where(x => x.Level == level).ToArray();
             foreach (var levelMove in levelMoves)
             {
-                if (levelMove != null)
+                if (levelMove == null) continue;
+
+                // check if Pokémon does not already know this move:
+                if (_saveModel.Moves.Any(x => x.Id == levelMove.Id)) continue;
+
+                var moveList = _saveModel.Moves.ToList();
+
+                // delete random move when this Pokémon already has 4 moves:
+                if (moveList.Count == PokemonMaxMoveCount)
                 {
-                    // check if Pokémon does not already know this move:
-                    if (!_saveModel.Moves.Any(x => x.Id == levelMove.Id))
-                    {
-                        var moveList = _saveModel.Moves.ToList();
-
-                        // delete random move when this Pokémon already has 4 moves:
-                        if (moveList.Count == POKEMON_MAX_MOVE_COUNT)
-                        {
-                            moveList.RemoveAt(GlobalRandomProvider.Instance.Rnd.Next(0, moveList.Count));
-                        }
-
-                        // get the move model to grab the PP from that:
-                        var moveModel = _gameMode.GetMoveModel(levelMove.Id);
-                        moveList.Add(new PokemonMoveModel
-                        {
-                            Id = moveModel.Id,
-                            CurrentPP = moveModel.PP,
-                            MaxPP = moveModel.PP
-                        });
-
-                        _saveModel.Moves = moveList.ToArray();
-                    }
+                    moveList.RemoveAt(GlobalRandomProvider.Instance.Rnd.Next(0, moveList.Count));
                 }
+
+                // get the move model to grab the PP from that:
+                var moveModel = _gameMode.GetMoveModel(levelMove.Id);
+                moveList.Add(new PokemonMoveModel
+                {
+                    Id = moveModel.Id,
+                    CurrentPP = moveModel.PP,
+                    MaxPP = moveModel.PP
+                });
+
+                _saveModel.Moves = moveList.ToArray();
             }
-            return levelMoves.Count() > 0;
+            return levelMoves.Any();
         }
 
-        public void Heal(int healHP)
+        public void Heal(int healHp)
         {
-            HP = MathHelper.Clamp(HP + healHP, 0, MaxHP);
+            Hp = MathHelper.Clamp(Hp + healHp, 0, MaxHp);
         }
     }
 }

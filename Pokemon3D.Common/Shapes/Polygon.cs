@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
 namespace Pokemon3D.Common.Shapes
@@ -12,10 +11,7 @@ namespace Pokemon3D.Common.Shapes
         private Rectangle _bounds;
         private List<Point> _points;
 
-        public Rectangle Bounds
-        {
-            get { return _bounds; }
-        }
+        public Rectangle Bounds => _bounds;
 
         public Point Location
         {
@@ -86,10 +82,11 @@ namespace Pokemon3D.Common.Shapes
 
         public void SetPoints(IEnumerable<Point> points)
         {
-            if (points.Count() < 3)
+            var pointsAsArray = points as Point[] ?? points.ToArray();
+            if (pointsAsArray.Length < 3)
                 throw new ArgumentException("A Polygon has to consist of at least three vertices.");
 
-            _points = points.ToList();
+            _points = pointsAsArray.ToList();
             CalculateBounds();
         }
 
@@ -104,12 +101,12 @@ namespace Pokemon3D.Common.Shapes
 
         public void AddRange(IEnumerable<Point> points)
         {
-            if (points.Count() > 0)
+            var pointsAsArray = points as Point[] ?? points.ToArray();
+            if (pointsAsArray.Any())
             {
-                if (_points == null)
-                    _points = new List<Point>();
+                if (_points == null)  _points = new List<Point>();
 
-                _points.AddRange(points);
+                _points.AddRange(pointsAsArray);
                 CalculateBounds();
             }
         }
@@ -213,22 +210,19 @@ namespace Pokemon3D.Common.Shapes
 
         public override bool Equals(object obj)
         {
-            return obj is Polygon ? Equals((Polygon)obj) : false;
+            return obj is Polygon && Equals((Polygon)obj);
         }
 
         public override int GetHashCode()
         {
-            int hash = 27;
-
-            for (int i = 0; i < _points.Count; i++)
-                hash = (13 * hash) + _points[i].GetHashCode();
-
+            var hash = 27;
+            foreach (Point t in _points) hash += (13 * hash) + t.GetHashCode();
             return hash;
         }
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder("{");
+            var sb = new StringBuilder("{");
 
             for (int i = 0; i < _points.Count; i++)
             {

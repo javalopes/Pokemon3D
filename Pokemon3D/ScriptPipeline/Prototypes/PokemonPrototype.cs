@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Pokemon3D.GameModes;
-using Pokemon3D.GameModes.Monsters;
+﻿using Pokemon3D.GameModes.Monsters;
 using Pokemon3D.Scripting.Adapters;
 using static Pokemon3D.GameProvider;
 

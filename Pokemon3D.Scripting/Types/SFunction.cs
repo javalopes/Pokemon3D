@@ -33,14 +33,15 @@ namespace Pokemon3D.Scripting.Types
         /// <summary>
         /// Initializes an instance with a script code signature and body.
         /// </summary>
+        /// <param name="processor"></param>
         /// <param name="sourceCode">The source code, format: <code>function (params) { code }</code></param>
         public SFunction(ScriptProcessor processor, string sourceCode)
         {
             sourceCode = sourceCode.Trim();
             var paramCode = sourceCode.Remove(0, "function".Length).Trim().Remove(0, 1); //Removes "function", then any spaces between "function" and "(", then removes "(".
-            paramCode = paramCode.Remove(paramCode.IndexOf(")"));
+            paramCode = paramCode.Remove(paramCode.IndexOf(")", StringComparison.Ordinal));
 
-            _parameters = paramCode.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray();
+            _parameters = paramCode.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray();
 
             var allIdentifiersValid = true;
             var i = 0;
@@ -57,17 +58,17 @@ namespace Pokemon3D.Scripting.Types
 
             if (!allIdentifiersValid)
             {
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_FORMAL_PARAMETER);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingFormalParameter);
             }
             else
             {
                 if (!sourceCode.Contains("{") || !sourceCode.EndsWith("}"))
                 {
-                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_FUNCTION_BODY);
+                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingFunctionBody);
                 }
                 else
                 {
-                    Body = sourceCode.Remove(sourceCode.Length - 1, 1).Remove(0, sourceCode.IndexOf("{") + 1).Trim();
+                    Body = sourceCode.Remove(sourceCode.Length - 1, 1).Remove(0, sourceCode.IndexOf("{", StringComparison.Ordinal) + 1).Trim();
                 }
             }
         }
@@ -107,8 +108,8 @@ namespace Pokemon3D.Scripting.Types
                 return Body.Length;
         }
 
-        private const string FUNCTION_SOURCE_FORMAT = "function({0}) {{ {1} }}";
-        private const string FUNCTION_NATIVE_CODE_SOURCE = "[native code]";
+        private const string FunctionSourceFormat = "function({0}) {{ {1} }}";
+        private const string FunctionNativeCodeSource = "[native code]";
 
         internal override string ToScriptSource()
         {
@@ -125,22 +126,22 @@ namespace Pokemon3D.Scripting.Types
                 }
             }
 
-            var bodySource = "";
+            string bodySource;
             if (HasBuiltInMethod)
             {
-                bodySource = FUNCTION_NATIVE_CODE_SOURCE;
+                bodySource = FunctionNativeCodeSource;
             }
             else
             {
                 bodySource = Body;
             }
 
-            return string.Format(FUNCTION_SOURCE_FORMAT, paramSource, bodySource);
+            return string.Format(FunctionSourceFormat, paramSource, bodySource);
         }
 
         internal override string ToScriptObject()
         {
-            return ObjectBuffer.OBJ_PREFIX + ObjectBuffer.GetObjectId(this).ToString();
+            return ObjectBuffer.ObjPrefix + ObjectBuffer.GetObjectId(this).ToString();
         }
 
         internal override SObject ExecuteMethod(ScriptProcessor processor, string methodName, SObject caller, SObject This, SObject[] parameters)

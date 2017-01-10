@@ -4,9 +4,9 @@ namespace Pokemon3D.Common.Shapes
 {
     public struct ShapeFillData
     {
-        public ShapeTextureProvider TextureProvider { get; private set; }
-        public object[] TextureData { get; private set; }
-        public Shape Shape { get; private set; }
+        public ShapeTextureProvider TextureProvider { get; }
+        public object[] TextureData { get; }
+        public Shape Shape { get; }
 
         public ShapeFillData(Shape shape, ShapeTextureProvider textureProvider, object[] textureData)
         {

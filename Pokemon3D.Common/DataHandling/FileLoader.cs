@@ -1,8 +1,6 @@
-﻿using Pokemon3D.Common.DataHandling;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 
 namespace Pokemon3D.Common.DataHandling
 {

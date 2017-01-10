@@ -14,7 +14,7 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// The parent context to this context. This context takes priority over its parent, if identifiers overlap.
         /// </summary>
-        internal ScriptContext Parent { get; private set; }
+        internal ScriptContext Parent { get; }
         /// <summary>
         /// The object that gets returned when the script references "this".
         /// </summary>
@@ -150,7 +150,7 @@ namespace Pokemon3D.Scripting
             }
         }
 
-        internal bool IsAPIUsing(string identifier)
+        internal bool IsApiUsing(string identifier)
         {
             if (_apiUsings.ContainsKey(identifier))
             {
@@ -160,13 +160,13 @@ namespace Pokemon3D.Scripting
             {
                 if (Parent != null)
                 {
-                    return Parent.IsAPIUsing(identifier);
+                    return Parent.IsApiUsing(identifier);
                 }
             }
             return false;
         }
 
-        internal SAPIUsing GetAPIUsing(string identifier)
+        internal SAPIUsing GetApiUsing(string identifier)
         {
             if (_apiUsings.ContainsKey(identifier))
             {
@@ -174,11 +174,11 @@ namespace Pokemon3D.Scripting
             }
             else
             {
-                return Parent?.GetAPIUsing(identifier);
+                return Parent?.GetApiUsing(identifier);
             }
         }
 
-        internal void AddAPIUsing(SAPIUsing apiUsing)
+        internal void AddApiUsing(SAPIUsing apiUsing)
         {
             if (!_apiUsings.ContainsKey(apiUsing.APIClass))
                 _apiUsings.Add(apiUsing.APIClass, apiUsing);
@@ -236,7 +236,7 @@ namespace Pokemon3D.Scripting
             if (!prototype.IsAbstract)
                 return prototype.CreateInstance(_processor, parameters, true);
             else
-                return _processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_ABSTRACT_NO_INSTANCE);
+                return _processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MessageTypeAbstractNoInstance);
         }
 
         /// <summary>
@@ -246,13 +246,13 @@ namespace Pokemon3D.Scripting
         {
             exp = exp.Remove(0, "new ".Length).Trim();
 
-            var prototypeName = exp.Remove(exp.IndexOf("("));
+            var prototypeName = exp.Remove(exp.IndexOf("(", StringComparison.Ordinal));
             var prototype = GetPrototype(prototypeName);
 
             if (prototype == null)
-                _processor.ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MESSAGE_REFERENCE_NOT_DEFINED, prototypeName);
+                _processor.ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MessageReferenceNotDefined, prototypeName);
 
-            var argCode = exp.Remove(0, exp.IndexOf("(") + 1);
+            var argCode = exp.Remove(0, exp.IndexOf("(", StringComparison.Ordinal) + 1);
             argCode = argCode.Remove(argCode.Length - 1, 1);
 
             var parameters = _processor.ParseParameters(argCode);

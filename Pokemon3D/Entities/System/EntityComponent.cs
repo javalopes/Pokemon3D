@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Pokemon3D.Rendering;
 
 namespace Pokemon3D.Entities.System
 {

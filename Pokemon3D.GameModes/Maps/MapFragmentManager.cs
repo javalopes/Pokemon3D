@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Pokemon3D.Common.DataHandling;
+﻿using System.Collections.Generic;
 using Pokemon3D.DataModel.GameMode.Map;
-using System.IO;
 
 namespace Pokemon3D.GameModes.Maps
 {
     public class MapFragmentManager
     {
-        private static readonly object _lockObject = new object();
+        private static readonly object LockObject = new object();
         private readonly Dictionary<string, MapFragmentModel> _fragmentModelCache;
         private readonly GameMode _gameMode;
 
@@ -20,7 +17,7 @@ namespace Pokemon3D.GameModes.Maps
 
         public MapFragmentModel GetFragment(string dataPath)
         {
-            lock (_lockObject)
+            lock (LockObject)
             {
                 MapFragmentModel fragment;
                 if (_fragmentModelCache.TryGetValue(dataPath, out fragment))
@@ -28,7 +25,7 @@ namespace Pokemon3D.GameModes.Maps
                     return fragment;
                 }
 
-                var data = _gameMode.FileLoader.GetFile(_gameMode.GetMapFragmentFilePath(dataPath), false);
+                var data = _gameMode.FileLoader.GetFile(_gameMode.GetMapFragmentFilePath(dataPath));
                 fragment = DataModel.DataModel<MapFragmentModel>.FromByteArray(data.Data);
                 _fragmentModelCache.Add(dataPath, fragment);
                 return fragment;

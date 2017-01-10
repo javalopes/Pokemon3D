@@ -2,7 +2,7 @@
 {
     public abstract class IdObject
     {
-        private static readonly object _lockObject = new object();
+        private static readonly object LockObject = new object();
 
         private static int _currentMaxId = 0;
 
@@ -10,7 +10,7 @@
 
         protected IdObject()
         {
-            lock (_lockObject)
+            lock (LockObject)
             {
                 Id = ++_currentMaxId;
             }

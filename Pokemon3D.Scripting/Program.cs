@@ -6,10 +6,9 @@ namespace Pokemon3D.Scripting
     {
         static void Main(string[] args)
         {
-            bool exit = false;
             var processor = new ScriptProcessor();
 
-            while (!exit)
+            while (true)
             {
                 Console.Write("< ");
                 string input = Console.ReadLine();

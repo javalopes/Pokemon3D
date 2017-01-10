@@ -11,9 +11,9 @@ namespace Pokemon3D.UI
 {
     class RenderStatisticsView : UiElement
     {
-        private SpriteFont _debugSpriteFont;
-        private ShapeRenderer _shapeRenderer;
-        private World _world;
+        private readonly SpriteFont _debugSpriteFont;
+        private readonly ShapeRenderer _shapeRenderer;
+        private readonly World _world;
 
         public override bool IsInteractable => false;
 

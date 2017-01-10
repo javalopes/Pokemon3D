@@ -6,9 +6,10 @@ namespace Pokemon3D.Common.Shapes
 {
     class GradientShapeTextureProvider : ShapeTextureProvider
     {
-        private const string HASH_PATTERN = "{0}:{1}:{2}:{3}";
-        private Dictionary<string, Texture2D> _buffer = new Dictionary<string, Texture2D>();
-        private ShapeRenderer _renderer;
+        private const string HashPattern = "{0}:{1}:{2}:{3}";
+
+        private readonly Dictionary<string, Texture2D> _buffer = new Dictionary<string, Texture2D>();
+        private readonly ShapeRenderer _renderer;
 
         public GradientShapeTextureProvider(ShapeRenderer renderer)
         {
@@ -19,13 +20,12 @@ namespace Pokemon3D.Common.Shapes
         {
             var bounds = shape.Bounds;
             Color[] colorArr = new Color[bounds.Width * bounds.Height];
-            int index = 0;
-            float step = 0f;
+            int index;
+            float step;
 
             int diffR = toColor.R - fromColor.R;
             int diffG = toColor.G - fromColor.G;
             int diffB = toColor.B - fromColor.B;
-            int diffA = toColor.A - fromColor.A;
 
             if (vertical)
             {
@@ -77,7 +77,7 @@ namespace Pokemon3D.Common.Shapes
             var toColor = (Color)textureData[1];
             var vertical = (bool)textureData[2];
 
-            string hash = string.Format(HASH_PATTERN, shape.GetHashCode().ToString(), fromColor.ToString(), toColor.ToString(), vertical.ToString());
+            string hash = string.Format(HashPattern, shape.GetHashCode().ToString(), fromColor.ToString(), toColor.ToString(), vertical.ToString());
             Texture2D texture;
 
             if (!_buffer.TryGetValue(hash, out texture))

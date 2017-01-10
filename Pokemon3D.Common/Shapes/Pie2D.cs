@@ -9,18 +9,18 @@ namespace Pokemon3D.Common.Shapes
     /// </summary>
     public class Pie2D
     {
-        private float _rotation = 0f;
-        private float _angle = 0f;
-        private float _radius = 0f;
-        private int _tesselation = 0;
-        private bool _isAveraged = true;
+        private float _rotation;
+        private float _angle;
+        private float _radius;
+        private int _tesselation;
+        private bool _isAveraged;
         private bool _worldDirty = true;
         private bool _verticesDirty = true;
 
         private Vector2 _position;
         private VertexPositionColor[] _vertices;
         private Matrix _world;
-        private RasterizerState _rsState =
+        private readonly RasterizerState _rsState =
             new RasterizerState()
             {
                 CullMode = CullMode.None,
@@ -32,7 +32,7 @@ namespace Pokemon3D.Common.Shapes
         private PieChartType _type = PieChartType.SingleColor;
 
         private BasicEffect _effect;
-        private GraphicsDevice _device;
+        private readonly GraphicsDevice _device;
 
         /// <summary>
         /// The rotation in radians of the chart.
@@ -225,7 +225,7 @@ namespace Pokemon3D.Common.Shapes
         }
 
         private RenderTarget2D _target;
-        private bool _isRenderTargetMode = false;
+        private bool _isRenderTargetMode;
 
         public void Draw()
         {

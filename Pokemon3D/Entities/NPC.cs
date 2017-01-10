@@ -1,12 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common.Animations;
-using Pokemon3D.Common.Extensions;
-using Pokemon3D.DataModel.GameMode.Map.NPCs;
-using Pokemon3D.Rendering;
-using Pokemon3D.Rendering.Data;
-
-namespace Pokemon3D.Entities
+﻿namespace Pokemon3D.Entities
 {
     //class NPC : Entity
     //{

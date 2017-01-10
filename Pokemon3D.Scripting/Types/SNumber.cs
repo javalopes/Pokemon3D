@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Pokemon3D.Scripting.Types
 {
@@ -14,7 +15,7 @@ namespace Pokemon3D.Scripting.Types
             else if (double.IsInfinity(value))
                 return LITERAL_INFINITY;
 
-            return value.ToString();
+            return value.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -48,22 +49,16 @@ namespace Pokemon3D.Scripting.Types
 
             if (baseChar != 'd')
             {
-                var parseResult = 0;
+                int parseResult;
                 if (int.TryParse(input, out parseResult))
                 {
                     result = Convert.ToInt32(input, numBase);
                     return true;
                 }
-                else
-                {
-                    result = 0;
-                    return false;
-                }
+                result = 0;
+                return false;
             }
-            else
-            {
-                return double.TryParse(input, out result);
-            }
+            return double.TryParse(input, out result);
         }
 
         /// <summary>
@@ -132,7 +127,7 @@ namespace Pokemon3D.Scripting.Types
             else if (double.IsInfinity(Value))
                 return -1;
             else
-                return Value.ToString().Length;
+                return Value.ToString(CultureInfo.InvariantCulture).Length;
         }
     }
 }

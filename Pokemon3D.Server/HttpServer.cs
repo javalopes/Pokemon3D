@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
 using Pokemon3D.Common.Diagnostics;
@@ -14,17 +10,17 @@ namespace Pokemon3D.Server
     /// </summary>
     public class HttpServer
     {
-        private const string SERVER_API = "p3dapi";
+        private const string ServerApi = "p3dapi";
         private readonly HttpListener _listener = new HttpListener();
-        private const string FORMAT_URL = "http://{0}:{1}/{2}/";
+        private const string FormatUrl = "http://{0}:{1}/{2}/";
 
-        private FileRequestHandler _requestHandler;
+        private readonly FileRequestHandler _requestHandler;
 
         public HttpServer(string gameModeFolder, string host, string port)
         {
             CheckSupported();
 
-            string url = string.Format(FORMAT_URL, host, port, SERVER_API);
+            string url = string.Format(FormatUrl, host, port, ServerApi);
             _listener.Prefixes.Add(url);
 
             // setup request handler:
@@ -34,7 +30,7 @@ namespace Pokemon3D.Server
             _listener.Start();
         }
         
-        private void CheckSupported()
+        private static void CheckSupported()
         {
             if (!HttpListener.IsSupported)
                 throw new NotSupportedException(
@@ -59,20 +55,26 @@ namespace Pokemon3D.Server
                             var context = c as HttpListenerContext;
                             try
                             {
-                                byte[] buf = _requestHandler.HandleRequest(GetRequestPath(context.Request));
+                                var buf = _requestHandler.HandleRequest(GetRequestPath(context.Request));
                                 context.Response.ContentLength64 = buf.Length;
                                 context.Response.OutputStream.Write(buf, 0, buf.Length);
                             }
-                            catch { } // suppress exceptions
+                            catch
+                            {
+                                // ignored
+                            } // suppress exceptions
                             finally
                             {
                                 // close stream
-                                context.Response.OutputStream.Close();
+                                context?.Response.OutputStream.Close();
                             }
                         }, _listener.GetContext());
                     }
                 }
-                catch { } // suppress exceptions
+                catch
+                {
+                    // ignored
+                } // suppress exceptions
             });
         }
 
@@ -80,7 +82,7 @@ namespace Pokemon3D.Server
         {
             string requestUrl = request.Url.PathAndQuery;
             requestUrl = requestUrl.TrimStart('/');
-            requestUrl = requestUrl.Remove(0, SERVER_API.Length);
+            requestUrl = requestUrl.Remove(0, ServerApi.Length);
             requestUrl = requestUrl.TrimStart('/');
             return requestUrl;
         }

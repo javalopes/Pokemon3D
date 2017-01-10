@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.GameCore;
 
 namespace Pokemon3D.UI
 {
@@ -11,11 +10,11 @@ namespace Pokemon3D.UI
     /// </summary>
     internal class PokemonSpriteSheet
     {
-        private const int FRAME_LENGTH = 2;
+        private const int FrameLength = 2;
 
         private Texture2D[] _frames;
-        private int _currentFrame = 0;
-        private int _frameDelay = FRAME_LENGTH;
+        private int _currentFrame;
+        private int _frameDelay = FrameLength;
 
         public PokemonSpriteSheet(Texture2D spriteSheet, int frameWidth, int frameHeight)
         {
@@ -63,7 +62,7 @@ namespace Pokemon3D.UI
             _frameDelay--;
             if (_frameDelay <= 0)
             {
-                _frameDelay = FRAME_LENGTH;
+                _frameDelay = FrameLength;
                 _currentFrame++;
                 if (_currentFrame >= _frames.Length)
                     _currentFrame = 0;

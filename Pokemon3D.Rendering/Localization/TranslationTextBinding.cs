@@ -43,14 +43,7 @@ namespace Pokemon3D.Rendering.Localization
 
                 text = text.Remove(match.Index, match.Length);
 
-                if (result != null)
-                {
-                    text = text.Insert(match.Index, result);
-                }
-                else
-                {
-                    text = text.Insert(match.Index, match.Value);
-                }
+                text = text.Insert(match.Index, result ?? match.Value);
             }
 
             return text;

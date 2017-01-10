@@ -10,7 +10,7 @@ namespace Pokemon3D.Common.FileSystem
     {
         private FileObserver() { }
 
-        Dictionary<string, WatchedResource> _watchedResources = new Dictionary<string, WatchedResource>();
+        readonly Dictionary<string, WatchedResource> _watchedResources = new Dictionary<string, WatchedResource>();
 
         /// <summary>
         /// Starts to watch a file.

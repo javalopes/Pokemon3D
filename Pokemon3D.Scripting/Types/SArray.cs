@@ -9,7 +9,7 @@ namespace Pokemon3D.Scripting.Types
     /// </summary>
     internal class SArray : SProtoObject
     {
-        private const string REGEX_EMPTY_ARRAY = @"\[\s*\]";
+        private const string RegexEmptyArray = @"\[\s*\]";
 
         /// <summary>
         /// The members of this array.
@@ -23,7 +23,7 @@ namespace Pokemon3D.Scripting.Types
         {
             // Format: [item1, item2, ... itemn]
 
-            if (Regex.IsMatch(exp, REGEX_EMPTY_ARRAY)) return processor.CreateArray(0);
+            if (Regex.IsMatch(exp, RegexEmptyArray)) return processor.CreateArray(0);
 
             exp = exp.Remove(exp.Length - 1, 1).Remove(0, 1).Trim(); // Remove [ and ].
 

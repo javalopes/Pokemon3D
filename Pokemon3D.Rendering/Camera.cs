@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering.Compositor.PostProcessing;
 
 namespace Pokemon3D.Rendering

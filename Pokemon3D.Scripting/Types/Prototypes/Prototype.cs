@@ -35,7 +35,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         private bool _initializedStatic;
         private SFunction _staticConstructor;
         private ScriptProcessor _staticConstructorProcessor;
-        private bool _isAbstract = false;
+        private bool _isAbstract;
 
         internal static bool IsPrototype(Type t)
         {
@@ -54,9 +54,9 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
                 function.FunctionUsage = methodData.Attribute.FunctionType;
                 if (methodData.Attribute.FunctionType == FunctionUsageType.PropertyGetter)
-                    identifier = PROPERTY_GET_PREFIX + identifier;
+                    identifier = PropertyGetPrefix + identifier;
                 else if (methodData.Attribute.FunctionType == FunctionUsageType.PropertySetter)
-                    identifier = PROPERTY_SET_PREFIX + identifier;
+                    identifier = PropertySetPrefix + identifier;
 
                 _prototypeMembers.Add(identifier, new PrototypeMember(
                         identifier: identifier,
@@ -75,8 +75,6 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
             AddObjectPrototypeAsExtends(processor);
 
-            bool isStaticCall = ReferenceEquals(caller, this);
-
             // Call any static function defined in this prototype:
             if (_prototypeMembers.ContainsKey(methodName) && _prototypeMembers[methodName].IsStatic)
             {
@@ -87,7 +85,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 }
                 else
                 {
-                    return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MESSAGE_TYPE_NOT_A_FUNCTION, methodName);
+                    return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MessageTypeNotAFunction, methodName);
                 }
             }
 
@@ -97,7 +95,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 return Extends.ExecuteMethod(processor, methodName, caller, This, parameters);
             }
 
-            return processor.ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MESSAGE_REFERENCE_NOT_DEFINED, methodName);
+            return processor.ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MessageReferenceNotDefined, methodName);
         }
 
         internal override bool HasMember(ScriptProcessor processor, string memberName)
@@ -119,9 +117,9 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             else
                 memberName = accessor.ToString(processor).Value;
 
-            if (_prototypeMembers.ContainsKey(PROPERTY_GET_PREFIX + memberName))
+            if (_prototypeMembers.ContainsKey(PropertyGetPrefix + memberName))
             {
-                return ((SFunction)_prototypeMembers[PROPERTY_GET_PREFIX + memberName].Data).Call(processor, this, this, new SObject[] { });
+                return ((SFunction)_prototypeMembers[PropertyGetPrefix + memberName].Data).Call(processor, this, this, new SObject[] { });
             }
             else if (_prototypeMembers.ContainsKey(memberName))
             {
@@ -198,7 +196,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             SProtoObject obj = CreateBaseObject();
             obj.IsProtoInstance = true;
 
-            obj.AddMember(MEMBER_NAME_PROTOTYPE, this);
+            obj.AddMember(MemberNamePrototype, this);
 
             if (typeof(ObjectPrototype) != GetType())
             {
@@ -207,7 +205,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                     Extends = processor.Context.GetPrototype("Object");
 
                 var superInstance = Extends.CreateInstance(processor, null, true);
-                obj.AddMember(MEMBER_NAME_SUPER, superInstance);
+                obj.AddMember(MemberNameSuper, superInstance);
             }
 
             foreach (var member in GetInstanceMembers())
@@ -290,38 +288,37 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         internal void AddMember(ScriptProcessor processor, PrototypeMember member)
         {
             if (_prototypeMembers.ContainsKey(member.Identifier))
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_DUPLICATE_DEFINITION, member.Identifier, Name);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassDuplicateDefinition, member.Identifier, Name);
 
             _prototypeMembers.Add(member.Identifier, member);
         }
 
-        private const string REGEX_CLASS_SIGNATURE = @"^class(([ ]+abstract)|([ ]+extends[ ]+[a-zA-Z]\w*)|([ ]+[a-zA-Z]\w*))+[ ]*{.*}$";
+        private const string RegexClassSignature = @"^class(([ ]+abstract)|([ ]+extends[ ]+[a-zA-Z]\w*)|([ ]+[a-zA-Z]\w*))+[ ]*{.*}$";
 
-        private const string CLASS_SIGNATURE_EXTENDS = "extends";
-        private const string CLASS_SIGNATURE_ABSTRACT = "abstract";
-        internal const string CLASS_METHOD_CTOR = "constructor";
+        private const string ClassSignatureExtends = "extends";
+        private const string ClassSignatureAbstract = "abstract";
+        internal const string ClassMethodCtor = "constructor";
 
-        private const string FORMAT_VAR_ASSIGNMENT = "{0}={1};\n";
+        private const string FormatVarAssignment = "{0}={1};\n";
 
         internal new static SObject Parse(ScriptProcessor processor, string code)
         {
             code = code.Trim();
 
-            if (Regex.IsMatch(code, REGEX_CLASS_SIGNATURE, RegexOptions.Singleline))
+            if (Regex.IsMatch(code, RegexClassSignature, RegexOptions.Singleline))
             {
-                var signature = code.Remove(code.IndexOf("{")).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var signature = code.Remove(code.IndexOf("{", StringComparison.Ordinal)).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 var extends = "";
-                var identifier = "";
                 var isAbstract = false;
 
                 // Read extends:
-                if (signature.Contains(CLASS_SIGNATURE_EXTENDS))
+                if (signature.Contains(ClassSignatureExtends))
                 {
-                    var extendsIndex = signature.IndexOf(CLASS_SIGNATURE_EXTENDS);
+                    var extendsIndex = signature.IndexOf(ClassSignatureExtends);
 
                     if (extendsIndex + 1 == signature.Count) // when extends is the last element in the signature, throw error:
-                        processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_EXTENDS_MISSING);
+                        processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassExtendsMissing);
 
                     extends = signature[extendsIndex + 1]; // The extended class name is after the "extends" keyword.
                     signature.RemoveAt(extendsIndex); // Remove at the extends index twice, to remove the "extends" keyword and the identifier of the extended class.
@@ -329,20 +326,20 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 }
 
                 // Read abstract:
-                if (signature.Contains(CLASS_SIGNATURE_ABSTRACT))
+                if (signature.Contains(ClassSignatureAbstract))
                 {
                     isAbstract = true;
-                    signature.Remove(CLASS_SIGNATURE_ABSTRACT);
+                    signature.Remove(ClassSignatureAbstract);
                 }
 
                 if (signature.Count != 2) // The signature must only have "class" and the identifier left.
-                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_INVALID_CLASS_SIGNATURE);
+                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxInvalidClassSignature);
 
                 // Read class name:
-                identifier = signature[1];
+                var identifier = signature[1];
 
                 if (!ScriptProcessor.IsValidIdentifier(identifier))
-                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_IDENTIFIER_MISSING);
+                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassIdentifierMissing);
 
                 // Create instance:
                 var prototype = new Prototype(identifier)
@@ -354,12 +351,12 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 if (extends.Length > 0)
                 {
                     if (isAbstract)
-                        processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_TYPE_ABSTRACT_NO_EXTENDS);
+                        processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageTypeAbstractNoExtends);
 
                     var extendedPrototype = processor.Context.GetPrototype(extends);
 
                     if (extendedPrototype == null)
-                        processor.ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MESSAGE_REFERENCE_NO_PROTOTYPE, extends);
+                        processor.ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MessageReferenceNoPrototype, extends);
 
                     prototype.Extends = extendedPrototype;
                 }
@@ -369,7 +366,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                     prototype.Extends = processor.Context.GetPrototype("Object");
                 }
 
-                var body = code.Remove(0, code.IndexOf("{") + 1);
+                var body = code.Remove(0, code.IndexOf("{", StringComparison.Ordinal) + 1);
                 body = body.Remove(body.Length - 1, 1).Trim();
 
                 var additionalCtorCode = "";
@@ -385,8 +382,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                     {
                         var parsed = ParseVarStatement(processor, statement);
 
-                        if (parsed.Item1.Identifier == CLASS_METHOD_CTOR)
-                            processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
+                        if (parsed.Item1.Identifier == ClassMethodCtor)
+                            processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingVarName);
 
                         prototype.AddMember(processor, parsed.Item1);
 
@@ -394,11 +391,11 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                         {
                             if (parsed.Item1.IsStatic)
                             {
-                                staticCtorCode += string.Format(FORMAT_VAR_ASSIGNMENT, parsed.Item1.Identifier, parsed.Item2);
+                                staticCtorCode += string.Format(FormatVarAssignment, parsed.Item1.Identifier, parsed.Item2);
                             }
                             else
                             {
-                                additionalCtorCode += string.Format(FORMAT_VAR_ASSIGNMENT, parsed.Item1.Identifier, parsed.Item2);
+                                additionalCtorCode += string.Format(FormatVarAssignment, parsed.Item1.Identifier, parsed.Item2);
                             }
                         }
                     }
@@ -411,10 +408,10 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                             var bodyStatement = statements[i];
                             var parsed = ParseFunctionStatement(processor, statement, bodyStatement);
 
-                            if (parsed.Identifier == CLASS_METHOD_CTOR)
+                            if (parsed.Identifier == ClassMethodCtor)
                             {
                                 if (prototype.Constructor != null)
-                                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_DUPLICATE_DEFINITION, parsed.Identifier, identifier);
+                                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassDuplicateDefinition, parsed.Identifier, identifier);
 
                                 prototype.Constructor = parsed;
                             }
@@ -425,12 +422,12 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                         }
                         else
                         {
-                            return processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_EXPECTED_EXPRESSION, "end of script");
+                            return processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
                         }
                     }
                     else
                     {
-                        processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_INVALID_STATEMENT);
+                        processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassInvalidStatement);
                     }
                 }
 
@@ -447,7 +444,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                     if (prototype.Constructor == null)
                     {
                         // Create new ctor if no one has been defined:
-                        prototype.Constructor = new PrototypeMember(CLASS_METHOD_CTOR, new SFunction("", new string[] { }), false, true, false, false);
+                        prototype.Constructor = new PrototypeMember(ClassMethodCtor, new SFunction("", new string[] { }), false, true, false, false);
                     }
 
                     prototype.Constructor.ToFunction().Body = additionalCtorCode + prototype.Constructor.ToFunction().Body;
@@ -457,56 +454,55 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             }
             else
             {
-                return processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_INVALID_CLASS_SIGNATURE);
+                return processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxInvalidClassSignature);
             }
         }
 
-        private const string VAR_SIGNATURE_STATIC = "static";
-        private const string VAR_SIGNATURE_READONLY = "readonly";
+        private const string VarSignatureStatic = "static";
+        private const string VarSignatureReadonly = "readonly";
 
         // TODO: C# 7: put proper Tuple handling in place.
 
         private static Tuple<PrototypeMember, string> ParseVarStatement(ScriptProcessor processor, ScriptStatement statement)
         {
             var code = statement.Code;
-            var signature = code.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var signature = code.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            string identifier;
             var assignment = "";
             var isReadOnly = false;
             var isStatic = false;
 
             // Read static:
-            if (signature.Contains(VAR_SIGNATURE_STATIC))
+            if (signature.Contains(VarSignatureStatic))
             {
                 isStatic = true;
-                signature.Remove(VAR_SIGNATURE_STATIC);
+                signature.Remove(VarSignatureStatic);
             }
 
             // Read readonly:
-            if (signature.Contains(VAR_SIGNATURE_READONLY))
+            if (signature.Contains(VarSignatureReadonly))
             {
                 isReadOnly = true;
-                signature.Remove(VAR_SIGNATURE_READONLY);
+                signature.Remove(VarSignatureReadonly);
             }
 
             if (signature[0] != "var" || signature.Count < 2)
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_INVALID_VAR_DECLARATION);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassInvalidVarDeclaration);
 
-            identifier = signature[1];
+            var identifier = signature[1];
 
             if (!ScriptProcessor.IsValidIdentifier(identifier))
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingVarName);
 
             if (signature.Count > 2)
             {
                 if (signature[2].StartsWith("="))
                 {
-                    assignment = code.Remove(0, code.IndexOf("=") + 1).Trim();
+                    assignment = code.Remove(0, code.IndexOf("=", StringComparison.Ordinal) + 1).Trim();
                 }
                 else
                 {
-                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_INVALID_VAR_DECLARATION);
+                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassInvalidVarDeclaration);
                 }
             }
 
@@ -515,18 +511,17 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             return new Tuple<PrototypeMember, string>(member, assignment);
         }
 
-        private const string FUNCTION_SIGNATURE_STATIC = "static";
-        private const string FUNCTION_SIGNATURE_INDEXER = "indexer";
-        private const string FUNCTION_SIGNATURE_GET = "get";
-        private const string FUNCTION_SIGNATURE_SET = "set";
-        private const string FUNCTION_SIGNATURE_PROPERTY = "property";
+        private const string FunctionSignatureStatic = "static";
+        private const string FunctionSignatureIndexer = "indexer";
+        private const string FunctionSignatureGet = "get";
+        private const string FunctionSignatureSet = "set";
+        private const string FunctionSignatureProperty = "property";
 
         private static PrototypeMember ParseFunctionStatement(ScriptProcessor processor, ScriptStatement headerStatement, ScriptStatement bodyStatement)
         {
             var header = headerStatement.Code;
-            var signature = header.Remove(header.IndexOf("(")).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var signature = header.Remove(header.IndexOf("(", StringComparison.Ordinal)).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            string identifier;
             var isStatic = false;
             var isIndexerGet = false;
             var isIndexerSet = false;
@@ -535,88 +530,88 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             var significantCount = 0;
 
             // Read static:
-            if (signature.Contains(FUNCTION_SIGNATURE_STATIC))
+            if (signature.Contains(FunctionSignatureStatic))
             {
                 isStatic = true;
-                signature.Remove(FUNCTION_SIGNATURE_STATIC);
+                signature.Remove(FunctionSignatureStatic);
             }
 
             // Read indexer:
-            if (signature.Contains(FUNCTION_SIGNATURE_INDEXER))
+            if (signature.Contains(FunctionSignatureIndexer))
             {
                 significantCount++;
 
-                var indexerIndex = signature.IndexOf(FUNCTION_SIGNATURE_INDEXER);
+                var indexerIndex = signature.IndexOf(FunctionSignatureIndexer);
 
                 if (indexerIndex + 1 == signature.Count)
-                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_FUNCTION_INDEXER_EXPECTED_TYPE);
+                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassFunctionIndexerExpectedType);
 
                 var indexerType = signature[indexerIndex + 1];
-                if (indexerType == FUNCTION_SIGNATURE_GET)
+                if (indexerType == FunctionSignatureGet)
                 {
                     isIndexerGet = true;
                     signature.RemoveAt(indexerIndex + 1);
                 }
-                else if (indexerType == FUNCTION_SIGNATURE_SET)
+                else if (indexerType == FunctionSignatureSet)
                 {
                     isIndexerSet = true;
                     signature.RemoveAt(indexerIndex + 1);
                 }
                 else
                 {
-                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_FUNCTION_INDEXER_INVALID_TYPE, indexerType);
+                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassFunctionIndexerInvalidType, indexerType);
                 }
 
-                signature.Remove(FUNCTION_SIGNATURE_INDEXER);
+                signature.Remove(FunctionSignatureIndexer);
             }
             // Read property:
-            if (signature.Contains(FUNCTION_SIGNATURE_PROPERTY))
+            if (signature.Contains(FunctionSignatureProperty))
             {
                 significantCount++;
 
-                var propertyIndex = signature.IndexOf(FUNCTION_SIGNATURE_PROPERTY);
+                var propertyIndex = signature.IndexOf(FunctionSignatureProperty);
 
                 if (propertyIndex + 1 == signature.Count)
-                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_FUNCTION_PROPERTY_EXPECTED_TYPE);
+                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassFunctionPropertyExpectedType);
 
                 var propertyType = signature[propertyIndex + 1];
-                if (propertyType == FUNCTION_SIGNATURE_GET)
+                if (propertyType == FunctionSignatureGet)
                 {
                     functionType = FunctionUsageType.PropertyGetter;
                     signature.RemoveAt(propertyIndex + 1);
                 }
-                else if (propertyType == FUNCTION_SIGNATURE_SET)
+                else if (propertyType == FunctionSignatureSet)
                 {
                     functionType = FunctionUsageType.PropertySetter;
                     signature.RemoveAt(propertyIndex + 1);
                 }
                 else
                 {
-                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_FUNCTION_PROPERTY_INVALID_TYPE, propertyType);
+                    processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassFunctionPropertyInvalidType, propertyType);
                 }
 
-                signature.Remove(FUNCTION_SIGNATURE_PROPERTY);
+                signature.Remove(FunctionSignatureProperty);
             }
 
             // Only one (or none) significant signature types can be added to a signature.
             if (significantCount > 1)
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_INCOMPATIBLE_SIGNATURE);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassIncompatibleSignature);
 
             if (signature.Count != 2)
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_CLASS_INVALID_FUNCTION_SIGNATURE);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxClassInvalidFunctionSignature);
 
-            identifier = signature[1];
+            var identifier = signature[1];
 
             if (!ScriptProcessor.IsValidIdentifier(identifier))
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MESSAGE_SYNTAX_MISSING_VAR_NAME);
+                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingVarName);
 
             // After the valid identifier check is done, we add the getter/setter prefix. It wouldn't pass the test.
             if (functionType == FunctionUsageType.PropertyGetter)
-                identifier = PROPERTY_GET_PREFIX + identifier;
+                identifier = PropertyGetPrefix + identifier;
             if (functionType == FunctionUsageType.PropertySetter)
-                identifier = PROPERTY_SET_PREFIX + identifier;
+                identifier = PropertySetPrefix + identifier;
 
-            var function = new SFunction(processor, signature[0] + " " + header.Remove(0, header.IndexOf("(")) + bodyStatement.Code)
+            var function = new SFunction(processor, signature[0] + " " + header.Remove(0, header.IndexOf("(", StringComparison.Ordinal)) + bodyStatement.Code)
             {
                 FunctionUsage = functionType
             };

@@ -29,6 +29,7 @@ namespace Pokemon3D.DataModel
         /// Creates a data model of a specific type, loaded from a file.
         /// </summary>
         /// <typeparam name="T">The return type of the data model.</typeparam>
+        /// <param name="fileName"></param>
         /// <param name="dataType">The data type of the data provided in the file.</param>
         public static T FromFile(string fileName, DataType dataType)
         {
@@ -68,6 +69,7 @@ namespace Pokemon3D.DataModel
         /// Saves the content of this data model to a file.
         /// </summary>
         /// <param name="filename">The file to save the content to.</param>
+        /// <param name="dataType"></param>
         public void ToFile(string filename, DataType dataType)
         {
             string content = ToString(dataType);

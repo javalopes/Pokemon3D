@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+// ReSharper disable ForCanBeConvertedToForeach
 namespace Pokemon3D.Rendering.UI
 {
     public class UiOverlay : UiFocusContainer

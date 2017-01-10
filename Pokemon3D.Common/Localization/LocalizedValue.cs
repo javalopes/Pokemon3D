@@ -4,9 +4,9 @@ namespace Pokemon3D.Common.Localization
 {
     public class LocalizedValue
     {
-        private string _key;
-        private string _section;
-        private TranslationProvider _translationprovider;
+        private readonly string _key;
+        private readonly string _section;
+        private readonly TranslationProvider _translationprovider;
 
         public event Action ValueChanged;
 

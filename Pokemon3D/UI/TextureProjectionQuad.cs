@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Shapes;
-using Pokemon3D.GameCore;
 
 namespace Pokemon3D.UI
 {
@@ -24,8 +23,8 @@ namespace Pokemon3D.UI
         private bool _projectionDirty = true;
         private bool _targetDirty = true;
         private float _fieldOfView = 45;
-        private int _textureOutputWidth = 0;
-        private int _textureOutputHeight = 0;
+        private int _textureOutputWidth;
+        private int _textureOutputHeight;
         private Vector3 _cameraPosition = Vector3.Zero;
 
         public Matrix World { get; set; } = Matrix.Identity;
@@ -88,6 +87,7 @@ namespace Pokemon3D.UI
         public TextureProjectionQuad(int width, int height)
         {
             TextureOutputWidth = width;
+            _textureOutputHeight = 0;
             TextureOutputHeight = height;
 
             _vertices = new VertexPositionNormalTexture[4];
@@ -159,7 +159,7 @@ namespace Pokemon3D.UI
             {
                 if (_projectionDirty)
                 {
-                    _projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(_fieldOfView), _textureOutputWidth / _textureOutputHeight, 0.01f, 10000f);
+                    _projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(_fieldOfView), (float)_textureOutputWidth / _textureOutputHeight, 0.01f, 10000f);
                     _quadEffect.Projection = _projection;
                     _projectionDirty = false;
                 }
@@ -232,7 +232,7 @@ namespace Pokemon3D.UI
             Polygon polygon = new Polygon();
 
             // get corners counter clockwise starting on the top left and project them to create the polygon:
-            polygon.AddRange(new Point[] {
+            polygon.AddRange(new[] {
                 new Point(rectangle.X, rectangle.Y), // top left
                 new Point(rectangle.X, rectangle.Y + rectangle.Height), // bottom left
                 new Point(rectangle.X + rectangle.Width, rectangle.Y + rectangle.Height), // bottom right
@@ -250,8 +250,8 @@ namespace Pokemon3D.UI
 
         public Point AdjustToScreen(Point p)
         {
-            p.X = (int)((float)p.X * ((float)GameProvider.GameInstance.ScreenBounds.Width / _textureOutputWidth));
-            p.Y = (int)((float)p.Y * ((float)GameProvider.GameInstance.ScreenBounds.Height / _textureOutputHeight));
+            p.X = (int)(p.X * ((float)GameProvider.GameInstance.ScreenBounds.Width / _textureOutputWidth));
+            p.Y = (int)(p.Y * ((float)GameProvider.GameInstance.ScreenBounds.Height / _textureOutputHeight));
             return p;
         }
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering;
 using static Pokemon3D.GameProvider;
 
@@ -23,10 +22,6 @@ namespace Pokemon3D.Entities.System.Components
             get { return Camera.FieldOfView; }
             set { Camera.FieldOfView = value; }
         }
-
-        public Matrix ViewMatrix { get; private set; }
-
-        public Matrix ProjectionMatrix { get; private set; }
 
         public Color? ClearColor
         {

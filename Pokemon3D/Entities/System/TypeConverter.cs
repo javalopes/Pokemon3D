@@ -49,7 +49,7 @@ namespace Pokemon3D.Entities.System
 
         private static object ToArray<T>(string data)
         {
-            return data.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            return data.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(Convert<T>).ToArray();
         }
 
@@ -95,14 +95,14 @@ namespace Pokemon3D.Entities.System
 
         private static object ToSingle(string data)
         {
-            float result = 0;
+            float result;
             float.TryParse(data, NumberStyles.Number, CultureInfo.InvariantCulture, out result);
             return result;
         }
 
         private static object ToInt32(string data)
         {
-            int result = 0;
+            int result;
             int.TryParse(data, NumberStyles.Number, CultureInfo.InvariantCulture, out result);
             return result;
         }

@@ -65,7 +65,7 @@ namespace Pokemon3D.Scripting
     /// <summary>
     /// An attribute added to methods to mark them as built in methods of <see cref="Prototype"/>s.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method)]
     internal class BuiltInMethodAttribute : Attribute
     {
         /// <summary>

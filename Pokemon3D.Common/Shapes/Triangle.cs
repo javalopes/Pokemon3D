@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
 namespace Pokemon3D.Common.Shapes
@@ -13,22 +10,13 @@ namespace Pokemon3D.Common.Shapes
     public struct Triangle : Shape, IEquatable<Triangle>
     {
         private Rectangle _bounds;
-        private Point[] _points;
+        private readonly Point[] _points;
 
-        public Rectangle Bounds
-        {
-            get { return _bounds; }
-        }
+        public Rectangle Bounds => _bounds;
 
-        public Point Location
-        {
-            get { return _bounds.Location; }
-        }
+        public Point Location => _bounds.Location;
 
-        public Point[] Points
-        {
-            get { return _points; }
-        }
+        public Point[] Points => _points;
 
         public Point A
         {
@@ -61,7 +49,7 @@ namespace Pokemon3D.Common.Shapes
         }
 
         public Triangle(Point a, Point b, Point c)
-            : this(new Point[] { a, b, c })
+            : this(new[] { a, b, c })
         { }
 
         public Triangle(Point[] points)
@@ -110,14 +98,14 @@ namespace Pokemon3D.Common.Shapes
             if ((s < 0) != (t < 0))
                 return false;
 
-            var A = -b.Y * c.X + a.Y * (c.X - b.X) + a.X * (b.Y - c.Y) + b.X * c.Y;
-            if (A < 0.0)
+            var bigA = -b.Y * c.X + a.Y * (c.X - b.X) + a.X * (b.Y - c.Y) + b.X * c.Y;
+            if (bigA < 0.0)
             {
                 s = -s;
                 t = -t;
-                A = -A;
+                bigA = -bigA;
             }
-            return s > 0 && t > 0 && (s + t) < A;
+            return s > 0 && t > 0 && (s + t) < bigA;
         }
 
         public bool Contains(Point value)
@@ -185,7 +173,7 @@ namespace Pokemon3D.Common.Shapes
 
         public override bool Equals(object obj)
         {
-            return obj is Triangle ? Equals((Triangle)obj) : false;
+            return obj is Triangle && Equals((Triangle)obj);
         }
 
         public override int GetHashCode()
@@ -196,11 +184,11 @@ namespace Pokemon3D.Common.Shapes
             return hash;
         }
 
-        private const string FORMAT_TRIANGLE = "{{A: {0}, B: {1}, C: {2}}}";
+        private const string FormatTriangle = "{{A: {0}, B: {1}, C: {2}}}";
 
         public override string ToString()
         {
-            return string.Format(FORMAT_TRIANGLE, _points[0].ToString(), _points[1].ToString(), _points[2].ToString());
+            return string.Format(FormatTriangle, _points[0].ToString(), _points[1].ToString(), _points[2].ToString());
         }
 
         public static bool operator ==(Triangle left, Triangle right)

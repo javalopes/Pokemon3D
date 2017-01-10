@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Pokemon3D.Rendering.Data;
 
+// ReSharper disable once ForCanBeConvertedToForeach
 namespace Pokemon3D.Rendering.Compositor
 {
+
     internal class RenderQueue : GameContextObject
     {
         private readonly GraphicsDevice _device;

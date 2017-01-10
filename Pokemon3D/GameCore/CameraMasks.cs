@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Pokemon3D.GameCore
+﻿namespace Pokemon3D.GameCore
 {
     static class CameraMasks
     {

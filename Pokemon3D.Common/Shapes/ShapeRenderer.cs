@@ -47,12 +47,12 @@ namespace Pokemon3D.Common.Shapes
 
         public void DrawRectangle(int x, int y, int width, int height, Color color)
         {
-            DrawRectangle(new Rectangle(x, y, width, height), color, 0f, Vector2.Zero, true);
+            DrawRectangle(new Rectangle(x, y, width, height), color, 0f, Vector2.Zero);
         }
 
         public void DrawRectangle(Rectangle destinationRectangle, Color color)
         {
-            DrawRectangle(destinationRectangle, color, 0f, Vector2.Zero, true);
+            DrawRectangle(destinationRectangle, color, 0f, Vector2.Zero);
         }
 
         public void DrawRectangle(Rectangle destinationRectangle, Color color, float rotation = 0f, Vector2? origin = null, bool filled = true)
@@ -78,18 +78,18 @@ namespace Pokemon3D.Common.Shapes
 
         public void DrawShape(Shape shape, Color color)
         {
-            DrawShape(shape, null, color, 0f, Vector2.Zero, SpriteEffects.None);
+            DrawShape(shape, null, color, 0f, Vector2.Zero);
         }
 
         public void DrawShape(Shape shape, Vector2 position, Color color)
         {
             var bounds = shape.Bounds;
-            DrawShape(shape, new Rectangle((int)position.X, (int)position.Y, bounds.Width, bounds.Height), color, 0f, Vector2.Zero, SpriteEffects.None);
+            DrawShape(shape, new Rectangle((int)position.X, (int)position.Y, bounds.Width, bounds.Height), color, 0f, Vector2.Zero);
         }
 
         public void DrawShape(Shape shape, Rectangle destinationRectangle, Color color)
         {
-            DrawShape(shape, destinationRectangle, color, 0f, Vector2.Zero, SpriteEffects.None);
+            DrawShape(shape, destinationRectangle, color, 0f, Vector2.Zero);
         }
 
         public void DrawShape(Shape shape, Rectangle? destinationRectangle, Color color, float rotation = 0f, Vector2? origin = null, SpriteEffects effects = SpriteEffects.None)
@@ -136,10 +136,10 @@ namespace Pokemon3D.Common.Shapes
             var offset = position.ToPoint();
             for (int i = 0; i < points.Length; i++)
             {
-                Point A = points[i] + offset;
-                Point B = i == points.Length - 1 ? points[0] + offset : points[i + 1] + offset; 
+                Point a = points[i] + offset;
+                Point b = i == points.Length - 1 ? points[0] + offset : points[i + 1] + offset; 
 
-                DrawLine(A, B, color, thickness);
+                DrawLine(a, b, color, thickness);
             }
         }
     }

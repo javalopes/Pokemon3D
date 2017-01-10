@@ -76,13 +76,12 @@ namespace Pokemon3D.Scripting
                 return processor.Undefined;
 
             if (parameters[0] is SString)
-                return processor.Context.CreateInstance("String", new SObject[] { parameters[0] });
-            else if (parameters[0] is SNumber)
-                return processor.Context.CreateInstance("Number", new SObject[] { parameters[0] });
-            else if (parameters[0] is SBool)
-                return processor.Context.CreateInstance("Boolean", new SObject[] { parameters[0] });
-            else
-                return parameters[0]; // returns the input object, if no conversion was conducted.
+                return processor.Context.CreateInstance("String", new[] { parameters[0] });
+            if (parameters[0] is SNumber)
+                return processor.Context.CreateInstance("Number", new[] { parameters[0] });
+            if (parameters[0] is SBool)
+                return processor.Context.CreateInstance("Boolean", new[] { parameters[0] });
+            return parameters[0]; // returns the input object, if no conversion was conducted.
         }
 
         /// <summary>

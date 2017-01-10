@@ -97,8 +97,8 @@ namespace Pokemon3D.Scripting.Adapters
             {
                 var memberName = item.Key;
                 // Do not translate back the prototype and super instances:
-                if (memberName != SProtoObject.MEMBER_NAME_PROTOTYPE &&
-                    memberName != SProtoObject.MEMBER_NAME_SUPER)
+                if (memberName != SProtoObject.MemberNamePrototype &&
+                    memberName != SProtoObject.MemberNameSuper)
                 {
                     var memberContent = SObject.Unbox(item.Value);
                     returnObj.Add(memberName, Translate(memberContent));

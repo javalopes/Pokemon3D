@@ -10,11 +10,9 @@ namespace Pokemon3D.Entities.System.Components
     internal class ScriptTriggerEntityComponent : EntityComponent
     {
         private string _script;
-        private string _trigger;
-        private readonly string _message;
 
         private readonly InteractionPromptOverworldUiElement _uiElement;
-        private bool _addedUIElement = false;
+        private bool _addedUiElement;
 
         private readonly Collider _collider;
 
@@ -22,8 +20,7 @@ namespace Pokemon3D.Entities.System.Components
             : base(parameters)
         {
             _script = GetDataOrDefault("Script", "");
-            _trigger = GetDataOrDefault("Trigger", "Interaction");
-            _message = GetDataOrDefault("Message", "Interact");
+            var message = GetDataOrDefault("Message", "Interact");
 
             _collider = new Collider(ReferringEntity.Scale, isTrigger: true);
             _collider.SetPosition(ReferringEntity.GlobalPosition);
@@ -31,7 +28,7 @@ namespace Pokemon3D.Entities.System.Components
             _collider.OnTriggerEnter = OnTriggerEnter;
             _collider.OnTriggerLeave = OnTriggerLeave;
 
-            _uiElement = new InteractionPromptOverworldUiElement(ReferringEntity.GlobalPosition, _message);
+            _uiElement = new InteractionPromptOverworldUiElement(ReferringEntity.GlobalPosition, message);
             _uiElement.InteractionStarted += InteractionHandler;
         }
 
@@ -47,10 +44,10 @@ namespace Pokemon3D.Entities.System.Components
 
             var currentScreen = GameInstance.GetService<ScreenManager>().CurrentScreen;
 
-            if (!_addedUIElement)
+            if (!_addedUiElement)
             {
                 currentScreen.AddOverlay(_uiElement);
-                _addedUIElement = true;
+                _addedUiElement = true;
             }
 
             _uiElement.Show();
@@ -64,11 +61,11 @@ namespace Pokemon3D.Entities.System.Components
 
         public override void OnComponentRemove()
         {
-            if (_addedUIElement)
+            if (_addedUiElement)
             {
                 var screen = GameInstance.GetService<ScreenManager>().CurrentScreen;
                 if (screen is OverworldScreen) screen.RemoveOverlay(_uiElement);
-                _addedUIElement = false;
+                _addedUiElement = false;
             }
         }
 

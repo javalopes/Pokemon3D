@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.GameCore
@@ -24,11 +23,11 @@ namespace Pokemon3D.GameCore
         {
             GameController.Instance.GetService<GameConfiguration>().ConfigFileLoaded += OnConfigFileLoaded;
 
-            if (Directory.Exists(i18nPathProvider.LookupPath))
+            if (Directory.Exists(I18NPathProvider.LookupPath))
             {
                 List<SectionModel> sectionModels = new List<SectionModel>();
 
-                var files = Directory.GetFiles(i18nPathProvider.LookupPath).
+                var files = Directory.GetFiles(I18NPathProvider.LookupPath).
                     Where(m => m.EndsWith(I18NFileExtension, StringComparison.OrdinalIgnoreCase));
 
                 foreach (var file in files)

@@ -1,7 +1,6 @@
 ﻿using Pokemon3D.Scripting.Types;
 using Pokemon3D.Scripting.Types.Prototypes;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -139,7 +138,7 @@ namespace Pokemon3D.Scripting.Adapters
             if (!string.IsNullOrWhiteSpace(customNameAttribute?.VariableName))
                 typeName = customNameAttribute.VariableName;
 
-            Prototype prototype = null;
+            Prototype prototype;
             bool isAnonymousType = false;
 
             if (IsObjectAnonymousType(objIn))
@@ -150,10 +149,7 @@ namespace Pokemon3D.Scripting.Adapters
             }
             else
             {
-                if (processor.Context.IsPrototype(typeName))
-                    prototype = processor.Context.GetPrototype(typeName);
-                else
-                    prototype = TranslatePrototype(processor, objIn.GetType());
+                prototype = processor.Context.IsPrototype(typeName) ? processor.Context.GetPrototype(typeName) : TranslatePrototype(processor, objIn.GetType());
             }
             
             var obj = prototype.CreateInstance(processor, null, false);
@@ -312,7 +308,7 @@ namespace Pokemon3D.Scripting.Adapters
                                     prototype.IndexerSetFunction = new SFunction(processor, fieldContent.ToString());
                                     break;
                                 case ScriptFunctionType.Constructor:
-                                    prototype.Constructor = new PrototypeMember(Prototype.CLASS_METHOD_CTOR, new SFunction(processor, fieldContent.ToString()), false, true, false, false);
+                                    prototype.Constructor = new PrototypeMember(Prototype.ClassMethodCtor, new SFunction(processor, fieldContent.ToString()), false, true, false, false);
                                     break;
                             }
                         }
@@ -335,9 +331,9 @@ namespace Pokemon3D.Scripting.Adapters
                         identifier = attr.VariableName;
 
                     if (attr.FunctionType == ScriptFunctionType.Getter)
-                        identifier = SProtoObject.PROPERTY_GET_PREFIX + identifier;
+                        identifier = SProtoObject.PropertyGetPrefix + identifier;
                     if (attr.FunctionType == ScriptFunctionType.Setter)
-                        identifier = SProtoObject.PROPERTY_SET_PREFIX + identifier;
+                        identifier = SProtoObject.PropertySetPrefix + identifier;
 
                     Delegate methodDelegate = null;
 
@@ -366,7 +362,7 @@ namespace Pokemon3D.Scripting.Adapters
                             prototype.IndexerSetFunction = new SFunction(methodDelegate);
                             break;
                         case ScriptFunctionType.Constructor:
-                            prototype.Constructor = new PrototypeMember(Prototype.CLASS_METHOD_CTOR, new SFunction(methodDelegate), false, true, false, false);
+                            prototype.Constructor = new PrototypeMember(Prototype.ClassMethodCtor, new SFunction(methodDelegate), false, true, false, false);
                             break;
                     }
                 }

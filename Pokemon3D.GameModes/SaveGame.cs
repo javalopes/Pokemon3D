@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Pokemon3D.DataModel.Savegame;
 using Pokemon3D.DataModel.Savegame.Pokemon;
 using Pokemon3D.GameModes.Monsters;
@@ -14,7 +10,7 @@ namespace Pokemon3D.GameModes
     /// </summary>
     public class SaveGame
     {
-        private SaveFileModel _dataModel;
+        private readonly SaveFileModel _dataModel;
         private GameMode _gameMode;
 
         public SaveGame(SaveFileModel dataModel)
@@ -31,14 +27,14 @@ namespace Pokemon3D.GameModes
             set { _dataModel.PlayerData.Money = value; }
         }
         
-        public List<Pokemon> PartyPokemon { get; private set; }
+        public List<Pokemon> PartyPokemon { get; }
 
         public PokedexSaveModel[] Pokedexes => _dataModel.Pokedexes;
 
-        private int _loadedItems = 0;
-        private int _loadingCounter = 0;
+        private int _loadedItems;
+        private int _loadingCounter;
 
-        public bool FinishedLoading { get { return _loadedItems == _loadingCounter; } }
+        public bool FinishedLoading => _loadedItems == _loadingCounter;
 
         /// <summary>
         /// Loads required data once the <see cref="GameMode"/> is loaded.

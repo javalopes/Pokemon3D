@@ -33,15 +33,15 @@ namespace Pokemon3D.GameCore
         public static GameController Instance { get; private set; }
 
         /// <summary>The name of the game.</summary>
-        public const string GAME_NAME = "Pokémon3D";
+        public const string GameName = "Pokémon3D";
         /// <summary>The current version of the game.</summary>
-        public const string VERSION = "1.0";
+        public const string Version = "1.0";
 
         /// <summary>The development stage of the game.</summary>
-        public const string DEVELOPMENT_STAGE = "Alpha";
+        public const string DevelopmentStage = "Alpha";
 
         /// <summary>The internal build number of the game. This number will increase with every release.</summary>
-        public const string INTERNAL_VERSION = "89";
+        public const string InternalVersion = "89";
 
         public event EventHandler WindowSizeChanged;
 
@@ -62,8 +62,7 @@ namespace Pokemon3D.GameCore
         private CollisionManager _collisionManager;
         private readonly object _lockObject = new object();
 
-        private List<GameEvent> _gameEvents = new List<GameEvent>();
-        
+        private readonly List<GameEvent> _gameEvents = new List<GameEvent>();
 
         public GameController()
         {

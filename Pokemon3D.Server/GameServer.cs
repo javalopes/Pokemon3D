@@ -9,7 +9,7 @@ namespace Pokemon3D.Server
     {
         private readonly GameServerConfiguration _configuration;
         private readonly IRestClient _restClient;
-        public int _gameServerId;
+        private int _gameServerId;
 
         public event Action<string> OnMessage;
 

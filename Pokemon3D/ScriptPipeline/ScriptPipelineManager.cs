@@ -105,7 +105,7 @@ namespace Pokemon3D.ScriptPipeline
                 try
                 {
                     var gamemode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
-                    var source = Encoding.UTF8.GetString(gamemode.FileLoader.GetFile(gamemode.GetScriptFilePath(scriptFile), false).Data);
+                    var source = Encoding.UTF8.GetString(gamemode.FileLoader.GetFile(gamemode.GetScriptFilePath(scriptFile)).Data);
 
                     var processor = CreateProcessor();
                     var result = processor.Run(source);

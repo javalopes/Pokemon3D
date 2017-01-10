@@ -35,10 +35,9 @@ namespace Test.Pokemon3D.Scripting.Adapters
         [Test]
         public void NullTranslateTest()
         {
-            object nullObj = null;
             var processor = ScriptProcessorFactory.GetNew();
 
-            var obj = ScriptInAdapter.Translate(processor, nullObj);
+            var obj = ScriptInAdapter.Translate(processor, null);
 
             Assert.That(obj, Is.InstanceOf<SNull>(), "The type of obj is not SNull, but instead " + obj.GetType().Name);
         }
@@ -107,7 +106,9 @@ namespace Test.Pokemon3D.Scripting.Adapters
             public string OriginalName = "";
 
             [ScriptFunction(ScriptFunctionType.Standard)]
+#pragma warning disable 169
             public string SetName = "function(name) { if (this.OriginalName == \"\") { this.OriginalName = this.Name; } this.Name = name; }";
+#pragma warning restore 169
         }
     }
 }
