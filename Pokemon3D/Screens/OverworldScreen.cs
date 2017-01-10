@@ -19,8 +19,6 @@ namespace Pokemon3D.Screens
         private bool _showRenderStatistics;
         private InputSystem _inputSystem;
         private ScreenManager _screenManager;
-        private CollisionManager _collisionManager;
-        private SpriteBatch _spriteBatch;
         private bool _isLoaded;
 
         private UiOverlay _renderStatisticsOverlay;
@@ -32,7 +30,7 @@ namespace Pokemon3D.Screens
                 ActiveWorld = enterInformation as World;
                 if (ActiveWorld == null) throw new InvalidOperationException("Did not receive loaded data.");
 
-                _renderStatisticsOverlay = new UiOverlay();
+                _renderStatisticsOverlay = AddOverlay(new UiOverlay());
                 _renderStatisticsOverlay.AddElement(new RenderStatisticsView(ActiveWorld));
 
                 GameProvider.GameInstance.LoadedSave = TestMock.CreateTempSave();
@@ -43,8 +41,6 @@ namespace Pokemon3D.Screens
 
             _inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
             _screenManager = GameProvider.GameInstance.GetService<ScreenManager>();
-            _collisionManager = GameProvider.GameInstance.GetService<CollisionManager>();
-            _spriteBatch = GameProvider.GameInstance.GetService<SpriteBatch>();
 
             GameProvider.GameInstance.GameEventRaised += OnGameEventRaised;
         }
@@ -73,19 +69,6 @@ namespace Pokemon3D.Screens
                 _showRenderStatistics = !_showRenderStatistics;
                 if (_showRenderStatistics) _renderStatisticsOverlay.Show(); else _renderStatisticsOverlay.Hide();
             }
-        }
-
-        public override void OnLateDraw(GameTime gameTime)
-        {
-            //todo: use separate camera path
-            //_collisionManager.Draw(ActiveWorld.Player.Camera);
-            _renderStatisticsOverlay.Draw(_spriteBatch);
-
-            base.OnLateDraw(gameTime);
-
-#if DEBUG_RENDERING
-            _sceneRenderer.LateDebugDraw3D();
-#endif
         }
 
         public override void OnEarlyDraw(GameTime gameTime)
