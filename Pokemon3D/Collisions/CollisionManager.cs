@@ -18,12 +18,8 @@ namespace Pokemon3D.Collisions
         private readonly List<Collider> _allTriggersAndColliders;
 
         private readonly Mesh _boundingBoxMesh;
+        private readonly Material _material;
         private readonly List<CollisionResult> _colliderList = new List<CollisionResult>();
-
-        private readonly Effect _lineDrawEffect;
-        private readonly EffectParameter _worldViewProjection;
-        private readonly EffectParameter _modulateColor;
-        private readonly EffectTechnique _lineTechnique;
 
         public bool DrawDebugShapes { get; set; }
 
@@ -59,11 +55,41 @@ namespace Pokemon3D.Collisions
             {
                 PreventDrawCallCount = true
             };
+            _material = new Material
+            {
+                Color = Color.White,
+                UseLinearTextureSampling = false,
+                ReceiveShadow = false,
+                CastShadow = false,
+                UseTransparency = false,
+                IsUnlit = true
+            };
 
-            _lineDrawEffect = GameInstance.Content.Load<Effect>(ResourceNames.Effects.DebugShadowMap);
-            _worldViewProjection = _lineDrawEffect.Parameters["WorldViewProjection"];
-            _modulateColor = _lineDrawEffect.Parameters["Color"];
-            _lineTechnique = _lineDrawEffect.Techniques["LineDraw"];
+            GameInstance.GetService<SceneRenderer>().RegisterCustomDraw(OnCustomDraw);
+        }
+
+        private void OnCustomDraw(Camera camera, SceneRenderer renderer)
+        {
+            if (!DrawDebugShapes) return;
+
+            GameInstance.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            GameInstance.GraphicsDevice.BlendState = BlendState.Opaque;
+
+            lock (_lockObject)
+            {
+                for (var i = 0; i < _allTriggersAndColliders.Count; i++)
+                {
+                    var collider = _allTriggersAndColliders[i];
+                    if (!collider.IsActive) continue;
+                    switch (collider.Type)
+                    {
+                        case ColliderType.BoundingBox:
+                            DrawBoundingBox(renderer, camera, collider);
+                            break;
+                    }
+                }
+            }
+            
         }
 
         public void Add(Collider collider)
@@ -149,49 +175,16 @@ namespace Pokemon3D.Collisions
             }
         }
 
-        public void Draw(Camera observer)
-        {
-            if (!DrawDebugShapes) return;
+        private static readonly Color ColorTrigger = new Color(25, 255, 25, 255); 
+        private static readonly Color ColorCollider = new Color(255, 25,25,255);       
 
-            GameInstance.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            GameInstance.GraphicsDevice.BlendState = BlendState.Opaque;
-
-            var oldTechnique = _lineDrawEffect.CurrentTechnique;
-            _lineDrawEffect.CurrentTechnique = _lineTechnique;
-
-            lock (_lockObject)
-            {
-                for (var i = 0; i < _allTriggersAndColliders.Count; i++)
-                {
-                    var collider = _allTriggersAndColliders[i];
-                    if (!collider.IsActive) continue;
-                    switch (collider.Type)
-                    {
-                        case ColliderType.BoundingBox:
-                            DrawBoundingBox(observer, collider);
-                            break;
-                    }
-                }
-            }
-
-            _lineDrawEffect.CurrentTechnique = oldTechnique;
-        }
-
-        private static readonly Vector4 ColorTrigger = new Vector4(0.2f, 1.0f, 0.1f, 1.0f);
-        private static readonly Vector4 ColorCollider = new Vector4(1.0f, 0.1f, 0.1f, 1.0f);
-
-        private void DrawBoundingBox(Camera observer, Collider collider)
+        private void DrawBoundingBox(SceneRenderer renderer, Camera camera, Collider collider)
         {
             var scale = -collider.BoundingBox.Min + collider.BoundingBox.Max;
             var position = collider.BoundingBox.Min + scale*0.5f;
-            var worldViewProjection = Matrix.CreateScale(scale)*Matrix.CreateTranslation(position)*observer.ViewMatrix*
-                                      observer.ProjectionMatrix;
+            _material.Color = collider.IsTrigger ? ColorTrigger : ColorCollider;
 
-            _worldViewProjection.SetValue(worldViewProjection);
-            _modulateColor.SetValue(collider.IsTrigger ? ColorTrigger : ColorCollider);
-
-            _lineDrawEffect.CurrentTechnique.Passes[0].Apply();
-            _boundingBoxMesh.Draw();
+            renderer.DrawImmediate(camera, Matrix.CreateScale(scale) * Matrix.CreateTranslation(position), _material, _boundingBoxMesh);
         }
     }
 }

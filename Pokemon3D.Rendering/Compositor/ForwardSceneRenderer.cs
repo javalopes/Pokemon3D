@@ -4,6 +4,7 @@ using Pokemon3D.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Pokemon3D.Rendering.Data;
 
 // ReSharper disable ForCanBeConvertedToForeach
 
@@ -18,6 +19,7 @@ namespace Pokemon3D.Rendering.Compositor
         private readonly List<DrawableElement> _allDrawables = new List<DrawableElement>();
         private readonly List<Camera> _allCameras = new List<Camera>();
         private readonly List<DrawableElement> _allShadowCasters = new List<DrawableElement>();
+        private readonly List<Action<Camera, SceneRenderer>> _customDrawActions = new List<Action<Camera, SceneRenderer>>();
 
         private readonly GraphicsDevice _device;
         private readonly EffectProcessor _effectProcessor;
@@ -105,7 +107,23 @@ namespace Pokemon3D.Rendering.Compositor
 
             RenderStatistics.Instance.EndFrame();
         }
-        
+
+        public void RegisterCustomDraw(Action<Camera, SceneRenderer> onDraw)
+        {
+            _customDrawActions.Add(onDraw);
+        }
+
+        public void DrawImmediate(Camera camera, Matrix world, Material material, Mesh mesh)
+        {
+            _effectProcessor.World = world;
+            var passes = _effectProcessor.ApplyByMaterial(material, RenderSettings);
+            for (var i = 0; i < passes.Count; i++)
+            {
+                passes[i].Apply();
+                mesh.Draw();
+            }
+        }
+
         public DrawableElement CreateDrawableElement(bool initializing, int cameraMask = 1)
         {
             DrawableElement drawableElement;
@@ -246,6 +264,14 @@ namespace Pokemon3D.Rendering.Compositor
                 _spriteBatch.Begin();
                 _spriteBatch.Draw(resultTarget, GameContext.ScreenBounds, Color.White);
                 _spriteBatch.End();
+            }
+
+            if (camera.IsMain && _customDrawActions.Count > 0)
+            {
+                foreach (var action in _customDrawActions)
+                {
+                    action.Invoke(camera, this);
+                }
             }
         }
 

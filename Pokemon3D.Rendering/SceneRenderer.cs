@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
+using Pokemon3D.Rendering.Data;
 
 namespace Pokemon3D.Rendering
 {
@@ -26,8 +28,10 @@ namespace Pokemon3D.Rendering
 
         void OnViewSizeChanged(Rectangle oldSize, Rectangle newSize);
 
-        void LateDebugDraw3D();
-
         void Draw();
+
+        void RegisterCustomDraw(Action<Camera, SceneRenderer> onDraw);
+
+        void DrawImmediate(Camera camera, Matrix world, Material material, Mesh mesh);
     }
 }

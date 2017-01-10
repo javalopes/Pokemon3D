@@ -122,7 +122,6 @@ namespace Pokemon3D.GameCore
             _notificationBarOverlay = new UiOverlay();
             RegisterService(_notificationBarOverlay.AddElement(new NotificationBar(400)));
             _notificationBarOverlay.Show();
-
 #if DEBUG_RENDERING
             _collisionManager.DrawDebugShapes = true;
 #endif
