@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A6096166-5BB9-43D6-95C2-9A622CF66726}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{AB3F85DB-BEAD-4E25-AF0E-6C78B2193CCD}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pokemon3D.Server</RootNamespace>
-    <AssemblyName>Pokemon3D.Server</AssemblyName>
+    <RootNamespace>Pokemon3D.Server.Console</RootNamespace>
+    <AssemblyName>Pokemon3D.Server.Console</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,15 +24,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -47,28 +47,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileRequestHandler.cs" />
-    <Compile Include="GameServer.cs" />
-    <Compile Include="GameServerConfiguration.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HttpServer.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pokemon3D.Common\Pokemon3D.Common.csproj">
-      <Project>{b29dc7f0-2a16-4585-80a2-b4030558ec35}</Project>
-      <Name>Pokemon3D.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Pokemon3D.DataModel\Pokemon3D.DataModel.csproj">
-      <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
-      <Name>Pokemon3D.DataModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Pokemon3D.Master.Server.DataContracts\Pokemon3D.Master.Server.DataContracts.csproj">
-      <Project>{f84c24c5-463d-4263-a4bf-5794169e8edf}</Project>
-      <Name>Pokemon3D.Master.Server.DataContracts</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pokemon3D.Server\Pokemon3D.Server.csproj">
+      <Project>{a6096166-5bb9-43d6-95c2-9a622cf66726}</Project>
+      <Name>Pokemon3D.Server</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
