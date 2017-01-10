@@ -10,15 +10,15 @@ namespace Pokemon3D.Server.Console
             var client = new RestClient();
             var configuration = new GameServerConfiguration
             {
-                Name = "Peters Server",
-                MasterServerUrl = "http://localhost:15710",
-                IsPrivate = false
+                Name = Properties.Settings.Default.ServerName,
+                MasterServerUrl = Properties.Settings.Default.MasterServerUrl,
+                IsPrivate = Properties.Settings.Default.IsPrivate
             };
 
             var gameServer = new GameServer(configuration, client);
             gameServer.OnMessage += System.Console.WriteLine;
 
-            bool cancel = false;
+            var cancel = false;
             System.Console.CancelKeyPress += (s,e) => cancel = true;
 
             var startedSuccessfully = gameServer.Start();
