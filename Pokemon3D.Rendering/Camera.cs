@@ -62,5 +62,19 @@ namespace Pokemon3D.Rendering
         {
             return Viewport.Project(worldPosition, ProjectionMatrix, ViewMatrix, Matrix.Identity);
         }
+
+        public Ray GetScreenRay(int x, int y)
+        {
+            var nearPoint = new Vector3(x,y, 0);
+            var farPoint = new Vector3(x,y, 1); ;
+
+            nearPoint = Viewport.Unproject(nearPoint, ProjectionMatrix, ViewMatrix, Matrix.Identity);
+            farPoint = Viewport.Unproject(farPoint, ProjectionMatrix, ViewMatrix, Matrix.Identity);
+
+            var direction = farPoint - nearPoint;
+            direction.Normalize();
+
+            return new Ray(nearPoint, direction);
+        }
     }
 }

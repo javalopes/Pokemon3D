@@ -130,6 +130,7 @@
     <Compile Include="UI\LeftSideButton.cs" />
     <Compile Include="UI\LeftSideCheckbox.cs" />
     <Compile Include="UI\MouseUiInputController.cs" />
+    <Compile Include="UI\MouseUiInputController3D.cs" />
     <Compile Include="UI\PokemonProfile.cs" />
     <Compile Include="UI\PokemonSpriteSheet.cs" />
     <Compile Include="UI\RenderStatisticsView.cs" />
