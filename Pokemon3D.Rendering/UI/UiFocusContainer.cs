@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
@@ -22,6 +23,8 @@ namespace Pokemon3D.Rendering.UI
             }
         }
 
+        public List<UiElement> UiElements => _interactableElements;
+
         public UiFocusContainer()
         {
             _interactableElements = new List<UiElement>();
@@ -44,8 +47,19 @@ namespace Pokemon3D.Rendering.UI
             controller.MoveToNextElement += ControllerOnMoveToNextElement;
             controller.MoveToPreviousElement += ControllerOnMoveToPreviousElement;
             controller.OnAction += ControllerOnOnAction;
+            controller.MoveToElement += ControllerOnMoveToElement;
 
             InputControllers.Add(controller);
+        }
+
+        private void ControllerOnMoveToElement(UiElement uiElement)
+        {
+            if (CurrentElement != uiElement)
+            {
+                CurrentElement?.Unfocus();
+                CurrentElement = uiElement;
+                CurrentElement?.Focus();
+            }
         }
 
         public void ClearInputControllers()

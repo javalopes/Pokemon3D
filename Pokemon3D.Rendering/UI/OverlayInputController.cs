@@ -17,6 +17,8 @@ namespace Pokemon3D.Rendering.UI
         /// </summary>
         event Action<UiElement> OnAction;
 
+        event Action<UiElement> MoveToElement;
+
         /// <summary>
         /// Fire this event when to move to the next element by tab index.
         /// </summary>

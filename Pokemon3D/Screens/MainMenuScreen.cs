@@ -29,6 +29,7 @@ namespace Pokemon3D.Screens
             mainOverlay.AddElement(new LeftSideButton(translation.CreateValue("System", "QuitGame"), new Vector2(26, 293), b => mainOverlay.ShowModal(_closeDialog)));
 
             mainOverlay.AddInputController(new KeyboardUiInputController());
+            mainOverlay.AddInputController(new MouseUiInputController());
             mainOverlay.AutoEnumerateTabIndices();
 
             _closeDialog = new SelectionDialog(translation.CreateValue("System", "ReallyQuitGameQuestion"), translation.CreateValue("System", "UnsavedChangesLost"), new[]

@@ -93,6 +93,7 @@
     <Compile Include="Input\KeyboardHandler.cs" />
     <Compile Include="Input\KeyboardAxisAction.cs" />
     <Compile Include="Input\KeyboardInputAction.cs" />
+    <Compile Include="Input\MouseHandler.cs" />
     <Compile Include="Line1D.cs" />
     <Compile Include="Localization\LocalizedValue.cs" />
     <Compile Include="Localization\TranslationProvider.cs" />

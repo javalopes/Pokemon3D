@@ -19,9 +19,15 @@ namespace Pokemon3D.Rendering.UI
             OnAction?.Invoke(element);
         }
 
+        protected void InvokeMoveToElement(UiElement element)
+        {
+            MoveToElement?.Invoke(element);
+        }
+
         public abstract void Update(UiFocusContainer container);
 
         public event Action<UiElement> OnAction;
+        public event Action<UiElement> MoveToElement;
         public event Action MoveToNextElement;
         public event Action MoveToPreviousElement;
     }

@@ -13,11 +13,13 @@ namespace Pokemon3D.Common.Input
 
         public KeyboardHandler KeyboardHandler { get; } = new KeyboardHandler();
         public GamePadHandler GamePadHandler { get; } = new GamePadHandler();
+        public MouseHandler MouseHandler { get; } = new MouseHandler();
 
         public void Update(GameTime time)
         {
             KeyboardHandler.Update(time);
             GamePadHandler.Update(time);
+            MouseHandler.Update();
         }
 
         public void RegisterAction(string name, Keys key)
