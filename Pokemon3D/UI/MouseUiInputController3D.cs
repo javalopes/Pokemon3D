@@ -19,34 +19,38 @@ namespace Pokemon3D.UI
             _projectedHeight = projectedHeight;
         }
 
-        protected override Point GetCurrentMousePosition()
+        private static Point ProjectRayOnQuadFor2D(Ray worldRay, Vector3 quadPosition, Vector3 quadNormal, Vector2 quadSizeWorld, int quadProjectedWidth, int quadProjectedHeight)
         {
-            var normal = -_referringEntity.Forward;
-            var position = _referringEntity.GlobalPosition;
-            var d = Vector3.Dot(-position,normal);
-            var plane = new Plane(normal, d);
+            var plane = new Plane(quadNormal, Vector3.Dot(-quadPosition, quadNormal));
 
-            var ray = _camera.GetScreenRay(_inputSystem.MouseHandler.X, _inputSystem.MouseHandler.Y);
-
-            var hitPoint = ray.Intersects(plane);
+            var hitPoint = worldRay.Intersects(plane);
 
             if (hitPoint.HasValue)
             {
-                var targetPoint = ray.Position + ray.Direction*hitPoint.Value;
+                var targetPoint = worldRay.Position + worldRay.Direction * hitPoint.Value;
 
-                var centerPlaneToTarget = targetPoint - position;
+                var centerPlaneToTarget = targetPoint - quadPosition;
                 centerPlaneToTarget.Y = -centerPlaneToTarget.Y;
-                
-                var distanceFromTopLeft = new Vector3(_referringEntity.Scale.X*0.5f, _referringEntity.Scale.Y * 0.5f, 0.0f) + centerPlaneToTarget;
 
-                var x = distanceFromTopLeft.X / _referringEntity.Scale.X * _projectedWidth;
-                var y = -distanceFromTopLeft.Y / _referringEntity.Scale.Y * _projectedHeight;
+                var distanceFromTopLeft = new Vector3(quadSizeWorld.X * 0.5f, quadSizeWorld.Y * 0.5f, 0.0f) + centerPlaneToTarget;
 
-                return new Point((int)x,(int)y);
+                var x = distanceFromTopLeft.X / quadSizeWorld.X * quadProjectedWidth;
+                var y = -distanceFromTopLeft.Y / quadSizeWorld.Y * quadProjectedHeight;
+
+                return new Point((int)x, (int)y);
             }
 
             return new Point(int.MinValue, int.MinValue);
+        }
 
+        protected override Point GetCurrentMousePosition()
+        {
+            var ray = _camera.GetScreenRay(_inputSystem.MouseHandler.X, _inputSystem.MouseHandler.Y);
+            var quadPosition = _referringEntity.GlobalPosition;
+            var quadNormal = -_referringEntity.Forward;
+            var quadSize = new Vector2(_referringEntity.Scale.X, _referringEntity.Scale.Y);
+
+            return ProjectRayOnQuadFor2D(ray, quadPosition, quadNormal, quadSize, _projectedWidth, _projectedHeight);
         }
     }
 }
