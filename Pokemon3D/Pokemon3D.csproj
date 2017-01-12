@@ -135,7 +135,6 @@
     <Compile Include="UI\PokemonSpriteSheet.cs" />
     <Compile Include="UI\RenderStatisticsView.cs" />
     <Compile Include="UI\ScreenOverlay.cs" />
-    <Compile Include="UI\TextureProjectionQuad.cs" />
     <Compile Include="UI\KeyboardUiInputController.cs" />
     <Compile Include="GameCore\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
