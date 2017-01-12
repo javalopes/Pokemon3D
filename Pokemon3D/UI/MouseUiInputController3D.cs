@@ -19,7 +19,7 @@ namespace Pokemon3D.UI
             _projectedHeight = projectedHeight;
         }
 
-        private static Point ProjectRayOnQuadFor2D(Ray worldRay, Vector3 quadPosition, Vector3 quadNormal, Vector2 quadSizeWorld, int quadProjectedWidth, int quadProjectedHeight)
+        private static Point ProjectRayOnQuadFor2D(Ray worldRay, Vector3 quadPosition, Vector3 quadNormal, Vector3 quadRight, Vector3 quadDown, Vector2 quadSizeWorld, int quadProjectedWidth, int quadProjectedHeight)
         {
             var plane = new Plane(quadNormal, Vector3.Dot(-quadPosition, quadNormal));
 
@@ -29,15 +29,18 @@ namespace Pokemon3D.UI
             {
                 var targetPoint = worldRay.Position + worldRay.Direction * hitPoint.Value;
 
-                var centerPlaneToTarget = targetPoint - quadPosition;
-                centerPlaneToTarget.Y = -centerPlaneToTarget.Y;
+                quadRight.Normalize();
+                quadDown.Normalize();
 
-                var distanceFromTopLeft = new Vector3(quadSizeWorld.X * 0.5f, quadSizeWorld.Y * 0.5f, 0.0f) + centerPlaneToTarget;
+                var rightAxis = quadRight*quadSizeWorld.X;
+                var downAxis = quadDown*quadSizeWorld.Y;
 
-                var x = distanceFromTopLeft.X / quadSizeWorld.X * quadProjectedWidth;
-                var y = -distanceFromTopLeft.Y / quadSizeWorld.Y * quadProjectedHeight;
+                var originPoint = quadPosition - quadRight * quadSizeWorld.X*0.5f - quadDown * quadSizeWorld.Y*0.5f;
 
-                return new Point((int)x, (int)y);
+                var x = Vector3.Dot((targetPoint - originPoint), rightAxis) / Vector3.Dot(rightAxis, rightAxis);
+                var y = Vector3.Dot((targetPoint - originPoint), downAxis) / Vector3.Dot(downAxis, downAxis); ;
+
+                return new Point((int)(x * quadProjectedWidth), (int)(y * quadProjectedHeight));
             }
 
             return new Point(int.MinValue, int.MinValue);
@@ -50,7 +53,7 @@ namespace Pokemon3D.UI
             var quadNormal = -_referringEntity.Forward;
             var quadSize = new Vector2(_referringEntity.Scale.X, _referringEntity.Scale.Y);
 
-            return ProjectRayOnQuadFor2D(ray, quadPosition, quadNormal, quadSize, _projectedWidth, _projectedHeight);
+            return ProjectRayOnQuadFor2D(ray, quadPosition, quadNormal, _referringEntity.Right, -_referringEntity.Up, quadSize, _projectedWidth, _projectedHeight);
         }
     }
 }
