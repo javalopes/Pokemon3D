@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Pokemon3D.Common.Shapes
+namespace Pokemon3D.Rendering.Shapes
 {
     /// <summary>
     /// A two dimensional shape.

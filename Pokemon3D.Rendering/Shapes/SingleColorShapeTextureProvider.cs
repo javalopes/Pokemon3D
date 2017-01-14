@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 
-namespace Pokemon3D.Common.Shapes
+namespace Pokemon3D.Rendering.Shapes
 {
     public class SingleColorShapeTextureProvider : ShapeTextureProvider
     {

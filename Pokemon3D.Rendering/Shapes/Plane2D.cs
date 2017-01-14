@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
+using Microsoft.Xna.Framework;
 
-namespace Pokemon3D.Common.Shapes
+namespace Pokemon3D.Rendering.Shapes
 {
     /// <summary>
     /// Descriptes a rectangular plane.

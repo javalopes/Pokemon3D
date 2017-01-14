@@ -1,7 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common;
 using Pokemon3D.DataModel.GameMode.Battle;
 using Pokemon3D.DataModel.GameMode.Definitions;
 using Pokemon3D.DataModel.GameMode.Pokemon;
@@ -94,7 +94,7 @@ namespace Pokemon3D.GameModes.Monsters
             get
             {
                 if (_saveModel.AbilityIndex == 0)
-                    _saveModel.AbilityIndex = GlobalRandomProvider.Instance.Rnd.Next(0, ActiveFormModel.Abilities.Length);
+                    _saveModel.AbilityIndex = _gameMode.GameContext.GetService<Random>().Next(0, ActiveFormModel.Abilities.Length);
 
                 string id;
                 if (ActiveFormModel.Abilities.Length <= _saveModel.AbilityIndex)
@@ -242,7 +242,7 @@ namespace Pokemon3D.GameModes.Monsters
                 // delete random move when this Pokémon already has 4 moves:
                 if (moveList.Count == PokemonMaxMoveCount)
                 {
-                    moveList.RemoveAt(GlobalRandomProvider.Instance.Rnd.Next(0, moveList.Count));
+                    moveList.RemoveAt(_gameMode.GameContext.GetService<Random>().Next(0, moveList.Count));
                 }
 
                 // get the move model to grab the PP from that:

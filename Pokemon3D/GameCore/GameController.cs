@@ -8,7 +8,6 @@ using System;
 using System.Windows.Threading;
 using Pokemon3D.Collisions;
 using Pokemon3D.Common.Input;
-using Pokemon3D.Common.Shapes;
 using Pokemon3D.Screens;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
@@ -19,6 +18,7 @@ using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.DataModel.GameCore;
+using Pokemon3D.Rendering.Shapes;
 
 namespace Pokemon3D.GameCore
 {
@@ -109,6 +109,7 @@ namespace Pokemon3D.GameCore
 
             RegisterService(Window);
             RegisterService(GraphicsDevice);
+            RegisterService(new Random());
             _renderer = RegisterService(SceneRendererFactory.Create(this, new WindowsEffectProcessor(Content), renderSettings));
             RegisterService(new GameModeManager());
             _spriteBatch = RegisterService(new SpriteBatch(GraphicsDevice));

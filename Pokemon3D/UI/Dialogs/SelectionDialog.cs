@@ -2,10 +2,10 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common.Shapes;
 using Pokemon3D.Content;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Common.Localization;
+using Pokemon3D.Rendering.Shapes;
 
 namespace Pokemon3D.UI.Dialogs
 {

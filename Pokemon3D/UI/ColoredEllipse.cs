@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common.Shapes;
+using Pokemon3D.Rendering.Shapes;
 using Pokemon3D.Rendering.UI;
 using static Pokemon3D.GameProvider;
 

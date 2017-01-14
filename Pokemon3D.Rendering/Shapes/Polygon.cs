@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace Pokemon3D.Common.Shapes
+namespace Pokemon3D.Rendering.Shapes
 {
     public struct Polygon : Shape, IEquatable<Polygon>
     {

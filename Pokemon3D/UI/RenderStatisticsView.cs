@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.Compositor;
 using Microsoft.Xna.Framework;
 using static Pokemon3D.GameProvider;
-using Pokemon3D.Common.Shapes;
 using Pokemon3D.Entities;
 using Pokemon3D.Content;
+using Pokemon3D.Rendering.Shapes;
 
 namespace Pokemon3D.UI
 {

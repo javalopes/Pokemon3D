@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace Pokemon3D.Common.Shapes
+namespace Pokemon3D.Rendering.Shapes
 {
     /// <summary>
     /// Creates <see cref="Texture2D"/> for a <see cref="Shape"/>.
