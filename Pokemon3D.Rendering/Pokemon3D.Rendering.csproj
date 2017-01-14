@@ -84,15 +84,7 @@
     <Compile Include="DrawableElement.cs" />
     <Compile Include="SceneRenderer.cs" />
     <Compile Include="Shapes\Ellipse.cs" />
-    <Compile Include="Shapes\Pie2D.cs" />
-    <Compile Include="Shapes\PieChartType.cs" />
-    <Compile Include="Shapes\Plane2D.cs" />
-    <Compile Include="Shapes\Polygon.cs" />
-    <Compile Include="Shapes\Shape.cs" />
-    <Compile Include="Shapes\ShapeFillData.cs" />
     <Compile Include="Shapes\ShapeRenderer.cs" />
-    <Compile Include="Shapes\ShapeTextureProvider.cs" />
-    <Compile Include="Shapes\Triangle.cs" />
     <Compile Include="Skybox.cs" />
     <Compile Include="TextureRegion.cs" />
     <Compile Include="UI\Animations\UiAlphaAnimation.cs" />

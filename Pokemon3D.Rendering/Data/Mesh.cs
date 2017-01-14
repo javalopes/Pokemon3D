@@ -71,11 +71,16 @@ namespace Pokemon3D.Rendering.Data
 
         public void Draw()
         {
+            Draw(_primitiveCount);
+        }
+
+        public void Draw(int primitiveCount)
+        {
             var device = _vertexBuffer.GraphicsDevice;
             device.SetVertexBuffer(_vertexBuffer);
             device.Indices = _indexBuffer;
 
-            device.DrawIndexedPrimitives(_primitiveType, 0, 0, _primitiveCount);
+            device.DrawIndexedPrimitives(_primitiveType, 0, 0, MathHelper.Clamp(primitiveCount, 0, _primitiveCount));
             if (!PreventDrawCallCount) RenderStatistics.Instance.DrawCalls++;
         }
 

@@ -27,7 +27,8 @@ namespace Pokemon3D.Rendering.Shapes
                 LightingEnabled = false,
                 FogEnabled = false,
                 PreferPerPixelLighting = false,
-                TextureEnabled = false
+                TextureEnabled = true,
+                Texture = _canvas
             };
 
             var vertices = new List<VertexPositionNormalTexture>
@@ -103,15 +104,25 @@ namespace Pokemon3D.Rendering.Shapes
 
         public void DrawEllipse(Ellipse ellipse, Color color)
         {
-            _basicEffect.World = Matrix.CreateScale(ellipse.Bounds.Width, ellipse.Bounds.Height, 1.0f)*
+            DrawEllipsePie(ellipse, color, MathHelper.TwoPi);
+        }
+
+        public void DrawEllipsePie(Ellipse ellipse, Color color, float angle)
+        {
+            var percentage = (MathHelper.WrapAngle(angle) + MathHelper.Pi) / MathHelper.TwoPi;
+            var segmentCount = (int)Math.Round(EllipseSegmentCount * percentage, MidpointRounding.AwayFromZero);
+
+            if (segmentCount == 0) return;
+
+            _basicEffect.World = Matrix.CreateScale(ellipse.Bounds.Width, ellipse.Bounds.Height, 1.0f) *
                                  Matrix.CreateTranslation(new Vector3(ellipse.Location.ToVector2(), 0.0f));
             _basicEffect.View = Matrix.Identity;
-            _basicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, 0, 0, -1);
+            _basicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, 0, 0, 1000);
             _basicEffect.DiffuseColor = color.ToVector3();
 
             _basicEffect.CurrentTechnique.Passes[0].Apply();
 
-            _unitCircleMesh.Draw();
+            _unitCircleMesh.Draw(segmentCount);
         }
     }
 }

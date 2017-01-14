@@ -2,7 +2,7 @@
 
 namespace Pokemon3D.Rendering.Shapes
 {
-    public struct Ellipse : Shape
+    public struct Ellipse
     {
         private Rectangle _bounds;
 

@@ -18,7 +18,7 @@ namespace Pokemon3D.UI
         private readonly Vector3 _worldPosition;
 
         private float _buttonPressed;
-        //private readonly Pie2D _buttonChart;
+        private ColoredPie _pie;
 
         public event Action<InteractionPromptOverworldUiElement> InteractionStarted;
 
@@ -38,15 +38,10 @@ namespace Pokemon3D.UI
             var ellipse = AddElement(new ColoredEllipse(new Color(0, 0, 0, 180), new Ellipse(0, 0,48,48)));
             ellipse.SetPosition(new Vector2(-24,28));
 
-            //_buttonChart = new Pie2D(GameProvider.GameInstance.GraphicsDevice, 24, 0f, 20, Vector2.Zero, false)
-            //{
-            //    PrimaryColor = Color.LightGray,
-            //    SecondaryColor = Color.Black,
-            //    ChartType = PieChartType.RadialFill
-            //};
-
             var secondEllipse = AddElement(new ColoredEllipse(new Color(64, 200, 64),  new Ellipse(0,0, 32, 32)));
             secondEllipse.SetPosition(new Vector2(-24+8, +28+8));
+            
+            _pie = AddElement(new ColoredPie(Color.LightGray, new Ellipse(0, 0, 48, 48)));
 
             var actionText = AddElement(new Image(GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A)));
             actionText.SetPosition(new Vector2(-24 + 8, +28 + 8));
