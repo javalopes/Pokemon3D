@@ -105,6 +105,7 @@
     <Compile Include="Screens\BattleScreen.cs" />
     <Compile Include="Screens\IntroScreen.cs" />
     <Compile Include="UI\ColoredEllipse.cs" />
+    <Compile Include="UI\ColoredPie.cs" />
     <Compile Include="UI\InteractionPromptOverworldUIElement.cs" />
     <Compile Include="UI\MessageOverworldUIElement.cs" />
     <Compile Include="Screens\ScreenWithOverlays.cs" />
