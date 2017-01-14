@@ -27,7 +27,7 @@ namespace Pokemon3D.Entities.System.Components
             _renderTarget = new RenderTarget2D(graphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.None);
 
             _drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(true, CameraMasks.UiOverlays);
-            _drawableElement.Mesh = new Mesh(graphicsDevice, Primitives.GenerateQuadForY(), PrimitiveType.TriangleList, false);
+            _drawableElement.Mesh = new Mesh(graphicsDevice, Primitives.GenerateQuadForY(), false);
             _drawableElement.Material = new Material
             {
                 CastShadow = false,

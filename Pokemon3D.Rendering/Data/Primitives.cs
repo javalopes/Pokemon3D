@@ -89,7 +89,8 @@ namespace Pokemon3D.Rendering.Data
                     new VertexPositionNormalTexture(new Vector3(0.5f, -0.5f, 0.5f), Vector3.Down,
                         t[10] + new Vector2(1.0f, 0.0f) * t[11]),
                 },
-                Indices = new ushort[36]
+                Indices = new ushort[36],
+                PrimitiveType = PrimitiveType.TriangleList
             };
 
 
@@ -121,7 +122,8 @@ namespace Pokemon3D.Rendering.Data
                     new VertexPositionNormalTexture(new Vector3(0.5f, 1.0f, 0.0f), Vector3.Backward,
                         new Vector2(1.0f, 0.0f)),
                 },
-                Indices = new ushort[] {0, 1, 2, 1, 3, 2}
+                Indices = new ushort[] {0, 1, 2, 1, 3, 2},
+                PrimitiveType = PrimitiveType.TriangleList
             };
         }
 
@@ -140,7 +142,8 @@ namespace Pokemon3D.Rendering.Data
                     new VertexPositionNormalTexture(new Vector3(0.5f, 0.5f, 0.0f), Vector3.Backward,
                         new Vector2(1.0f, 0.0f)),
                 },
-                Indices = new ushort[] { 0, 1, 2, 1, 3, 2 }
+                Indices = new ushort[] { 0, 1, 2, 1, 3, 2 },
+                PrimitiveType = PrimitiveType.TriangleList
             };
         }
     }

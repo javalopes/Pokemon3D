@@ -22,6 +22,11 @@ namespace Pokemon3D.Rendering.Data
         public ushort[] Indices;
 
         /// <summary>
+        /// Primitive type of geometry. Default is TriangleList.
+        /// </summary>
+        public PrimitiveType PrimitiveType = PrimitiveType.TriangleList;
+
+        /// <summary>
         /// Merges a list of GeometryData together.
         /// </summary>
         /// <param name="merges">Merged data</param>

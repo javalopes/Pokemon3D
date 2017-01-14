@@ -23,9 +23,9 @@ namespace Pokemon3D.Rendering.Data
         public BoundingBox LocalBounds { get; private set; }
         public bool PreventDrawCallCount { get; set; }
 
-        public Mesh(GraphicsDevice device, GeometryData data, PrimitiveType primitiveType = PrimitiveType.TriangleList, bool holdGeometryData = true)
+        public Mesh(GraphicsDevice device, GeometryData data, bool holdGeometryData = true)
         {
-            _primitiveType = primitiveType;
+            _primitiveType = data.PrimitiveType;
             GeometryData = holdGeometryData ? data : null;
             VertexCount = data.Vertices.Length;
             IndexCount = data.Indices.Length;
@@ -50,7 +50,7 @@ namespace Pokemon3D.Rendering.Data
             }
             LocalBounds = new BoundingBox(min, max);
 
-            switch (primitiveType)
+            switch (_primitiveType)
             {
                 case PrimitiveType.TriangleList:
                     _primitiveCount = IndexCount/3;
@@ -63,7 +63,7 @@ namespace Pokemon3D.Rendering.Data
                 case PrimitiveType.LineStrip:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(primitiveType), primitiveType, null);
+                    throw new ArgumentOutOfRangeException(nameof(_primitiveType), _primitiveType, null);
             }
 
             InstanceCount++;

@@ -1,12 +1,8 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace Pokemon3D.Rendering.Shapes
 {
-    /// <summary>
-    /// Describes an ellipse.
-    /// </summary>
-    public struct Ellipse : Shape, IEquatable<Ellipse>
+    public struct Ellipse : Shape
     {
         private Rectangle _bounds;
 
@@ -103,36 +99,9 @@ namespace Pokemon3D.Rendering.Shapes
                 _bounds.Height;
         }
 
-        public bool Equals(Ellipse other)
-        {
-            return _bounds == other._bounds;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Ellipse && Equals((Ellipse)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            var hash = 27;
-            hash = (13 * hash) + _bounds.GetHashCode();
-            return hash;
-        }
-
         public override string ToString()
         {
             return _bounds.ToString();
-        }
-
-        public static bool operator ==(Ellipse left, Ellipse right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(Ellipse left, Ellipse right)
-        {
-            return !(left.Equals(right));
         }
     }
 }

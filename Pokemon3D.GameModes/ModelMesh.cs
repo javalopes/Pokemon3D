@@ -72,7 +72,8 @@ namespace Pokemon3D.GameModes
                     var geometryData = new GeometryData
                     {
                         Vertices = new VertexPositionNormalTexture[vertexCount],
-                        Indices = new ushort[indicesCount]
+                        Indices = new ushort[indicesCount],
+                        PrimitiveType = PrimitiveType.TriangleList
                     };
 
                     for (var i = 0; i < vertexCount; i++)
@@ -90,7 +91,7 @@ namespace Pokemon3D.GameModes
 
                     return new ModelMesh
                     {
-                        Mesh = new Mesh(gameMode.GraphicsDevice, geometryData, PrimitiveType.TriangleList, false),
+                        Mesh = new Mesh(gameMode.GraphicsDevice, geometryData, false),
                         Material = new Material
                         {
                             DiffuseTexture = texture
