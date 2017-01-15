@@ -47,6 +47,7 @@ namespace Pokemon3D.Rendering.Shapes
                 indices.Add((ushort) (i+1));
                 indices.Add((ushort) (i+2));
             }
+            indices[indices.Count - 1] = 1;
 
             var geometry = new GeometryData
             {

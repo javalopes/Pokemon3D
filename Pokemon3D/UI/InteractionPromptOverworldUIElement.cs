@@ -36,17 +36,21 @@ namespace Pokemon3D.UI
             var messageText = AddElement(new StaticText(font, LocalizedValue.Static(message)));
             messageText.SetPosition(new Vector2(-(fontSize.X / 2f), 0));
 
-            var ellipse = AddElement(new ColoredEllipse(new Color(64, 64, 64, 180), new Ellipse(0, 0, 48, 48)));
-            ellipse.SetPosition(new Vector2(-24, 28));
+            var ellipse = AddElement(new ColoredEllipse(new Color(64, 64, 64, 180), new Ellipse(0, 0, 40, 40)));
+            const int verticalOffset = 64;
+
+            ellipse.SetPosition(new Vector2(0, verticalOffset));
 
             var secondEllipse = AddElement(new ColoredEllipse(new Color(64, 200, 64), new Ellipse(0, 0, 32, 32)));
-            secondEllipse.SetPosition(new Vector2(-24 + 8, +28 + 8));
+            secondEllipse.SetPosition(new Vector2(0, +verticalOffset));
 
-            _pie = AddElement(new ColoredPie(Color.LightGray, new Ellipse(0, 0, 48, 48)));
+            _pie = AddElement(new ColoredPie(Color.LightGray, new Ellipse(0, 0, 40, 40)));
+            _pie.SetPosition(new Vector2(0, +verticalOffset));
             _pie.Angle = 0.0f;
 
             var actionText = AddElement(new Image(GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A)));
-            actionText.SetPosition(new Vector2(-24 + 8, +28 + 8));
+            actionText.SetPosition(new Vector2(0.0f, verticalOffset));
+            actionText.SetOriginPercentage(new Vector2(0.5f, 0.5f));
 
             Showed += OnShowed;
             Hidden += OnHidden;
