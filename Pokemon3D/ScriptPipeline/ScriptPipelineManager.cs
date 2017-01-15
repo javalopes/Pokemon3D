@@ -15,14 +15,14 @@ using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.ScriptPipeline
 {
-    internal static class ScriptPipelineManager
+    internal class ScriptPipelineManager
     {
-        public static int ActiveProcessorCount { get; private set; }
+        public int ActiveProcessorCount { get; private set; }
 
-        public static int ThreadBlockingOperationCount { get; set; }
+        public int ThreadBlockingOperationCount { get; set; }
 
-        private static List<SObject> _prototypeBuffer;
-        private static Dictionary<string, MethodInfo[]> _apiClasses;
+        private List<SObject> _prototypeBuffer;
+        private Dictionary<string, MethodInfo[]> _apiClasses;
 
         private static Assembly[] GetSourceAssemblies()
         {
@@ -33,7 +33,7 @@ namespace Pokemon3D.ScriptPipeline
             };
         }
 
-        private static void InitializePrototypeBuffer()
+        private void InitializePrototypeBuffer()
         {
             // load all defined prototypes once to store them in a buffer.
             // these prototypes get added to all newly created ScriptProcessors.
@@ -48,7 +48,7 @@ namespace Pokemon3D.ScriptPipeline
             }
         }
 
-        private static void InitializeApiClasses()
+        private void InitializeApiClasses()
         {
             // get all types derived from APIClass that have an ApiClass attribute.
             // get their public static methods and add them grouped by their type's name to the dictionary.
@@ -66,7 +66,7 @@ namespace Pokemon3D.ScriptPipeline
             }
         }
 
-        private static ScriptProcessor CreateProcessor()
+        private ScriptProcessor CreateProcessor()
         {
             var processor = new ScriptProcessor(_prototypeBuffer);
 
@@ -75,7 +75,7 @@ namespace Pokemon3D.ScriptPipeline
             return processor;
         }
 
-        private static SObject ExecuteMethod(ScriptProcessor processor, string className, string methodName, SObject[] parameters)
+        private SObject ExecuteMethod(ScriptProcessor processor, string className, string methodName, SObject[] parameters)
         {
             if (_apiClasses.ContainsKey(className))
             {
@@ -92,7 +92,7 @@ namespace Pokemon3D.ScriptPipeline
             return ScriptInAdapter.GetUndefined(processor);
         }
 
-        public static void RunScript(string scriptFile)
+        public void RunScript(string scriptFile)
         {
             if (_apiClasses == null)
                 InitializeApiClasses();

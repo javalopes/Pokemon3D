@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.DataModel.GameCore;
 using Pokemon3D.Rendering.Shapes;
+using Pokemon3D.ScriptPipeline;
 
 namespace Pokemon3D.GameCore
 {
@@ -109,6 +110,7 @@ namespace Pokemon3D.GameCore
 
             RegisterService(Window);
             RegisterService(GraphicsDevice);
+            RegisterService(new ScriptPipelineManager());
             RegisterService(new Random());
             _renderer = RegisterService(SceneRendererFactory.Create(this, new WindowsEffectProcessor(Content), renderSettings));
             RegisterService(new GameModeManager());

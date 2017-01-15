@@ -11,6 +11,7 @@ using Pokemon3D.Rendering.Shapes;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Controls;
 using Pokemon3D.ScriptPipeline;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.UI
 {
@@ -63,7 +64,7 @@ namespace Pokemon3D.UI
 
         private void OnShowed()
         {
-            var camera = GameProvider.GameInstance.GetService<SceneRenderer>().GetMainCamera();
+            var camera = GameInstance.GetService<SceneRenderer>().GetMainCamera();
 
             var position = camera.ProjectWorldToScreen(_worldPosition + new Vector3(0, 0.5f, 0));
 
@@ -74,8 +75,8 @@ namespace Pokemon3D.UI
         {
             base.Update(gameTime);
 
-            if (GameProvider.GameInstance.GetService<InputSystem>().IsPressed(ActionNames.MenuAccept) &&
-                ScriptPipelineManager.ActiveProcessorCount == 0) // only update these if this are no scripts running.
+            if (GameInstance.GetService<InputSystem>().IsPressed(ActionNames.MenuAccept) &&
+                GameInstance.GetService<ScriptPipelineManager>().ActiveProcessorCount == 0) // only update these if this are no scripts running.
             {
                 _buttonPressed += gameTime.GetSeconds() * 1.5f;
                 if (_buttonPressed >= 1f)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Pokemon3D.Collisions;
 using Pokemon3D.Screens;
+using Pokemon3D.ScriptPipeline;
 using Pokemon3D.UI;
 using static Pokemon3D.GameProvider;
 
@@ -71,7 +72,7 @@ namespace Pokemon3D.Entities.System.Components
 
         private void InteractionHandler(InteractionPromptOverworldUiElement uiElement)
         {
-            ScriptPipeline.ScriptPipelineManager.RunScript(_script);
+            GameInstance.GetService<ScriptPipelineManager>().RunScript(_script);
         }
 
         protected override void OnDataChanged(string key, string oldData, string newData)
