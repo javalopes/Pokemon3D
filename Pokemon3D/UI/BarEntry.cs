@@ -64,7 +64,7 @@ namespace Pokemon3D.UI
                     boxWidth = (int)(_font.MeasureString(displayString).X + 10);
                 }
 
-                GameProvider.GameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor, filled: false);
+                GameProvider.GameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor,0.0f, origin: Vector2.Zero, filled: false);
                 spriteBatch.DrawString(_font, displayString, new Vector2(offset + 5, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
 
                 offset += boxWidth;

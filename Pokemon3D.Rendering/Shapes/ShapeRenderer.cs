@@ -33,14 +33,14 @@ namespace Pokemon3D.Rendering.Shapes
 
             var vertices = new List<VertexPositionNormalTexture>
             {
-                new VertexPositionNormalTexture(new Vector3(0.0f, 0.0f, 1.0f), Vector3.Zero, Vector2.Zero)
+                new VertexPositionNormalTexture(new Vector3(0.0f, 0.0f, 1.0f), Vector3.Zero, new Vector2(0.5f))
             };
             var indices = new List<ushort>();
 
             for(var i = 0; i < EllipseSegmentCount; i++)
             {
                 var angle = MathHelper.TwoPi * (i/ (float) EllipseSegmentCount);
-                vertices.Add(new VertexPositionNormalTexture(new Vector3((float) Math.Cos(angle), (float) Math.Sin(angle), 1.0f), Vector3.Zero, Vector2.Zero));
+                vertices.Add(new VertexPositionNormalTexture(new Vector3((float) Math.Cos(angle), (float) Math.Sin(angle), 1.0f), Vector3.Zero, new Vector2(0.5f)));
 
                 indices.Add(0);
                 indices.Add((ushort) (i+2));
@@ -83,11 +83,9 @@ namespace Pokemon3D.Rendering.Shapes
             DrawRectangle(destinationRectangle, color, 0f, Vector2.Zero);
         }
 
-        public void DrawRectangle(Rectangle destinationRectangle, Color color, float rotation = 0f, Vector2? origin = null, bool filled = true)
+        public void DrawRectangle(Rectangle destinationRectangle, Color color, float rotation, Vector2? origin, bool filled = true)
         {
-            Vector2 useOrigin = Vector2.Zero;
-            if (origin.HasValue)
-                useOrigin = origin.Value;
+            var useOrigin = origin.GetValueOrDefault(Vector2.Zero);
 
             if (filled)
             {
@@ -109,20 +107,32 @@ namespace Pokemon3D.Rendering.Shapes
 
         public void DrawEllipsePie(Ellipse ellipse, Color color, float angle)
         {
-            var percentage = (MathHelper.WrapAngle(angle) + MathHelper.Pi) / MathHelper.TwoPi;
+            var oldStateDepth = GraphicsDevice.DepthStencilState;
+            var oldStateBlend = GraphicsDevice.BlendState;
+
+            GraphicsDevice.DepthStencilState = DepthStencilState.None;
+            GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+
+            var percentage = angle / MathHelper.TwoPi;
             var segmentCount = (int)Math.Round(EllipseSegmentCount * percentage, MidpointRounding.AwayFromZero);
 
             if (segmentCount == 0) return;
 
             _basicEffect.World = Matrix.CreateScale(ellipse.Bounds.Width, ellipse.Bounds.Height, 1.0f) *
                                  Matrix.CreateTranslation(new Vector3(ellipse.Location.ToVector2(), 0.0f));
-            _basicEffect.View = Matrix.Identity;
-            _basicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, 0, 0, 1000);
+            _basicEffect.View = Matrix.CreateLookAt(Vector3.Backward, Vector3.Zero, Vector3.Up);
+            _basicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, 0, 0, 10.0f);
             _basicEffect.DiffuseColor = color.ToVector3();
 
-            _basicEffect.CurrentTechnique.Passes[0].Apply();
+            foreach (var pass in _basicEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                _unitCircleMesh.Draw(segmentCount);
+            }
 
-            _unitCircleMesh.Draw(segmentCount);
+            GraphicsDevice.DepthStencilState = oldStateDepth;
+            GraphicsDevice.BlendState = oldStateBlend;
         }
     }
 }

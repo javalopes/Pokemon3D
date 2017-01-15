@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common.Extensions;
 using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.Content;
@@ -35,13 +36,14 @@ namespace Pokemon3D.UI
             var messageText = AddElement(new StaticText(font, LocalizedValue.Static(message)));
             messageText.SetPosition(new Vector2(-(fontSize.X / 2f), 0));
 
-            var ellipse = AddElement(new ColoredEllipse(new Color(0, 0, 0, 180), new Ellipse(0, 0,48,48)));
-            ellipse.SetPosition(new Vector2(-24,28));
+            //var ellipse = AddElement(new ColoredEllipse(new Color(64,64,64, 180), new Ellipse(0, 0,48,48)));
+            //ellipse.SetPosition(new Vector2(-24,28));
 
-            var secondEllipse = AddElement(new ColoredEllipse(new Color(64, 200, 64),  new Ellipse(0,0, 32, 32)));
-            secondEllipse.SetPosition(new Vector2(-24+8, +28+8));
+            //var secondEllipse = AddElement(new ColoredEllipse(new Color(64, 200, 64),  new Ellipse(0,0, 32, 32)));
+            //secondEllipse.SetPosition(new Vector2(-24+8, +28+8));
             
             _pie = AddElement(new ColoredPie(Color.LightGray, new Ellipse(0, 0, 48, 48)));
+            _pie.Angle = 0.0f;
 
             var actionText = AddElement(new Image(GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A)));
             actionText.SetPosition(new Vector2(-24 + 8, +28 + 8));
@@ -68,10 +70,10 @@ namespace Pokemon3D.UI
         {
             base.Update(gameTime);
 
-            if (GameProvider.GameInstance.GetService<InputSystem>().IsPressedOnce(ActionNames.MenuAccept) &&
+            if (GameProvider.GameInstance.GetService<InputSystem>().IsPressed(ActionNames.MenuAccept) &&
                 ScriptPipelineManager.ActiveProcessorCount == 0) // only update these if this are no scripts running.
             {
-                _buttonPressed += 0.035f;
+                _buttonPressed += gameTime.GetSeconds() * 1.5f;
                 if (_buttonPressed >= 1f)
                 {
                     _buttonPressed = 0f;
@@ -91,7 +93,7 @@ namespace Pokemon3D.UI
                 }
             }
 
-           // _buttonChart.Angle = MathHelper.TwoPi * _buttonPressed;
+            _pie.Angle = MathHelper.TwoPi * _buttonPressed;
         }
     }
 }
