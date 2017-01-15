@@ -28,7 +28,8 @@ namespace Pokemon3D.Rendering.Shapes
                 FogEnabled = false,
                 PreferPerPixelLighting = false,
                 TextureEnabled = true,
-                Texture = _canvas
+                Texture = _canvas,
+                View = Matrix.CreateLookAt(Vector3.Backward, Vector3.Zero, Vector3.Up)
             };
 
             var vertices = new List<VertexPositionNormalTexture>
@@ -43,8 +44,8 @@ namespace Pokemon3D.Rendering.Shapes
                 vertices.Add(new VertexPositionNormalTexture(new Vector3((float) Math.Cos(angle), (float) Math.Sin(angle), 1.0f), Vector3.Zero, new Vector2(0.5f)));
 
                 indices.Add(0);
-                indices.Add((ushort) (i+2));
                 indices.Add((ushort) (i+1));
+                indices.Add((ushort) (i+2));
             }
 
             var geometry = new GeometryData
@@ -112,7 +113,6 @@ namespace Pokemon3D.Rendering.Shapes
 
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
             var percentage = angle / MathHelper.TwoPi;
             var segmentCount = (int)Math.Round(EllipseSegmentCount * percentage, MidpointRounding.AwayFromZero);
@@ -121,7 +121,6 @@ namespace Pokemon3D.Rendering.Shapes
 
             _basicEffect.World = Matrix.CreateScale(ellipse.Bounds.Width, ellipse.Bounds.Height, 1.0f) *
                                  Matrix.CreateTranslation(new Vector3(ellipse.Location.ToVector2(), 0.0f));
-            _basicEffect.View = Matrix.CreateLookAt(Vector3.Backward, Vector3.Zero, Vector3.Up);
             _basicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, 0, 0, 10.0f);
             _basicEffect.DiffuseColor = color.ToVector3();
 
