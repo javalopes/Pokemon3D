@@ -6,7 +6,6 @@ using Pokemon3D.Entities.System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using static Pokemon3D.GameProvider;
-using Pokemon3D.Common.Input;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.GameCore;
@@ -17,7 +16,7 @@ namespace Pokemon3D.Entities
     internal class World
     {
         private readonly Dictionary<string, List<Entity>> _entityTemplatesByFragmentId = new Dictionary<string, List<Entity>>();
-        private readonly InputSystem _inputSystem;
+        private readonly InputSystem.InputSystem _inputSystem;
         private readonly NotificationBar _notificationBar;
         private readonly Dictionary<string, Map> _allMaps = new Dictionary<string, Map>();
 
@@ -30,7 +29,7 @@ namespace Pokemon3D.Entities
         public World()
         {
             EntitySystem = new EntitySystem();
-            _inputSystem = GameInstance.GetService<InputSystem>();
+            _inputSystem = GameInstance.GetService<InputSystem.InputSystem>();
             _notificationBar = GameInstance.GetService<NotificationBar>();
         }
 

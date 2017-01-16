@@ -2,7 +2,6 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Extensions;
-using Pokemon3D.Common.Input;
 using Pokemon3D.Entities.System;
 using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
@@ -75,7 +74,7 @@ namespace Pokemon3D.Entities.Components
         {
             if (!_isInputEnabled) return;
 
-            var inputSystem = GameInstance.GetService<InputSystem>();
+            var inputSystem = GameInstance.GetService<InputSystem.InputSystem>();
             var currentMouseState = Mouse.GetState();
 
             var movementDirection = inputSystem.GetAxis(ActionNames.LeftAxis);
@@ -110,7 +109,7 @@ namespace Pokemon3D.Entities.Components
 
         private void HandleGodModeMovement(float elapsedTime, MouseState mouseState, Vector2 movementDirection)
         {
-            var inputSystem = GameInstance.GetService<InputSystem>();
+            var inputSystem = GameInstance.GetService<InputSystem.InputSystem>();
 
             var speedFactor = inputSystem.IsPressed(ActionNames.SprintGodMode) ? 2.0f : 1.0f;
             var step = Speed * elapsedTime * speedFactor;
@@ -143,7 +142,7 @@ namespace Pokemon3D.Entities.Components
                 ReferringEntity.Parent.Translate(new Vector3(movementNormalized.X, 0.0f, movementNormalized.Y) * Speed * elapsedTime);
             }
 
-            var rightAxis = GameInstance.GetService<InputSystem>().GetAxis(ActionNames.RightAxis);
+            var rightAxis = GameInstance.GetService<InputSystem.InputSystem>().GetAxis(ActionNames.RightAxis);
             if (rightAxis.X * rightAxis.X > 0.0f)
             {
                 ReferringEntity.Parent.RotateY(rightAxis.X * RotationSpeed * elapsedTime);
@@ -158,7 +157,7 @@ namespace Pokemon3D.Entities.Components
                 ReferringEntity.Parent.Translate(new Vector3(movementNormalized.X, 0.0f, movementNormalized.Y) * Speed * elapsedTime);
             }
 
-            var rightAxis = GameInstance.GetService<InputSystem>().GetAxis(ActionNames.RightAxis);
+            var rightAxis = GameInstance.GetService<InputSystem.InputSystem>().GetAxis(ActionNames.RightAxis);
 
             if (rightAxis.X*rightAxis.X > 0.0f)
             {

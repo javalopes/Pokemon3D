@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
-using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.Content;
 using Pokemon3D.GameCore;
@@ -29,7 +28,7 @@ namespace Pokemon3D.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if (GameInstance.GetService<InputSystem>().IsPressedOnce(ActionNames.MenuAccept))
+            if (GameInstance.GetService<InputSystem.InputSystem>().IsPressedOnce(ActionNames.MenuAccept))
             {
                 Hide();
             }

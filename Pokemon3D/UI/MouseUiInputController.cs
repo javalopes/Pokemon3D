@@ -1,16 +1,15 @@
 using Microsoft.Xna.Framework;
-using Pokemon3D.Common.Input;
 using Pokemon3D.Rendering.UI;
 
 namespace Pokemon3D.UI
 {
     internal class MouseUiInputController : OverlayInputControllerBase
     {
-        protected readonly InputSystem _inputSystem;
+        protected readonly InputSystem.InputSystem _inputSystem;
 
         public MouseUiInputController()
         {
-            _inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
+            _inputSystem = GameProvider.GameInstance.GetService<InputSystem.InputSystem>();
         }
 
         protected virtual Point GetCurrentMousePosition()

@@ -101,6 +101,14 @@
     <Compile Include="GameCore\ActionNames.cs" />
     <Compile Include="GameCore\GameEvent.cs" />
     <Compile Include="GameCore\JobSystem.cs" />
+    <Compile Include="InputSystem\AxisAction.cs" />
+    <Compile Include="InputSystem\GamePadHandler.cs" />
+    <Compile Include="InputSystem\InputAction.cs" />
+    <Compile Include="InputSystem\InputSystem.cs" />
+    <Compile Include="InputSystem\KeyboardAxisAction.cs" />
+    <Compile Include="InputSystem\KeyboardHandler.cs" />
+    <Compile Include="InputSystem\KeyboardInputAction.cs" />
+    <Compile Include="InputSystem\MouseHandler.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="GameCore\TranslationProviderImp.cs" />
     <Compile Include="GameProvider.cs" />

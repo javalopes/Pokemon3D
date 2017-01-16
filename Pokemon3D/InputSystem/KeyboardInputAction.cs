@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework.Input;
 
-namespace Pokemon3D.Common.Input
+namespace Pokemon3D.InputSystem
 {
     internal class KeyboardInputAction : InputAction
     {

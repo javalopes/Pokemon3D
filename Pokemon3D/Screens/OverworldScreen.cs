@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Pokemon3D.Common.Input;
 using Pokemon3D.Entities;
 using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
@@ -15,7 +14,7 @@ namespace Pokemon3D.Screens
         public World ActiveWorld { get; private set; }
 
         private bool _showRenderStatistics;
-        private InputSystem _inputSystem;
+        private InputSystem.InputSystem _inputSystem;
         private ScreenManager _screenManager;
         private bool _isLoaded;
 
@@ -38,7 +37,7 @@ namespace Pokemon3D.Screens
                 _isLoaded = true;
             }
 
-            _inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
+            _inputSystem = GameProvider.GameInstance.GetService<InputSystem.InputSystem>();
             _screenManager = GameProvider.GameInstance.GetService<ScreenManager>();
 
             GameProvider.GameInstance.GetService<EventAggregator>().GameEventRaised += OnGameEventRaised;

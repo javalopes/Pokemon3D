@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.Entities.System;
 using Pokemon3D.Entities.System.Components;
@@ -57,7 +56,7 @@ namespace Pokemon3D.Entities
 
         public void Update(GameTime gameTime)
         {
-            if (GameInstance.GetService<InputSystem>().IsPressedOnce(ActionNames.OpenInventory))
+            if (GameInstance.GetService<InputSystem.InputSystem>().IsPressedOnce(ActionNames.OpenInventory))
             {
                 _inventoryOverlayEntity.IsActive = !_inventoryOverlayEntity.IsActive;
 

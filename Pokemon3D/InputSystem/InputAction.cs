@@ -1,4 +1,4 @@
-namespace Pokemon3D.Common.Input
+namespace Pokemon3D.InputSystem
 {
     public abstract class InputAction
     {

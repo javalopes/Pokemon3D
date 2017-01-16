@@ -7,7 +7,6 @@ using Pokemon3D.UI;
 using System;
 using System.Windows.Threading;
 using Pokemon3D.Collisions;
-using Pokemon3D.Common.Input;
 using Pokemon3D.Screens;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
@@ -56,7 +55,7 @@ namespace Pokemon3D.GameCore
         private UiOverlay _notificationBarOverlay;
         private SceneRenderer _renderer;
         private SpriteBatch _spriteBatch;
-        private InputSystem _inputSystem;
+        private InputSystem.InputSystem _inputSystem;
         private ScreenManager _screenManager;
         private CollisionManager _collisionManager;
         private EventAggregator _eventAggregator;
@@ -107,7 +106,7 @@ namespace Pokemon3D.GameCore
             _renderer = RegisterService(SceneRendererFactory.Create(this, new WindowsEffectProcessor(Content), renderSettings));
             RegisterService(new GameModeManager());
             _spriteBatch = RegisterService(new SpriteBatch(GraphicsDevice));
-            _inputSystem = RegisterService(new InputSystem());
+            _inputSystem = RegisterService(new InputSystem.InputSystem());
             RegisterService(new ShapeRenderer(_spriteBatch));
             _screenManager = RegisterService(new ScreenManager());
             RegisterService<TranslationProvider>(new TranslationProviderImp());

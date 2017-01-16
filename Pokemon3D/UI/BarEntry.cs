@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.Content;
 using Pokemon3D.Rendering.Shapes;
@@ -52,7 +51,7 @@ namespace Pokemon3D.UI
         {
             var offset = 11 + Index*(26 + (int) _font.MeasureString(Text.Value).X);
 
-            if (GameProvider.GameInstance.GetService<InputSystem>().GamePadHandler.IsConnected())
+            if (GameProvider.GameInstance.GetService<InputSystem.InputSystem>().GamePadHandler.IsConnected())
             {
                 spriteBatch.Draw(GetTexture(), new Rectangle(offset, GameInstance.ScreenBounds.Height - 48, 32, 32), _highlightColor);
                 offset += 32;

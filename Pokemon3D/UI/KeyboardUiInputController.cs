@@ -1,16 +1,15 @@
-﻿using Pokemon3D.Common.Input;
-using Pokemon3D.GameCore;
+﻿using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
 
 namespace Pokemon3D.UI
 {
     internal class KeyboardUiInputController : OverlayInputControllerBase
     {
-        private readonly InputSystem _inputSystem;
+        private readonly InputSystem.InputSystem _inputSystem;
 
         public KeyboardUiInputController()
         {
-            _inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
+            _inputSystem = GameProvider.GameInstance.GetService<InputSystem.InputSystem>();
         }
 
         public override void Update(UiFocusContainer container)

@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
-using Pokemon3D.Common.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.Content;
 using Pokemon3D.GameCore;
@@ -76,7 +75,7 @@ namespace Pokemon3D.UI
         {
             base.Update(gameTime);
 
-            if (GameInstance.GetService<InputSystem>().IsPressed(ActionNames.MenuAccept) &&
+            if (GameInstance.GetService<InputSystem.InputSystem>().IsPressed(ActionNames.MenuAccept) &&
                 GameInstance.GetService<ScriptPipelineManager>().ActiveProcessorCount == 0) // only update these if this are no scripts running.
             {
                 _buttonPressed += gameTime.GetSeconds() * 1.5f;
