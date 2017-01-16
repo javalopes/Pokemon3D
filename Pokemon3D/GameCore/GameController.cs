@@ -14,7 +14,6 @@ using Pokemon3D.Rendering.UI;
 using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.DataModel.GameCore;
 using Pokemon3D.Rendering.Shapes;
@@ -50,7 +49,6 @@ namespace Pokemon3D.GameCore
         public Rectangle ScreenBounds { get; private set; }
 
         private readonly Dictionary<Type, object> _services = new Dictionary<Type, object>();
-        private readonly Dispatcher _mainThreadDispatcher;
         private readonly GameConfiguration _gameConfig;
         private UiOverlay _notificationBarOverlay;
         private SceneRenderer _renderer;
@@ -79,7 +77,6 @@ namespace Pokemon3D.GameCore
                 PreferredBackBufferWidth = _gameConfig.Data.WindowSize.Width,
                 PreferredBackBufferHeight = _gameConfig.Data.WindowSize.Height
             });
-            _mainThreadDispatcher = Dispatcher.CurrentDispatcher;
 
             Exiting += OnGameExit;
         }
@@ -186,31 +183,7 @@ namespace Pokemon3D.GameCore
                 _gameConfig.Save();
             }
 
-            foreach (var inputAction in _gameConfig.Data.InputActions)
-            {
-                foreach (var mappedAction in inputAction.ActionsModel)
-                {
-                    if (mappedAction.IsAxis)
-                    {
-                        if (mappedAction.InputType == InputType.Keyboard)
-                        {
-                            var keys =
-                                mappedAction.AssingedValue.Split(',')
-                                    .Select(t => (Keys) Enum.Parse(typeof(Keys), t))
-                                    .ToArray();
-
-                            _inputSystem.RegisterAxis(inputAction.Name, keys[0], keys[1], keys[2], keys[3]);
-                        }
-                    }
-                    else
-                    {
-                        if (mappedAction.InputType == InputType.Keyboard)
-                        {
-                            _inputSystem.RegisterAction(inputAction.Name, (Keys)Enum.Parse(typeof(Keys), mappedAction.AssingedValue));
-                        }
-                    }
-                }
-            }
+            _inputSystem.LoadFromConfiguration(_gameConfig.Data.InputActions);
         }
 
         protected override void Update(GameTime gameTime)
@@ -247,18 +220,6 @@ namespace Pokemon3D.GameCore
             if (WindowSizeChanged != null && old != Window.ClientBounds)
             {
                 WindowSizeChanged(this, EventArgs.Empty);
-            }
-        }
-
-        public void EnsureExecutedInMainThread(Action action)
-        {
-            if (_mainThreadDispatcher.Thread == Thread.CurrentThread)
-            {
-                action();
-            }
-            else
-            {
-                _mainThreadDispatcher.Invoke(action);
             }
         }
 

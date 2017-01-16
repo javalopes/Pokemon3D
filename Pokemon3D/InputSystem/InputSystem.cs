@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Pokemon3D.DataModel.GameCore;
 
 namespace Pokemon3D.InputSystem
 {
@@ -14,6 +15,35 @@ namespace Pokemon3D.InputSystem
         public KeyboardHandler KeyboardHandler { get; } = new KeyboardHandler();
         public GamePadHandler GamePadHandler { get; } = new GamePadHandler();
         public MouseHandler MouseHandler { get; } = new MouseHandler();
+
+        public void LoadFromConfiguration(InputActionModel[] inputActions)
+        {
+            foreach (var inputAction in inputActions)
+            {
+                foreach (var mappedAction in inputAction.ActionsModel)
+                {
+                    if (mappedAction.IsAxis)
+                    {
+                        if (mappedAction.InputType == InputType.Keyboard)
+                        {
+                            var keys =
+                                mappedAction.AssingedValue.Split(',')
+                                    .Select(t => (Keys)Enum.Parse(typeof(Keys), t))
+                                    .ToArray();
+
+                            RegisterAxis(inputAction.Name, keys[0], keys[1], keys[2], keys[3]);
+                        }
+                    }
+                    else
+                    {
+                        if (mappedAction.InputType == InputType.Keyboard)
+                        {
+                            RegisterAction(inputAction.Name, (Keys)Enum.Parse(typeof(Keys), mappedAction.AssingedValue));
+                        }
+                    }
+                }
+            }
+        }
 
         public void Update(GameTime time)
         {
@@ -78,5 +108,7 @@ namespace Pokemon3D.InputSystem
 
             return referenceList.First().GetAxis();
         }
+
+
     }
 }

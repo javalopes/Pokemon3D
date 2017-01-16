@@ -87,7 +87,7 @@ namespace Pokemon3D.GameModes
                 };
 
                 Mesh mesh = null;
-                GameContext.EnsureExecutedInMainThread(() => mesh = new Mesh(GraphicsDevice, geometryData));
+                GameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() => mesh = new Mesh(GraphicsDevice, geometryData));
                 _meshPrimitivesByName.Add(primitiveModel.Id, mesh);
             }
 
@@ -121,7 +121,7 @@ namespace Pokemon3D.GameModes
             using (var memoryStream = new MemoryStream(data.Data))
             {
                 memoryStream.Seek(0, SeekOrigin.Begin);
-                GameContext.EnsureExecutedInMainThread(() =>
+                GameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() =>
                 {
                     texture = Texture2D.FromStream(GraphicsDevice, memoryStream);
                 });
@@ -224,7 +224,7 @@ namespace Pokemon3D.GameModes
 
         public void EnsureExecutedInMainThread(Action action)
         {
-            GameContext.EnsureExecutedInMainThread(action);
+            GameContext.GetService<JobSystem>().EnsureExecutedInMainThread(action);
         }
     }
 }

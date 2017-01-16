@@ -2,7 +2,9 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common;
 using Pokemon3D.Common.Extensions;
+using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
@@ -40,7 +42,7 @@ namespace Pokemon3D.Entities.System.Components
             _drawableElement.IsActive = ReferringEntity.IsActive;
 
             var geometryData = CreateTilemapData();
-            GameInstance.EnsureExecutedInMainThread(() => _drawableElement.Mesh = new Mesh(GameInstance.GetService<GraphicsDevice>(), geometryData, holdGeometryData: false));
+            GameInstance.GetService<JobSystem>().EnsureExecutedInMainThread(() => _drawableElement.Mesh = new Mesh(GameInstance.GetService<GraphicsDevice>(), geometryData, holdGeometryData: false));
 
             if (!ReferringEntity.IsInitializing) _drawableElement.EndInitialzing();
         }
