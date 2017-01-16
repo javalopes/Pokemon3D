@@ -40,7 +40,7 @@ namespace Pokemon3D.Entities.System.Components
             _drawableElement.IsActive = ReferringEntity.IsActive;
 
             var geometryData = CreateTilemapData();
-            GameInstance.EnsureExecutedInMainThread(() => _drawableElement.Mesh = new Mesh(GameInstance.GraphicsDevice, geometryData, holdGeometryData: false));
+            GameInstance.EnsureExecutedInMainThread(() => _drawableElement.Mesh = new Mesh(GameInstance.GetService<GraphicsDevice>(), geometryData, holdGeometryData: false));
 
             if (!ReferringEntity.IsInitializing) _drawableElement.EndInitialzing();
         }

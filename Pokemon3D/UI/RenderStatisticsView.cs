@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.Compositor;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using static Pokemon3D.GameProvider;
 using Pokemon3D.Entities;
 using Pokemon3D.Content;
@@ -21,7 +22,7 @@ namespace Pokemon3D.UI
         {
             _world = activeWorld;
             _shapeRenderer = GameInstance.GetService<ShapeRenderer>();
-            _debugSpriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
+            _debugSpriteFont = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

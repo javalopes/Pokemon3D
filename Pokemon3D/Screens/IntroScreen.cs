@@ -1,10 +1,12 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Content;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
 using Pokemon3D.Rendering.UI.Controls;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Screens
 {
@@ -12,22 +14,22 @@ namespace Pokemon3D.Screens
     {
         public override void OnLateDraw(GameTime gameTime)
         {
-            GameProvider.GameInstance.GraphicsDevice.Clear(Color.Black);
+            GameInstance.GetService<GraphicsDevice>().Clear(Color.Black);
             base.OnLateDraw(gameTime);
         }
 
         public override void OnOpening(object enterInformation)
         {
             var overlay = AddOverlay(new UiOverlay());
-            var logoSprite = overlay.AddElement(new Image(GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.SquareLogo_256px)));
-            logoSprite.SetPosition(new Vector2(GameProvider.GameInstance.ScreenBounds.Width * 0.5f, GameProvider.GameInstance.ScreenBounds.Height * 0.5f));
+            var logoSprite = overlay.AddElement(new Image(GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.SquareLogo_256px)));
+            logoSprite.SetPosition(new Vector2(GameInstance.ScreenBounds.Width * 0.5f, GameInstance.ScreenBounds.Height * 0.5f));
             logoSprite.SetOriginPercentage(new Vector2(0.5f));
 
-            var highlightSprite = overlay.AddElement(new Image(GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.highlight)));
+            var highlightSprite = overlay.AddElement(new Image(GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.highlight)));
             highlightSprite.Alpha = 0.0f;
             highlightSprite.AddCustomAnimation("Highlight", new UiCustomDeltaAnimation(1.5f, OnUpdateHighlightPass));
             highlightSprite.CustomAnimationFinshed += CustomAnimationFinished;
-            highlightSprite.SetPosition(new Vector2(GameProvider.GameInstance.ScreenBounds.Width * 0.5f+30, GameProvider.GameInstance.ScreenBounds.Height * 0.5f-160));
+            highlightSprite.SetPosition(new Vector2(GameInstance.ScreenBounds.Width * 0.5f+30, GameInstance.ScreenBounds.Height * 0.5f-160));
 
             logoSprite.EnterAnimation = new UiMultiAnimation(new UiAnimation[]
             {
@@ -41,7 +43,7 @@ namespace Pokemon3D.Screens
 
         private static void CustomAnimationFinished(string name)
         {
-            GameProvider.GameInstance.GetService<ScreenManager>().SetScreen(typeof(MainMenuScreen));
+            GameInstance.GetService<ScreenManager>().SetScreen(typeof(MainMenuScreen));
         }
 
         private static void OnUpdateHighlightPass(UiElement owner, float delta)

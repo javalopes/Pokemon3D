@@ -1,10 +1,12 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Content;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Animations;
 using Pokemon3D.Common.Localization;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.UI
 {
@@ -18,8 +20,8 @@ namespace Pokemon3D.UI
 
         public LeftSideButton(LocalizedValue text, Vector2 position, Action<LeftSideButton> onClick)
         {
-            _font = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
-            _texture = GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
+            _font = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _texture = GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
 
             Text = text;
             var bounds = Bounds;

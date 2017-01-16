@@ -42,7 +42,6 @@ namespace Pokemon3D.GameCore
                 Save();
             }
 
-            GameInstance.Exiting += OnGameExiting;
             GameModePathProvider.CustomPath = Data.CustomGameModeBasePath;
 
             FileObserver.Instance.StartFileObserve(StaticPathProvider.ConfigFile, ReloadFile);

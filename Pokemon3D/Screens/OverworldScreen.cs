@@ -31,8 +31,9 @@ namespace Pokemon3D.Screens
                 _renderStatisticsOverlay = AddOverlay(new UiOverlay());
                 _renderStatisticsOverlay.AddElement(new RenderStatisticsView(ActiveWorld));
 
-                GameProvider.GameInstance.LoadedSave = TestMock.CreateTempSave();
-                GameProvider.GameInstance.LoadedSave.Load(GameProvider.GameInstance.GetService<GameModeManager>().ActiveGameMode);
+                //todo: repair
+                //GameProvider.GameInstance.LoadedSave = TestMock.CreateTempSave();
+                //GameProvider.GameInstance.LoadedSave.Load(GameProvider.GameInstance.GetService<GameModeManager>().ActiveGameMode);
 
                 _isLoaded = true;
             }
@@ -40,7 +41,7 @@ namespace Pokemon3D.Screens
             _inputSystem = GameProvider.GameInstance.GetService<InputSystem>();
             _screenManager = GameProvider.GameInstance.GetService<ScreenManager>();
 
-            GameProvider.GameInstance.GameEventRaised += OnGameEventRaised;
+            GameProvider.GameInstance.GetService<EventAggregator>().GameEventRaised += OnGameEventRaised;
         }
 
         private void OnGameEventRaised(GameEvent gameEvent)
@@ -76,7 +77,7 @@ namespace Pokemon3D.Screens
 
         public override void OnClosing()
         {
-            GameProvider.GameInstance.GameEventRaised -= OnGameEventRaised;
+            GameProvider.GameInstance.GetService<EventAggregator>().GameEventRaised -= OnGameEventRaised;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.Common.Input;
@@ -7,6 +8,7 @@ using Pokemon3D.Content;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Controls;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.UI
 {
@@ -16,18 +18,18 @@ namespace Pokemon3D.UI
         public MessageOverworldUiElement(string message)
         {
             var box = AddElement(new ColoredRectangle(Color.Black.Alpha(200), new Rectangle(0,0, 400, 100)));
-            box.SetPosition(new Vector2(GameProvider.GameInstance.ScreenBounds.Width / 2 - 200, 100));
+            box.SetPosition(new Vector2(GameInstance.ScreenBounds.Width / 2 - 200, 100));
 
             var text =
-                AddElement(new StaticText(GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular),
+                AddElement(new StaticText(GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular),
                     LocalizedValue.Static(message)));
-            text.SetPosition(new Vector2(GameProvider.GameInstance.ScreenBounds.Width / 2 - 190, 110));
+            text.SetPosition(new Vector2(GameInstance.ScreenBounds.Width / 2 - 190, 110));
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if (GameProvider.GameInstance.GetService<InputSystem>().IsPressedOnce(ActionNames.MenuAccept))
+            if (GameInstance.GetService<InputSystem>().IsPressedOnce(ActionNames.MenuAccept))
             {
                 Hide();
             }

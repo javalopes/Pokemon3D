@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Input;
@@ -6,6 +7,7 @@ using Pokemon3D.Common.Localization;
 using Pokemon3D.Content;
 using Pokemon3D.Rendering.Shapes;
 using Pokemon3D.Rendering.UI;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.UI
 {
@@ -15,7 +17,7 @@ namespace Pokemon3D.UI
         private readonly Color _highlightColor;
         public BarEntry()
         {
-            _font = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont);
+            _font = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.BigFont);
             _highlightColor = new Color(100, 193, 238);
         }
 
@@ -26,18 +28,19 @@ namespace Pokemon3D.UI
 
         public Texture2D GetTexture()
         {
+            var contentManager = GameInstance.GetService<ContentManager>();
             switch (GamePadButton)
             {
                 case Buttons.Start:
-                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_Menu);
+                    return contentManager.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_Menu);
                 case Buttons.A:
-                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A);
+                    return contentManager.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A);
                 case Buttons.B:
-                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_B);
+                    return contentManager.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_B);
                 case Buttons.X:
-                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_X);
+                    return contentManager.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_X);
                 case Buttons.Y:
-                    return GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_Y);
+                    return contentManager.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_Y);
             }
 
             return null;
@@ -51,7 +54,7 @@ namespace Pokemon3D.UI
 
             if (GameProvider.GameInstance.GetService<InputSystem>().GamePadHandler.IsConnected())
             {
-                spriteBatch.Draw(GetTexture(), new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, 32, 32), _highlightColor);
+                spriteBatch.Draw(GetTexture(), new Rectangle(offset, GameInstance.ScreenBounds.Height - 48, 32, 32), _highlightColor);
                 offset += 32;
             }
             else
@@ -64,13 +67,13 @@ namespace Pokemon3D.UI
                     boxWidth = (int)(_font.MeasureString(displayString).X + 10);
                 }
 
-                GameProvider.GameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(offset, GameProvider.GameInstance.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor,0.0f, origin: Vector2.Zero, filled: false);
-                spriteBatch.DrawString(_font, displayString, new Vector2(offset + 5, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
+                GameProvider.GameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(offset, GameInstance.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor,0.0f, origin: Vector2.Zero, filled: false);
+                spriteBatch.DrawString(_font, displayString, new Vector2(offset + 5, GameInstance.ScreenBounds.Height - 48), _highlightColor);
 
                 offset += boxWidth;
             }
 
-            spriteBatch.DrawString(_font, Text.Value, new Vector2(offset + 10, GameProvider.GameInstance.ScreenBounds.Height - 48), _highlightColor);
+            spriteBatch.DrawString(_font, Text.Value, new Vector2(offset + 10, GameInstance.ScreenBounds.Height - 48), _highlightColor);
         }
     }
 }

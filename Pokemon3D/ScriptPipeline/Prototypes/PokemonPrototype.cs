@@ -13,7 +13,8 @@ namespace Pokemon3D.ScriptPipeline.Prototypes
         [ScriptFunction(ScriptFunctionType.Constructor, VariableName = "constructor")]
         public static object Constructor(object This, ScriptObjectLink objLink, object[] parameters)
         {
-            objLink.SetReference(nameof(pokemonRef), GameInstance.LoadedSave.PartyPokemon[0]);
+            //todo: repair;
+            //objLink.SetReference(nameof(pokemonRef), GameInstance.LoadedSave.PartyPokemon[0]);
 
             return NetUndefined.Instance;
         }

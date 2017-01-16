@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.UI;
 using Pokemon3D.UI.Dialogs;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Screens
 {
@@ -13,13 +15,13 @@ namespace Pokemon3D.Screens
 
         public override void OnOpening(object enterInformation)
         {
-            var graphicsDeviceManager = GameProvider.GameInstance.GetService<GraphicsDeviceManager>();
+            var graphicsDeviceManager = GameInstance.GetService<GraphicsDeviceManager>();
             graphicsDeviceManager.PreferMultiSampling = true;
             graphicsDeviceManager.ApplyChanges();
 
             var mainOverlay = AddOverlay(new UiOverlay());
 
-            var translation = GameProvider.GameInstance.GetService<TranslationProvider>();
+            var translation = GameInstance.GetService<TranslationProvider>();
 
             mainOverlay.AddElement(new HexagonBackground());
             mainOverlay.AddElement(new LeftSideButton(translation.CreateValue("System", "StartNewGame"), new Vector2(26, 45), OnStartNewGame));
@@ -40,7 +42,7 @@ namespace Pokemon3D.Screens
                 }),
                 new LeftSideButton(translation.CreateValue("System", "Yes"), new Vector2(50, 100), b =>
                 {
-                    GameProvider.GameInstance.GetService<ScreenManager>().NotifyQuitGame();
+                    GameInstance.GetService<ScreenManager>().NotifyQuitGame();
                 })
             });
 
@@ -52,7 +54,7 @@ namespace Pokemon3D.Screens
 
         private void OnStartNewGame(LeftSideButton button)
         {
-            GameProvider.GameInstance.GetService<ScreenManager>().SetScreen(typeof(GameModeLoadingScreen));
+            GameInstance.GetService<ScreenManager>().SetScreen(typeof(GameModeLoadingScreen));
         }
 
         private void OnLoadGame(LeftSideButton button)
@@ -62,7 +64,7 @@ namespace Pokemon3D.Screens
 
         public override void OnLateDraw(GameTime gameTime)
         {
-            GameProvider.GameInstance.GraphicsDevice.Clear(Color.LightGray);
+            GameInstance.GetService<GraphicsDevice>().Clear(Color.LightGray);
             base.OnLateDraw(gameTime);
         }
     }

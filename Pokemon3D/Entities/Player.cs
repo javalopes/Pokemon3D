@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.Entities.System.Components;
@@ -21,8 +22,8 @@ namespace Pokemon3D.Entities
             var playerEntity = world.EntitySystem.CreateEntity(true);
             var collisionSize = new Vector3(0.35f, 0.6f, 0.35f);
             var collisionOffset = new Vector3(0.0f, 0.3f, 0.0f);
-            var mesh = new Mesh(GameInstance.GraphicsDevice, Primitives.GenerateQuadForYBillboard());
-            var diffuseTexture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
+            var mesh = new Mesh(GameInstance.GetService<GraphicsDevice>(), Primitives.GenerateQuadForYBillboard());
+            var diffuseTexture = GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
             var material = new Material
             {
                 DiffuseTexture = diffuseTexture,
@@ -41,10 +42,10 @@ namespace Pokemon3D.Entities
             cameraEntity.Id = "MainCamera";
             cameraEntity.SetParent(playerEntity);
             _controllerComponent = cameraEntity.AddComponent(new PlayerControllerComponent(cameraEntity));
-            _mainCameraComponent = cameraEntity.AddComponent(new CameraEntityComponent(cameraEntity, new Skybox(GameInstance.GraphicsDevice)
+            _mainCameraComponent = cameraEntity.AddComponent(new CameraEntityComponent(cameraEntity, new Skybox(GameInstance.GetService<GraphicsDevice>())
             {
                 Scale = 50,
-                Texture = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.skybox_texture)
+                Texture = GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.skybox_texture)
             }));
             _mainCameraComponent.FarClipDistance = 50.0f;
             _mainCameraComponent.Camera.IsMain = true;
@@ -60,7 +61,7 @@ namespace Pokemon3D.Entities
             overlayCamera.Camera.DepthStencilState = DepthStencilState.Default;
             overlayCamera.Camera.UseCulling = false;
 
-            GameInstance.GameEventRaised += GameInstanceOnGameEventRaised;
+            GameInstance.GetService<EventAggregator>().GameEventRaised += GameInstanceOnGameEventRaised;
         }
 
         private void GameInstanceOnGameEventRaised(GameEvent gameEvent)

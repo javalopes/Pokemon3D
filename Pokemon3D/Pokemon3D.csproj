@@ -74,6 +74,7 @@
     <Compile Include="FileSystem\i18nPathProvider.cs" />
     <Compile Include="FileSystem\StaticPathProvider.cs" />
     <Compile Include="GameCore\CameraMasks.cs" />
+    <Compile Include="GameCore\EventAggregator.cs" />
     <Compile Include="GameCore\GameConfiguration.cs" />
     <Compile Include="GameCore\GameController.cs" />
     <Compile Include="Entities\System\Entity.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Entities\World.cs" />
     <Compile Include="GameCore\ActionNames.cs" />
     <Compile Include="GameCore\GameEvent.cs" />
+    <Compile Include="GameCore\JobSystem.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="GameCore\TranslationProviderImp.cs" />
     <Compile Include="GameProvider.cs" />

@@ -10,11 +10,15 @@ namespace Pokemon3D.Collisions
 {
     internal class CollisionManager
     {
+        private static readonly Color ColorTrigger = new Color(25, 255, 25, 255);
+        private static readonly Color ColorCollider = new Color(255, 25, 25, 255);
+
         private readonly object _lockObject = new object();
 
         private readonly List<Collider> _allColliders;
         private readonly List<Collider> _allTriggers; 
         private readonly List<Collider> _allTriggersAndColliders;
+        private readonly GraphicsDevice _device;
 
         private readonly Mesh _boundingBoxMesh;
         private readonly Material _material;
@@ -24,6 +28,7 @@ namespace Pokemon3D.Collisions
 
         public CollisionManager()
         {
+            _device = GameInstance.GetService<GraphicsDevice>();
             _allColliders = new List<Collider>();
             _allTriggers = new List<Collider>();
             _allTriggersAndColliders = new List<Collider>();
@@ -51,7 +56,7 @@ namespace Pokemon3D.Collisions
                 PrimitiveType = PrimitiveType.LineList
             };
 
-            _boundingBoxMesh = new Mesh(GameInstance.GraphicsDevice, geometryBox, false)
+            _boundingBoxMesh = new Mesh(GameInstance.GetService<GraphicsDevice>(), geometryBox, false)
             {
                 PreventDrawCallCount = true
             };
@@ -72,8 +77,8 @@ namespace Pokemon3D.Collisions
         {
             if (!DrawDebugShapes) return;
 
-            GameInstance.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            GameInstance.GraphicsDevice.BlendState = BlendState.Opaque;
+            _device.DepthStencilState = DepthStencilState.Default;
+            _device.BlendState = BlendState.Opaque;
 
             lock (_lockObject)
             {
@@ -174,10 +179,7 @@ namespace Pokemon3D.Collisions
                 }
             }
         }
-
-        private static readonly Color ColorTrigger = new Color(25, 255, 25, 255); 
-        private static readonly Color ColorCollider = new Color(255, 25,25,255);       
-
+        
         private void DrawBoundingBox(SceneRenderer renderer, Camera camera, Collider collider)
         {
             var scale = -collider.BoundingBox.Min + collider.BoundingBox.Max;

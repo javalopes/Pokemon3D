@@ -45,9 +45,7 @@ namespace Pokemon3D.GameCore
         public const string InternalVersion = "89";
 
         public event EventHandler WindowSizeChanged;
-
-        public event Action<GameEvent> GameEventRaised;
-
+        
         public SaveGame LoadedSave { get; set; }
 
         public Rectangle ScreenBounds { get; private set; }
@@ -61,16 +59,14 @@ namespace Pokemon3D.GameCore
         private InputSystem _inputSystem;
         private ScreenManager _screenManager;
         private CollisionManager _collisionManager;
-        private readonly object _lockObject = new object();
-
-        private readonly List<GameEvent> _gameEvents = new List<GameEvent>();
+        private EventAggregator _eventAggregator;
 
         public GameController()
         {
             if (Instance != null) throw new InvalidOperationException("Game is singleton and can be created just once");
 
             GameLogger.Instance.Log(MessageType.Message, "Game started.");
-            Exiting += OnGameExit;
+            
             Window.ClientSizeChanged += OnClientSizeChanged;
 
             ScreenBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
@@ -85,16 +81,10 @@ namespace Pokemon3D.GameCore
                 PreferredBackBufferHeight = _gameConfig.Data.WindowSize.Height
             });
             _mainThreadDispatcher = Dispatcher.CurrentDispatcher;
-        }
 
-        public void QueueGameEvent(GameEvent gameEvent)
-        {
-            lock (_lockObject)
-            {
-                _gameEvents.Add(gameEvent);
-            }
+            Exiting += OnGameExit;
         }
-
+        
         protected override void LoadContent()
         {
             base.LoadContent();
@@ -110,6 +100,8 @@ namespace Pokemon3D.GameCore
 
             RegisterService(Window);
             RegisterService(GraphicsDevice);
+            RegisterService(Content);
+            RegisterService(new JobSystem());
             RegisterService(new ScriptPipelineManager());
             RegisterService(new Random());
             _renderer = RegisterService(SceneRendererFactory.Create(this, new WindowsEffectProcessor(Content), renderSettings));
@@ -120,6 +112,7 @@ namespace Pokemon3D.GameCore
             _screenManager = RegisterService(new ScreenManager());
             RegisterService<TranslationProvider>(new TranslationProviderImp());
             _collisionManager = RegisterService(new CollisionManager());
+            _eventAggregator = RegisterService(new EventAggregator());
 
             _notificationBarOverlay = new UiOverlay();
             RegisterService(_notificationBarOverlay.AddElement(new NotificationBar(400)));
@@ -225,25 +218,14 @@ namespace Pokemon3D.GameCore
         {
             base.Update(gameTime);
 
-            SendGameMessages(gameTime);
-
+            _eventAggregator.Update(gameTime);
             _inputSystem.Update(gameTime);
             _collisionManager.Update();
 
             if (!_screenManager.Update(gameTime)) Exit();
             _notificationBarOverlay.Update(gameTime);
         }
-
-        private void SendGameMessages(GameTime gameTime)
-        {
-            lock (_lockObject)
-            {
-                foreach (var gameEvent in _gameEvents) gameEvent.Delay -= gameTime.ElapsedGameTime;
-                foreach (var gameEvent in _gameEvents.Where(g => g.Delay <= TimeSpan.Zero)) GameEventRaised?.Invoke(gameEvent);
-                _gameEvents.RemoveAll(g => g.Delay <= TimeSpan.Zero);
-            }
-        }
-
+        
         protected override void Draw(GameTime gameTime)
         {
             _screenManager.OnEarlyDraw(gameTime);
@@ -253,8 +235,9 @@ namespace Pokemon3D.GameCore
             base.Draw(gameTime);
         }
 
-        private static void OnGameExit(object sender, EventArgs e)
+        private void OnGameExit(object sender, EventArgs e)
         {
+            _gameConfig.Save();
             GameLogger.Instance.Log(MessageType.Message, "Exiting game.");
         }
 
@@ -291,22 +274,6 @@ namespace Pokemon3D.GameCore
 
             _services.Add(typeof(TService), service);
             return service;
-        }
-
-        public void ExecuteBackgroundJob(Action action, Action onFinished = null)
-        {
-            ThreadPool.QueueUserWorkItem(s =>
-            {
-                try
-                {
-                    action();
-                    onFinished?.Invoke();
-                }
-                catch (Exception ex)
-                {
-                    GameLogger.Instance.Log(ex);
-                }
-            });
         }
     }
 }

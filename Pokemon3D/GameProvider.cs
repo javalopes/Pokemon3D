@@ -1,4 +1,5 @@
-﻿using Pokemon3D.GameCore;
+﻿using Pokemon3D.Common;
+using Pokemon3D.GameCore;
 
 namespace Pokemon3D
 {
@@ -16,7 +17,7 @@ namespace Pokemon3D
         /// <summary>
         /// The active <see cref="GameController"/> instance.
         /// </summary>
-        public static GameController GameInstance => GameController.Instance;
+        public static GameContext GameInstance => GameController.Instance;
     }
 }
 

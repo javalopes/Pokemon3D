@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.Content;
@@ -30,9 +31,9 @@ namespace Pokemon3D.UI
         
         public NotificationItem(float lifeTime, NotificationKind notificationKind, string message)
         {
-            _spriteFont = GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.NotificationFont);
+            _spriteFont = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.NotificationFont);
             _backgroundColor = new Color(70, 70, 70);
-            _notificationIcons = GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.NotificationIcons);
+            _notificationIcons = GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.NotificationIcons);
             NotificationKind = notificationKind;
             Message = message;
             

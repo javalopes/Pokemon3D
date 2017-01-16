@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.Content;
@@ -21,9 +22,10 @@ namespace Pokemon3D.Screens
         public override void OnOpening(object enterInformation)
         {
             var translation = GameProvider.GameInstance.GetService<TranslationProvider>();
+            var contentManager = GameProvider.GameInstance.GetService<ContentManager>();
 
             _overlay = AddOverlay(new UiOverlay());
-            _pokeballSprite = _overlay.AddElement(new Image(GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.Pokeball)));
+            _pokeballSprite = _overlay.AddElement(new Image(contentManager.Load<Texture2D>(ResourceNames.Textures.Pokeball)));
             _pokeballSprite.SetPosition(new Vector2(GameProvider.GameInstance.ScreenBounds.Width, GameProvider.GameInstance.ScreenBounds.Height) * 0.5f);
             _pokeballSprite.SetOriginPercentage(new Vector2(0.5f));
             _pokeballSprite.EnterAnimation = new UiScaleAnimation(0.5f, Vector2.Zero, Vector2.One);
@@ -31,7 +33,7 @@ namespace Pokemon3D.Screens
             _pokeballSprite.Scale = Vector2.Zero;
             _pokeballSprite.AddCustomAnimation("Rotating", new UiRotationAnimation(0.5f, 0.0f, MathHelper.TwoPi), true);
 
-            var loadingText = _overlay.AddElement(new StaticText(GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.BigFont), translation.CreateValue("System", "GameLoadingMessage")));
+            var loadingText = _overlay.AddElement(new StaticText(contentManager.Load<SpriteFont>(ResourceNames.Fonts.BigFont), translation.CreateValue("System", "GameLoadingMessage")));
             loadingText.SetPosition(new Vector2(GameProvider.GameInstance.ScreenBounds.Width * 0.5f, 400));
             loadingText.SetOriginPercentage(new Vector2(0.5f, 0.0f));
             loadingText.EnterAnimation = new UiAlphaAnimation(0.4f, 0.0f, 1.0f);
@@ -56,7 +58,7 @@ namespace Pokemon3D.Screens
 
         public override void OnLateDraw(GameTime gameTime)
         {
-            GameProvider.GameInstance.GraphicsDevice.Clear(Color.Black);
+            GameProvider.GameInstance.GetService<GraphicsDevice>().Clear(Color.Black);
             base.OnLateDraw(gameTime);
         }
 

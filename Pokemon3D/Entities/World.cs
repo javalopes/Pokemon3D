@@ -9,6 +9,7 @@ using static Pokemon3D.GameProvider;
 using Pokemon3D.Common.Input;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
+using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
 
 namespace Pokemon3D.Entities
@@ -35,7 +36,7 @@ namespace Pokemon3D.Entities
 
         public void StartNewGameAsync(Action onFinished)
         {
-            GameInstance.ExecuteBackgroundJob(LoadWorldAsync, onFinished);
+            GameInstance.GetService<JobSystem>().ExecuteBackgroundJob(LoadWorldAsync, onFinished);
         }
 
         private void LoadWorldAsync()

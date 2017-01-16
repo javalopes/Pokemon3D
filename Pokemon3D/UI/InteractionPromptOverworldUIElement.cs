@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.Common.Input;
@@ -20,7 +21,7 @@ namespace Pokemon3D.UI
         private readonly Vector3 _worldPosition;
 
         private float _buttonPressed;
-        private ColoredPie _pie;
+        private readonly ColoredPie _pie;
 
         public event Action<InteractionPromptOverworldUiElement> InteractionStarted;
 
@@ -28,7 +29,7 @@ namespace Pokemon3D.UI
         {
             _worldPosition = worldPosition;
 
-            var font = GameProvider.GameInstance.Content.Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular);
+            var font = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular);
             var fontSize = font.MeasureString(message);
 
             var  rect = AddElement(new ColoredRectangle(new Color(0, 0, 0, 180), new Rectangle(0, 0,(int) fontSize.X + 6, 30)));
@@ -49,7 +50,7 @@ namespace Pokemon3D.UI
             _pie.SetPosition(new Vector2(0, +verticalOffset));
             _pie.Angle = 0.0f;
 
-            var actionText = AddElement(new Image(GameProvider.GameInstance.Content.Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A)));
+            var actionText = AddElement(new Image(GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A)));
             actionText.SetPosition(new Vector2(0.0f, verticalOffset));
             actionText.SetOriginPercentage(new Vector2(0.5f, 0.5f));
 

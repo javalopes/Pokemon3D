@@ -46,12 +46,12 @@ namespace Pokemon3D.Entities.Components
             Speed = 2.0f;
             RotationSpeed = 2f;
 
-            GameInstance.GameEventRaised += OnGameEventRaised;
+            GameInstance.GetService<EventAggregator>().GameEventRaised += OnGameEventRaised;
         }
 
         public override void OnComponentRemove()
         {
-            GameInstance.GameEventRaised -= OnGameEventRaised;
+            GameInstance.GetService<EventAggregator>().GameEventRaised -= OnGameEventRaised;
         }
 
         private void OnGameEventRaised(GameEvent gameEvent)

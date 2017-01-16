@@ -7,7 +7,7 @@ namespace Pokemon3D
     {
         public static void QueueGameEvent(this object sender, string name, TimeSpan? delay = null)
         {
-            GameProvider.GameInstance.QueueGameEvent(new GameEvent(sender, name, delay.GetValueOrDefault(TimeSpan.Zero)));
+            GameProvider.GameInstance.GetService<EventAggregator>().QueueGameEvent(new GameEvent(sender, name, delay.GetValueOrDefault(TimeSpan.Zero)));
         }
     }
 }

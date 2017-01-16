@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.UI
 {
@@ -45,7 +46,7 @@ namespace Pokemon3D.UI
                             }
                             else
                             {
-                                Texture2D frame = new Texture2D(GameProvider.GameInstance.GraphicsDevice, frameWidth, frameHeight);
+                                var frame = new Texture2D(GameInstance.GetService<GraphicsDevice>(), frameWidth, frameHeight);
                                 frame.SetData(frameData);
                                 frames.Add(frame);
                             }
