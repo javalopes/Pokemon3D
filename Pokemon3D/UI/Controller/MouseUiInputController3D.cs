@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Pokemon3D.Entities.System;
 using Pokemon3D.Rendering;
 
-namespace Pokemon3D.UI
+namespace Pokemon3D.UI.Controller
 {
     internal class MouseUiInputController3D : MouseUiInputController
     {

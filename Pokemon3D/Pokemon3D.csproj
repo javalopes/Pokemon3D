@@ -101,7 +101,10 @@
     <Compile Include="GameCore\ActionNames.cs" />
     <Compile Include="GameCore\GameEvent.cs" />
     <Compile Include="InputSystem\AxisAction.cs" />
+    <Compile Include="InputSystem\GamePadAxis.cs" />
+    <Compile Include="InputSystem\GamePadAxisAction.cs" />
     <Compile Include="InputSystem\GamePadHandler.cs" />
+    <Compile Include="InputSystem\GamePadInputAction.cs" />
     <Compile Include="InputSystem\InputAction.cs" />
     <Compile Include="InputSystem\InputSystem.cs" />
     <Compile Include="InputSystem\KeyboardAxisAction.cs" />
@@ -139,13 +142,13 @@
     <Compile Include="UI\HexagonBackground.cs" />
     <Compile Include="UI\LeftSideButton.cs" />
     <Compile Include="UI\LeftSideCheckbox.cs" />
-    <Compile Include="UI\MouseUiInputController.cs" />
-    <Compile Include="UI\MouseUiInputController3D.cs" />
+    <Compile Include="UI\Controller\MouseUiInputController.cs" />
+    <Compile Include="UI\Controller\MouseUiInputController3D.cs" />
     <Compile Include="UI\PokemonProfile.cs" />
     <Compile Include="UI\PokemonSpriteSheet.cs" />
     <Compile Include="UI\RenderStatisticsView.cs" />
     <Compile Include="UI\ScreenOverlay.cs" />
-    <Compile Include="UI\KeyboardUiInputController.cs" />
+    <Compile Include="UI\Controller\MainUiInputController.cs" />
     <Compile Include="GameCore\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\NotificationBar.cs" />

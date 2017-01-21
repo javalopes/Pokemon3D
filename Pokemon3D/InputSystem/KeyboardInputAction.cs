@@ -12,7 +12,6 @@ namespace Pokemon3D.InputSystem
             _actionProvider = actionProvider;
             _key = key;
             Name = name;
-
         }
 
         public override bool IsPressed()

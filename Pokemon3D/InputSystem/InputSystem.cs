@@ -24,24 +24,45 @@ namespace Pokemon3D.InputSystem
                 {
                     if (mappedAction.IsAxis)
                     {
-                        if (mappedAction.InputType == InputType.Keyboard)
-                        {
-                            var keys =
-                                mappedAction.AssingedValue.Split(',')
-                                    .Select(t => (Keys)Enum.Parse(typeof(Keys), t))
-                                    .ToArray();
-
-                            RegisterAxis(inputAction.Name, keys[0], keys[1], keys[2], keys[3]);
-                        }
+                        MapAxisToDevice(inputAction.Name, mappedAction);
                     }
                     else
                     {
-                        if (mappedAction.InputType == InputType.Keyboard)
-                        {
-                            RegisterAction(inputAction.Name, (Keys)Enum.Parse(typeof(Keys), mappedAction.AssingedValue));
-                        }
+                        MapActionToDevice(inputAction.Name, mappedAction);
                     }
                 }
+            }
+        }
+
+        private void MapActionToDevice(string name, MappedActionModel mappedAction)
+        {
+            switch (mappedAction.InputType)
+            {
+                case InputType.Keyboard:
+                    RegisterAction(name, (Keys)Enum.Parse(typeof(Keys), mappedAction.AssingedValue));
+                    break;
+                case InputType.GamePad:
+                    RegisterAction(name, (Buttons)Enum.Parse(typeof(Buttons), mappedAction.AssingedValue));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void MapAxisToDevice(string name, MappedActionModel mappedAction)
+        {
+            switch (mappedAction.InputType)
+            {
+                case InputType.Keyboard:
+                    var keys = mappedAction.AssingedValue.Split(',').Select(t => (Keys)Enum.Parse(typeof(Keys), t)).ToArray();
+                    RegisterAxis(name, keys[0], keys[1], keys[2], keys[3]);
+                    break;
+                case InputType.GamePad:
+                    var axis = (GamePadAxis)Enum.Parse(typeof(GamePadAxis), mappedAction.AssingedValue);
+                    RegisterAxis(name, axis);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -54,16 +75,22 @@ namespace Pokemon3D.InputSystem
 
         public void RegisterAction(string name, Keys key)
         {
-            var referenceList = GetOrCreateActionList(name);
+            GetOrCreateActionList(name).Add(KeyboardHandler.DefineAction(name, key));
+        }
 
-            referenceList.Add(new KeyboardInputAction(KeyboardHandler, name , key));
+        public void RegisterAction(string name, Buttons key)
+        {
+            GetOrCreateActionList(name).Add(GamePadHandler.DefineAction(name, key));
         }
 
         public void RegisterAxis(string name, Keys left, Keys right, Keys up, Keys down)
         {
-            var referenceList = GetOrCreateAxisList(name);
+            GetOrCreateAxisList(name).Add(KeyboardHandler.DefineAxis(name, left, right, up, down));
+        }
 
-            referenceList.Add(new KeyboardAxisAction(KeyboardHandler, name, left, right, up, down));
+        public void RegisterAxis(string name, GamePadAxis axis)
+        {
+            GetOrCreateAxisList(name).Add(GamePadHandler.DefineAxis(name, axis));
         }
 
         private List<InputAction> GetOrCreateActionList(string actionName)
@@ -108,7 +135,5 @@ namespace Pokemon3D.InputSystem
 
             return referenceList.First().GetAxis();
         }
-
-
     }
 }

@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Pokemon3D.Rendering.UI;
 
-namespace Pokemon3D.UI
+namespace Pokemon3D.UI.Controller
 {
     internal class MouseUiInputController : OverlayInputControllerBase
     {

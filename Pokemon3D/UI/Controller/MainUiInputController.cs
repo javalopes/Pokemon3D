@@ -1,13 +1,13 @@
 ﻿using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
 
-namespace Pokemon3D.UI
+namespace Pokemon3D.UI.Controller
 {
-    internal class KeyboardUiInputController : OverlayInputControllerBase
+    internal class MainUiInputController : OverlayInputControllerBase
     {
         private readonly InputSystem.InputSystem _inputSystem;
 
-        public KeyboardUiInputController()
+        public MainUiInputController()
         {
             _inputSystem = GameProvider.GameInstance.GetService<InputSystem.InputSystem>();
         }

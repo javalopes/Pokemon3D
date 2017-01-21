@@ -5,17 +5,17 @@ using Pokemon3D.Common.Diagnostics;
 using Pokemon3D.GameModes;
 using Pokemon3D.UI;
 using System;
-using System.Windows.Threading;
 using Pokemon3D.Collisions;
 using Pokemon3D.Screens;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering.UI;
-using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.DataModel.GameCore;
+using Pokemon3D.InputSystem;
 using Pokemon3D.Rendering.Shapes;
 using Pokemon3D.ScriptPipeline;
 
@@ -126,7 +126,7 @@ namespace Pokemon3D.GameCore
             RegisterInputActions();
         }
 
-        private static InputActionModel CreateKeyboardAxis(string name, string value)
+        private static InputActionModel CreateAxis(string name, InputType type,  string value)
         {
             return new InputActionModel
             {
@@ -135,7 +135,7 @@ namespace Pokemon3D.GameCore
                 {
                     new MappedActionModel
                     {
-                        InputType = InputType.Keyboard,
+                        InputType = type,
                         IsAxis = true,
                         AssingedValue = value
                     }
@@ -143,12 +143,12 @@ namespace Pokemon3D.GameCore
             };
         }
 
-        private static InputActionModel CreateKeyboardAction(string name, string value)
+        private static InputActionModel CreateAction(string name, InputType type, string value)
         {
-            return CreateKeyboardAction(name, new[] {value});
+            return CreateAction(name, type, new[] {value});
         }
 
-        private static InputActionModel CreateKeyboardAction(string name, string[] values)
+        private static InputActionModel CreateAction(string name, InputType type, string[] values)
         {
             return new InputActionModel
             {
@@ -156,7 +156,7 @@ namespace Pokemon3D.GameCore
                 ActionsModel = values.Select(v =>
                     new MappedActionModel
                     {
-                        InputType = InputType.Keyboard,
+                        InputType = type,
                         IsAxis = false,
                         AssingedValue = v
                     }
@@ -170,15 +170,19 @@ namespace Pokemon3D.GameCore
             {
                 _gameConfig.Data.InputActions = new[]
                 {
-                    CreateKeyboardAxis(ActionNames.LeftAxis, "A,D,W,S"),
-                    CreateKeyboardAxis(ActionNames.RightAxis, "Left,Right,Up,Down"),
-                    CreateKeyboardAction(ActionNames.SprintGodMode, "LeftShift"),
-                    CreateKeyboardAction(ActionNames.StraveGodMode, "Space"),
-                    CreateKeyboardAction(ActionNames.MenuUp, new[] { "Up", "W" }),
-                    CreateKeyboardAction(ActionNames.MenuDown, new[] { "Down", "S" }),
-                    CreateKeyboardAction(ActionNames.MenuAccept, new[] { "Enter", "Space" }),
-                    CreateKeyboardAction(ActionNames.OpenInventory, "I"),
-                    CreateKeyboardAction(ActionNames.ToggleRenderStatistics, "F12"),
+                    CreateAxis(ActionNames.LeftAxis, InputType.Keyboard, "A,D,W,S"),
+                    CreateAxis(ActionNames.LeftAxis, InputType.GamePad, "ThumbStickLeft"),
+                    CreateAxis(ActionNames.RightAxis,InputType.Keyboard, "Left,Right,Up,Down"),
+                    CreateAxis(ActionNames.RightAxis,InputType.GamePad, "ThumbStickRight"),
+                    CreateAction(ActionNames.SprintGodMode, InputType.Keyboard,"LeftShift"),
+                    CreateAction(ActionNames.StraveGodMode, InputType.Keyboard,"Space"),
+                    CreateAction(ActionNames.MenuUp, InputType.Keyboard,new[] { "Up", "W" }),
+                    CreateAction(ActionNames.MenuDown, InputType.Keyboard,new[] { "Down", "S" }),
+                    CreateAction(ActionNames.MenuAccept, InputType.Keyboard,new[] { "Enter", "Space" }),
+                    CreateAction(ActionNames.MenuAccept, InputType.GamePad,"A"),
+                    CreateAction(ActionNames.OpenInventory, InputType.Keyboard,"I"),
+                    CreateAction(ActionNames.OpenInventory, InputType.GamePad,"B"),
+                    CreateAction(ActionNames.ToggleRenderStatistics, InputType.Keyboard,"F12"),
                 };
                 _gameConfig.Save();
             }

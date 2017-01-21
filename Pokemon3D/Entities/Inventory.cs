@@ -8,6 +8,7 @@ using Pokemon3D.GameCore;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.UI;
+using Pokemon3D.UI.Controller;
 using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Entities
@@ -45,7 +46,7 @@ namespace Pokemon3D.Entities
             _uiOverlay.AddElement(new LeftSideButton(LocalizedValue.Static("Quit"), new Vector2(26, 293), OnQuit));
             _uiOverlay.Show();
 
-            _uiOverlay.AddInputController(new KeyboardUiInputController());
+            _uiOverlay.AddInputController(new MainUiInputController());
             _uiOverlay.AddInputController(new MouseUiInputController3D(GameInstance.GetService<SceneRenderer>().GetMainCamera(),  _inventoryOverlayEntity, 512,512));
         }
 

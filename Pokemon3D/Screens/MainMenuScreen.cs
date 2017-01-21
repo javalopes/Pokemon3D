@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.UI;
+using Pokemon3D.UI.Controller;
 using Pokemon3D.UI.Dialogs;
 using static Pokemon3D.GameProvider;
 
@@ -30,7 +31,7 @@ namespace Pokemon3D.Screens
             mainOverlay.AddElement(new LeftSideButton(translation.CreateValue("System", "Options"), new Vector2(26, 231), null));
             mainOverlay.AddElement(new LeftSideButton(translation.CreateValue("System", "QuitGame"), new Vector2(26, 293), b => mainOverlay.ShowModal(_closeDialog)));
 
-            mainOverlay.AddInputController(new KeyboardUiInputController());
+            mainOverlay.AddInputController(new MainUiInputController());
             mainOverlay.AddInputController(new MouseUiInputController());
             mainOverlay.AutoEnumerateTabIndices();
 
