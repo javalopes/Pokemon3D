@@ -178,6 +178,8 @@ namespace Pokemon3D.GameCore
                     CreateAction(ActionNames.StraveGodMode, InputType.Keyboard,"Space"),
                     CreateAction(ActionNames.MenuUp, InputType.Keyboard,new[] { "Up", "W" }),
                     CreateAction(ActionNames.MenuDown, InputType.Keyboard,new[] { "Down", "S" }),
+                    CreateAction(ActionNames.MenuUp, InputType.GamePad, "LeftThumbstickUp"),
+                    CreateAction(ActionNames.MenuDown, InputType.GamePad,"LeftThumbstickDown"),
                     CreateAction(ActionNames.MenuAccept, InputType.Keyboard,new[] { "Enter", "Space" }),
                     CreateAction(ActionNames.MenuAccept, InputType.GamePad,"A"),
                     CreateAction(ActionNames.OpenInventory, InputType.Keyboard,"I"),

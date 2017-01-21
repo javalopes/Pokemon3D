@@ -145,7 +145,7 @@ namespace Pokemon3D.Entities.Components
             var rightAxis = GameInstance.GetService<InputSystem.InputSystem>().GetAxis(ActionNames.RightAxis);
             if (rightAxis.X * rightAxis.X > 0.0f)
             {
-                ReferringEntity.Parent.RotateY(rightAxis.X * RotationSpeed * elapsedTime);
+                ReferringEntity.Parent.RotateY(-rightAxis.X * RotationSpeed * elapsedTime);
             }
         }
 

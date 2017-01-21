@@ -133,7 +133,13 @@ namespace Pokemon3D.InputSystem
             List<AxisAction> referenceList;
             if (!_axisActionsByName.TryGetValue(axisName, out referenceList)) throw new ApplicationException($"There is no axis '{axisName}' defined");
 
-            return referenceList.First().GetAxis();
+            foreach (var axisAction in referenceList)
+            {
+                var vector2 = axisAction.GetAxis();
+                if (vector2.LengthSquared() > 0) return vector2;
+            }
+
+            return Vector2.Zero;
         }
     }
 }
