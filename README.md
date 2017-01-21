@@ -8,7 +8,7 @@ Have a look at the wiki for more information about the architecture of the game.
 
 Currently, windows is the only offical supported platform. By using monogame, we may port this game later to linux and Mac OS.
  
- ## System Requirements
+## System Requirements
  
 - Windows 7 or higher
 - Graphics Card with DirectX 11 SM 5.0 Support 
