@@ -33,8 +33,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9D5D8CAD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.Server.Console", "Pokemon3D.Server.Console\Pokemon3D.Server.Console.csproj", "{AB3F85DB-BEAD-4E25-AF0E-6C78B2193CCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon3D.Master.Server.DataContracts", "Pokemon3D.Master.Server.DataContracts\Pokemon3D.Master.Server.DataContracts.csproj", "{F84C24C5-463D-4263-A4BF-5794169E8EDF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -243,24 +241,6 @@ Global
 		{AB3F85DB-BEAD-4E25-AF0E-6C78B2193CCD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AB3F85DB-BEAD-4E25-AF0E-6C78B2193CCD}.Release|x86.ActiveCfg = Release|Any CPU
 		{AB3F85DB-BEAD-4E25-AF0E-6C78B2193CCD}.Release|x86.Build.0 = Release|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Debug|x86.Build.0 = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.DebugRendering|Any CPU.ActiveCfg = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.DebugRendering|Any CPU.Build.0 = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.DebugRendering|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.DebugRendering|Mixed Platforms.Build.0 = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.DebugRendering|x86.ActiveCfg = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.DebugRendering|x86.Build.0 = Debug|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Release|x86.ActiveCfg = Release|Any CPU
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -277,6 +257,5 @@ Global
 		{F4417500-6A78-444C-BE5C-31D8BDB4A1D0} = {F1CC8252-DD44-48C9-9C2B-33519B586201}
 		{D4D6F325-AF95-4DC7-9650-ACD9F7B198B6} = {F1CC8252-DD44-48C9-9C2B-33519B586201}
 		{AB3F85DB-BEAD-4E25-AF0E-6C78B2193CCD} = {3C20AD38-0F44-4E5D-8952-1A54BFFE483E}
-		{F84C24C5-463D-4263-A4BF-5794169E8EDF} = {3C20AD38-0F44-4E5D-8952-1A54BFFE483E}
 	EndGlobalSection
 EndGlobal

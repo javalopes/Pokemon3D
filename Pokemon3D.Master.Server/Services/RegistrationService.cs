@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
-using Pokemon3D.Master.Server.DataContracts;
-
+using Pokemon3D.DataModel.Multiplayer;
 namespace Pokemon3D.Master.Server.Services
 {
     public class RegistrationService : IRegistrationService
     {
-        private readonly List<GameServerData> _instances = new List<GameServerData>();
-        private int _nextId = 0;
+        private readonly List<GameServerModel> _instances = new List<GameServerModel>();
+        private int _nextId;
 
-        public int Register(GameServerRegistrationData instanceData)
+        public int Register(GameServerRegistrationModel instanceData)
         {
             var current = _nextId;
             _nextId++;
-            _instances.Add(new GameServerData
+            _instances.Add(new GameServerModel
             {
                 Id = current,
                 IpAddress = instanceData.IpAddress,
@@ -26,7 +25,7 @@ namespace Pokemon3D.Master.Server.Services
             _instances.RemoveAll(i => i.Id == id);
         }
 
-        public IEnumerable<GameServerData> GetRegisteredInstances()
+        public IEnumerable<GameServerModel> GetRegisteredInstances()
         {
             return _instances;
         }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
-using Pokemon3D.Master.Server.DataContracts;
+using Pokemon3D.DataModel.Multiplayer;
 using Pokemon3D.Master.Server.Services;
 
 namespace Pokemon3D.Master.Server.Controllers
@@ -16,7 +16,7 @@ namespace Pokemon3D.Master.Server.Controllers
 
         [Route("api/gameserver/register")]
         [HttpPost]
-        public IHttpActionResult Register(GameServerRegistrationData data)
+        public IHttpActionResult Register(GameServerRegistrationModel data)
         {
             var id = _service.Register(data);
 
@@ -34,7 +34,7 @@ namespace Pokemon3D.Master.Server.Controllers
 
         [Route("api/gameserver/instances")]
         [HttpGet]
-        public IEnumerable<GameServerData> GetInstances()
+        public IEnumerable<GameServerModel> GetInstances()
         {
             return _service.GetRegisteredInstances();
         }

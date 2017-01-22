@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using Pokemon3D.Master.Server.DataContracts;
+using Pokemon3D.DataModel.Multiplayer;
 using RestSharp;
 
 namespace Pokemon3D.Server
@@ -28,7 +28,7 @@ namespace Pokemon3D.Server
             {
                 InvokeMessage($"Starting Server {_configuration.Name}...");
 
-                var gameServerData = new GameServerRegistrationData
+                var gameServerData = new GameServerRegistrationModel
                 {
                     Name = _configuration.Name,
                     IpAddress = "127.0.0.1"

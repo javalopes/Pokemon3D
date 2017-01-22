@@ -141,6 +141,8 @@
     <Compile Include="GameMode\Pokemon\PokemonFormActivationModel.cs" />
     <Compile Include="GameMode\Pokemon\PokemonFormModel.cs" />
     <Compile Include="GameMode\Pokemon\PokemonModel.cs" />
+    <Compile Include="Multiplayer\GameServerModel.cs" />
+    <Compile Include="Multiplayer\GameServerRegistrationModel.cs" />
     <Compile Include="Pokemon\PokemonStatSetModel.cs" />
     <Compile Include="i18n\SectionModel.cs" />
     <Compile Include="i18n\TokenModel.cs" />

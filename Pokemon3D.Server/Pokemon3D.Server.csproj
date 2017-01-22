@@ -62,10 +62,6 @@
       <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
       <Name>Pokemon3D.DataModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Pokemon3D.Master.Server.DataContracts\Pokemon3D.Master.Server.DataContracts.csproj">
-      <Project>{f84c24c5-463d-4263-a4bf-5794169e8edf}</Project>
-      <Name>Pokemon3D.Master.Server.DataContracts</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
