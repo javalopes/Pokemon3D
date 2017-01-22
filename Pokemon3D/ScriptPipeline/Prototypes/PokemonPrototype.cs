@@ -1,6 +1,5 @@
 ﻿using Pokemon3D.GameModes.Monsters;
 using Pokemon3D.Scripting.Adapters;
-using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.ScriptPipeline.Prototypes
 {
@@ -8,7 +7,9 @@ namespace Pokemon3D.ScriptPipeline.Prototypes
     internal class PokemonPrototype
     {
         [Reference]
+        // ReSharper disable InconsistentNaming
         public Pokemon pokemonRef;
+        // ReSharper restore InconsistentNaming
 
         [ScriptFunction(ScriptFunctionType.Constructor, VariableName = "constructor")]
         public static object Constructor(object This, ScriptObjectLink objLink, object[] parameters)
@@ -22,7 +23,6 @@ namespace Pokemon3D.ScriptPipeline.Prototypes
         [ScriptFunction(ScriptFunctionType.Standard, VariableName = "someFunction")]
         public static object SomeFunction(object This, ScriptObjectLink objLink, object[] parameters)
         {
-            var test = objLink.GetReference(nameof(pokemonRef));
             return NetUndefined.Instance;
         }
     }

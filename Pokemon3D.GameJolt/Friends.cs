@@ -16,9 +16,7 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall FetchSentFriendRequests(string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string> {{"username", username}, {"user_token", token}};
                     return new ApiCall("friends/sent-requests", parameters);
                 }
 
@@ -27,9 +25,7 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall FetchReceivedFriendRequests(string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string> {{"username", username}, {"user_token", token}};
                     return new ApiCall("friends/received-requests", parameters);
                 }
 
@@ -39,8 +35,7 @@ namespace Pokemon3D.GameJolt
                 /// <param name="userId">The user id of the owner of the friend list.</param>
                 public static ApiCall FetchFriendList(string userId)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("user_id", userId);
+                    var parameters = new Dictionary<string, string> {{"user_id", userId}};
                     return new ApiCall("friends", parameters);
                 }
 
@@ -52,10 +47,12 @@ namespace Pokemon3D.GameJolt
                 /// <param name="token"></param>
                 public static ApiCall SendFriendRequest(string targetUserId, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("target_user_id", targetUserId);
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"target_user_id", targetUserId},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("friends/send-request", parameters);
                 }
 
@@ -67,10 +64,12 @@ namespace Pokemon3D.GameJolt
                 /// <param name="token"></param>
                 public static ApiCall CancelFriendRequest(string targetUserId, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("target_user_id", targetUserId);
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"target_user_id", targetUserId},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("friends/cancel-request", parameters);
                 }
 
@@ -82,10 +81,12 @@ namespace Pokemon3D.GameJolt
                 /// <param name="token"></param>
                 public static ApiCall AcceptFriendRequest(string targetUserId, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("target_user_id", targetUserId);
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"target_user_id", targetUserId},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("friends/accept-request", parameters);
                 }
 
@@ -97,10 +98,12 @@ namespace Pokemon3D.GameJolt
                 /// <param name="token"></param>
                 public static ApiCall DeclineFriendRequest(string targetUserId, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("target_user_id", targetUserId);
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"target_user_id", targetUserId},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("friends/decline-request", parameters);
                 }
             }

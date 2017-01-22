@@ -94,7 +94,6 @@
     <Compile Include="Entities\System\Generators\SimpleEntityGenerator.cs" />
     <Compile Include="Entities\System\Generators\TexturedCubeEntityGenerator.cs" />
     <Compile Include="Entities\Map.cs" />
-    <Compile Include="Entities\NPC.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\PlayerMovementMode.cs" />
     <Compile Include="Entities\World.cs" />

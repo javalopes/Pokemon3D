@@ -1,4 +1,7 @@
-﻿namespace Pokemon3D.DataModel.GameMode.Definitions.World
+﻿
+// ReSharper disable InconsistentNaming
+
+namespace Pokemon3D.DataModel.GameMode.Definitions.World
 {
     /// <summary>
     /// The different orientations and visual representations of routes on the map.

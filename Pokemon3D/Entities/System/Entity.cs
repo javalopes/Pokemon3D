@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+// ReSharper disable ForCanBeConvertedToForeach
 
 namespace Pokemon3D.Entities.System
 {
@@ -110,7 +111,7 @@ namespace Pokemon3D.Entities.System
             if (IsTemplate) throw new InvalidOperationException("Templates are out of update support.");
 
             HandleIsDirty();
-            for (int i = 0; i < _components.Count; i++)
+            for (var i = 0; i < _components.Count; i++)
             {
                 if (_components[i].IsActive) _components[i].Update(gameTime);
             }

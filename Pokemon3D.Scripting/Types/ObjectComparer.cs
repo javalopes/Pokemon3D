@@ -1,4 +1,6 @@
-﻿namespace Pokemon3D.Scripting.Types
+﻿using System;
+
+namespace Pokemon3D.Scripting.Types
 {
     internal static class ObjectComparer
     {
@@ -16,20 +18,20 @@
                 return false;
             }
             // If they are undefined or null, return true:
-            else if (left.TypeOf() == SObject.LITERAL_UNDEFINED || left.TypeOf() == SObject.LITERAL_NULL)
+            if (left.TypeOf() == SObject.LiteralUndefined || left.TypeOf() == SObject.LiteralNull)
             {
                 return true;
             }
             // Both are numbers:
-            else if (left.TypeOf() == SObject.LITERAL_TYPE_NUMBER)
+            if (left.TypeOf() == SObject.LiteralTypeNumber)
             {
                 var numLeft = ((SNumber)left).Value;
                 var numRight = ((SNumber)right).Value;
 
-                return numLeft == numRight;
+                return Math.Abs(numLeft - numRight) < double.Epsilon;
             }
             // Both are string:
-            else if (left.TypeOf() == SObject.LITERAL_TYPE_STRING)
+            if (left.TypeOf() == SObject.LiteralTypeString)
             {
                 var strLeft = ((SString)left).Value;
                 var strRight = ((SString)right).Value;
@@ -37,17 +39,14 @@
                 return strLeft == strRight;
             }
             // Both are bool:
-            else if (left.TypeOf() == SObject.LITERAL_TYPE_BOOL)
+            if (left.TypeOf() == SObject.LiteralTypeBool)
             {
                 var boolLeft = ((SBool)left).Value;
                 var boolRight = ((SBool)right).Value;
 
                 return boolLeft == boolRight;
             }
-            else
-            {
-                return ReferenceEquals(left, right);
-            }
+            return ReferenceEquals(left, right);
         }
 
         /// <summary>
@@ -63,20 +62,20 @@
             if (left.TypeOf() == right.TypeOf())
             {
                 // If they are undefined or null, return true:
-                if (left.TypeOf() == SObject.LITERAL_UNDEFINED || left.TypeOf() == SObject.LITERAL_NULL)
+                if (left.TypeOf() == SObject.LiteralUndefined || left.TypeOf() == SObject.LiteralNull)
                 {
                     return true;
                 }
                 // Both are numbers:
-                else if (left.TypeOf() == SObject.LITERAL_TYPE_NUMBER)
+                if (left.TypeOf() == SObject.LiteralTypeNumber)
                 {
                     var numLeft = ((SNumber)left).Value;
                     var numRight = ((SNumber)right).Value;
 
-                    return numLeft == numRight;
+                    return Math.Abs(numLeft - numRight) < double.Epsilon;
                 }
                 // Both are string:
-                else if (left.TypeOf() == SObject.LITERAL_TYPE_STRING)
+                if (left.TypeOf() == SObject.LiteralTypeString)
                 {
                     var strLeft = ((SString)left).Value;
                     var strRight = ((SString)right).Value;
@@ -84,51 +83,46 @@
                     return strLeft == strRight;
                 }
                 // Both are bool:
-                else if (left.TypeOf() == SObject.LITERAL_TYPE_BOOL)
+                if (left.TypeOf() == SObject.LiteralTypeBool)
                 {
                     var boolLeft = ((SBool)left).Value;
                     var boolRight = ((SBool)right).Value;
 
                     return boolLeft == boolRight;
                 }
-                else
-                {
-                    return ReferenceEquals(left, right);
-                }
+                return ReferenceEquals(left, right);
             }
             // null & undefined
-            else if (left.TypeOf() == SObject.LITERAL_NULL && right.TypeOf() == SObject.LITERAL_UNDEFINED ||
-                left.TypeOf() == SObject.LITERAL_UNDEFINED && right.TypeOf() == SObject.LITERAL_NULL)
+            if (left.TypeOf() == SObject.LiteralNull && right.TypeOf() == SObject.LiteralUndefined ||
+                left.TypeOf() == SObject.LiteralUndefined && right.TypeOf() == SObject.LiteralNull)
             {
                 return true;
             }
             // When one is a number and another is a string, convert the string to a number and compare:
-            else if (left.TypeOf() == SObject.LITERAL_TYPE_STRING && right.TypeOf() == SObject.LITERAL_TYPE_NUMBER)
+            if (left.TypeOf() == SObject.LiteralTypeString && right.TypeOf() == SObject.LiteralTypeNumber)
             {
                 var numLeft = left.ToNumber(processor).Value;
                 var numRight = ((SNumber)right).Value;
 
-                return numLeft == numRight;
+                return Math.Abs(numLeft - numRight) < double.Epsilon;
             }
-            else if (left.TypeOf() == SObject.LITERAL_TYPE_NUMBER && right.TypeOf() == SObject.LITERAL_TYPE_STRING)
+            if (left.TypeOf() == SObject.LiteralTypeNumber && right.TypeOf() == SObject.LiteralTypeString)
             {
                 var numRight = right.ToNumber(processor).Value;
                 var numLeft = ((SNumber)left).Value;
 
-                return numLeft == numRight;
+                return Math.Abs(numLeft - numRight) < double.Epsilon;
             }
-            else if (left.TypeOf() == SObject.LITERAL_TYPE_BOOL)
+            if (left.TypeOf() == SObject.LiteralTypeBool)
             {
                 return LooseEquals(processor, left.ToNumber(processor), right);
             }
-            else if (right.TypeOf() == SObject.LITERAL_TYPE_BOOL)
+            if (right.TypeOf() == SObject.LiteralTypeBool)
             {
                 return LooseEquals(processor, left, right.ToNumber(processor));
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
     }
 }

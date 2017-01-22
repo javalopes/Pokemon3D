@@ -473,7 +473,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
 
                 Assert.IsTrue(result is SArray);
                 Assert.AreEqual(1, ((SArray)result).ArrayMembers.Length);
-                Assert.AreEqual(23, (((SArray)result).ArrayMembers[0] as SNumber).Value);
+                Assert.AreEqual(23, ((SNumber) ((SArray)result).ArrayMembers[0]).Value);
             }
 
             [Test]
@@ -483,7 +483,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
 
                 Assert.IsTrue(result is SArray);
                 Assert.AreEqual(4, ((SArray)result).ArrayMembers.Length);
-                Assert.AreEqual(2, (((SArray)result).ArrayMembers[2] as SNumber).Value);
+                Assert.AreEqual(2, ((SNumber) ((SArray)result).ArrayMembers[2]).Value);
             }
 
             [Test]
@@ -493,7 +493,7 @@ namespace Test.Pokemon3D.Scripting.Types.Prototypes
 
                 Assert.IsTrue(result is SArray);
                 Assert.AreEqual(5, ((SArray)result).ArrayMembers.Length);
-                Assert.AreEqual(32, (((SArray)result).ArrayMembers[4] as SNumber).Value);
+                Assert.AreEqual(32, ((SNumber) ((SArray)result).ArrayMembers[4]).Value);
             }
         }
 

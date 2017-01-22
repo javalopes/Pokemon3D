@@ -86,7 +86,7 @@ namespace Pokemon3D.Scripting.Types
 
         internal override SObject GetMember(ScriptProcessor processor, SObject accessor, bool isIndexer)
         {
-            if (isIndexer && accessor.TypeOf() == LITERAL_TYPE_NUMBER)
+            if (isIndexer && accessor.TypeOf() == LiteralTypeNumber)
             {
                 if (Prototype.GetIndexerGetFunction() != IndexerGetFunction)
                     IndexerGetFunction = Prototype.GetIndexerGetFunction();
@@ -94,25 +94,22 @@ namespace Pokemon3D.Scripting.Types
                 return IndexerGetFunction != null ? IndexerGetFunction.Call(processor, this, this, new[] { accessor }) : processor.Undefined;
             }
 
-            string memberName;
-            if (accessor is SString)
-                memberName = ((SString)accessor).Value;
-            else
-                memberName = accessor.ToString(processor).Value;
+            var accessorAsString = accessor as SString;
+            var memberName = accessorAsString != null ? accessorAsString.Value : accessor.ToString(processor).Value;
 
             if (Members.ContainsKey(PropertyGetPrefix + memberName)) // getter property
             {
                 return ((SFunction)Members[PropertyGetPrefix + memberName].Data).Call(processor, this, this, new SObject[] { });
             }
-            else if (Members.ContainsKey(memberName))
+            if (Members.ContainsKey(memberName))
             {
                 return Members[memberName];
             }
-            else if (Prototype != null && Prototype.HasMember(processor, memberName))
+            if (Prototype != null && Prototype.HasMember(processor, memberName))
             {
                 return Prototype.GetMember(processor, accessor, isIndexer);
             }
-            else if (SuperClass != null)
+            if (SuperClass != null)
             {
                 return SuperClass.GetMember(processor, accessor, isIndexer);
             }
@@ -128,17 +125,14 @@ namespace Pokemon3D.Scripting.Types
                     IndexerSetFunction = Prototype.GetIndexerSetFunction();
             }
 
-            if (isIndexer && accessor.TypeOf() == LITERAL_TYPE_NUMBER && IndexerSetFunction != null)
+            if (isIndexer && accessor.TypeOf() == LiteralTypeNumber && IndexerSetFunction != null)
             {
                 IndexerSetFunction.Call(processor, this, this, new[] { accessor, value });
             }
             else
             {
-                string memberName;
-                if (accessor is SString)
-                    memberName = ((SString)accessor).Value;
-                else
-                    memberName = accessor.ToString(processor).Value;
+                var accessorAsString = accessor as SString;
+                var memberName = accessorAsString != null ? accessorAsString.Value : accessor.ToString(processor).Value;
 
                 if (Members.ContainsKey(PropertySetPrefix + memberName)) // setter property
                 {
@@ -165,7 +159,7 @@ namespace Pokemon3D.Scripting.Types
         {
             if (Members.ContainsKey(methodName))
             {
-                if (Members[methodName].Data.TypeOf() == LITERAL_TYPE_FUNCTION)
+                if (Members[methodName].Data.TypeOf() == LiteralTypeFunction)
                 {
                     return ((SFunction)Members[methodName].Data).Call(processor, caller, this, parameters);
                 }
@@ -208,15 +202,9 @@ namespace Pokemon3D.Scripting.Types
 
                     var data = Unbox(member.Value);
 
-                    if (ReferenceEquals(data, this))
-                    {
-                        // Avoid infinite recursion:
-                        source.Append(string.Format(FormatSourceMember, member.Key, "{}"));
-                    }
-                    else
-                    {
-                        source.Append(string.Format(FormatSourceMember, member.Key, data.ToScriptSource()));
-                    }
+                    source.Append(ReferenceEquals(data, this)
+                        ? string.Format(FormatSourceMember, member.Key, "{}")
+                        : string.Format(FormatSourceMember, member.Key, data.ToScriptSource()));
                 }
             }
 
@@ -233,7 +221,7 @@ namespace Pokemon3D.Scripting.Types
 
         internal override SString ToString(ScriptProcessor processor)
         {
-            return processor.CreateString(LITERAL_OBJECT_STR);
+            return processor.CreateString(LiteralObjectStr);
         }
 
         /// <summary>
@@ -241,7 +229,7 @@ namespace Pokemon3D.Scripting.Types
         /// </summary>
         internal static SProtoObject Parse(ScriptProcessor processor, string source)
         {
-            var prototype = new Prototype(LITERAL_OBJECT);
+            var prototype = new Prototype(LiteralObject);
 
             source = source.Trim();
 

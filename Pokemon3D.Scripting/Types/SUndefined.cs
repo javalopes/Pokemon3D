@@ -22,7 +22,7 @@
 
         internal override string TypeOf()
         {
-            return LITERAL_UNDEFINED;
+            return LiteralUndefined;
         }
     }
 }

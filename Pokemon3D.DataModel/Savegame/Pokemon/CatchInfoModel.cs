@@ -26,7 +26,7 @@ namespace Pokemon3D.DataModel.Savegame.Pokemon
 
         public override object Clone()
         {
-            var clone = (PokemonSaveModel)MemberwiseClone();
+            var clone = (CatchInfoModel)MemberwiseClone();
             return clone;
         }
     }

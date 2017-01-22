@@ -1,4 +1,5 @@
-﻿namespace Pokemon3D.DataModel.GameMode.Map.NPCs
+﻿// ReSharper disable InconsistentNaming
+namespace Pokemon3D.DataModel.GameMode.Map.NPCs
 {
     public enum NPCBehaviour
     {

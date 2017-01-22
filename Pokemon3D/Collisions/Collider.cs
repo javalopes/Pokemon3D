@@ -90,13 +90,15 @@ namespace Pokemon3D.Collisions
         /// </summary>
         public Collider Clone()
         {
-            var collider = new Collider();
-            collider.IsActive = IsActive;
-            collider.BoundingBox = BoundingBox;
-            collider.IsTrigger = IsTrigger;
-            collider._offsetToCenter = _offsetToCenter;
-            collider._position = _position;
-            collider.Type = Type;
+            var collider = new Collider
+            {
+                IsActive = IsActive,
+                BoundingBox = BoundingBox,
+                IsTrigger = IsTrigger,
+                _offsetToCenter = _offsetToCenter,
+                _position = _position,
+                Type = Type
+            };
             return collider;
         }
 

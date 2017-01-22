@@ -26,7 +26,7 @@ namespace Pokemon3D.Scripting
 
         private readonly Dictionary<CallbackType, Delegate> _apiCallbacks = new Dictionary<CallbackType, Delegate>();
 
-        private readonly Dictionary<string, SAPIUsing> _apiUsings = new Dictionary<string, SAPIUsing>();
+        private readonly Dictionary<string, SApiUsing> _apiUsings = new Dictionary<string, SApiUsing>();
         private readonly Dictionary<string, SVariable> _variables = new Dictionary<string, SVariable>();
         private readonly Dictionary<string, Prototype> _prototypes = new Dictionary<string, Prototype>();
         private readonly ScriptProcessor _processor;
@@ -43,13 +43,13 @@ namespace Pokemon3D.Scripting
         {
             if (Parent == null)
             {
-                AddVariable(SObject.LITERAL_UNDEFINED, SUndefined.Factory(), true);
-                AddVariable(SObject.LITERAL_NULL, SNull.Factory(), true);
+                AddVariable(SObject.LiteralUndefined, SUndefined.Factory(), true);
+                AddVariable(SObject.LiteralNull, SNull.Factory(), true);
 
                 AddPrototype(new ObjectPrototype());
                 AddPrototype(new BooleanPrototype());
                 AddPrototype(new NumberPrototype());
-                AddPrototype(new StringPrototype(_processor));
+                AddPrototype(new StringPrototype());
                 AddPrototype(new ArrayPrototype());
                 AddPrototype(new ErrorPrototype(_processor));
 
@@ -166,7 +166,7 @@ namespace Pokemon3D.Scripting
             return false;
         }
 
-        internal SAPIUsing GetApiUsing(string identifier)
+        internal SApiUsing GetApiUsing(string identifier)
         {
             if (_apiUsings.ContainsKey(identifier))
             {
@@ -178,10 +178,10 @@ namespace Pokemon3D.Scripting
             }
         }
 
-        internal void AddApiUsing(SAPIUsing apiUsing)
+        internal void AddApiUsing(SApiUsing apiUsing)
         {
-            if (!_apiUsings.ContainsKey(apiUsing.APIClass))
-                _apiUsings.Add(apiUsing.APIClass, apiUsing);
+            if (!_apiUsings.ContainsKey(apiUsing.ApiClass))
+                _apiUsings.Add(apiUsing.ApiClass, apiUsing);
         }
 
         internal bool IsPrototype(string identifier)

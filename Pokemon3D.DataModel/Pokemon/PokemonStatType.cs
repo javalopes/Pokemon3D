@@ -1,4 +1,5 @@
-﻿namespace Pokemon3D.DataModel.Pokemon
+﻿// ReSharper disable InconsistentNaming
+namespace Pokemon3D.DataModel.Pokemon
 {
     /// <summary>
     /// The different stats of a Pokémon.

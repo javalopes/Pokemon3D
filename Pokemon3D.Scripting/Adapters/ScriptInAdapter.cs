@@ -72,7 +72,7 @@ namespace Pokemon3D.Scripting.Adapters
             }
             else if (objIn is ExpandoObject)
             {
-                return TranslateExpandoObject(processor, objIn as ExpandoObject);
+                return TranslateExpandoObject(processor, (ExpandoObject) objIn);
             }
             else
             {
@@ -182,7 +182,7 @@ namespace Pokemon3D.Scripting.Adapters
                         var attrType = attr.GetType();
                         if (attrType == typeof(ScriptVariableAttribute))
                         {
-                            var memberAttr = attr as ScriptVariableAttribute;
+                            var memberAttr = (ScriptVariableAttribute)attr;
 
                             var identifier = field.Name;
                             if (!string.IsNullOrEmpty(memberAttr.VariableName))
@@ -197,7 +197,7 @@ namespace Pokemon3D.Scripting.Adapters
                             // When it's a field and a function, we have the source code of the function as value of the field.
                             // Example: public string MyFunction = "function() { console.log('Hello World'); }";
 
-                            var memberAttr = attr as ScriptFunctionAttribute;
+                            var memberAttr = (ScriptFunctionAttribute)attr;
 
                             var identifier = field.Name;
                             if (!string.IsNullOrEmpty(memberAttr.VariableName))
@@ -209,7 +209,7 @@ namespace Pokemon3D.Scripting.Adapters
                         }
                         else if (attrType == typeof(ReferenceAttribute))
                         {
-                            var memberAttr = attr as ReferenceAttribute;
+                            var memberAttr = (ReferenceAttribute)attr;
 
                             var identifier = field.Name;
                             if (!string.IsNullOrEmpty(memberAttr.VariableName))
@@ -268,15 +268,17 @@ namespace Pokemon3D.Scripting.Adapters
                     {
                         var memberAttr = (ScriptMemberAttribute)attr;
                         var identifier = field.Name;
-                        if (!string.IsNullOrEmpty(memberAttr.VariableName))
-                            identifier = memberAttr.VariableName;
+                        if (!string.IsNullOrEmpty(memberAttr.VariableName)) identifier = memberAttr.VariableName;
 
                         var fieldContent = field.GetValue(typeInstance);
 
-                        if (fieldContent == null)
-                            prototype.AddMember(processor, new PrototypeMember(identifier, processor.Undefined, field.IsStatic, field.IsInitOnly, false, false));
-                        else
-                            prototype.AddMember(processor, new PrototypeMember(identifier, Translate(processor, fieldContent), field.IsStatic, field.IsInitOnly, false, false));
+                        var member = fieldContent == null
+                            ? new PrototypeMember(identifier, processor.Undefined, field.IsStatic, field.IsInitOnly,
+                                false, false)
+                            : new PrototypeMember(identifier, Translate(processor, fieldContent), field.IsStatic,
+                                field.IsInitOnly, false, false);
+                        
+                        prototype.AddMember(processor, member);
                     }
                     else if (attr.GetType() == typeof(ScriptFunctionAttribute))
                     {

@@ -5,7 +5,7 @@ namespace Pokemon3D.Server.Console
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var client = new RestClient();
             var configuration = new GameServerConfiguration

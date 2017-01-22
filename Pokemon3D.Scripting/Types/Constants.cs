@@ -2,24 +2,24 @@
 {
     public abstract partial class SObject
     {
-        internal const string LITERAL_UNDEFINED = "undefined";
-        internal const string LITERAL_OBJECT = "object";
-        internal const string LITERAL_NULL = "null";
-        internal const string LITERAL_THIS = "this";
+        internal const string LiteralUndefined = "undefined";
+        internal const string LiteralObject = "object";
+        internal const string LiteralNull = "null";
+        internal const string LiteralThis = "this";
 
-        internal const string LITERAL_PROTOTYPE = "[prototype]";
-        internal const string LITERAL_OBJECT_STR = "[object Object]";
+        internal const string LiteralPrototype = "[prototype]";
+        internal const string LiteralObjectStr = "[object Object]";
 
-        internal const string LITERAL_TYPE_STRING = "string";
-        internal const string LITERAL_TYPE_BOOL = "bool";
-        internal const string LITERAL_TYPE_NUMBER = "number";
-        internal const string LITERAL_TYPE_FUNCTION = "function";
-        internal const string LITERAL_TYPE_ERROR = "error";
+        internal const string LiteralTypeString = "string";
+        internal const string LiteralTypeBool = "bool";
+        internal const string LiteralTypeNumber = "number";
+        internal const string LiteralTypeFunction = "function";
+        internal const string LiteralTypeError = "error";
 
-        internal const string LITERAL_NAN = "NaN";
-        internal const string LITERAL_INFINITY = "Infinity";
+        internal const string LiteralNan = "NaN";
+        internal const string LiteralInfinity = "Infinity";
 
-        internal const string LITERAL_BOOL_TRUE = "true";
-        internal const string LITERAL_BOOL_FALSE = "false";
+        internal const string LiteralBoolTrue = "true";
+        internal const string LiteralBoolFalse = "false";
     }
 }

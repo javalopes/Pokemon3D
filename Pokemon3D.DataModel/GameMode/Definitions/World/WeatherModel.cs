@@ -14,10 +14,7 @@ namespace Pokemon3D.DataModel.GameMode.Definitions.World
         [DataMember(Order = 0, Name = "WeatherType")]
         private string _weatherType;
         
-        public WeatherType WeatherType
-        {
-            get { return ConvertStringToEnum<WeatherType>(_weatherType); }
-        }
+        public WeatherType WeatherType => ConvertStringToEnum<WeatherType>(_weatherType);
 
         [DataMember(Order = 1)]
         public int Chance;

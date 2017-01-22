@@ -10,6 +10,7 @@ using Pokemon3D.Entities.System.Components;
 using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.Data;
 using static Pokemon3D.GameProvider;
+// ReSharper disable ForCanBeConvertedToForeach
 
 namespace Pokemon3D.Entities.System
 {

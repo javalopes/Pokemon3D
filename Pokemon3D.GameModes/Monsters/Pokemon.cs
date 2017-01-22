@@ -84,7 +84,7 @@ namespace Pokemon3D.GameModes.Monsters
             set
             {
                 // when the level is set from outside, the experience is set to exactly reach that level.
-                int experienceNeeded = PokemonExperienceCalculator.ExperienceNeededForLevel(_dataModel.ExperienceType, value);
+                var experienceNeeded = PokemonExperienceCalculator.ExperienceNeededForLevel(_dataModel.ExperienceType, value);
                 Experience = experienceNeeded;
             }
         }
@@ -96,11 +96,7 @@ namespace Pokemon3D.GameModes.Monsters
                 if (_saveModel.AbilityIndex == 0)
                     _saveModel.AbilityIndex = _gameMode.GameContext.GetService<Random>().Next(0, ActiveFormModel.Abilities.Length);
 
-                string id;
-                if (ActiveFormModel.Abilities.Length <= _saveModel.AbilityIndex)
-                    id = ActiveFormModel.Abilities.Last();
-                else
-                    id = ActiveFormModel.Abilities[_saveModel.AbilityIndex];
+                var id = ActiveFormModel.Abilities.Length <= _saveModel.AbilityIndex ? ActiveFormModel.Abilities.Last() : ActiveFormModel.Abilities[_saveModel.AbilityIndex];
 
                 return _gameMode.GetAbilityModel(id);
             }
@@ -182,10 +178,7 @@ namespace Pokemon3D.GameModes.Monsters
             {
                 return ShinyFormId;
             }
-            else
-            {
-                return DefaultFormId;
-            }
+            return DefaultFormId;
         }
 
         /// <summary>
@@ -227,7 +220,7 @@ namespace Pokemon3D.GameModes.Monsters
         /// Attempts to teach this Pokémon a level up move from a specific level. It makes the Pokémon forget a random move if the Pokémon has a full moveset.
         /// </summary>
         /// <returns>Returns true if the Pokémon learned a move.</returns>
-        private bool LearnMove(int level)
+        private void LearnMove(int level)
         {
             var levelMoves = LevelMoves.Where(x => x.Level == level).ToArray();
             foreach (var levelMove in levelMoves)
@@ -256,7 +249,6 @@ namespace Pokemon3D.GameModes.Monsters
 
                 _saveModel.Moves = moveList.ToArray();
             }
-            return levelMoves.Any();
         }
 
         public void Heal(int healHp)

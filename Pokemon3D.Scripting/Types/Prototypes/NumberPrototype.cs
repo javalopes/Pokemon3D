@@ -4,7 +4,7 @@
     {
         public NumberPrototype() : base("Number")
         {
-            Constructor = new PrototypeMember("constructor", new SFunction(constructor));
+            Constructor = new PrototypeMember("constructor", new SFunction(ConstructorCall));
         }
 
         protected override SProtoObject CreateBaseObject()
@@ -12,14 +12,12 @@
             return new SNumber();
         }
 
-        private static SObject constructor(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        private static SObject ConstructorCall(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
             var obj = (SNumber)instance;
 
-            if (parameters[0] is SNumber)
-                obj.Value = ((SNumber)parameters[0]).Value;
-            else
-                obj.Value = parameters[0].ToNumber(processor).Value;
+            var number = parameters[0] as SNumber;
+            obj.Value = number?.Value ?? parameters[0].ToNumber(processor).Value;
 
             return obj;
         }

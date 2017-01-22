@@ -12,7 +12,9 @@ namespace Pokemon3D.Screens
 {
     internal class WindowsEffectProcessor : EffectProcessor
     {
+        // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
         private readonly Effect _basicEffect;
+        // ReSharper restore PrivateFieldCanBeConvertedToLocalVariable
 
         private readonly Dictionary<int, EffectTechnique> _effectsByLightingFlags;
 

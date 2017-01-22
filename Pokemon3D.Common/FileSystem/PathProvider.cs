@@ -10,12 +10,6 @@ namespace Pokemon3D.Common.FileSystem
         /// <summary>
         /// Returns the start up path of the executable.
         /// </summary>
-        protected static string StartupPath
-        {
-            get
-            {
-                return AppDomain.CurrentDomain.BaseDirectory;
-            }
-        }
+        protected static string StartupPath => AppDomain.CurrentDomain.BaseDirectory;
     }
 }

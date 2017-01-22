@@ -1,5 +1,6 @@
 ﻿using Pokemon3D.DataModel.Pokemon;
 using System.Runtime.Serialization;
+// ReSharper disable InconsistentNaming
 
 // Disable Code Analysis for warning CS0649: Field is never assigned to, and will always have its default value.
 #pragma warning disable 0649

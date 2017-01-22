@@ -6,21 +6,21 @@ namespace Pokemon3D.Scripting.Types
     /// <summary>
     /// Represents a link to an API of another application imported via "using" statement.
     /// </summary>
-    internal class SAPIUsing : SObject
+    internal class SApiUsing : SObject
     {
         /// <summary>
         /// The name of the API class.
         /// </summary>
-        public string APIClass { get; }
+        public string ApiClass { get; }
 
         /// <summary>
         /// The source of the API class.
         /// </summary>
         public string ModuleName { get; }
 
-        public SAPIUsing(string apiClass, string moduleName)
+        public SApiUsing(string apiClass, string moduleName)
         {
-            APIClass = apiClass;
+            ApiClass = apiClass;
             ModuleName = moduleName;
         }
 
@@ -91,17 +91,17 @@ namespace Pokemon3D.Scripting.Types
 
         internal override string ToScriptObject()
         {
-            return APIClass;
+            return ApiClass;
         }
 
         internal override string ToScriptSource()
         {
-            return APIClass;
+            return ApiClass;
         }
 
         internal override double SizeOf()
         {
-            return APIClass.Length;
+            return ApiClass.Length;
         }
     }
 }

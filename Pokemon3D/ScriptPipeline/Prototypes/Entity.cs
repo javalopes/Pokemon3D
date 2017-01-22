@@ -9,7 +9,9 @@ namespace Pokemon3D.ScriptPipeline.Prototypes
     internal class EntityWrapper
     {
         [ScriptVariable]
+        // ReSharper disable InconsistentNaming
         public string id;
+        // ReSharper restore InconsistentNaming
 
         [ScriptFunction(ScriptFunctionType.Standard, VariableName = "getComponent")]
         public static object GetComponent(object This, ScriptObjectLink objLink, object[] parameters)
@@ -17,7 +19,7 @@ namespace Pokemon3D.ScriptPipeline.Prototypes
             if (TypeContract.Ensure(parameters, new[] { typeof(string) }))
             {
                 var wrapper = (EntityWrapper)This;
-                var entity = wrapper.GetEntity();
+                wrapper.GetEntity();
 
                 var component = new EntityComponentWrapper
                 {

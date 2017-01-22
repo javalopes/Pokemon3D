@@ -10,6 +10,7 @@ namespace Pokemon3D.ScriptPipeline.Prototypes
     internal class MovePrototype
     {
         [ScriptVariable(VariableName = "id")]
+        // ReSharper disable InconsistentNaming
         public string id;
 
         [ScriptVariable(VariableName = "PP")]
@@ -17,10 +18,11 @@ namespace Pokemon3D.ScriptPipeline.Prototypes
 
         [ScriptVariable(VariableName = "maxPP")]
         public int maxPP;
+        // ReSharper restore InconsistentNaming
 
         private static MoveModel GetMoveModel(object This)
         {
-            var prototype = This as MovePrototype;
+            var prototype = (MovePrototype)This;
             var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
             return gameMode.GetMoveModel(prototype.id);
         }

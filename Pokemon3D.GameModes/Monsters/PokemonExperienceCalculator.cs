@@ -90,7 +90,7 @@ namespace Pokemon3D.GameModes.Monsters
             // EXP = 
             // (((6 / 5) * pow(n,3)) - (15 * pow(n,2)) + (100 * n) - 140)
 
-            return (((6 / 5) * Pow(n, 3)) - (15 * Pow(n, 2)) + (100 * n) - 140);
+            return (((6.0 / 5) * Pow(n, 3)) - (15 * Pow(n, 2)) + (100 * n) - 140);
         }
 
         private static double ExperienceNeededForLevelSlow(double n)

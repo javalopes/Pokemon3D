@@ -20,29 +20,20 @@
 
         internal override SObject GetMember(ScriptProcessor processor, SObject accessor, bool isIndexer)
         {
-            string memberName;
-            if (accessor is SString)
-                memberName = ((SString)accessor).Value;
-            else
-                memberName = accessor.ToString(processor).Value;
+            var memberNameAsString = accessor as SString;
+            var memberName = memberNameAsString != null ? memberNameAsString.Value : accessor.ToString(processor).Value;
 
             if (_context.IsVariable(memberName))
             {
                 return _context.GetVariable(memberName);
             }
-            else
-            {
-                return processor.ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MessageReferenceNotDefined, memberName );
-            }
+            return processor.ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MessageReferenceNotDefined, memberName );
         }
 
         internal override void SetMember(ScriptProcessor processor, SObject accessor, bool isIndexer, SObject value)
         {
-            string memberName;
-            if (accessor is SString)
-                memberName = ((SString)accessor).Value;
-            else
-                memberName = accessor.ToString(processor).Value;
+            var accessorAsString = accessor as SString;
+            var memberName = accessorAsString != null ? accessorAsString.Value : accessor.ToString(processor).Value;
 
             if (_context.IsVariable(memberName))
             {
@@ -61,16 +52,9 @@
             if (_context.IsVariable(methodName))
             {
                 var methodVariable = _context.GetVariable(methodName);
-                var method = methodVariable.Data;
-
-                if (method is SFunction)
-                {
-                    return ((SFunction)method).Call(processor, caller, This, parameters);
-                }
-                else
-                {
-                    return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MessageTypeNotAFunction,  methodName );
-                }
+                var function = methodVariable.Data as SFunction;
+                return function != null ? function.Call(processor, caller, This, parameters) 
+                                        : processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MessageTypeNotAFunction,  methodName );
             }
             return processor.ErrorHandler.ThrowError(ErrorType.ReferenceError, ErrorHandler.MessageReferenceNotDefined,  methodName );
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System;
+// ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 
 namespace Pokemon3D.Scripting
 {
@@ -28,11 +29,8 @@ namespace Pokemon3D.Scripting
             if (parameters.Length == 0)
                 return processor.Undefined;
 
-            string code;
-            if (parameters[0] is SString)
-                code = ((SString)parameters[0]).Value;
-            else
-                code = parameters[0].ToString(processor).Value;
+            var parameterAsString = parameters[0] as SString;
+            var code = parameterAsString != null ? parameterAsString.Value : parameters[0].ToString(processor).Value;
 
             var evalProcessor = new ScriptProcessor(processor.Context);
             return evalProcessor.Run(code);
@@ -55,15 +53,12 @@ namespace Pokemon3D.Scripting
             if (parameters.Length == 0)
                 return processor.Undefined;
 
-            if (parameters[0] is SProtoObject)
+            var parameterAsString = parameters[0] as SProtoObject;
+            if (parameterAsString != null)
             {
-                var protoObj = (SProtoObject)parameters[0];
-                return processor.CreateString(protoObj.IsProtoInstance ? protoObj.Prototype.Name : protoObj.TypeOf());
+                return processor.CreateString(parameterAsString.IsProtoInstance ? parameterAsString.Prototype.Name : parameterAsString.TypeOf());
             }
-            else
-            {
-                return processor.CreateString(parameters[0].TypeOf());
-            }
+            return processor.CreateString(parameters[0].TypeOf());
         }
 
         /// <summary>
@@ -90,17 +85,11 @@ namespace Pokemon3D.Scripting
         [BuiltInMethod(MethodName = "toPrimitive")]
         public static SObject ToPrimitive(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            if (parameters.Length == 0)
-                return processor.Undefined;
-
-            if (parameters[0] is SString)
-                return processor.CreateString(((SString)parameters[0]).Value);
-            else if (parameters[0] is SNumber)
-                return processor.CreateNumber(((SNumber)parameters[0]).Value);
-            else if (parameters[0] is SBool)
-                return processor.CreateBool(((SBool)parameters[0]).Value);
-            else
-                return parameters[0]; // returns the input object, if no conversion was conducted.
+            if (parameters.Length == 0) return processor.Undefined;
+            if (parameters[0] is SString) return processor.CreateString(((SString)parameters[0]).Value);
+            if (parameters[0] is SNumber) return processor.CreateNumber(((SNumber)parameters[0]).Value);
+            if (parameters[0] is SBool) return processor.CreateBool(((SBool)parameters[0]).Value);
+            return parameters[0]; // returns the input object, if no conversion was conducted.
         }
 
         [BuiltInMethod(MethodName = "isNaN")]
@@ -124,11 +113,8 @@ namespace Pokemon3D.Scripting
             if (parameters.Length == 0)
                 return processor.Undefined;
 
-            double dbl;
-            if (parameters[0] is SNumber)
-                dbl = ((SNumber)parameters[0]).Value;
-            else
-                dbl = parameters[0].ToNumber(processor).Value;
+            var parameterAsNumber = parameters[0] as SNumber;
+            var dbl = parameterAsNumber?.Value ?? parameters[0].ToNumber(processor).Value;
 
             return processor.CreateBool(!(double.IsNaN(dbl) || double.IsInfinity(dbl)));
         }

@@ -10,7 +10,7 @@ namespace Pokemon3D.DataModel.GameMode.Battle
 
         public override object Clone()
         {
-            var clone = MemberwiseClone() as BattleHooksModel;
+            var clone = (BattleHooksModel)MemberwiseClone();
             clone.ScriptHooks = ScriptHooks.Clone() as BattleScriptHookModel[];
             return clone;
         }

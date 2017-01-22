@@ -53,11 +53,10 @@ namespace Pokemon3D.Scripting.Types
                     else if (t == ',' && depth == 0)
                     {
                         element = exp.Substring(elementStart, index - elementStart);
-                        
-                        if (string.IsNullOrWhiteSpace(element))
-                            elements.Add(processor.Undefined);
-                        else
-                            elements.Add(processor.ExecuteStatement(new ScriptStatement(element)));
+
+                        elements.Add(string.IsNullOrWhiteSpace(element)
+                            ? processor.Undefined
+                            : processor.ExecuteStatement(new ScriptStatement(element)));
 
                         elementStart = index + 1;
                     }
@@ -68,10 +67,9 @@ namespace Pokemon3D.Scripting.Types
 
             element = exp.Substring(elementStart, index - elementStart);
 
-            if (string.IsNullOrWhiteSpace(element))
-                elements.Add(processor.Undefined);
-            else
-                elements.Add(processor.ExecuteStatement(new ScriptStatement(element)));
+            elements.Add(string.IsNullOrWhiteSpace(element)
+                ? processor.Undefined
+                : processor.ExecuteStatement(new ScriptStatement(element)));
 
             return processor.CreateArray(elements.ToArray());
         }

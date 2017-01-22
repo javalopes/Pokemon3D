@@ -66,7 +66,7 @@ namespace Pokemon3D.Rendering
         public Ray GetScreenRay(int x, int y)
         {
             var nearPoint = new Vector3(x,y, 0);
-            var farPoint = new Vector3(x,y, 1); ;
+            var farPoint = new Vector3(x,y, 1);
 
             nearPoint = Viewport.Unproject(nearPoint, ProjectionMatrix, ViewMatrix, Matrix.Identity);
             farPoint = Viewport.Unproject(farPoint, ProjectionMatrix, ViewMatrix, Matrix.Identity);

@@ -161,17 +161,15 @@ namespace Pokemon3D.Scripting
                                     if (Regex.IsMatch(catchCode, RegexCatchcondition))
                                     {
                                         errorVarName = catchCode.Remove(catchCode.IndexOf(" ", StringComparison.Ordinal));
-                                        string conditionCode = catchCode.Remove(0, catchCode.IndexOf("if", StringComparison.Ordinal) + 3);
+                                        var conditionCode = catchCode.Remove(0, catchCode.IndexOf("if", StringComparison.Ordinal) + 3);
 
                                         var processor = new ScriptProcessor(Context, GetLineNumber());
                                         processor.Context.AddVariable(errorVarName, errorObject);
 
                                         var conditionResult = processor.ExecuteStatement(new ScriptStatement(conditionCode));
 
-                                        if (conditionResult is SBool)
-                                            foundMatchingCatch = ((SBool)conditionResult).Value;
-                                        else
-                                            foundMatchingCatch = conditionResult.ToBool(this).Value;
+                                        var conditionAsBool = conditionResult as SBool;
+                                        foundMatchingCatch = conditionAsBool?.Value ?? conditionResult.ToBool(this).Value;
 
                                         if (foundMatchingCatch)
                                             returnObject = processor.ExecuteStatement(catchExecuteStatement);
@@ -276,8 +274,8 @@ namespace Pokemon3D.Scripting
                 var errorObject = ExecuteStatement(new ScriptStatement(exp));
 
                 // Set the line number if the object is an error object:
-                if (errorObject.TypeOf() == SObject.LITERAL_TYPE_ERROR)
-                    ((SError)errorObject).SetMember(ErrorPrototype.MEMBER_NAME_LINE, CreateNumber(GetLineNumber()));
+                if (errorObject.TypeOf() == SObject.LiteralTypeError)
+                    ((SError)errorObject).SetMember(ErrorPrototype.MemberNameLine, CreateNumber(GetLineNumber()));
 
                 return ErrorHandler.ThrowError(errorObject);
             }
@@ -464,10 +462,8 @@ namespace Pokemon3D.Scripting
                     {
                         var conditionResult = processor.ExecuteStatement(forCondition);
 
-                        if (conditionResult is SBool)
-                            stayInFor = ((SBool)conditionResult).Value;
-                        else
-                            stayInFor = conditionResult.ToBool(this).Value;
+                        var conditionAsBool = conditionResult as SBool;
+                        stayInFor = conditionAsBool?.Value ?? conditionResult.ToBool(this).Value;
                     }
 
                     if (stayInFor)
@@ -639,7 +635,7 @@ namespace Pokemon3D.Scripting
 
                 if (!foundMember)
                 {
-                    host = SObject.LITERAL_THIS;
+                    host = SObject.LiteralThis;
                     member = leftSide;
                 }
             }
@@ -708,19 +704,19 @@ namespace Pokemon3D.Scripting
 
                 // have quick conversions for small statements here
                 // parameter statements are much faster that way:
-                if (exp == SObject.LITERAL_BOOL_TRUE)
+                if (exp == SObject.LiteralBoolTrue)
                 {
                     return CreateBool(true);
                 }
-                else if (exp == SObject.LITERAL_BOOL_FALSE)
+                else if (exp == SObject.LiteralBoolFalse)
                 {
                     return CreateBool(false);
                 }
-                else if (exp == SObject.LITERAL_UNDEFINED || exp == "")
+                else if (exp == SObject.LiteralUndefined || exp == "")
                 {
                     return Undefined;
                 }
-                else if (exp == SObject.LITERAL_NULL)
+                else if (exp == SObject.LiteralNull)
                 {
                     return Null;
                 }
@@ -797,11 +793,8 @@ namespace Pokemon3D.Scripting
             var conditionResult = ExecuteStatement(new ScriptStatement(condition));
             statement.StatementResult = conditionResult;
 
-            bool conditionEval;
-            if (conditionResult is SBool)
-                conditionEval = ((SBool)conditionResult).Value;
-            else
-                conditionEval = conditionResult.ToBool(this).Value;
+            var conditionAsBool = conditionResult as SBool;
+            var conditionEval = conditionAsBool?.Value ?? conditionResult.ToBool(this).Value;
 
             _index++;
 
@@ -907,7 +900,7 @@ namespace Pokemon3D.Scripting
             if (!IsValidIdentifier(apiClass))
                 return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxMissingVarName);
 
-            var apiUsing = new SAPIUsing(apiClass, moduleName);
+            var apiUsing = new SApiUsing(apiClass, moduleName);
 
             Context.AddApiUsing(apiUsing);
             return apiUsing;
@@ -959,10 +952,8 @@ namespace Pokemon3D.Scripting
                 {
                     var conditionResult = ExecuteStatement(new ScriptStatement(condition));
 
-                    if (conditionResult is SBool)
-                        stayInWhile = ((SBool)conditionResult).Value;
-                    else
-                        stayInWhile = conditionResult.ToBool(this).Value;
+                    var conditionAsBool = conditionResult as SBool;
+                    stayInWhile = conditionAsBool?.Value ?? conditionResult.ToBool(this).Value;
 
                     if (stayInWhile)
                     {
@@ -978,10 +969,7 @@ namespace Pokemon3D.Scripting
 
                 return returnObject;
             }
-            else
-            {
-                return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
-            }
+            return ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxExpectedExpression, "end of script");
         }
 
         private SObject ExecuteReturn(ScriptStatement statement)
@@ -993,15 +981,12 @@ namespace Pokemon3D.Scripting
                 _returnIssued = true;
                 return Undefined;
             }
-            else
-            {
-                exp = exp.Remove(0, "return".Length);
+            exp = exp.Remove(0, "return".Length);
 
-                var returnObject = ExecuteStatement(new ScriptStatement(exp));
-                _returnIssued = true;
+            var returnObject = ExecuteStatement(new ScriptStatement(exp));
+            _returnIssued = true;
 
-                return returnObject;
-            }
+            return returnObject;
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Pokemon3D.Server
                     {
                         ThreadPool.QueueUserWorkItem((c) =>
                         {
-                            var context = c as HttpListenerContext;
+                            var context = (HttpListenerContext) c;
                             try
                             {
                                 var buf = _requestHandler.HandleRequest(GetRequestPath(context.Request));
@@ -78,9 +78,9 @@ namespace Pokemon3D.Server
             });
         }
 
-        private string GetRequestPath(HttpListenerRequest request)
+        private static string GetRequestPath(HttpListenerRequest request)
         {
-            string requestUrl = request.Url.PathAndQuery;
+            var requestUrl = request.Url.PathAndQuery;
             requestUrl = requestUrl.TrimStart('/');
             requestUrl = requestUrl.Remove(0, ServerApi.Length);
             requestUrl = requestUrl.TrimStart('/');

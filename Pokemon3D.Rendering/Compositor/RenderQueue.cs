@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Pokemon3D.Rendering.Data;
 
-// ReSharper disable once ForCanBeConvertedToForeach
+// ReSharper disable ForCanBeConvertedToForeach
+
 namespace Pokemon3D.Rendering.Compositor
 {
 

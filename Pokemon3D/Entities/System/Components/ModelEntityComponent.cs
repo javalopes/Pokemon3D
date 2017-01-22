@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Common;
 using Pokemon3D.Common.Extensions;
 using Pokemon3D.GameModes;
 using Pokemon3D.Rendering;
@@ -106,9 +105,11 @@ namespace Pokemon3D.Entities.System.Components
 
         public override EntityComponent Clone(Entity target)
         {
-            var clonedComponent = new ModelEntityComponent(target);
-            clonedComponent._regions = _regions != null ? new List<TextureRegion>(_regions) : null;
-            clonedComponent._drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(target.IsInitializing);
+            var clonedComponent = new ModelEntityComponent(target)
+            {
+                _regions = _regions != null ? new List<TextureRegion>(_regions) : null,
+                _drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(target.IsInitializing)
+            };
             clonedComponent._drawableElement.Material = Material;
             clonedComponent._drawableElement.Mesh = Mesh;
             clonedComponent.IsBillboard = IsBillboard;

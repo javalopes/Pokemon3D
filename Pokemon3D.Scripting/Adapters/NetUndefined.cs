@@ -9,9 +9,6 @@
 
         private static NetUndefined _instance;
 
-        public static NetUndefined Instance
-        {
-            get { return _instance ?? (_instance = new NetUndefined()); }
-        }
+        public static NetUndefined Instance => _instance ?? (_instance = new NetUndefined());
     }
 }

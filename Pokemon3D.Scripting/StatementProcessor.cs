@@ -170,7 +170,7 @@ namespace Pokemon3D.Scripting
                         {
                             var statementStr = statement.ToString();
                             var extraLines = statementStr.Replace("\r", "").TakeWhile(c => c == '\n').Count(); // count the starting lines
-                            var s = statementStr.Trim().TrimEnd(new char[] { ';' });
+                            var s = statementStr.Trim().TrimEnd(';');
                             statements.Add(new ScriptStatement(s, GetStatementType(s, false), lineNumber + extraLines));
                             statement.Clear();
                             lineNumber += lineNumberBuffer;

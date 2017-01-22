@@ -5,9 +5,9 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 {
     internal class StringPrototype : Prototype
     {
-        public StringPrototype(ScriptProcessor processor) : base("String")
+        public StringPrototype() : base("String")
         {
-            Constructor = new PrototypeMember("constructor", new SFunction(constructor));
+            Constructor = new PrototypeMember("constructor", new SFunction(ConstructorCall));
         }
 
         protected override SProtoObject CreateBaseObject()
@@ -15,17 +15,20 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             return new SString();
         }
 
-        private static SObject constructor(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        private static SObject ConstructorCall(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
             var obj = (SString)instance;
 
-            if (parameters[0] is SString)
+            var parameterAsString = parameters[0] as SString;
+            if (parameterAsString != null)
             {
-                obj.Value = ((SString)parameters[0]).Value;
-                obj.Escaped = ((SString)parameters[0]).Escaped;
+                obj.Value = parameterAsString.Value;
+                obj.Escaped = parameterAsString.Escaped;
             }
             else
+            {
                 obj.Value = parameters[0].ToString(processor).Value;
+            }
 
             return obj;
         }
@@ -33,9 +36,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         [BuiltInMethod(FunctionType = FunctionUsageType.PropertyGetter, MethodName = "length")]
         public static SObject Length(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            var str = instance as SString;
-
-            return processor.CreateNumber(str.Value.Length);
+            return processor.CreateNumber(((SString) instance).Value.Length);
         }
 
         [BuiltInMethod(FunctionType = FunctionUsageType.PropertyGetter, IsStatic = true, MethodName = "empty")]
@@ -47,14 +48,14 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "charAt")]
         public static SObject CharAt(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            var str = (instance as SString).Value;
+            var str = ((SString) instance).Value;
 
             if (str == "")
                 return processor.CreateString("");
 
             if (TypeContract.Ensure(parameters, typeof(SNumber)))
             {
-                var index = (int)(parameters[0] as SNumber).Value;
+                var index = (int)((SNumber) parameters[0]).Value;
 
                 if (index < 0 || index >= str.Length)
                     return processor.CreateString("");
@@ -72,7 +73,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             if (parameters.Length > 0)
             {
-                var str = instance as SString;
+                var str = (SString) instance;
 
                 string result = str.Value;
                 foreach (var param in parameters)
@@ -84,7 +85,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 return processor.CreateString(result);
             }
 
-            return processor.CreateString((instance as SString).Value);
+            return processor.CreateString(((SString) instance).Value);
         }
 
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "includes")]
@@ -92,7 +93,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             if (parameters.Length >= 1)
             {
-                var str = instance as SString;
+                var str = (SString) instance;
                 var includes = parameters[0].ToString(processor);
 
                 return processor.CreateBool(str.Value.Contains(includes.Value));
@@ -106,8 +107,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             if (TypeContract.Ensure(parameters, typeof(SString)))
             {
-                var str = instance as SString;
-                var includes = parameters[0] as SString;
+                var str = (SString) instance;
+                var includes = (SString) parameters[0];
 
                 if (includes.Value == "")
                     return processor.CreateBool(str.Value == "");
@@ -123,8 +124,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             if (TypeContract.Ensure(parameters, typeof(SString)))
             {
-                var str = instance as SString;
-                var includes = parameters[0] as SString;
+                var str = (SString) instance;
+                var includes = (SString) parameters[0];
 
                 if (includes.Value == "")
                     return processor.CreateBool(str.Value == "");
@@ -140,8 +141,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             if (TypeContract.Ensure(parameters, typeof(SString)))
             {
-                var str = instance as SString;
-                var search = parameters[0] as SString;
+                var str = (SString) instance;
+                var search = (SString) parameters[0];
 
                 if (!str.Value.Contains(search.Value) || search.Value == "")
                     return processor.CreateNumber(-1);
@@ -157,8 +158,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             if (TypeContract.Ensure(parameters, typeof(SString)))
             {
-                var str = instance as SString;
-                var search = parameters[0] as SString;
+                var str = (SString) instance;
+                var search = (SString) parameters[0];
 
                 if (!str.Value.Contains(search.Value) || search.Value == "")
                     return processor.CreateNumber(-1);
@@ -172,18 +173,18 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "padEnd")]
         public static SObject PadEnd(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            var str = (instance as SString).Value;
+            var str = ((SString) instance).Value;
             int totalLength = 0;
             var padStr = " ";
 
             if (TypeContract.Ensure(parameters, new[] { typeof(SNumber), typeof(SString) }))
             {
-                totalLength = (int)(parameters[0] as SNumber).Value;
-                padStr = (parameters[1] as SString).Value;
+                totalLength = (int)((SNumber) parameters[0]).Value;
+                padStr = ((SString) parameters[1]).Value;
             }
             if (TypeContract.Ensure(parameters, typeof(SNumber)))
             {
-                totalLength = (int)(parameters[0] as SNumber).Value;
+                totalLength = (int)((SNumber) parameters[0]).Value;
             }
 
             if (padStr == "" || totalLength <= str.Length)
@@ -201,19 +202,19 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "padStart")]
         public static SObject PadStart(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            var str = (instance as SString).Value;
+            var str = ((SString) instance).Value;
             int totalLength = 0;
             var padStr = " ";
             string newPadded = "";
 
             if (TypeContract.Ensure(parameters, new[] { typeof(SNumber), typeof(SString) }))
             {
-                totalLength = (int)(parameters[0] as SNumber).Value;
-                padStr = (parameters[1] as SString).Value;
+                totalLength = (int)((SNumber) parameters[0]).Value;
+                padStr = ((SString) parameters[1]).Value;
             }
             if (TypeContract.Ensure(parameters, typeof(SNumber)))
             {
-                totalLength = (int)(parameters[0] as SNumber).Value;
+                totalLength = (int)((SNumber) parameters[0]).Value;
             }
 
             if (padStr == "" || totalLength <= str.Length)
@@ -235,8 +236,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             if (TypeContract.Ensure(parameters, typeof(SNumber)))
             {
-                var repeatStr = (instance as SString).Value;
-                var times = (int)(parameters[0] as SNumber).Value;
+                var repeatStr = ((SString) instance).Value;
+                var times = (int)((SNumber) parameters[0]).Value;
                 var str = "";
 
                 for (int i = 0; i < times; i++)
@@ -245,7 +246,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 return processor.CreateString(str);
             }
 
-            return processor.CreateString((instance as SString).Value);
+            return processor.CreateString(((SString) instance).Value);
         }
 
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "replace")]
@@ -253,14 +254,11 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             if (TypeContract.Ensure(parameters, new[] { typeof(SString), typeof(SString) }))
             {
-                var str = (instance as SString).Value;
-                var replace = (parameters[0] as SString).Value;
-                var with = (parameters[1] as SString).Value;
+                var str = ((SString) instance).Value;
+                var replace = ((SString) parameters[0]).Value;
+                var with = ((SString) parameters[1]).Value;
 
-                if (string.IsNullOrWhiteSpace(replace))
-                    return processor.CreateString(str);
-
-                return processor.CreateString(str.Replace(replace, with));
+                return processor.CreateString(string.IsNullOrWhiteSpace(replace) ? str : str.Replace(replace, with));
             }
 
             return processor.Undefined;
@@ -271,9 +269,9 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             if (TypeContract.Ensure(parameters, new[] { typeof(SNumber), typeof(SNumber) }))
             {
-                var str = (instance as SString).Value;
-                var sliceBegin = (int)(parameters[0] as SNumber).Value;
-                var sliceEnd = (int)(parameters[1] as SNumber).Value;
+                var str = ((SString) instance).Value;
+                var sliceBegin = (int)((SNumber) parameters[0]).Value;
+                var sliceEnd = (int)((SNumber) parameters[1]).Value;
 
                 if (sliceBegin < 0)
                     sliceBegin += str.Length;
@@ -293,8 +291,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             }
             if (TypeContract.Ensure(parameters, typeof(SNumber)))
             {
-                var str = (instance as SString).Value;
-                var sliceBegin = (int)(parameters[0] as SNumber).Value;
+                var str = ((SString) instance).Value;
+                var sliceBegin = (int)((SNumber) parameters[0]).Value;
 
                 if (sliceBegin < 0)
                     sliceBegin += str.Length;
@@ -314,29 +312,29 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             int limit = -1;
             string[] delimiters;
-            string str = (instance as SString).Value;
+            string str = ((SString) instance).Value;
 
             if (TypeContract.Ensure(parameters, new[] { typeof(SArray), typeof(SNumber) }))
             {
-                delimiters = (parameters[0] as SArray).ArrayMembers.Select(m => m.ToString(processor).Value).ToArray();
-                limit = (int)(parameters[1] as SNumber).Value;
+                delimiters = ((SArray) parameters[0]).ArrayMembers.Select(m => m.ToString(processor).Value).ToArray();
+                limit = (int)((SNumber) parameters[1]).Value;
             }
             else if (TypeContract.Ensure(parameters, typeof(SArray)))
             {
-                delimiters = (parameters[0] as SArray).ArrayMembers.Select(m => m.ToString(processor).Value).ToArray();
+                delimiters = ((SArray) parameters[0]).ArrayMembers.Select(m => m.ToString(processor).Value).ToArray();
             }
             else if (TypeContract.Ensure(parameters, new[] { typeof(SString), typeof(SNumber) }))
             {
-                delimiters = new[] { (parameters[0] as SString).Value };
-                limit = (int)(parameters[1] as SNumber).Value;
+                delimiters = new[] { ((SString) parameters[0]).Value };
+                limit = (int)((SNumber) parameters[1]).Value;
             }
             else if (TypeContract.Ensure(parameters, typeof(SString)))
             {
-                delimiters = new[] { (parameters[0] as SString).Value };
+                delimiters = new[] { ((SString) parameters[0]).Value };
             }
             else
             {
-                return processor.CreateArray(new[] { processor.CreateString(str) });
+                return processor.CreateArray(new SObject[] { processor.CreateString(str) });
             }
 
             var split = str.Split(delimiters, StringSplitOptions.None);
@@ -347,36 +345,36 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 split = result;
             }
 
-            return processor.CreateArray(split.Select(m => processor.CreateString(m)).ToArray());
+            return processor.CreateArray(split.Select(processor.CreateString).ToArray<SObject>());
         }
 
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "toLower")]
         public static SObject ToLower(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            string str = (instance as SString).Value;
+            string str = ((SString) instance).Value;
             return processor.CreateString(str.ToLower());
         }
 
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "toUpper")]
         public static SObject ToUpper(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            string str = (instance as SString).Value;
+            string str = ((SString) instance).Value;
             return processor.CreateString(str.ToUpper());
         }
 
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "trim")]
         public static SObject Trim(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            string str = (instance as SString).Value;
+            string str = ((SString) instance).Value;
             string[] trimChars = { " " };
 
             if (TypeContract.Ensure(parameters, typeof(SArray)))
             {
-                trimChars = (parameters[0] as SArray).ArrayMembers.Select(m => m.ToString(processor).Value).ToArray();
+                trimChars = ((SArray) parameters[0]).ArrayMembers.Select(m => m.ToString(processor).Value).ToArray();
             }
             else if (TypeContract.Ensure(parameters, typeof(SString)))
             {
-                trimChars = new[] { (parameters[0] as SString).Value };
+                trimChars = new[] { ((SString) parameters[0]).Value };
             }
 
             foreach (var trimChar in trimChars)
@@ -393,16 +391,16 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "trimStart")]
         public static SObject TrimStart(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            string str = (instance as SString).Value;
+            string str = ((SString) instance).Value;
             string[] trimChars = { " " };
 
             if (TypeContract.Ensure(parameters, typeof(SArray)))
             {
-                trimChars = (parameters[0] as SArray).ArrayMembers.Select(m => m.ToString(processor).Value).ToArray();
+                trimChars = ((SArray) parameters[0]).ArrayMembers.Select(m => m.ToString(processor).Value).ToArray();
             }
             else if (TypeContract.Ensure(parameters, typeof(SString)))
             {
-                trimChars = new[] { (parameters[0] as SString).Value };
+                trimChars = new[] { ((SString) parameters[0]).Value };
             }
 
             foreach (var trimChar in trimChars)
@@ -417,16 +415,16 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "trimEnd")]
         public static SObject TrimEnd(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            string str = (instance as SString).Value;
+            string str = ((SString) instance).Value;
             string[] trimChars = { " " };
 
             if (TypeContract.Ensure(parameters, typeof(SArray)))
             {
-                trimChars = (parameters[0] as SArray).ArrayMembers.Select(m => m.ToString(processor).Value).ToArray();
+                trimChars = ((SArray) parameters[0]).ArrayMembers.Select(m => m.ToString(processor).Value).ToArray();
             }
             else if (TypeContract.Ensure(parameters, typeof(SString)))
             {
-                trimChars = new[] { (parameters[0] as SString).Value };
+                trimChars = new[] { ((SString) parameters[0]).Value };
             }
 
             foreach (var trimChar in trimChars)
@@ -443,9 +441,9 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             if (TypeContract.Ensure(parameters, new[] { typeof(SNumber), typeof(SNumber) }))
             {
-                var str = (instance as SString).Value;
-                var start = (int)(parameters[0] as SNumber).Value;
-                var length = (int)(parameters[1] as SNumber).Value;
+                var str = ((SString) instance).Value;
+                var start = (int)((SNumber) parameters[0]).Value;
+                var length = (int)((SNumber) parameters[1]).Value;
 
                 if (start < 0)
                     start = 0;
@@ -461,8 +459,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             }
             if (TypeContract.Ensure(parameters, typeof(SNumber)))
             {
-                var str = (instance as SString).Value;
-                var start = (int)(parameters[0] as SNumber).Value;
+                var str = ((SString) instance).Value;
+                var start = (int)((SNumber) parameters[0]).Value;
                 
                 if (start < 0)
                     start = 0;

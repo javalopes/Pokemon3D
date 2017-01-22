@@ -7,9 +7,11 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         public ObjectPrototype() : base("Object") { }
 
         [BuiltInMethod]
+        // ReSharper disable InconsistentNaming
         public static SObject toString(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+            // ReSharper restore InconsistentNaming
         {
-            return processor.CreateString(LITERAL_OBJECT_STR);
+            return processor.CreateString(LiteralObjectStr);
         }
 
         [BuiltInMethod(IsStatic = true, MethodName = "create")]
@@ -20,7 +22,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             if (parameters.Length > 0)
             {
                 var protoParam = parameters[0];
-                if (protoParam.TypeOf() == LITERAL_TYPE_STRING)
+                if (protoParam.TypeOf() == LiteralTypeString)
                 {
                     prototype = processor.Context.GetPrototype(((SString)protoParam).Value);
                 }
@@ -43,7 +45,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             }
             else
             {
-                return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MessageReferenceNoPrototype, LITERAL_UNDEFINED);
+                return processor.ErrorHandler.ThrowError(ErrorType.TypeError, ErrorHandler.MessageReferenceNoPrototype, LiteralUndefined);
             }
         }
 
@@ -70,11 +72,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 prototype = protoObj.Prototype;
             }
 
-            string memberName;
-            if (parameters[0] is SString)
-                memberName = ((SString)parameters[0]).Value;
-            else
-                memberName = parameters[0].ToString(processor).Value;
+            var memberAsString = parameters[0] as SString;
+            var memberName = memberAsString != null ? memberAsString.Value : parameters[0].ToString(processor).Value;
 
             var defaultValue = processor.Undefined;
 
@@ -91,28 +90,29 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             if (parameters.Length > 2)
             {
                 var signature = parameters[2];
-                if (signature is SArray)
+                var array = signature as SArray;
+                if (array != null)
                 {
-                    foreach (var arrayMember in ((SArray)signature).ArrayMembers)
+                    foreach (var arrayMember in array.ArrayMembers)
                     {
-                        if (arrayMember is SString)
+                        var arrayMemberAsString = arrayMember as SString;
+                        if (arrayMemberAsString == null) continue;
+
+                        var signatureMember = arrayMemberAsString.Value;
+                        switch (signatureMember)
                         {
-                            var signatureMember = ((SString)arrayMember).Value;
-                            switch (signatureMember)
-                            {
-                                case "readOnly":
-                                    isReadOnly = true;
-                                    break;
-                                case "static":
-                                    isStatic = true;
-                                    break;
-                                case "indexerGet":
-                                    isIndexerGet = true;
-                                    break;
-                                case "indexerSet":
-                                    isIndexerSet = true;
-                                    break;
-                            }
+                            case "readOnly":
+                                isReadOnly = true;
+                                break;
+                            case "static":
+                                isStatic = true;
+                                break;
+                            case "indexerGet":
+                                isIndexerGet = true;
+                                break;
+                            case "indexerSet":
+                                isIndexerSet = true;
+                                break;
                         }
                     }
                 }

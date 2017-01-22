@@ -111,24 +111,18 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
             AddObjectPrototypeAsExtends(processor);
 
-            string memberName;
-            if (accessor is SString)
-                memberName = ((SString)accessor).Value;
-            else
-                memberName = accessor.ToString(processor).Value;
+            var memberNameAsString = accessor as SString;
+            var memberName = memberNameAsString != null ? memberNameAsString.Value : accessor.ToString(processor).Value;
 
             if (_prototypeMembers.ContainsKey(PropertyGetPrefix + memberName))
             {
                 return ((SFunction)_prototypeMembers[PropertyGetPrefix + memberName].Data).Call(processor, this, this, new SObject[] { });
             }
-            else if (_prototypeMembers.ContainsKey(memberName))
+            if (_prototypeMembers.ContainsKey(memberName))
             {
                 return _prototypeMembers[memberName].Data;
             }
-            else
-            {
-                return processor.Undefined;
-            }
+            return processor.Undefined;
         }
 
         internal override void SetMember(ScriptProcessor processor, SObject accessor, bool isIndexer, SObject value)
@@ -137,11 +131,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
             AddObjectPrototypeAsExtends(processor);
 
-            string memberName;
-            if (accessor is SString)
-                memberName = ((SString)accessor).Value;
-            else
-                memberName = accessor.ToString(processor).Value;
+            var accessorAsString = accessor as SString;
+            var memberName = accessorAsString != null ? accessorAsString.Value : accessor.ToString(processor).Value;
 
             if (_prototypeMembers.ContainsKey(memberName) && _prototypeMembers[memberName].IsStatic)
             {
@@ -154,7 +145,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 
         internal override string ToScriptSource()
         {
-            return LITERAL_PROTOTYPE;
+            return LiteralPrototype;
         }
 
         internal override string ToScriptObject()

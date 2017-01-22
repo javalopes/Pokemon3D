@@ -5,7 +5,6 @@ using Pokemon3D.DataModel.GameCore;
 using Pokemon3D.FileSystem;
 using System;
 using System.IO;
-using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.GameCore
 {
@@ -63,11 +62,6 @@ namespace Pokemon3D.GameCore
             {
                 GameLogger.Instance.Log(MessageType.Error, "Failed to access the contents of the file.");
             }
-        }
-
-        private void OnGameExiting(object sender, EventArgs e)
-        {
-            Save();
         }
 
         public void Save()

@@ -16,10 +16,7 @@ namespace Pokemon3D.DataModel.GameMode.Definitions.World
         [DataMember(Order = 4, Name = "CitySize")]
         private string _citySize;
         
-        public CitySize CitySize
-        {
-            get { return ConvertStringToEnum<CitySize>(_citySize); }
-        }
+        public CitySize CitySize => ConvertStringToEnum<CitySize>(_citySize);
 
         #endregion
 

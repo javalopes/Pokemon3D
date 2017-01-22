@@ -5,16 +5,16 @@ namespace Pokemon3D.UI.Controller
 {
     internal class MouseUiInputController : OverlayInputControllerBase
     {
-        protected readonly InputSystem.InputSystem _inputSystem;
+        protected readonly InputSystem.InputSystem InputSystem;
 
         public MouseUiInputController()
         {
-            _inputSystem = GameProvider.GameInstance.GetService<InputSystem.InputSystem>();
+            InputSystem = GameProvider.GameInstance.GetService<InputSystem.InputSystem>();
         }
 
         protected virtual Point GetCurrentMousePosition()
         {
-            return new Point(_inputSystem.MouseHandler.X, _inputSystem.MouseHandler.Y);
+            return new Point(InputSystem.MouseHandler.X, InputSystem.MouseHandler.Y);
         }
         
         public override void Update(UiFocusContainer container)
@@ -27,7 +27,7 @@ namespace Pokemon3D.UI.Controller
                 {
                     if (container.CurrentElement == uiElement)
                     {
-                        if (_inputSystem.MouseHandler.IsLeftButtonDownOnce()) InvokeAction(uiElement);
+                        if (InputSystem.MouseHandler.IsLeftButtonDownOnce()) InvokeAction(uiElement);
                     }
                     else
                     {

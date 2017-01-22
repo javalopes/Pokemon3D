@@ -22,8 +22,7 @@ namespace Pokemon3D.GameJolt
                 /// <param name="key">The key to return the data from.</param>
                 public static ApiCall FetchGlobal(string key)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("key", key);
+                    var parameters = new Dictionary<string, string> {{"key", key}};
                     return new ApiCall("data-store", parameters);
                 }
 
@@ -35,10 +34,12 @@ namespace Pokemon3D.GameJolt
                 /// <param name="token">The token of the user.</param>
                 public static ApiCall FetchUser(string key, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("key", key);
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"key", key},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("data-store", parameters);
                 }
 
@@ -55,8 +56,7 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall GetKeysGlobal(string pattern)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("pattern", pattern);
+                    var parameters = new Dictionary<string, string> {{"pattern", pattern}};
                     return new ApiCall("data-store/get-keys", parameters);
                 }
 
@@ -65,9 +65,7 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall GetKeysUser(string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string> {{"username", username}, {"user_token", token}};
                     return new ApiCall("data-store/get-keys", parameters);
                 }
 
@@ -76,10 +74,12 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall GetKeysUser(string pattern, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("pattern", pattern);
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"pattern", pattern},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("data-store/get-keys", parameters);
                 }
 
@@ -88,10 +88,12 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall UpdateGlobal(string key, StorageUpdateOperation operation, string value)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("key", key);
-                    parameters.Add("value", value);
-                    parameters.Add("operation", GameJolt.Api.StorageUpdateOperationToString(operation));
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"key", key},
+                        {"value", value},
+                        {"operation", StorageUpdateOperationToString(operation)}
+                    };
                     return new ApiCall("data-store/update", parameters);
                 }
 
@@ -100,12 +102,14 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall UpdateGlobal(string key, StorageUpdateOperation operation, string value, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("key", key);
-                    parameters.Add("value", value);
-                    parameters.Add("operation", GameJolt.Api.StorageUpdateOperationToString(operation));
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"key", key},
+                        {"value", value},
+                        {"operation", StorageUpdateOperationToString(operation)},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("data-store/update", parameters);
                 }
 
@@ -114,9 +118,7 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall SetGlobal(string key, string data)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("key", key);
-                    parameters.Add("data", data);
+                    var parameters = new Dictionary<string, string> {{"key", key}, {"data", data}};
                     return new ApiCall("data-store/set", parameters);
                 }
 
@@ -125,11 +127,13 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall SetUser(string key, string data, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("key", key);
-                    parameters.Add("data", data);
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"key", key},
+                        {"data", data},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("data-store/set", parameters);
                 }
 
@@ -138,11 +142,13 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall SetRestricted(string key, string data, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("key", key);
-                    parameters.Add("data", data);
-                    parameters.Add("restriction_username", username);
-                    parameters.Add("restriction_user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"key", key},
+                        {"data", data},
+                        {"restriction_username", username},
+                        {"restriction_user_token", token}
+                    };
                     return new ApiCall("data-store/set", parameters);
                 }
 
@@ -151,8 +157,7 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall RemoveGlobal(string key)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("key", key);
+                    var parameters = new Dictionary<string, string> {{"key", key}};
                     return new ApiCall("data-store/remove", parameters);
                 }
 
@@ -161,10 +166,12 @@ namespace Pokemon3D.GameJolt
                 /// </summary>
                 public static ApiCall RemoveGlobal(string key, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("key", key);
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"key", key},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("data-store/remove", parameters);
                 }
             }

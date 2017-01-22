@@ -7,10 +7,14 @@ namespace Pokemon3D.ScriptPipeline.Prototypes
     internal class EntityComponentWrapper
     {
         [ScriptVariable]
+        // ReSharper disable InconsistentNaming
         public EntityWrapper parent;
+        // ReSharper restore InconsistentNaming
 
         [ScriptVariable]
+        // ReSharper disable InconsistentNaming
         public string id;
+        // ReSharper restore InconsistentNaming
 
         [ScriptFunction(ScriptFunctionType.Standard, VariableName = "setData")]
         public static object SetData(object This, ScriptObjectLink objLink, object[] parameters)

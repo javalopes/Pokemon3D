@@ -27,8 +27,8 @@ namespace Pokemon3D.GameJolt
             Parameters = parameters;
         }
 
-        private const string FORMAT_URL = "/{0}/?game_id={1}";
-        private const string FORMAT_PARAMETER = "&{0}={1}";
+        private const string FormatUrl = "/{0}/?game_id={1}";
+        private const string FormatParameter = "&{0}={1}";
 
         /// <summary>
         /// Produces the url that corresponds to this API call.
@@ -37,10 +37,12 @@ namespace Pokemon3D.GameJolt
         {
             EndpointUrl = EndpointUrl.Trim('/');
 
-            StringBuilder urlBuilder = new StringBuilder(string.Format(FORMAT_URL, EndpointUrl, UrlEncoder.Encode(api.GameId)));
-            
-            for (int i = 0; i < Parameters.Count; i++)
-                urlBuilder.Append(string.Format(FORMAT_PARAMETER, Parameters.Keys.ElementAt(i), UrlEncoder.Encode(Parameters.Values.ElementAt(i))));
+            var urlBuilder = new StringBuilder(string.Format(FormatUrl, EndpointUrl, UrlEncoder.Encode(api.GameId)));
+
+            for (var i = 0; i < Parameters.Count; i++)
+            {
+                urlBuilder.Append(string.Format(FormatParameter, Parameters.Keys.ElementAt(i), UrlEncoder.Encode(Parameters.Values.ElementAt(i))));
+            }
 
             return urlBuilder.ToString();
         }

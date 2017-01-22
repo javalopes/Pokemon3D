@@ -162,13 +162,9 @@ namespace Pokemon3D.Scripting.Types
         {
             Escaped = escaped;
 
-            if (escaped)
-                Value = Unescape(value);
-            else
-                Value = value;
+            Value = escaped ? Unescape(value) : value;
 
-            if (interpolate)
-                Value = Interpolate(processor, Value);
+            if (interpolate) Value = Interpolate(processor, Value);
         }
 
         /// <summary>
@@ -181,18 +177,12 @@ namespace Pokemon3D.Scripting.Types
 
         internal override string ToScriptObject()
         {
-            if (Prototype == null)
-                return ToScriptSource();
-            else
-                return base.ToScriptObject();
+            return Prototype == null ? ToScriptSource() : base.ToScriptObject();
         }
 
         internal override string ToScriptSource()
         {
-            if (Escaped)
-                return string.Format(StringNormalFormat, Value);
-            else
-                return string.Format(StringUnescapedFormat, Value);
+            return string.Format(Escaped ? StringNormalFormat : StringUnescapedFormat, Value);
         }
 
         internal override SString ToString(ScriptProcessor processor)
@@ -217,7 +207,7 @@ namespace Pokemon3D.Scripting.Types
 
         internal override string TypeOf()
         {
-            return Prototype == null ? LITERAL_TYPE_STRING : base.TypeOf();
+            return Prototype == null ? LiteralTypeString : base.TypeOf();
         }
 
         internal override double SizeOf()

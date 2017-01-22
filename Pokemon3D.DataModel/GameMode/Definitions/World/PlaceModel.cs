@@ -16,10 +16,7 @@ namespace Pokemon3D.DataModel.GameMode.Definitions.World
         [DataMember(Order = 4, Name = "PlaceSize")]
         private string _placeSize;
         
-        public PlaceSize PlaceSize
-        {
-            get { return ConvertStringToEnum<PlaceSize>(_placeSize); }
-        }
+        public PlaceSize PlaceSize => ConvertStringToEnum<PlaceSize>(_placeSize);
 
         #endregion
 

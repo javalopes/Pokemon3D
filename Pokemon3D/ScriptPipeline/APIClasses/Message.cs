@@ -11,7 +11,9 @@ namespace Pokemon3D.ScriptPipeline.ApiClasses
     [ApiClass(ClassName = "Message")]
     internal class Message : ApiClass
     {
+        // ReSharper disable InconsistentNaming
         public static SObject show(ScriptProcessor processor, SObject[] parameters)
+        // ReSharper restore InconsistentNaming
         {
             object[] netObjects;
             if (EnsureTypeContract(parameters, new[] { typeof(string) }, out netObjects))

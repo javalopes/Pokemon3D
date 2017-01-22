@@ -16,10 +16,7 @@ namespace Pokemon3D.DataModel.GameMode.Definitions.World
         [DataMember(Order = 4, Name = "RouteType")]
         private string _routeType;
         
-        public RouteType RouteType
-        {
-            get { return ConvertStringToEnum<RouteType>(_routeType); }
-        }
+        public RouteType RouteType => ConvertStringToEnum<RouteType>(_routeType);
 
         #endregion
 
@@ -28,16 +25,13 @@ namespace Pokemon3D.DataModel.GameMode.Definitions.World
         [DataMember(Order = 5, Name = "RouteDirection")]
         private string _routeDirection;
         
-        public RouteDirection RouteDirection
-        {
-            get { return ConvertStringToEnum<RouteDirection>(_routeDirection); }
-        }
+        public RouteDirection RouteDirection => ConvertStringToEnum<RouteDirection>(_routeDirection);
 
         #endregion
 
         public override object Clone()
         {
-            var clone = (PlaceModel)MemberwiseClone();
+            var clone = (RouteModel)MemberwiseClone();
             clone.Position = Position.CloneModel();
             clone.FlyTo = FlyTo.CloneModel();
             return clone;

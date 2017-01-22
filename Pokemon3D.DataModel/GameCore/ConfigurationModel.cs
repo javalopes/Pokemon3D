@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Runtime.Serialization;
+using Pokemon3D.DataModel.General;
 
 // Disable Code Analysis for warning CS0649: Field is never assigned to, and will always have its default value.
 #pragma warning disable 0649
@@ -39,28 +40,22 @@ namespace Pokemon3D.DataModel.GameCore
         [DataMember(Order = 9)]
         public InputActionModel[] InputActions;
 
-        public static ConfigurationModel Default
+        public static ConfigurationModel Default => new ConfigurationModel
         {
-            get
+            DisplayLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+            MusicVolume = 75,
+            SoundVolume = 100,
+            ShadowsEnabled = true,
+            SoftShadows = true,
+            ShadowMapSize = 1024,
+            WindowSize = new SizeModel
             {
-                return new ConfigurationModel
-                {
-                    DisplayLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                    MusicVolume = 75,
-                    SoundVolume = 100,
-                    ShadowsEnabled = true,
-                    SoftShadows = true,
-                    ShadowMapSize = 1024,
-                    WindowSize = new SizeModel
-                    {
-                        Width = 1024,
-                        Height = 600
-                    },
-                    EnableFileHotSwapping = false,
-                    CustomGameModeBasePath = @"..\..\..\..\GameModeTemplates"
-                };
-            }
-        }
+                Width = 1024,
+                Height = 600
+            },
+            EnableFileHotSwapping = false,
+            CustomGameModeBasePath = @"..\..\..\..\GameModeTemplates"
+        };
 
         public override object Clone()
         {

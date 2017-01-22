@@ -46,8 +46,9 @@ namespace Pokemon3D.GameJolt
         /// <param name="responseHandler">The response handler method that accepts the response from the Game Jolt server as a <see cref="string"/>.</param>
         /// <param name="parallelProcessing">If the Game Jolt API should process the calls simultaniously.</param>
         /// <param name="stopOnError">If the Game Jolt API should stop processing, if an error occurred during one call.</param>
-        public void ExecuteCalls(ApiCall[] calls, ResponseFormat format, Action<string> responseHandler, bool parallelProcessing = true, bool stopOnError = false)
+        public bool ExecuteCalls(ApiCall[] calls, ResponseFormat format, Action<string> responseHandler, bool parallelProcessing = true, bool stopOnError = false)
         {
+            var result = true;
             string formatStr = ResponseFormatToString(format);
 
             // build url from parameters:
@@ -80,7 +81,7 @@ namespace Pokemon3D.GameJolt
                 ThreadPool.QueueUserWorkItem((o) =>
                 {
                     // create post requests:
-                    var request = (HttpWebRequest)WebRequest.Create(url);
+                    var request = (HttpWebRequest) WebRequest.Create(url);
                     request.AllowWriteStreamBuffering = true;
                     request.Method = "POST";
                     request.ContentLength = postData.Length;
@@ -89,33 +90,38 @@ namespace Pokemon3D.GameJolt
 
                     StreamWriter writer = null;
                     StreamReader reader = null;
-                    string responseStr = string.Empty; // stores the result.
+                    var responseStr = string.Empty; // stores the result.
 
                     try
                     {
-                        // write post data to stream:
                         writer = new StreamWriter(request.GetRequestStream());
                         writer.Write(postData);
                         writer.Close();
-
-                        // get request response, read from stream:
+                        
+                        // ReSharper disable AssignNullToNotNullAttribute
                         reader = new StreamReader(request.GetResponse().GetResponseStream());
+                        // ReSharper restore AssignNullToNotNullAttribute
                         responseStr = reader.ReadToEnd();
                     }
-                    catch { } // suppress exceptions
+                    catch
+                    {
+                        result = false;
+                    }
                     finally
                     {
-                        if (writer != null)
-                            writer.Close();
-                        if (reader != null)
-                            reader.Close();
+                        writer?.Close();
+                        reader?.Close();
                     }
-
-                    // call handle:
+                    
                     responseHandler(responseStr);
                 });
             }
-            catch { } // suppress exceptions
+            catch
+            {
+                result = false;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -123,16 +129,15 @@ namespace Pokemon3D.GameJolt
         /// </summary>
         private string CreateSignature(string url)
         {
-            MD5 md5 = MD5.Create();
+            var md5 = MD5.Create();
 
             // the string used as hash is the url (without "signature" parameter) and the game's key.
-            string hashString = url + GameKey;
+            var hashString = url + GameKey;
 
-            byte[] bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(hashString));
+            var bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(hashString));
 
-            StringBuilder byteBuilder = new StringBuilder();
-            for (int i = 0; i < bytes.Length; i++)
-                byteBuilder.Append(bytes[i].ToString("x2"));
+            var byteBuilder = new StringBuilder();
+            foreach (var t in bytes) byteBuilder.Append(t.ToString("x2"));
 
             return byteBuilder.ToString();
         }

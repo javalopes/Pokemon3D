@@ -29,7 +29,7 @@
         /// </summary>
         internal virtual string ToScriptObject()
         {
-            return LITERAL_UNDEFINED;
+            return LiteralUndefined;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@
         /// </summary>
         internal virtual string ToScriptSource()
         {
-            return LITERAL_UNDEFINED;
+            return LiteralUndefined;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@
         /// </summary>
         internal virtual SString ToString(ScriptProcessor processor)
         {
-            return processor.CreateString(LITERAL_UNDEFINED);
+            return processor.CreateString(LiteralUndefined);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@
         
         internal virtual string TypeOf()
         {
-            return LITERAL_OBJECT;
+            return LiteralObject;
         }
 
         internal virtual double SizeOf()

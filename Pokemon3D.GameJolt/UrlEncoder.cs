@@ -105,10 +105,7 @@ namespace Pokemon3D.GameJolt
         // source taken from: http://referencesource.microsoft.com/#System.Web/Util/HttpEncoderUtility.cs,3a94b289b95ec9f2
         private static char IntToHex(int n)
         {
-            if (n <= 9)
-                return (char)(n + (int)'0');
-            else
-                return (char)(n - 10 + (int)'a');
+            return n <= 9 ? (char) (n + '0') : (char) (n - 10 + 'a');
         }
     }
 }

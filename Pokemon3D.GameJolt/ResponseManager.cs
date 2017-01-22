@@ -9,17 +9,20 @@ namespace Pokemon3D.GameJolt
     /// </summary>
     public sealed class ResponseManager
     {
-        private ResponseModel _dataModel;
-        private bool _parsingSuccessful;
+        private readonly ResponseModel _dataModel;
+        private readonly bool _parsingSuccessful;
 
         public ResponseManager(string responseData)
         {
             try
             {
-                _dataModel = DataModel<ResponseModel>.FromString(responseData);
                 _parsingSuccessful = true;
+                _dataModel = DataModel<ResponseModel>.FromString(responseData);
             }
-            catch { }
+            catch
+            {
+                _parsingSuccessful = false;
+            }
         }
         
         public bool AllCallsSuccessful

@@ -10,7 +10,9 @@ namespace Pokemon3D.ScriptPipeline.ApiClasses
     [ApiClass(ClassName = "World")]
     internal class World : ApiClass
     {
+        // ReSharper disable InconsistentNaming
         public static SObject getEntity(ScriptProcessor processor, SObject[] parameters)
+        // ReSharper restore InconsistentNaming
         {
             object[] netObjects;
             if (EnsureTypeContract(parameters, new[] { typeof(string) }, out netObjects))
@@ -23,7 +25,9 @@ namespace Pokemon3D.ScriptPipeline.ApiClasses
             return ScriptInAdapter.GetUndefined(processor);
         }
 
+        // ReSharper disable InconsistentNaming
         public static SObject load(ScriptProcessor processor, SObject[] parameters)
+        // ReSharper restore InconsistentNaming
         {
             object[] netObjects;
             if (EnsureTypeContract(parameters, new[] { typeof(string), typeof(Vector3Wrapper) }, out netObjects))

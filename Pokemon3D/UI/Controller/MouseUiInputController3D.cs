@@ -38,7 +38,7 @@ namespace Pokemon3D.UI.Controller
                 var originPoint = quadPosition - quadRight * quadSizeWorld.X*0.5f - quadDown * quadSizeWorld.Y*0.5f;
 
                 var x = Vector3.Dot((targetPoint - originPoint), rightAxis) / Vector3.Dot(rightAxis, rightAxis);
-                var y = Vector3.Dot((targetPoint - originPoint), downAxis) / Vector3.Dot(downAxis, downAxis); ;
+                var y = Vector3.Dot((targetPoint - originPoint), downAxis) / Vector3.Dot(downAxis, downAxis);
 
                 return new Point((int)(x * quadProjectedWidth), (int)(y * quadProjectedHeight));
             }
@@ -48,7 +48,7 @@ namespace Pokemon3D.UI.Controller
 
         protected override Point GetCurrentMousePosition()
         {
-            var ray = _camera.GetScreenRay(_inputSystem.MouseHandler.X, _inputSystem.MouseHandler.Y);
+            var ray = _camera.GetScreenRay(InputSystem.MouseHandler.X, InputSystem.MouseHandler.Y);
             var quadPosition = _referringEntity.GlobalPosition;
             var quadNormal = -_referringEntity.Forward;
             var quadSize = new Vector2(_referringEntity.Scale.X, _referringEntity.Scale.Y);

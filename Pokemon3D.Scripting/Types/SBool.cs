@@ -8,9 +8,9 @@
         internal static string ConvertToScriptString(bool value)
         {
             if (value)
-                return LITERAL_BOOL_TRUE;
+                return LiteralBoolTrue;
             else
-                return LITERAL_BOOL_FALSE;
+                return LiteralBoolFalse;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@
         internal override string TypeOf()
         {
             if (Prototype == null)
-                return LITERAL_TYPE_BOOL;
+                return LiteralTypeBool;
             else
                 return base.TypeOf();
         }

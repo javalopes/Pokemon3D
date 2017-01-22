@@ -117,11 +117,11 @@ namespace Pokemon3D.Entities
 
         private void MapChanged(object sender, FileSystemEventArgs e)
         {
-            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
             foreach (var entity in _allMapEntities)
             {
                 _world.EntitySystem.RemoveEntity(entity);
             }
+
             _allMapEntities.Clear();
             Load(Offset, true);
             _world.EntitySystem.InitializeAllPendingEntities();

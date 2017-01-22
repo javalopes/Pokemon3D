@@ -1,5 +1,10 @@
 ﻿namespace Pokemon3D.UI
 {
+    class LeftSideCheckBox
+    {
+        
+    }
+
     //class LeftSideCheckbox : Control
     //{
     //    public string Text { get; set; }

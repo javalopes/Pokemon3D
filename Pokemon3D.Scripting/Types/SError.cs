@@ -4,7 +4,7 @@
     {
         internal override string TypeOf()
         {
-            return LITERAL_TYPE_ERROR;
+            return LiteralTypeError;
         }
     }
 }

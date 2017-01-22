@@ -118,14 +118,13 @@ namespace Pokemon3D.GameModes
             var data = FileLoader.GetFile(Path.Combine(TexturePath, filePath));
 
             Texture2D texture = null;
-            using (var memoryStream = new MemoryStream(data.Data))
+            GameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() =>
             {
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                GameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() =>
+                using (var memoryStream = new MemoryStream(data.Data))
                 {
                     texture = Texture2D.FromStream(GraphicsDevice, memoryStream);
-                });
-            }
+                }
+            });
 
             _textureCache.Add(filePath, texture);
             return texture;

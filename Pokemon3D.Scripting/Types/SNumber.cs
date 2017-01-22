@@ -11,9 +11,9 @@ namespace Pokemon3D.Scripting.Types
         internal static string ConvertToScriptString(double value)
         {
             if (double.IsNaN(value))
-                return LITERAL_NAN;
+                return LiteralNan;
             else if (double.IsInfinity(value))
-                return LITERAL_INFINITY;
+                return LiteralInfinity;
 
             return value.ToString(CultureInfo.InvariantCulture);
         }
@@ -104,7 +104,7 @@ namespace Pokemon3D.Scripting.Types
 
         internal override SBool ToBool(ScriptProcessor processor)
         {
-            return processor.CreateBool(Value != 0);
+            return processor.CreateBool(Math.Abs(Value) > double.Epsilon);
         }
 
         internal override SNumber ToNumber(ScriptProcessor processor)
@@ -115,7 +115,7 @@ namespace Pokemon3D.Scripting.Types
         internal override string TypeOf()
         {
             if (Prototype == null)
-                return LITERAL_TYPE_NUMBER;
+                return LiteralTypeNumber;
             else
                 return base.TypeOf();
         }

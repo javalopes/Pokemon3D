@@ -15,10 +15,12 @@ namespace Pokemon3D.Rendering.Compositor
         private readonly object _lockObject = new object();
 
         private readonly List<Light> _allLights = new List<Light>();
+        // ReSharper disable CollectionNeverQueried.Local
         private readonly List<DrawableElement> _initializingDrawables = new List<DrawableElement>();
+        private readonly List<DrawableElement> _allShadowCasters = new List<DrawableElement>();
+        // ReSharper restore CollectionNeverQueried.Local
         private readonly List<DrawableElement> _allDrawables = new List<DrawableElement>();
         private readonly List<Camera> _allCameras = new List<Camera>();
-        private readonly List<DrawableElement> _allShadowCasters = new List<DrawableElement>();
         private readonly List<Action<Camera, SceneRenderer>> _customDrawActions = new List<Action<Camera, SceneRenderer>>();
 
         private readonly GraphicsDevice _device;
@@ -303,11 +305,11 @@ namespace Pokemon3D.Rendering.Compositor
             {
                 _device.Clear(ClearOptions.DepthBuffer | ClearOptions.Target, camera.ClearColor.Value, camera.DepthClear.Value, 0);
             }
-            else if(clearColor && !clearDepth)
+            else if(clearColor)
             {
                 _device.Clear(ClearOptions.Target, camera.ClearColor.Value, 1.0f, 0);
             }
-            else if(!clearColor && clearDepth)
+            else if(clearDepth)
             {
                 _device.Clear(ClearOptions.DepthBuffer, Color.Black, camera.DepthClear.Value, 0);
             }

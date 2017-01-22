@@ -97,15 +97,12 @@ namespace Pokemon3D.Scripting.Types
 
         internal override string TypeOf()
         {
-            return LITERAL_TYPE_FUNCTION;
+            return LiteralTypeFunction;
         }
 
         internal override double SizeOf()
         {
-            if (HasBuiltInMethod)
-                return 1;
-            else
-                return Body.Length;
+            return HasBuiltInMethod ? 1 : Body.Length;
         }
 
         private const string FunctionSourceFormat = "function({0}) {{ {1} }}";
@@ -126,15 +123,7 @@ namespace Pokemon3D.Scripting.Types
                 }
             }
 
-            string bodySource;
-            if (HasBuiltInMethod)
-            {
-                bodySource = FunctionNativeCodeSource;
-            }
-            else
-            {
-                bodySource = Body;
-            }
+            var bodySource = HasBuiltInMethod ? FunctionNativeCodeSource : Body;
 
             return string.Format(FunctionSourceFormat, paramSource, bodySource);
         }
@@ -169,7 +158,7 @@ namespace Pokemon3D.Scripting.Types
                 }
                 else
                 {
-                    var dotNetParams = parameters.Select(p => ScriptOutAdapter.Translate(p));
+                    var dotNetParams = parameters.Select(ScriptOutAdapter.Translate);
                     var dotNetReturnObj = DotNetMethod(ScriptOutAdapter.Translate(caller), new ScriptObjectLink(processor, caller), dotNetParams.ToArray());
                     functionReturnObject = ScriptInAdapter.Translate(processor, dotNetReturnObj);
                 }
@@ -178,14 +167,8 @@ namespace Pokemon3D.Scripting.Types
             {
                 for (var i = 0; i < _parameters.Length; i++)
                 {
-                    if (parameters.Length > i)
-                    {
-                        functionProcessor.Context.AddVariable(_parameters[i], parameters[i]);
-                    }
-                    else
-                    {
-                        functionProcessor.Context.AddVariable(_parameters[i], functionProcessor.Undefined);
-                    }
+                    functionProcessor.Context.AddVariable(_parameters[i],
+                        parameters.Length > i ? parameters[i] : functionProcessor.Undefined);
                 }
 
                 functionProcessor.Context.This = This;

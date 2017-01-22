@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common;
 using Pokemon3D.Common.Extensions;
-using Pokemon3D.GameCore;
 using Pokemon3D.GameModes;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
@@ -114,8 +113,10 @@ namespace Pokemon3D.Entities.System.Components
 
         public override EntityComponent Clone(Entity target)
         {
-            var component = new TilemapEntityComponent(target);
-            component._drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(target.IsInitializing);
+            var component = new TilemapEntityComponent(target)
+            {
+                _drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(target.IsInitializing)
+            };
             component._drawableElement.Mesh = _drawableElement.Mesh;
             component._drawableElement.Material = _drawableElement.Material;
             component.IsActive = target.IsActive;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Pokemon3D.GameJolt.API_Calls
+namespace Pokemon3D.GameJolt
 {
     public partial class Api
     {
@@ -16,9 +16,7 @@ namespace Pokemon3D.GameJolt.API_Calls
                 /// </summary>
                 public static ApiCall Open(string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string> {{"username", username}, {"user_token", token}};
                     return new ApiCall("sessions/open", parameters);
                 }
 
@@ -27,9 +25,7 @@ namespace Pokemon3D.GameJolt.API_Calls
                 /// </summary>
                 public static ApiCall Ping(string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string> {{"username", username}, {"user_token", token}};
                     return new ApiCall("sessions/ping", parameters);
                 }
 
@@ -38,9 +34,7 @@ namespace Pokemon3D.GameJolt.API_Calls
                 /// </summary>
                 public static ApiCall Close(string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string> {{"username", username}, {"user_token", token}};
                     return new ApiCall("sessions/close", parameters);
                 }
             }

@@ -71,15 +71,6 @@ namespace Pokemon3D.Common.ScriptPipeline
         /// <summary>
         /// Returns a type contract that returns true for Ensure methods for both numberic types <see cref="double"/> and <see cref="int"/>.
         /// </summary>
-        public static Type[] Number
-        {
-            get
-            {
-                if (_numberTypeBuffer == null)
-                    _numberTypeBuffer = new[] { typeof(double), typeof(int) };
-
-                return _numberTypeBuffer;
-            }
-        }
+        public static Type[] Number => _numberTypeBuffer ?? (_numberTypeBuffer = new[] {typeof(double), typeof(int)});
     }
 }

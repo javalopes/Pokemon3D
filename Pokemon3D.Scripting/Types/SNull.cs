@@ -17,17 +17,17 @@
 
         internal override string ToScriptObject()
         {
-            return LITERAL_NULL;
+            return LiteralNull;
         }
 
         internal override string ToScriptSource()
         {
-            return LITERAL_NULL;
+            return LiteralNull;
         }
 
         internal override SString ToString(ScriptProcessor processor)
         {
-            return processor.CreateString(LITERAL_NULL);
+            return processor.CreateString(LiteralNull);
         }
 
         internal override SBool ToBool(ScriptProcessor processor)
@@ -42,7 +42,7 @@
 
         internal override string TypeOf()
         {
-            return LITERAL_NULL;
+            return LiteralNull;
         }
 
         internal override double SizeOf()

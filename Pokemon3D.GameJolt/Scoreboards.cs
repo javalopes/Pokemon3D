@@ -30,9 +30,11 @@ namespace Pokemon3D.GameJolt
                     if (scoreCount > 100)
                         scoreCount = 100;
 
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("table_id", tableId);
-                    parameters.Add("limit", scoreCount.ToString());
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"table_id", tableId},
+                        {"limit", scoreCount.ToString()}
+                    };
                     return new ApiCall("scores", parameters);
                 }
 
@@ -43,9 +45,11 @@ namespace Pokemon3D.GameJolt
                 /// <param name="scoreSortValue">The sort value of the score for which the rank should get returned.</param>
                 public static ApiCall FetchScoreRank(string tableId, int scoreSortValue)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("table_id", tableId);
-                    parameters.Add("sort", scoreSortValue.ToString());
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"table_id", tableId},
+                        {"sort", scoreSortValue.ToString()}
+                    };
                     return new ApiCall("scores/get-rank", parameters);
                 }
 
@@ -60,13 +64,15 @@ namespace Pokemon3D.GameJolt
                 /// <param name="token"></param>
                 public static ApiCall AddScoreUser(string tableId, string score, int scoreSortValue, string extraData, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("table_id", tableId);
-                    parameters.Add("score", score);
-                    parameters.Add("sort", scoreSortValue.ToString());
-                    parameters.Add("extra_data", extraData);
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"table_id", tableId},
+                        {"score", score},
+                        {"sort", scoreSortValue.ToString()},
+                        {"extra_data", extraData},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("scores/add", parameters);
                 }
 
@@ -80,12 +86,14 @@ namespace Pokemon3D.GameJolt
                 /// <param name="extraData">Extra data associated with this score. It will not be shown publicly with the score.</param>
                 public static ApiCall AddScoreGuest(string tableId, string score, int scoreSortValue, string guestName, string extraData)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("table_id", tableId);
-                    parameters.Add("score", score);
-                    parameters.Add("sort", scoreSortValue.ToString());
-                    parameters.Add("extra_data", extraData);
-                    parameters.Add("guest", guestName);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"table_id", tableId},
+                        {"score", score},
+                        {"sort", scoreSortValue.ToString()},
+                        {"extra_data", extraData},
+                        {"guest", guestName}
+                    };
                     return new ApiCall("scores/add", parameters);
                 }
             }

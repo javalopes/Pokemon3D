@@ -2,17 +2,17 @@
 {
     internal class ErrorPrototype : Prototype
     {
-        internal const string MEMBER_NAME_MESSAGE = "message";
-        internal const string MEMBER_NAME_TYPE = "type";
-        internal const string MEMBER_NAME_LINE = "line";
+        internal const string MemberNameMessage = "message";
+        internal const string MemberNameType = "type";
+        internal const string MemberNameLine = "line";
 
         public ErrorPrototype(ScriptProcessor processor) : base("Error")
         {
-            Constructor = new PrototypeMember(ClassMethodCtor, new SFunction(constructor));
+            Constructor = new PrototypeMember(ClassMethodCtor, new SFunction(ConstructorCall));
 
-            AddMember(processor, new PrototypeMember(MEMBER_NAME_MESSAGE, processor.Undefined));
-            AddMember(processor, new PrototypeMember(MEMBER_NAME_TYPE, processor.Undefined));
-            AddMember(processor, new PrototypeMember(MEMBER_NAME_LINE, processor.Undefined));
+            AddMember(processor, new PrototypeMember(MemberNameMessage, processor.Undefined));
+            AddMember(processor, new PrototypeMember(MemberNameType, processor.Undefined));
+            AddMember(processor, new PrototypeMember(MemberNameLine, processor.Undefined));
         }
 
         protected override SProtoObject CreateBaseObject()
@@ -20,52 +20,40 @@
             return new SError();
         }
 
-        private static SObject constructor(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        private static SObject ConstructorCall(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
             var obj = (SError)instance;
 
             if (parameters.Length > 0)
             {
-                SString message;
+                var stringParameter = parameters[0] as SString;
+                var message = stringParameter ?? parameters[0].ToString(processor);
 
-                if (parameters[0] is SString)
-                    message = (SString)parameters[0];
-                else
-                    message = parameters[0].ToString(processor);
-
-                obj.Members[MEMBER_NAME_MESSAGE].Data = message;
+                obj.Members[MemberNameMessage].Data = message;
             }
 
             if (parameters.Length > 1)
             {
-                SString errorType;
+                var stringParameter = parameters[1] as SString;
+                var errorType = stringParameter ?? parameters[1].ToString(processor);
 
-                if (parameters[1] is SString)
-                    errorType = (SString)parameters[1];
-                else
-                    errorType = parameters[1].ToString(processor);
-
-                obj.Members[MEMBER_NAME_TYPE].Data = errorType;
+                obj.Members[MemberNameType].Data = errorType;
             }
             else
             {
-                obj.Members[MEMBER_NAME_TYPE].Data = processor.CreateString("UserError");
+                obj.Members[MemberNameType].Data = processor.CreateString("UserError");
             }
 
             if (parameters.Length > 2)
             {
-                SNumber errorLine;
+                var line = parameters[2] as SNumber;
+                var errorLine = line ?? parameters[2].ToNumber(processor);
 
-                if (parameters[2] is SNumber)
-                    errorLine = (SNumber)parameters[2];
-                else
-                    errorLine = parameters[2].ToNumber(processor);
-
-                obj.Members[MEMBER_NAME_LINE].Data = errorLine;
+                obj.Members[MemberNameLine].Data = errorLine;
             }
             else
             {
-                obj.Members[MEMBER_NAME_LINE].Data = processor.CreateNumber(-1);
+                obj.Members[MemberNameLine].Data = processor.CreateNumber(-1);
             }
 
             return obj;

@@ -156,12 +156,12 @@ namespace Pokemon3D.Scripting
         /// <summary>
         /// The undefined object.
         /// </summary>
-        internal SObject Undefined => Context.GetVariable(SObject.LITERAL_UNDEFINED).Data;
+        internal SObject Undefined => Context.GetVariable(SObject.LiteralUndefined).Data;
 
         /// <summary>
         /// The null "object".
         /// </summary>
-        internal SObject Null => Context.GetVariable(SObject.LITERAL_NULL).Data;
+        internal SObject Null => Context.GetVariable(SObject.LiteralNull).Data;
 
         /// <summary>
         /// Creates an instance of the string primitive.
@@ -483,27 +483,27 @@ namespace Pokemon3D.Scripting
             double dblResult;
             SObject returnObject;
 
-            if (exp == SObject.LITERAL_NULL)
+            if (exp == SObject.LiteralNull)
             {
                 returnObject = Null;
             }
-            else if (exp == SObject.LITERAL_UNDEFINED)
+            else if (exp == SObject.LiteralUndefined)
             {
                 returnObject = Undefined;
             }
-            else if (exp == SObject.LITERAL_BOOL_FALSE)
+            else if (exp == SObject.LiteralBoolFalse)
             {
                 returnObject = CreateBool(false);
             }
-            else if (exp == SObject.LITERAL_BOOL_TRUE)
+            else if (exp == SObject.LiteralBoolTrue)
             {
                 returnObject = CreateBool(true);
             }
-            else if (exp == SObject.LITERAL_NAN)
+            else if (exp == SObject.LiteralNan)
             {
                 returnObject = CreateNumber(double.NaN);
             }
-            else if (exp == SObject.LITERAL_THIS)
+            else if (exp == SObject.LiteralThis)
             {
                 returnObject = Context.This;
             }

@@ -9,34 +9,22 @@ namespace Pokemon3D.Scripting.Types
     {
         private static Tuple<double, double> GetNumericOperatorParameters(ScriptProcessor processor, SObject left, SObject right)
         {
-            double numLeft, numRight;
+            var numberLeftAsNumber = left as SNumber;
+            var numLeft = numberLeftAsNumber?.Value ?? left.ToNumber(processor).Value;
 
-            if (left is SNumber)
-                numLeft = ((SNumber)left).Value;
-            else
-                numLeft = left.ToNumber(processor).Value;
-
-            if (right is SNumber)
-                numRight = ((SNumber)right).Value;
-            else
-                numRight = right.ToNumber(processor).Value;
+            var numberRightAsNumber = right as SNumber;
+            var numRight = numberRightAsNumber?.Value ?? right.ToNumber(processor).Value;
 
             return new Tuple<double, double>(numLeft, numRight);
         }
 
         private static Tuple<bool, bool> GetBooleanicOperatorParameters(ScriptProcessor processor, SObject left, SObject right)
         {
-            bool boolLeft, boolRight;
+            var leftAsBool = left as SBool;
+            var boolLeft = leftAsBool?.Value ?? left.ToBool(processor).Value;
 
-            if (left is SBool)
-                boolLeft = ((SBool)left).Value;
-            else
-                boolLeft = left.ToBool(processor).Value;
-
-            if (right is SBool)
-                boolRight = ((SBool)right).Value;
-            else
-                boolRight = right.ToBool(processor).Value;
+            var rightAsBool = right as SBool;
+            var boolRight = rightAsBool?.Value ?? right.ToBool(processor).Value;
 
             return new Tuple<bool, bool>(boolLeft, boolRight);
         }
@@ -45,26 +33,18 @@ namespace Pokemon3D.Scripting.Types
         {
             if (left is SString || right is SString)
             {
-                string strLeft, strRight;
+                var leftAsString = left as SString;
+                var strLeft = leftAsString != null ? leftAsString.Value : left.ToString(processor).Value;
 
-                if (left is SString)
-                    strLeft = ((SString)left).Value;
-                else
-                    strLeft = left.ToString(processor).Value;
-
-                if (right is SString)
-                    strRight = ((SString)right).Value;
-                else
-                    strRight = right.ToString(processor).Value;
+                var rightAsString = right as SString;
+                var strRight = rightAsString != null ? rightAsString.Value : right.ToString(processor).Value;
 
                 return "\"" + strLeft + strRight + "\"";
             }
-            else
-            {
-                var numbers = GetNumericOperatorParameters(processor, left, right);
 
-                return SNumber.ConvertToScriptString(numbers.Item1 + numbers.Item2);
-            }
+            var numbers = GetNumericOperatorParameters(processor, left, right);
+
+            return SNumber.ConvertToScriptString(numbers.Item1 + numbers.Item2);
         }
 
         internal static string SubtractOperator(ScriptProcessor processor, SObject left, SObject right)
@@ -86,11 +66,8 @@ namespace Pokemon3D.Scripting.Types
         /// </summary>
         internal static SObject NegateNumber(ScriptProcessor processor, SObject obj)
         {
-            double number;
-            if (obj is SNumber)
-                number = ((SNumber)obj).Value;
-            else
-                number = obj.ToNumber(processor).Value;
+            var sNumber = obj as SNumber;
+            var number = sNumber?.Value ?? obj.ToNumber(processor).Value;
 
             return processor.CreateNumber(number * -1);
         }
@@ -99,8 +76,8 @@ namespace Pokemon3D.Scripting.Types
         {
             var numbers = GetNumericOperatorParameters(processor, left, right);
 
-            if (numbers.Item2 == 0D) // Catch division by 0 by returning infinity (wtf -> what a terrible feature).
-                return SObject.LITERAL_INFINITY;
+            if (Math.Abs(numbers.Item2) < double.Epsilon) // Catch division by 0 by returning infinity (wtf -> what a terrible feature).
+                return SObject.LiteralInfinity;
 
             return SNumber.ConvertToScriptString(numbers.Item1 / numbers.Item2);
         }
@@ -109,8 +86,8 @@ namespace Pokemon3D.Scripting.Types
         {
             var numbers = GetNumericOperatorParameters(processor, left, right);
 
-            if (numbers.Item2 == 0D) // Because, when we divide by 0, we get Infinity, but when we do (x % 0), we get NaN. Great.
-                return SObject.LITERAL_NAN;
+            if (Math.Abs(numbers.Item2) < double.Epsilon) // Because, when we divide by 0, we get Infinity, but when we do (x % 0), we get NaN. Great.
+                return SObject.LiteralNan;
 
             return SNumber.ConvertToScriptString(numbers.Item1 % numbers.Item2);
         }
@@ -131,34 +108,31 @@ namespace Pokemon3D.Scripting.Types
         {
             // Only variables can be incremented:
 
-            if (obj is SVariable)
+            var variable = obj as SVariable;
+            if (variable != null)
             {
-                var svar = (SVariable)obj;
+                var svar = variable;
                 svar.Data = processor.CreateNumber(svar.Data.ToNumber(processor).Value + 1D);
                 return svar.Identifier;
             }
-            else
-            {
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxInvalidIncrement);
-                return "";
-            }
+            processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxInvalidIncrement);
+            return "";
         }
 
         internal static string DecrementOperator(ScriptProcessor processor, SObject obj)
         {
             // Only variables can be decremented:
 
-            if (obj is SVariable)
+            var variable = obj as SVariable;
+            if (variable != null)
             {
-                var svar = (SVariable)obj;
+                var svar = variable;
                 svar.Data = processor.CreateNumber(svar.Data.ToNumber(processor).Value - 1D);
                 return svar.Identifier;
             }
-            else
-            {
-                processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxInvalidDecrement);
-                return "";
-            }
+
+            processor.ErrorHandler.ThrowError(ErrorType.SyntaxError, ErrorHandler.MessageSyntaxInvalidDecrement);
+            return "";
         }
 
         internal static string EqualsOperator(ScriptProcessor processor, SObject left, SObject right)

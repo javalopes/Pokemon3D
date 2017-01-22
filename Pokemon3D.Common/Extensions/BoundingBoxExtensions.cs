@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+// ReSharper disable ForCanBeConvertedToForeach
 
 namespace Pokemon3D.Common.Extensions
 {

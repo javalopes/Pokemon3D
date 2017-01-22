@@ -4,7 +4,7 @@
     {
         private static readonly object LockObject = new object();
 
-        private static int _currentMaxId = 0;
+        private static int _currentMaxId;
 
         public int Id { get; }
 

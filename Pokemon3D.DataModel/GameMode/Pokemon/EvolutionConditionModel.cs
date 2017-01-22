@@ -17,10 +17,7 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
         /// <summary>
         /// The state to check for this condition.
         /// </summary>
-        public EvolutionConditionType ConditionType
-        {
-            get { return ConvertStringToEnum<EvolutionConditionType>(_conditionType); }
-        }
+        public EvolutionConditionType ConditionType => ConvertStringToEnum<EvolutionConditionType>(_conditionType);
 
         /// <summary>
         /// The condition that has to be reached with the value returned from the condition type.
@@ -40,10 +37,7 @@ namespace Pokemon3D.DataModel.GameMode.Pokemon
         /// <summary>
         /// The trigger that initiates the check for this condition.
         /// </summary>
-        public EvolutionTrigger Trigger
-        {
-            get { return ConvertStringToEnum<EvolutionTrigger>(_trigger); }
-        }
+        public EvolutionTrigger Trigger => ConvertStringToEnum<EvolutionTrigger>(_trigger);
 
         public override object Clone()
         {

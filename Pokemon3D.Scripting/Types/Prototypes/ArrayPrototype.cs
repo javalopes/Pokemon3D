@@ -6,11 +6,11 @@ namespace Pokemon3D.Scripting.Types.Prototypes
 {
     internal class ArrayPrototype : Prototype
     {
-        private const string ERROR_SINGLE_MULTIPLE_ELEMENTS = "The sequence contains multiple matching elements.";
+        private const string ErrorSingleMultipleElements = "The sequence contains multiple matching elements.";
 
         public ArrayPrototype() : base("Array")
         {
-            Constructor = new PrototypeMember("constructor", new SFunction(constructor));
+            base.Constructor = new PrototypeMember("Constructor", new SFunction(Constructor));
         }
 
         protected override SProtoObject CreateBaseObject()
@@ -18,7 +18,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
             return new SArray();
         }
 
-        private static SObject constructor(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
+        private static SObject Constructor(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
             var arr = (SArray)instance;
 
@@ -216,7 +216,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 if (arr.ArrayMembers.Length == 1)
                     return arr.ArrayMembers[0];
                 else
-                    return processor.ErrorHandler.ThrowError(ErrorType.UserError, ERROR_SINGLE_MULTIPLE_ELEMENTS);
+                    return processor.ErrorHandler.ThrowError(ErrorType.UserError, ErrorSingleMultipleElements);
             }
 
             if (parameters.Length >= 1)
@@ -224,12 +224,9 @@ namespace Pokemon3D.Scripting.Types.Prototypes
                 var arr = (SArray)instance;
                 var comparer = (SFunction)Unbox(parameters[0]);
 
-                var result = arr.ArrayMembers.Where(m => ((SBool)comparer.Call(processor, This, This, new[] { m })).Value);
+                var result = arr.ArrayMembers.Where(m => ((SBool)comparer.Call(processor, This, This, new[] { m })).Value).ToArray();
 
-                if (result.Count() == 1)
-                    return result.ElementAt(0);
-                else
-                    return processor.ErrorHandler.ThrowError(ErrorType.UserError, ERROR_SINGLE_MULTIPLE_ELEMENTS);
+                return result.Length == 1 ? result.ElementAt(0) : processor.ErrorHandler.ThrowError(ErrorType.UserError, ErrorSingleMultipleElements);
             }
 
             return processor.Undefined;
@@ -276,7 +273,7 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         {
             if (parameters.Length > 0)
             {
-                var arr = instance as SArray;
+                var arr = (SArray) instance;
                 var addItems = new List<SObject>(arr.ArrayMembers);
                 foreach (var param in parameters)
                 {
@@ -296,8 +293,8 @@ namespace Pokemon3D.Scripting.Types.Prototypes
         [BuiltInMethod(FunctionType = FunctionUsageType.Default, MethodName = "pop")]
         public static SObject Pop(ScriptProcessor processor, SObject instance, SObject This, SObject[] parameters)
         {
-            var arr = instance as SArray;
-
+            var arr = (SArray)instance;
+    
             if (arr.ArrayMembers.Length > 0)
             {
                 var newItems = new SObject[arr.ArrayMembers.Length - 1];

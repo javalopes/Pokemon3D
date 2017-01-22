@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.IO;
 
@@ -13,7 +9,7 @@ namespace Pokemon3D.DataModel.Serialization
     /// </summary>
     class XmlDataSerializer<T> : DataSerializer<T>
     {
-        private const string XML_SCHEMA_INSTANCE = " xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"";
+        private const string XmlSchemaInstance = " xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"";
 
         public T FromByteArray(byte[] data)
         {
@@ -62,10 +58,10 @@ namespace Pokemon3D.DataModel.Serialization
 
             // Create stream reader, read string and return it.
             var sr = new StreamReader(memStream);
-            string returnXml = sr.ReadToEnd();
+            var returnXml = sr.ReadToEnd();
 
             // we want to remove the instance note on this, so we do this the dirty way, as there is no other way...
-            return returnXml.Replace(XML_SCHEMA_INSTANCE, "");
+            return returnXml.Replace(XmlSchemaInstance, "");
         }
     }
 }

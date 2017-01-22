@@ -1,5 +1,10 @@
 ﻿namespace Pokemon3D.UI
 {
+    class PokemonProfile
+    {
+        
+    }
+
     //class PokemonProfile : UiElement
     //{
     //    private Vector2 _position;

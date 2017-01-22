@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+// ReSharper disable StaticMemberInGenericType
 
 namespace Pokemon3D.Common
 {
@@ -10,7 +11,7 @@ namespace Pokemon3D.Common
     public abstract class Singleton<T> where T : class
     {
         private static volatile T _instance;
-        private static readonly object _lockObject = new object();
+        private static readonly object LockObject = new object();
 
         /// <summary>
         /// The instance of this singleton class.
@@ -26,20 +27,19 @@ namespace Pokemon3D.Common
 
         private static void EnsureInstanceExists()
         {
-            lock (_lockObject)
+            lock (LockObject)
             {
-                if (_instance == null)
+                if (_instance != null) return;
+                var singletonType = typeof(T);
+
+                //Ensure there are no public constructors...
+                if (singletonType.GetConstructors(BindingFlags.Public).Length > 0)
                 {
-                    var singletonType = typeof(T);
-
-                    //Ensure there are no public constructors...
-                    if (singletonType.GetConstructors(BindingFlags.Public).Length > 0)
-                    {
-                        throw new InvalidOperationException(string.Format("'{0}' can be instanciated multiple time because of public constructor.", singletonType.Name));
-                    }
-
-                    _instance = (T)Activator.CreateInstance(singletonType, true);
+                    throw new InvalidOperationException(
+                        $"'{singletonType.Name}' can be instanciated multiple time because of public constructor.");
                 }
+
+                _instance = (T)Activator.CreateInstance(singletonType, true);
             }
         }
     }

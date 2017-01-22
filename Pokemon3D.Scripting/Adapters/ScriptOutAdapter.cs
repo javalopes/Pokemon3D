@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+// ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 
 namespace Pokemon3D.Scripting.Adapters
 {
@@ -19,66 +20,28 @@ namespace Pokemon3D.Scripting.Adapters
         public static object Translate(SObject obj)
         {
             // todo: C# 7: put a swtich statement type match instead of aweful if case blocks.
-            if (obj is SBool)
-            {
-                return ((SBool)obj).Value;
-            }
-            else if (obj is SString)
-            {
-                return ((SString)obj).Value;
-            }
-            else if (obj is SNumber)
-            {
-                return TranslateNumber((SNumber)obj);
-            }
-            else if (obj is SArray)
-            {
-                return TranslateArray((SArray)obj);
-            }
-            else if (obj is SNull)
-            {
-                return null;
-            }
-            else if (obj is SUndefined)
-            {
-                return obj;
-            }
-            else if (obj is SFunction)
-            {
-                return TranslateFunction((SFunction)obj);
-            }
-            else if (obj is SError)
-            {
-                return TranslateError((SError)obj);
-            }
-            else if (obj is SUndefined)
-            {
-                return NetUndefined.Instance;
-            }
-            else if ((obj as SProtoObject)?.Prototype?.MappedType != null)
-            {
-                return Translate((SProtoObject)obj, ((SProtoObject)obj).Prototype.MappedType);
-            }
-            else if (obj is SProtoObject)
-            {
-                return TranslateDynamic((SProtoObject)obj);
-            }
-            else
-            {
-                return obj.ToScriptSource();
-            }
+            if (obj is SBool) return ((SBool)obj).Value;
+            if (obj is SString) return ((SString)obj).Value;
+            if (obj is SNumber) return TranslateNumber((SNumber)obj);
+            if (obj is SArray) return TranslateArray((SArray)obj);
+            if (obj is SNull) return null;
+            if (obj is SUndefined) return obj;
+            if (obj is SFunction) return TranslateFunction((SFunction)obj);
+            if (obj is SError) return TranslateError((SError)obj);
+            if (obj is SUndefined) return NetUndefined.Instance;
+            if ((obj as SProtoObject)?.Prototype?.MappedType != null) return Translate((SProtoObject)obj, ((SProtoObject)obj).Prototype.MappedType);
+            if (obj is SProtoObject) return TranslateDynamic((SProtoObject)obj);
+
+            return obj.ToScriptSource();
         }
 
         private static object TranslateNumber(SNumber obj)
         {
             var value = obj.Value;
 
-            if (Math.Abs(value % 1) < double.Epsilon)
-                return (int)value;
-            else
-                return value;
+            return Math.Abs(value%1) < double.Epsilon ? (int) value : value;
         }
-        
+
         private static object TranslateArray(SArray obj)
         {
             return obj.ArrayMembers.Select(Translate).ToArray();
@@ -110,12 +73,9 @@ namespace Pokemon3D.Scripting.Adapters
 
         private static object TranslateFunction(SFunction obj)
         {
-            if (obj.Method != null)
-                return obj.Method;
-            else if (obj.DotNetMethod != null)
-                return obj.DotNetMethod;
-            else
-                return obj.ToScriptSource();
+            if (obj.Method != null) return obj.Method;
+            if (obj.DotNetMethod != null) return obj.DotNetMethod;
+            return obj.ToScriptSource();
         }
 
         /// <summary>
