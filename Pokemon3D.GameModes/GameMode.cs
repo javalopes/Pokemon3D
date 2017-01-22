@@ -42,6 +42,8 @@ namespace Pokemon3D.GameModes
 
         public bool IsValid { get; }
 
+        public SaveGame SaveGame { get; private set; }
+
         public GraphicsDevice GraphicsDevice => GameContext.GetService<GraphicsDevice>();
 
         /// <summary>
@@ -60,6 +62,12 @@ namespace Pokemon3D.GameModes
             }
 
             IsValid = true;
+        }
+
+        public void LoadSaveGame(SaveGame saveGame)
+        {
+            SaveGame = saveGame;
+            saveGame.Load(this);
         }
 
         public void Preload()

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Pokemon3D.Collisions;
 using Pokemon3D.Screens;
 using Pokemon3D.ScriptPipeline;
@@ -87,7 +88,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public override EntityComponent Clone(Entity target)
         {
-            throw new global::System.NotImplementedException();
+            throw new InvalidOperationException("Component cannot be cloned");
         }
     }
 }

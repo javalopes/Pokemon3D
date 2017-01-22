@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Pokemon3D.Rendering;
 using static Pokemon3D.GameProvider;
 
@@ -55,7 +56,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public override EntityComponent Clone(Entity target)
         {
-            throw new global::System.NotImplementedException();
+            throw new InvalidOperationException("Component cannot be cloned");
         }
 
         public override void Update(GameTime gameTime)

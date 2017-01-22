@@ -67,7 +67,7 @@ namespace Pokemon3D.Entities.Components
 
         public override EntityComponent Clone(Entity target)
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException("Component cannot be cloned");
         }
 
         public override void Update(GameTime gameTime)

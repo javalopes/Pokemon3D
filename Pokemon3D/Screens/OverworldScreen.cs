@@ -6,6 +6,7 @@ using Pokemon3D.GameModes;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.Transitions;
 using Pokemon3D.UI;
+using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.Screens
 {
@@ -29,18 +30,16 @@ namespace Pokemon3D.Screens
 
                 _renderStatisticsOverlay = AddOverlay(new UiOverlay());
                 _renderStatisticsOverlay.AddElement(new RenderStatisticsView(ActiveWorld));
-
-                //todo: repair
-                //GameProvider.GameInstance.LoadedSave = TestMock.CreateTempSave();
-                //GameProvider.GameInstance.LoadedSave.Load(GameProvider.GameInstance.GetService<GameModeManager>().ActiveGameMode);
+                
+                GameInstance.GetService<GameModeManager>().ActiveGameMode.LoadSaveGame(TestMock.CreateTempSave());
 
                 _isLoaded = true;
             }
 
-            _inputSystem = GameProvider.GameInstance.GetService<InputSystem.InputSystem>();
-            _screenManager = GameProvider.GameInstance.GetService<ScreenManager>();
+            _inputSystem = GameInstance.GetService<InputSystem.InputSystem>();
+            _screenManager = GameInstance.GetService<ScreenManager>();
 
-            GameProvider.GameInstance.GetService<EventAggregator>().GameEventRaised += OnGameEventRaised;
+            GameInstance.GetService<EventAggregator>().GameEventRaised += OnGameEventRaised;
         }
 
         private void OnGameEventRaised(GameEvent gameEvent)
@@ -52,7 +51,7 @@ namespace Pokemon3D.Screens
                 _isLoaded = false;
 
                 _screenManager.SetScreen(typeof(MainMenuScreen), typeof(SlideTransition));
-                GameProvider.GameInstance.GetService<GameModeManager>().UnloadGameMode();
+                GameInstance.GetService<GameModeManager>().UnloadGameMode();
             }
         }
 
@@ -76,7 +75,7 @@ namespace Pokemon3D.Screens
 
         public override void OnClosing()
         {
-            GameProvider.GameInstance.GetService<EventAggregator>().GameEventRaised -= OnGameEventRaised;
+            GameInstance.GetService<EventAggregator>().GameEventRaised -= OnGameEventRaised;
         }
     }
 }

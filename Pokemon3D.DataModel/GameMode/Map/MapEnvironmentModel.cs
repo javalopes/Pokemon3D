@@ -40,7 +40,7 @@ namespace Pokemon3D.DataModel.GameMode.Map
         public MapPokemonModel PokemonData;
 
         /// <summary>
-        /// Special rules for the map, like Safari Zone and Bug Catching Contest.
+        /// Special rules for the map, like Safari Zone and bugs Catching Contest.
         /// </summary>
         [DataMember(Order = 5)]
         public string[] MapRules;

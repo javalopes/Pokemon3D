@@ -75,7 +75,7 @@ namespace Pokemon3D.Rendering
                     UpdateLightMatrixForDirectionalLight(shadowCasters);
                     break;
                 case LightType.Point:
-                    throw new NotImplementedException();
+                    throw new InvalidOperationException("Point lights are not supported now");
                 default:
                     throw new ArgumentOutOfRangeException();
             }

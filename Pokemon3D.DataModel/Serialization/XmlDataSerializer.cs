@@ -13,7 +13,7 @@ namespace Pokemon3D.DataModel.Serialization
 
         public T FromByteArray(byte[] data)
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException("Currentlz not implemented");
         }
 
         public T FromString(string data)
