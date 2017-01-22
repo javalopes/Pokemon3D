@@ -7,7 +7,7 @@ namespace Pokemon3D.GameJolt
     /// <summary>
     /// A call to a Game Jolt API endpoint.
     /// </summary>
-    public class APICall
+    public class ApiCall
     {
         /// <summary>
         /// The API endpoint this call connects to.
@@ -19,9 +19,9 @@ namespace Pokemon3D.GameJolt
         /// </summary>
         internal Dictionary<string, string> Parameters { get; }
 
-        internal APICall(string endpointUrl) : this(endpointUrl, new Dictionary<string, string>()) { }
+        internal ApiCall(string endpointUrl) : this(endpointUrl, new Dictionary<string, string>()) { }
 
-        internal APICall(string endpointUrl, Dictionary<string, string> parameters)
+        internal ApiCall(string endpointUrl, Dictionary<string, string> parameters)
         {
             EndpointUrl = endpointUrl;
             Parameters = parameters;
@@ -33,7 +33,7 @@ namespace Pokemon3D.GameJolt
         /// <summary>
         /// Produces the url that corresponds to this API call.
         /// </summary>
-        internal string CreateUrl(API api)
+        internal string CreateUrl(Api api)
         {
             EndpointUrl = EndpointUrl.Trim('/');
 

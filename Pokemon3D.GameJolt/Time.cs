@@ -1,4 +1,4 @@
-﻿namespace Pokemon3D.GameJolt.API_Calls
+﻿namespace Pokemon3D.GameJolt
 {
     public partial class Api
     {

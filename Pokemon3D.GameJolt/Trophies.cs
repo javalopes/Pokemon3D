@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Pokemon3D.GameJolt.API_Calls
+namespace Pokemon3D.GameJolt
 {
     public partial class Api
     {
@@ -16,9 +16,7 @@ namespace Pokemon3D.GameJolt.API_Calls
                 /// </summary>
                 public static ApiCall FetchAll(string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string> {{"username", username}, {"user_token", token}};
                     return new ApiCall("trophies", parameters);
                 }
 
@@ -27,10 +25,12 @@ namespace Pokemon3D.GameJolt.API_Calls
                 /// </summary>
                 public static ApiCall FetchAchieved(string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("achieved", "true");
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"achieved", "true"},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("trophies", parameters);
                 }
 
@@ -39,10 +39,12 @@ namespace Pokemon3D.GameJolt.API_Calls
                 /// </summary>
                 public static ApiCall Fetch(string trophyId, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("trophy_id", trophyId);
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"trophy_id", trophyId},
+                        {"username", username},
+                        {"user_token", token}
+                    };
                     return new ApiCall("trophies", parameters);
                 }
 
@@ -51,15 +53,14 @@ namespace Pokemon3D.GameJolt.API_Calls
                 /// </summary>
                 public static ApiCall SetAchieved(bool achieved, string trophyId, string username, string token)
                 {
-                    var parameters = new Dictionary<string, string>();
-                    parameters.Add("trophy_id", trophyId);
-                    parameters.Add("username", username);
-                    parameters.Add("user_token", token);
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"trophy_id", trophyId},
+                        {"username", username},
+                        {"user_token", token}
+                    };
 
-                    if (achieved)
-                        return new ApiCall("trophies/add-achieved", parameters);
-                    else
-                        return new ApiCall("trophies/remove-achieved", parameters);
+                    return achieved ? new ApiCall("trophies/add-achieved", parameters) : new ApiCall("trophies/remove-achieved", parameters);
                 }
             }
         }

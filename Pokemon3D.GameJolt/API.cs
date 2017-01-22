@@ -10,29 +10,29 @@ namespace Pokemon3D.GameJolt
     /// <summary>
     /// Handles requests to the Game Jolt Game API.
     /// </summary>
-    public partial class API
+    public partial class Api
     {
-        private const string HOST = "api.gamejolt.com/api/game";
-        private const string VERSION = "v1_1";
+        private const string Host = "api.gamejolt.com/api/game";
+        private const string Version = "v1_1";
 
-        private const string FORMAT_CALL_URL = "http://{0}/{1}/batch/?game_id={2}&format={3}";
+        private const string FormatCallUrl = "http://{0}/{1}/batch/?game_id={2}&format={3}";
 
         /// <summary>
         /// The Id of the game.
         /// </summary>
-        public string GameId { get; private set; }
+        public string GameId { get; }
 
         /// <summary>
         /// The private key of the game. This is used to create the signature of the API requests.
         /// </summary>
-        public string GameKey { get; private set; }
+        public string GameKey { get; }
 
         /// <summary>
         /// Creates a new instance of the Game Jolt API interface.
         /// </summary>
         /// <param name="gameId">The id of the game.</param>
         /// <param name="gameKey">The private key of the game.</param>
-        public API(string gameId, string gameKey)
+        public Api(string gameId, string gameKey)
         {
             GameId = gameId;
             GameKey = gameKey;
@@ -46,12 +46,12 @@ namespace Pokemon3D.GameJolt
         /// <param name="responseHandler">The response handler method that accepts the response from the Game Jolt server as a <see cref="string"/>.</param>
         /// <param name="parallelProcessing">If the Game Jolt API should process the calls simultaniously.</param>
         /// <param name="stopOnError">If the Game Jolt API should stop processing, if an error occurred during one call.</param>
-        public void ExecuteCalls(APICall[] calls, ResponseFormat format, Action<string> responseHandler, bool parallelProcessing = true, bool stopOnError = false)
+        public void ExecuteCalls(ApiCall[] calls, ResponseFormat format, Action<string> responseHandler, bool parallelProcessing = true, bool stopOnError = false)
         {
             string formatStr = ResponseFormatToString(format);
 
             // build url from parameters:
-            string url = string.Format(FORMAT_CALL_URL, HOST, VERSION, GameId, formatStr);
+            string url = string.Format(FormatCallUrl, Host, Version, GameId, formatStr);
             if (parallelProcessing)
                 url += "&parallel=true";
             if (stopOnError)
@@ -64,7 +64,7 @@ namespace Pokemon3D.GameJolt
             // the request will be a POST request, and all actual api requests will be stored in the post data:
             StringBuilder postDataBuilder = new StringBuilder("data=");
 
-            foreach (APICall call in calls)
+            foreach (ApiCall call in calls)
             {
                 string callUrl = call.CreateUrl(this);
                 string callSignature = CreateSignature(callUrl);

@@ -12,10 +12,8 @@ using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering.UI;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Localization;
 using Pokemon3D.DataModel.GameCore;
-using Pokemon3D.InputSystem;
 using Pokemon3D.Rendering.Shapes;
 using Pokemon3D.ScriptPipeline;
 

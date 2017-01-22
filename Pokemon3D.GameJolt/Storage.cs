@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Pokemon3D.GameJolt.API_Calls
+namespace Pokemon3D.GameJolt
 {
     // this part of the API class contains methods that create API call instances.
 

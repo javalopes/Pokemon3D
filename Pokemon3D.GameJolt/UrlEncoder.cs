@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Pokemon3D.GameJolt
 {
@@ -27,16 +24,16 @@ namespace Pokemon3D.GameJolt
         // source taken from: http://referencesource.microsoft.com/#System.Web/Util/HttpEncoder.cs,aa1079312bd28b8c
         private static byte[] EncodeToBytes(string s, Encoding e)
         {
-            byte[] bytes = e.GetBytes(s);
-            int count = bytes.Length;
+            var bytes = e.GetBytes(s);
+            var count = bytes.Length;
             
-            int cSpaces = 0;
-            int cUnsafe = 0;
+            var cSpaces = 0;
+            var cUnsafe = 0;
 
             // count them first
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                char ch = (char)bytes[i];
+                var ch = (char)bytes[i];
 
                 if (ch == ' ')
                     cSpaces++;
@@ -52,11 +49,9 @@ namespace Pokemon3D.GameJolt
                 {
                     return bytes;
                 }
-                else {
-                    var subarray = new byte[count];
-                    Buffer.BlockCopy(bytes, 0, subarray, 0, count);
-                    return subarray;
-                }
+                var subarray = new byte[count];
+                Buffer.BlockCopy(bytes, 0, subarray, 0, count);
+                return subarray;
             }
 
             // expand not 'safe' characters into %XX, spaces to +s
