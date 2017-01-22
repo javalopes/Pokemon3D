@@ -40,7 +40,7 @@ namespace Pokemon3D.DataModel.Serialization
             {
                 // Exception occurs while loading the object due to malformed Xml.
                 // Throw exception and move up to handler class.
-                throw new DataLoadException(ex, data, typeof(T), DataType.Xml);
+                throw new DataLoadException(ex).AddData(data, typeof(T), DataType.Xml);
             }
         }
 

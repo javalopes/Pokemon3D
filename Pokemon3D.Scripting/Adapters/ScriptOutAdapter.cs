@@ -28,9 +28,11 @@ namespace Pokemon3D.Scripting.Adapters
             if (obj is SUndefined) return obj;
             if (obj is SFunction) return TranslateFunction((SFunction)obj);
             if (obj is SError) return TranslateError((SError)obj);
-            if (obj is SUndefined) return NetUndefined.Instance;
             if ((obj as SProtoObject)?.Prototype?.MappedType != null) return Translate((SProtoObject)obj, ((SProtoObject)obj).Prototype.MappedType);
             if (obj is SProtoObject) return TranslateDynamic((SProtoObject)obj);
+
+            //todo: resharper tells this is unreachable code. Please fix if he is right.
+            //if (obj is SUndefined) return NetUndefined.Instance;
 
             return obj.ToScriptSource();
         }

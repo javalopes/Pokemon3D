@@ -33,7 +33,7 @@ namespace Pokemon3D.DataModel.Serialization
             {
                 // Exception occurs while loading the object due to malformed Json.
                 // Throw exception and move up to handler class.
-                throw new DataLoadException(ex, data, typeof(T), DataType.Json);
+                throw new DataLoadException(ex).AddData(data, typeof(T), DataType.Json);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Pokemon3D.DataModel.Serialization
             {
                 // Exception occurs while loading the object due to malformed Json.
                 // Throw exception and move up to handler class.
-                throw new DataLoadException(ex, "", typeof(T), DataType.Json);
+                throw new DataLoadException(ex).AddData("", typeof(T), DataType.Json);
             }
         }
 

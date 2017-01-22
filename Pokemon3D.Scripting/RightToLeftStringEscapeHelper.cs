@@ -21,7 +21,7 @@ namespace Pokemon3D.Scripting
                 {
                     while (startIndex < Index)
                     {
-                        CheckNext();
+                        InternalCheckNext();
                     }
                 }
             }
@@ -34,25 +34,24 @@ namespace Pokemon3D.Scripting
 
         internal override void CheckStartAt(int startIndex)
         {
-            if (HasStringsValue)
+            if (!HasStringsValue) return;
+
+            if (startIndex > Index)
             {
-                if (startIndex > Index)
+                Index = Expression.Length - 1;
+                CheckStartAt(startIndex);
+            }
+            else
+            {
+                while (startIndex < Index)
                 {
-                    Index = Expression.Length - 1;
-                    CheckStartAt(startIndex);
-                }
-                else
-                {
-                    while (startIndex < Index)
-                    {
-                        CheckNext();
-                    }
                     CheckNext();
                 }
+                CheckNext();
             }
         }
 
-        protected override void CheckNext()
+        private void InternalCheckNext()
         {
             var t = Expression[Index];
 
@@ -88,6 +87,12 @@ namespace Pokemon3D.Scripting
             }
 
             Index--;
+
+        }
+
+        protected override void CheckNext()
+        {
+            InternalCheckNext();
         }
     }
 }
