@@ -61,7 +61,7 @@ namespace Pokemon3D.Entities
             overlayCamera.Camera.DepthStencilState = DepthStencilState.Default;
             overlayCamera.Camera.UseCulling = false;
 
-            GameInstance.GetService<EventAggregator>().GameEventRaised += GameInstanceOnGameEventRaised;
+            GameInstance.GetService<EventAggregator>().Subscribe<GameEvent>(GameInstanceOnGameEventRaised);
         }
 
         private void GameInstanceOnGameEventRaised(GameEvent gameEvent)

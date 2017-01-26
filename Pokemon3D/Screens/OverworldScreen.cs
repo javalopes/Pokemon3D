@@ -39,7 +39,7 @@ namespace Pokemon3D.Screens
             _inputSystem = GameInstance.GetService<InputSystem.InputSystem>();
             _screenManager = GameInstance.GetService<ScreenManager>();
 
-            GameInstance.GetService<EventAggregator>().GameEventRaised += OnGameEventRaised;
+            GameInstance.GetService<EventAggregator>().Subscribe<GameEvent>(OnGameEventRaised);
         }
 
         private void OnGameEventRaised(GameEvent gameEvent)
@@ -75,7 +75,7 @@ namespace Pokemon3D.Screens
 
         public override void OnClosing()
         {
-            GameInstance.GetService<EventAggregator>().GameEventRaised -= OnGameEventRaised;
+            GameInstance.GetService<EventAggregator>().Unsubscribe<GameEvent>(OnGameEventRaised);
         }
     }
 }
