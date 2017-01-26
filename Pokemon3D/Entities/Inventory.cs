@@ -60,8 +60,7 @@ namespace Pokemon3D.Entities
             if (GameInstance.GetService<InputSystem.InputSystem>().IsPressedOnce(ActionNames.OpenInventory))
             {
                 _inventoryOverlayEntity.IsActive = !_inventoryOverlayEntity.IsActive;
-
-                this.QueueGameEvent(_inventoryOverlayEntity.IsActive ? GameEvent.InventoryOpenend : GameEvent.InventoryClosed);
+                this.QueueGameEvent(GameEvent.Inventory, "Open", _inventoryOverlayEntity.IsActive);
             }
 
             if (_inventoryOverlayEntity.IsActive) _uiOverlay.Update(gameTime);

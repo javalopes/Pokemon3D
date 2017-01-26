@@ -5,9 +5,16 @@ namespace Pokemon3D
 {
     public static class ObjectExtensions
     {
-        public static void QueueGameEvent(this object sender, string name, TimeSpan? delay = null)
+        public static void QueueGameEvent(this object sender, string category, TimeSpan? delay = null)
         {
-            GameProvider.GameInstance.GetService<EventAggregator>().QueueGameEvent(new GameEvent(sender, name, delay.GetValueOrDefault(TimeSpan.Zero)));
+            GameProvider.GameInstance.GetService<EventAggregator>().QueueGameEvent(new GameEvent(sender, category, delay.GetValueOrDefault(TimeSpan.Zero)));
+        }
+
+        public static void QueueGameEvent(this object sender, string category, string property1, object value1, TimeSpan? delay = null)
+        {
+            var gameEvent = new GameEvent(sender, category, delay.GetValueOrDefault(TimeSpan.Zero))
+                                        .WithProperty(property1, value1);
+            GameProvider.GameInstance.GetService<EventAggregator>().QueueGameEvent(gameEvent);
         }
     }
 }

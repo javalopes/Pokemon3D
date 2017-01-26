@@ -55,13 +55,9 @@ namespace Pokemon3D.Entities.Components
 
         private void OnGameEventRaised(GameEvent gameEvent)
         {
-            if (gameEvent.Name == GameEvent.InventoryOpenend)
+            if (gameEvent.Category == GameEvent.Inventory)
             {
-                _isInputEnabled = false;
-            }
-            else if (gameEvent.Name == GameEvent.InventoryClosed)
-            {
-                _isInputEnabled = true;
+                _isInputEnabled = !gameEvent.GetProperty<bool>("Open");
             }
         }
 

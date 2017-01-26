@@ -66,13 +66,9 @@ namespace Pokemon3D.Entities
 
         private void GameInstanceOnGameEventRaised(GameEvent gameEvent)
         {
-            if (gameEvent.Name == GameEvent.InventoryOpenend)
+            if (gameEvent.Category == GameEvent.Inventory)
             {
-                _mainCameraComponent.Camera.PostProcess.IsActive = true;
-            }
-            else if (gameEvent.Name == GameEvent.InventoryClosed)
-            {
-                _mainCameraComponent.Camera.PostProcess.IsActive = false;
+                _mainCameraComponent.Camera.PostProcess.IsActive = gameEvent.GetProperty<bool>("Open");
             }
         }
 

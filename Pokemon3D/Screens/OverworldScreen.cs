@@ -44,7 +44,7 @@ namespace Pokemon3D.Screens
 
         private void OnGameEventRaised(GameEvent gameEvent)
         {
-            if (gameEvent.Name == GameEvent.GameQuitToMainMenu)
+            if (gameEvent.Category == GameEvent.GameQuitToMainMenu)
             {
                 ActiveWorld.Clear();
                 ActiveWorld = null;
