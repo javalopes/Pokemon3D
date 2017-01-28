@@ -18,13 +18,12 @@ namespace Pokemon3D.Screens
         private readonly RenderTarget2D _targetRenderTarget;
         private readonly Dictionary<Type, Screen> _screensByType;
         private readonly Dictionary<Type, ScreenTransition> _screenTransitionsByType;
+        private readonly GraphicsDevice _device;
 
         private bool _executingScreenTransition;
         private bool _quitGame;
         private ScreenTransition _currentTransition;
-        private readonly List<Screen> _activeOverlays;
-        private readonly GraphicsDevice _device;
-
+        
         public Screen CurrentScreen { get; private set; }
 
         public ScreenManager()
@@ -39,14 +38,8 @@ namespace Pokemon3D.Screens
 
             _screensByType = GetImplementationsOf<Screen>().ToDictionary(s => s, s => (Screen)Activator.CreateInstance(s));
             _screenTransitionsByType = GetImplementationsOf<ScreenTransition>().ToDictionary(s => s, s => (ScreenTransition)Activator.CreateInstance(s));
-            _activeOverlays = new List<Screen>();
         }
-
-        private static IEnumerable<Type> GetImplementationsOf<T>()
-        {
-            return typeof(T).Assembly.GetTypes().Where(t => typeof(T).IsAssignableFrom(t) && !t.IsAbstract);
-        }
-
+        
         /// <summary>
         /// Sets the current screen to a new screen instance.
         /// </summary>
@@ -54,13 +47,8 @@ namespace Pokemon3D.Screens
         {
             var oldScreen = CurrentScreen;
 
-            if (CurrentScreen != null)
-            {
-                CurrentScreen.OnClosing();
-                foreach (var overlays in _activeOverlays) overlays.OnClosing();
-            }
+            CurrentScreen?.OnClosing();
 
-            _activeOverlays.Clear();
             CurrentScreen = _screensByType[screenType];
             CurrentScreen.OnOpening(enterInformation);
 
@@ -70,50 +58,9 @@ namespace Pokemon3D.Screens
             }
         }
 
-        /// <summary>
-        /// Adds a screen on top of current screen.
-        /// </summary>
-        /// <param name="screenType">Screen type to add</param>
-        /// <param name="enterInformation">context information</param>
-        public void PushScreen(Type screenType, object enterInformation = null)
-        {
-            var overlay = _screensByType[screenType];
-            overlay.OnOpening(enterInformation);
-            _activeOverlays.Add(overlay);
-        }
-
-        /// <summary>
-        /// Removes current topmost popup screen.
-        /// </summary>
-        public void PopScreen()
-        {
-            if (_activeOverlays.Count == 0) throw new InvalidOperationException("There is no popup screen to remove.");
-            _activeOverlays.Remove(_activeOverlays.Last());
-        }
-
         public void NotifyQuitGame()
         {
             _quitGame = true;
-        }
-
-        private void PrerenderSourceAndTargetAndMakeTransition(Screen oldScreen, Screen currentScreen, Type transition)
-        {
-            _executingScreenTransition = true;
-            var currentRenderTarget = _device.GetRenderTargets();
-
-            _device.SetRenderTarget(_sourceRenderTarget);
-            oldScreen.OnEarlyDraw(new GameTime());
-            oldScreen.OnLateDraw(new GameTime());
-
-            _device.SetRenderTarget(_targetRenderTarget);
-            currentScreen.OnUpdate(new GameTime());
-            currentScreen.OnEarlyDraw(new GameTime());
-            GameInstance.GetService<SceneRenderer>().Draw();
-            currentScreen.OnLateDraw(new GameTime());
-
-            _device.SetRenderTargets(currentRenderTarget);
-            _currentTransition = _screenTransitionsByType[transition];
-            _currentTransition.StartTransition(_sourceRenderTarget, _targetRenderTarget);
         }
 
         /// <summary>
@@ -128,7 +75,6 @@ namespace Pokemon3D.Screens
             else
             {
                 CurrentScreen?.OnEarlyDraw(gameTime);
-                foreach (var overlay in _activeOverlays) overlay.OnEarlyDraw(gameTime);
             }
         }
 
@@ -144,7 +90,6 @@ namespace Pokemon3D.Screens
             else
             {
                 CurrentScreen?.OnLateDraw(gameTime);
-                foreach (var overlay in _activeOverlays) overlay.OnLateDraw(gameTime);
             }
         }
 
@@ -163,17 +108,34 @@ namespace Pokemon3D.Screens
             }
             else
             {
-                if (_activeOverlays.Any())
-                {
-                    _activeOverlays.Last().OnUpdate(gameTime);
-                }
-                else
-                {
-                    CurrentScreen?.OnUpdate(gameTime);
-                }
+                CurrentScreen?.OnUpdate(gameTime);
             }
 
             return !_quitGame;
+        }
+
+        private void PrerenderSourceAndTargetAndMakeTransition(Screen oldScreen, Screen currentScreen, Type transition)
+        {
+            _executingScreenTransition = true;
+            var currentRenderTarget = _device.GetRenderTargets();
+
+            _device.SetRenderTarget(_sourceRenderTarget);
+            oldScreen.OnEarlyDraw(new GameTime());
+            oldScreen.OnLateDraw(new GameTime());
+
+            _device.SetRenderTarget(_targetRenderTarget);
+            currentScreen.OnEarlyDraw(new GameTime());
+            GameInstance.GetService<SceneRenderer>().Draw();
+            currentScreen.OnLateDraw(new GameTime());
+
+            _device.SetRenderTargets(currentRenderTarget);
+            _currentTransition = _screenTransitionsByType[transition];
+            _currentTransition.StartTransition(_sourceRenderTarget, _targetRenderTarget);
+        }
+
+        private static IEnumerable<Type> GetImplementationsOf<T>()
+        {
+            return typeof(T).Assembly.GetTypes().Where(t => typeof(T).IsAssignableFrom(t) && !t.IsAbstract);
         }
     }
 }
