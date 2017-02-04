@@ -24,21 +24,11 @@ namespace Pokemon3D.GameCore
     /// </summary>
     internal class GameController : Game, GameContext
     {
-        /// <summary>
-        /// The singleton instance of the main GameController class.
-        /// </summary>
         public static GameController Instance { get; private set; }
 
-        /// <summary>The name of the game.</summary>
         public const string GameName = "Pokémon3D";
-        /// <summary>The current version of the game.</summary>
-        public const string Version = "1.0";
 
-        /// <summary>The development stage of the game.</summary>
         public const string DevelopmentStage = "Alpha";
-
-        /// <summary>The internal build number of the game. This number will increase with every release.</summary>
-        public const string InternalVersion = "89";
 
         public event EventHandler WindowSizeChanged;
         
@@ -55,6 +45,7 @@ namespace Pokemon3D.GameCore
         private ScreenManager _screenManager;
         private CollisionManager _collisionManager;
         private EventAggregator _eventAggregator;
+        private MessagerService _messengerService;
 
         public GameController()
         {
@@ -107,13 +98,11 @@ namespace Pokemon3D.GameCore
             RegisterService<TranslationProvider>(new TranslationProviderImp());
             _collisionManager = RegisterService(new CollisionManager());
             _eventAggregator = RegisterService(new EventAggregator());
+            _messengerService = RegisterService(new MessagerService());
 
             _notificationBarOverlay = new UiOverlay();
             RegisterService(_notificationBarOverlay.AddElement(new NotificationBar(400)));
             _notificationBarOverlay.Show();
-#if DEBUG_RENDERING
-            _collisionManager.DrawDebugShapes = true;
-#endif
 #if DEBUG
             GetService<ScreenManager>().SetScreen(typeof(MainMenuScreen));
 #else
@@ -124,66 +113,13 @@ namespace Pokemon3D.GameCore
             RegisterInputActions();
         }
 
-        private static InputActionModel CreateAxis(string name, InputType type,  string value)
-        {
-            return new InputActionModel
-            {
-                Name = name,
-                ActionsModel = new[]
-                {
-                    new MappedActionModel
-                    {
-                        InputType = type,
-                        IsAxis = true,
-                        AssingedValue = value
-                    }
-                }
-            };
-        }
-
-        private static InputActionModel CreateAction(string name, InputType type, string value)
-        {
-            return CreateAction(name, type, new[] {value});
-        }
-
-        private static InputActionModel CreateAction(string name, InputType type, string[] values)
-        {
-            return new InputActionModel
-            {
-                Name = name,
-                ActionsModel = values.Select(v =>
-                    new MappedActionModel
-                    {
-                        InputType = type,
-                        IsAxis = false,
-                        AssingedValue = v
-                    }
-                ).ToArray()
-            };
-        }
 
         private void RegisterInputActions()
         {
             if (_gameConfig.Data.InputActions == null)
             {
-                _gameConfig.Data.InputActions = new[]
-                {
-                    CreateAxis(ActionNames.LeftAxis, InputType.Keyboard, "A,D,W,S"),
-                    CreateAxis(ActionNames.LeftAxis, InputType.GamePad, "ThumbStickLeft"),
-                    CreateAxis(ActionNames.RightAxis,InputType.Keyboard, "Left,Right,Up,Down"),
-                    CreateAxis(ActionNames.RightAxis,InputType.GamePad, "ThumbStickRight"),
-                    CreateAction(ActionNames.SprintGodMode, InputType.Keyboard,"LeftShift"),
-                    CreateAction(ActionNames.StraveGodMode, InputType.Keyboard,"Space"),
-                    CreateAction(ActionNames.MenuUp, InputType.Keyboard,new[] { "Up", "W" }),
-                    CreateAction(ActionNames.MenuDown, InputType.Keyboard,new[] { "Down", "S" }),
-                    CreateAction(ActionNames.MenuUp, InputType.GamePad, "LeftThumbstickUp"),
-                    CreateAction(ActionNames.MenuDown, InputType.GamePad,"LeftThumbstickDown"),
-                    CreateAction(ActionNames.MenuAccept, InputType.Keyboard,new[] { "Enter", "Space" }),
-                    CreateAction(ActionNames.MenuAccept, InputType.GamePad,"A"),
-                    CreateAction(ActionNames.OpenInventory, InputType.Keyboard,"I"),
-                    CreateAction(ActionNames.OpenInventory, InputType.GamePad,"B"),
-                    CreateAction(ActionNames.ToggleRenderStatistics, InputType.Keyboard,"F12"),
-                };
+                GameLogger.Instance.Log(MessageType.Warning, "Default input mappings has been generated because has been empty in config file.");
+                _gameConfig.Data.InputActions = _inputSystem.CreateDefaultMappings();
                 _gameConfig.Save();
             }
 

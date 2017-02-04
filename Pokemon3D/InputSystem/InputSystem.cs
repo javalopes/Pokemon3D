@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.DataModel.GameCore;
+using Pokemon3D.GameCore;
 
 namespace Pokemon3D.InputSystem
 {
@@ -15,6 +16,28 @@ namespace Pokemon3D.InputSystem
         public KeyboardHandler KeyboardHandler { get; } = new KeyboardHandler();
         public GamePadHandler GamePadHandler { get; } = new GamePadHandler();
         public MouseHandler MouseHandler { get; } = new MouseHandler();
+
+        public InputActionModel[] CreateDefaultMappings()
+        {
+            return new[]
+            {
+                CreateAxis(ActionNames.LeftAxis, InputType.Keyboard, "A,D,W,S"),
+                CreateAxis(ActionNames.LeftAxis, InputType.GamePad, "ThumbStickLeft"),
+                CreateAxis(ActionNames.RightAxis,InputType.Keyboard, "Left,Right,Up,Down"),
+                CreateAxis(ActionNames.RightAxis,InputType.GamePad, "ThumbStickRight"),
+                CreateAction(ActionNames.SprintGodMode, InputType.Keyboard,"LeftShift"),
+                CreateAction(ActionNames.StraveGodMode, InputType.Keyboard,"Space"),
+                CreateAction(ActionNames.MenuUp, InputType.Keyboard,new[] { "Up", "W" }),
+                CreateAction(ActionNames.MenuDown, InputType.Keyboard,new[] { "Down", "S" }),
+                CreateAction(ActionNames.MenuUp, InputType.GamePad, "LeftThumbstickUp"),
+                CreateAction(ActionNames.MenuDown, InputType.GamePad,"LeftThumbstickDown"),
+                CreateAction(ActionNames.MenuAccept, InputType.Keyboard,new[] { "Enter", "Space" }),
+                CreateAction(ActionNames.MenuAccept, InputType.GamePad,"A"),
+                CreateAction(ActionNames.OpenInventory, InputType.Keyboard,"I"),
+                CreateAction(ActionNames.OpenInventory, InputType.GamePad,"B"),
+                CreateAction(ActionNames.ToggleRenderStatistics, InputType.Keyboard,"F12"),
+            };
+        }
 
         public void LoadFromConfiguration(InputActionModel[] inputActions)
         {
@@ -32,6 +55,44 @@ namespace Pokemon3D.InputSystem
                     }
                 }
             }
+        }
+
+        private static InputActionModel CreateAxis(string name, InputType type, string value)
+        {
+            return new InputActionModel
+            {
+                Name = name,
+                ActionsModel = new[]
+                {
+                    new MappedActionModel
+                    {
+                        InputType = type,
+                        IsAxis = true,
+                        AssingedValue = value
+                    }
+                }
+            };
+        }
+
+        private static InputActionModel CreateAction(string name, InputType type, string value)
+        {
+            return CreateAction(name, type, new[] { value });
+        }
+
+        private static InputActionModel CreateAction(string name, InputType type, string[] values)
+        {
+            return new InputActionModel
+            {
+                Name = name,
+                ActionsModel = values.Select(v =>
+                    new MappedActionModel
+                    {
+                        InputType = type,
+                        IsAxis = false,
+                        AssingedValue = v
+                    }
+                ).ToArray()
+            };
         }
 
         private void MapActionToDevice(string name, MappedActionModel mappedAction)

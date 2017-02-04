@@ -99,6 +99,7 @@
     <Compile Include="Entities\World.cs" />
     <Compile Include="GameCore\ActionNames.cs" />
     <Compile Include="GameCore\GameEvent.cs" />
+    <Compile Include="GameCore\MessagerService.cs" />
     <Compile Include="InputSystem\AxisAction.cs" />
     <Compile Include="InputSystem\GamePadAxis.cs" />
     <Compile Include="InputSystem\GamePadAxisAction.cs" />
