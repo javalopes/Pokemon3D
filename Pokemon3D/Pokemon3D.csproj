@@ -120,7 +120,7 @@
     <Compile Include="UI\ColoredEllipse.cs" />
     <Compile Include="UI\ColoredPie.cs" />
     <Compile Include="UI\InteractionPromptOverworldUIElement.cs" />
-    <Compile Include="UI\MessageOverworldUIElement.cs" />
+    <Compile Include="UI\MessageOverlay.cs" />
     <Compile Include="Screens\ScreenWithOverlays.cs" />
     <Compile Include="Screens\TestMock.cs" />
     <Compile Include="Screens\Transitions\ShrinkOldTransition.cs" />

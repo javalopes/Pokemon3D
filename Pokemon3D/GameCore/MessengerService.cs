@@ -1,32 +1,41 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pokemon3D.Rendering.UI;
+using Pokemon3D.UI;
 using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.GameCore
 {
     internal class MessengerService
     {
-        private readonly UiOverlay _overlay;
+        private readonly object _lock = new object();
+        private readonly MessageOverlay _overlay;
         private MessageData _activeMessage;
         private readonly SpriteBatch _spriteBatch;
 
         public MessengerService()
         {
-            _overlay = new UiOverlay();
+            _overlay = new MessageOverlay();
+            
             _overlay.Hidden += OverlayOnHidden;
             _spriteBatch = GameInstance.GetService<SpriteBatch>();
         }
 
         private void OverlayOnHidden()
         {
-            _activeMessage = null;
+            lock(_lock)
+            {
+                _activeMessage = null;
+            }
         }
 
         public void ShowMessage(MessageData messageData)
         {
-            _activeMessage = messageData;
-            _overlay.Show();
+            lock (_lock)
+            {
+                _activeMessage = messageData;
+                _overlay.SetMessage(_activeMessage.Text);
+                _overlay.Show();
+            }
         }
 
         public void Update(GameTime time)

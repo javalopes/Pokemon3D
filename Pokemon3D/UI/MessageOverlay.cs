@@ -11,18 +11,24 @@ using static Pokemon3D.GameProvider;
 
 namespace Pokemon3D.UI
 {
-    class MessageOverworldUiElement : UiOverlay
+    class MessageOverlay : UiOverlay
     {
+        private readonly StaticText _text;
 
-        public MessageOverworldUiElement(string message)
+        public MessageOverlay()
         {
             var box = AddElement(new ColoredRectangle(Color.Black.Alpha(200), new Rectangle(0,0, 400, 100)));
             box.SetPosition(new Vector2(GameInstance.ScreenBounds.Width / 2 - 200, 100));
 
-            var text =
-                AddElement(new StaticText(GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular),
-                    LocalizedValue.Static(message)));
-            text.SetPosition(new Vector2(GameInstance.ScreenBounds.Width / 2 - 190, 110));
+            _text = AddElement(new StaticText(GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular),
+                    LocalizedValue.Static("")));
+
+            _text.SetPosition(new Vector2(GameInstance.ScreenBounds.Width / 2 - 190, 110));
+        }
+
+        public void SetMessage(string message)
+        {
+            _text.Text = LocalizedValue.Static(message);
         }
 
         public override void Update(GameTime gameTime)
