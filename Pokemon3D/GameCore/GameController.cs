@@ -45,7 +45,7 @@ namespace Pokemon3D.GameCore
         private ScreenManager _screenManager;
         private CollisionManager _collisionManager;
         private EventAggregator _eventAggregator;
-        private MessagerService _messengerService;
+        private MessengerService _messengerService;
 
         public GameController()
         {
@@ -98,7 +98,7 @@ namespace Pokemon3D.GameCore
             RegisterService<TranslationProvider>(new TranslationProviderImp());
             _collisionManager = RegisterService(new CollisionManager());
             _eventAggregator = RegisterService(new EventAggregator());
-            _messengerService = RegisterService(new MessagerService());
+            _messengerService = RegisterService(new MessengerService());
 
             _notificationBarOverlay = new UiOverlay();
             RegisterService(_notificationBarOverlay.AddElement(new NotificationBar(400)));
@@ -130,6 +130,7 @@ namespace Pokemon3D.GameCore
         {
             base.Update(gameTime);
 
+            _messengerService.Update(gameTime);
             _eventAggregator.Update(gameTime);
             _inputSystem.Update(gameTime);
             _collisionManager.Update();
@@ -143,6 +144,7 @@ namespace Pokemon3D.GameCore
             _screenManager.OnEarlyDraw(gameTime);
             _renderer.Draw();
             _screenManager.OnLateDraw(gameTime);
+            _messengerService.Draw();
             _notificationBarOverlay.Draw(_spriteBatch);
             base.Draw(gameTime);
         }
