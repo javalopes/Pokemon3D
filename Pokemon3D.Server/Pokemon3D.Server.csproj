@@ -33,6 +33,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
@@ -61,6 +65,10 @@
     <ProjectReference Include="..\Pokemon3D.DataModel\Pokemon3D.DataModel.csproj">
       <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
       <Name>Pokemon3D.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Pokemon3D.GameModes\Pokemon3D.GameModes.csproj">
+      <Project>{54de5a5d-f265-4359-add6-f5b6e0ca6eaa}</Project>
+      <Name>Pokemon3D.GameModes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

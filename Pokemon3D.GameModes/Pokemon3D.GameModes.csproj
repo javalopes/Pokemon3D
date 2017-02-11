@@ -61,7 +61,6 @@
     <Compile Include="GameModeInfo.cs" />
     <Compile Include="GameModeManager.cs" />
     <Compile Include="GameMode_Definitions.cs" />
-    <Compile Include="IGameModeComponent.cs" />
     <Compile Include="Maps\MapFragmentManager.cs" />
     <Compile Include="ModelMesh.cs" />
     <Compile Include="Monsters\Pokemon.cs" />

@@ -64,6 +64,11 @@ namespace Pokemon3D.GameModes
             IsValid = true;
         }
 
+        public int CalculateChecksum()
+        {
+            return 0;
+        }
+
         public void LoadSaveGame(SaveGame saveGame)
         {
             SaveGame = saveGame;
