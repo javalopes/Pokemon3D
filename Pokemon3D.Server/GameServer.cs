@@ -116,6 +116,7 @@ namespace Pokemon3D.Server
             using (var zipFile = new ZipFile(targetZipFilePath))
             {
                 zipFile.AddDirectory(Path.Combine(gameMode.GameModeInfo.DirectoryPath, "Content"));
+                zipFile.Comment = gameMode.CalculateChecksum().ToString();
                 zipFile.Save();
             }
 

@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.DataHandling;
 using Pokemon3D.Common;
@@ -63,10 +66,49 @@ namespace Pokemon3D.GameModes
 
             IsValid = true;
         }
-
-        public int CalculateChecksum()
+        
+        private static long ComputeCrc(byte[] val)
         {
-            return 0;
+            long crc = 0;
+            foreach (var c in val)
+            {
+                var q = (crc ^ c) & 0x0f;
+                crc = (crc >> 4) ^ (q * 0x1081);
+                q = (crc ^ (c >> 4)) & 0xf;
+                crc = (crc >> 4) ^ (q * 0x1081);
+            }
+            return crc;
+        }
+
+        public long CalculateChecksum()
+        {
+            var contentFolder = Path.Combine(GameModeInfo.DirectoryPath, PathContent);
+            var files = new List<string>();
+            AddFilesRecursive(contentFolder, files);
+
+            var checkSum = 0L;
+            var encoding = new UnicodeEncoding();
+
+            foreach (var file in files)
+            {
+                checkSum += ComputeCrc(encoding.GetBytes(file));
+                checkSum += ComputeCrc(File.ReadAllBytes(file));
+            }
+
+            return checkSum;
+        }
+
+        private void AddFilesRecursive(string parentFolder, List<string> files)
+        {
+            foreach (var filePath in Directory.GetFiles(parentFolder))
+            {
+                files.Add(filePath);
+            }
+
+            foreach (var directoryPath in Directory.GetDirectories(parentFolder))
+            {
+                AddFilesRecursive(directoryPath, files);
+            }
         }
 
         public void LoadSaveGame(SaveGame saveGame)
