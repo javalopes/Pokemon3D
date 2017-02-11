@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using NLog;
-using RestSharp;
 
 namespace Pokemon3D.Server.Console
 {
@@ -10,7 +9,6 @@ namespace Pokemon3D.Server.Console
 
         static void Main()
         {
-            var client = new RestClient();
             var configuration = new GameServerConfiguration
             {
                 Name = Properties.Settings.Default.ServerName,
@@ -18,7 +16,7 @@ namespace Pokemon3D.Server.Console
                 IsPrivate = Properties.Settings.Default.IsPrivate
             };
 
-            var gameServer = new GameServer(configuration, client);
+            var gameServer = new GameServer(configuration);
             gameServer.OnMessage += OnMessageReceived;
 
             var cancel = false;

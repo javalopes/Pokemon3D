@@ -74,6 +74,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Pokemon3D.Common\Pokemon3D.Common.csproj">
+      <Project>{b29dc7f0-2a16-4585-80a2-b4030558ec35}</Project>
+      <Name>Pokemon3D.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Pokemon3D.Server\Pokemon3D.Server.csproj">
       <Project>{a6096166-5bb9-43d6-95c2-9a622cf66726}</Project>
       <Name>Pokemon3D.Server</Name>

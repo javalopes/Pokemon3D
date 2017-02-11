@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
+using Ionic.Zip;
 using Microsoft.Xna.Framework;
 using Pokemon3D.Common;
 using Pokemon3D.DataModel.Multiplayer;
@@ -12,17 +14,17 @@ namespace Pokemon3D.Server
     public class GameServer : GameContext
     {
         private readonly GameServerConfiguration _configuration;
-        private readonly IRestClient _restClient;
         private int _gameServerId;
         private GameModeManager _gameModeManager;
+        private readonly RestClient _restClient;
 
         public event Action<string> OnMessage;
 
-        public GameServer(GameServerConfiguration configuration, IRestClient restClient)
+        public GameServer(GameServerConfiguration configuration)
         {
             _configuration = configuration;
-            _restClient = restClient;
             _gameServerId = -1;
+            _restClient = new RestClient();
         }
 
         public bool Start()
@@ -40,6 +42,8 @@ namespace Pokemon3D.Server
                 return false;
             }
 
+            InvokeMessage("Server started successfully.");
+
             return true;
         }
 
@@ -50,7 +54,7 @@ namespace Pokemon3D.Server
                 InvokeMessage("No master server url declared, no registration is done.");
                 return true;
             }
-
+            
             _restClient.BaseUrl = new Uri(_configuration.MasterServerUrl);
 
             var gameServerData = new GameServerRegistrationModel
@@ -92,11 +96,30 @@ namespace Pokemon3D.Server
 
             var info = infos.Single();
             _gameModeManager.LoadAndSetGameMode(info, this);
-            if (!_gameModeManager.ActiveGameMode.IsValid)
+            var gameMode = _gameModeManager.ActiveGameMode;
+            if (!gameMode.IsValid)
             {
                 InvokeMessage("Game mode is not valid.");
                 return false;
             }
+
+            var rootFolderName = Path.GetFileName(gameMode.GameModeInfo.DirectoryPath);
+            var parentFolder = Path.GetDirectoryName(gameMode.GameModeInfo.DirectoryPath);
+            var targetZipFilePath = Path.Combine(parentFolder, rootFolderName + ".zip");
+
+            if (File.Exists(targetZipFilePath))
+            {
+                File.Delete(targetZipFilePath);
+                InvokeMessage("Existing Game Mode content package deleted");
+            }
+
+            using (var zipFile = new ZipFile(targetZipFilePath))
+            {
+                zipFile.AddDirectory(Path.Combine(gameMode.GameModeInfo.DirectoryPath, "Content"));
+                zipFile.Save();
+            }
+
+            InvokeMessage("Game mode has been zipped and saved with checksum");
 
             return true;
         }
