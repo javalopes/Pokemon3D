@@ -54,6 +54,11 @@ namespace Pokemon3D.Server
             return result;
         }
 
+        public void Update()
+        {
+            
+        }
+        
         private IRestResponse SendPostRequest(string requestUriPart, object toSend)
         {
             var request = new RestRequest(requestUriPart);
@@ -67,10 +72,12 @@ namespace Pokemon3D.Server
 
         public void Stop()
         {
+            InvokeMessage("Shutting down server...");
             if (_gameServerId != -1)
             {
                 SendPostRequest("/api/gameserver/unregister", _gameServerId);
             }
+            InvokeMessage("Done...");
         }
 
         private void InvokeMessage(string message)
