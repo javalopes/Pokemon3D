@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -7,16 +8,19 @@ using Microsoft.Xna.Framework;
 using Pokemon3D.Common;
 using Pokemon3D.DataModel.Multiplayer;
 using Pokemon3D.GameModes;
+using Pokemon3D.Server.Component;
 using RestSharp;
 
 namespace Pokemon3D.Server
 {
-    public class GameServer : GameContext
+    public class GameServer : GameContext, IMessageBroker
     {
         private readonly GameServerConfiguration _configuration;
         private int _gameServerId;
         private GameModeManager _gameModeManager;
         private readonly RestClient _restClient;
+        private readonly List<IServerComponent> _components = new List<IServerComponent>();
+        private string _contentFilePath;
 
         public event Action<string> OnMessage;
 
@@ -29,20 +33,21 @@ namespace Pokemon3D.Server
 
         public bool Start()
         {
-            InvokeMessage($"--> Starting Server '{_configuration.Name}' ...");
+            Notify($"--> Starting Server '{_configuration.Name}' ...");
 
             try
             {
                 if (!RegisterOnMasterServer()) return false;
                 if (!PrepareGameMode()) return false;
+                if (!StartServerTasks()) return false;
             }
             catch (Exception ex)
             {
-                InvokeMessage("Unhandled exception occurred: " + ex);
+                Notify("Unhandled exception occurred: " + ex);
                 return false;
             }
 
-            InvokeMessage("Server started successfully.");
+            Notify("Server started successfully.");
 
             return true;
         }
@@ -51,7 +56,7 @@ namespace Pokemon3D.Server
         {
             if (string.IsNullOrEmpty(_configuration.MasterServerUrl))
             {
-                InvokeMessage("No master server url declared, no registration is done.");
+                Notify("No master server url declared, no registration is done.");
                 return true;
             }
             
@@ -67,30 +72,30 @@ namespace Pokemon3D.Server
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 _gameServerId = int.Parse(response.Content);
-                InvokeMessage($"Registered successfully with id = {_gameServerId}");
+                Notify($"Registered successfully with id = {_gameServerId}");
                 return true;
             }
 
-            InvokeMessage($"Registration not successful  with status code {response.StatusCode}: {response.ErrorMessage}");
+            Notify($"Registration not successful  with status code {response.StatusCode}: {response.ErrorMessage}");
             return false;
         }
 
         private bool PrepareGameMode()
         {
-            InvokeMessage("Preparing Game Mode...");
+            Notify("Preparing Game Mode...");
 
             _gameModeManager = new GameModeManager();
             var infos = _gameModeManager.GetGameModeInfos();
 
             if (infos.Length == 0)
             {
-                InvokeMessage("Did not found the gameMode.");
+                Notify("Did not found the gameMode.");
                 return false;
             }
 
             if (infos.Length > 1)
             {
-                InvokeMessage("Found more than one gameMode");
+                Notify("Found more than one gameMode");
                 return false;
             }
 
@@ -99,28 +104,43 @@ namespace Pokemon3D.Server
             var gameMode = _gameModeManager.ActiveGameMode;
             if (!gameMode.IsValid)
             {
-                InvokeMessage("Game mode is not valid.");
+                Notify("Game mode is not valid.");
                 return false;
             }
 
             var rootFolderName = Path.GetFileName(gameMode.GameModeInfo.DirectoryPath);
-            var parentFolder = Path.GetDirectoryName(gameMode.GameModeInfo.DirectoryPath);
-            var targetZipFilePath = Path.Combine(parentFolder, rootFolderName + ".zip");
+            var parentFolder = Path.GetDirectoryName(gameMode.GameModeInfo.DirectoryPath) ?? "";
+            _contentFilePath = Path.Combine(parentFolder, rootFolderName + ".zip");
 
-            if (File.Exists(targetZipFilePath))
+            if (File.Exists(_contentFilePath))
             {
-                File.Delete(targetZipFilePath);
-                InvokeMessage("Existing Game Mode content package deleted");
+                File.Delete(_contentFilePath);
+                Notify("Existing Game Mode content package deleted");
             }
 
-            using (var zipFile = new ZipFile(targetZipFilePath))
+            using (var zipFile = new ZipFile(_contentFilePath))
             {
                 zipFile.AddDirectory(Path.Combine(gameMode.GameModeInfo.DirectoryPath, "Content"));
                 zipFile.Comment = gameMode.CalculateChecksum().ToString();
                 zipFile.Save();
             }
 
-            InvokeMessage("Game mode has been zipped and saved with checksum");
+            Notify("Game mode has been zipped and saved with checksum");
+
+            return true;
+        }
+
+        private bool StartServerTasks()
+        {
+            _components.Add(new GameContentComponent(_contentFilePath, this));
+
+            foreach (var component in _components)
+            {
+                if (!component.Start())
+                {
+                    return false;
+                }
+            }
 
             return true;
         }
@@ -143,17 +163,18 @@ namespace Pokemon3D.Server
 
         public void Stop()
         {
-            InvokeMessage($"Shutting down server '{_configuration.Name}'...");
+            Notify($"Shutting down server '{_configuration.Name}'...");
             if (_gameServerId != -1 && !string.IsNullOrEmpty(_configuration.MasterServerUrl))
             {
                 SendPostRequest("/api/gameserver/unregister", _gameServerId);
             }
-            InvokeMessage("Done");
-        }
 
-        private void InvokeMessage(string message)
-        {
-            OnMessage?.Invoke(message);
+            foreach (var component in _components)
+            {
+                component.Stop();
+            }
+
+            Notify("Done");
         }
 
         public TService GetService<TService>() where TService : class
@@ -162,5 +183,10 @@ namespace Pokemon3D.Server
         }
 
         public Rectangle ScreenBounds { get; }
+
+        public void Notify(string message)
+        {
+            OnMessage?.Invoke(message);
+        }
     }
 }
