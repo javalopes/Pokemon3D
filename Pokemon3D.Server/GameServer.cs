@@ -82,8 +82,6 @@ namespace Pokemon3D.Server
 
         private bool PrepareGameMode()
         {
-            Notify("Preparing Game Mode...");
-
             _gameModeManager = new GameModeManager();
             var infos = _gameModeManager.GetGameModeInfos();
 
@@ -136,7 +134,11 @@ namespace Pokemon3D.Server
 
             foreach (var component in _components)
             {
-                if (!component.Start())
+                if (component.Start())
+                {
+                    Notify($"Started '{component.Name}'");
+                }
+                else
                 {
                     return false;
                 }

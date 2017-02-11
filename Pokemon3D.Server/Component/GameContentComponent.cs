@@ -23,6 +23,8 @@ namespace Pokemon3D.Server.Component
             _messageBroker = messageBroker;
         }
 
+        public string Name => "Game Mode Content Server";
+
         public bool Start()
         {
             try

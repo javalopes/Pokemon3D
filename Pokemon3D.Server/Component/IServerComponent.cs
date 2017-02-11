@@ -2,6 +2,7 @@
 {
     interface IServerComponent
     {
+        string Name { get; }
         bool Start();
         void Stop();
     }
