@@ -131,6 +131,7 @@ namespace Pokemon3D.Server
         private bool StartServerTasks()
         {
             _components.Add(new GameContentComponent(_contentFilePath, this));
+            _components.Add(new CommunicationComponent());
 
             foreach (var component in _components)
             {
