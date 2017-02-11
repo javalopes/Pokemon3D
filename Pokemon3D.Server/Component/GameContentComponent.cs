@@ -68,6 +68,7 @@ namespace Pokemon3D.Server.Component
                         var stream = client.GetStream();
                         stream.Write(_data, 0, _data.Length);
                     }
+                    Thread.Sleep(1);
                 }
                 catch (Exception ex)
                 {

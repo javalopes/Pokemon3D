@@ -28,7 +28,7 @@ namespace Pokemon3D.Server.Console
             while (!cancel)
             {
                 gameServer.Update();
-                Thread.Yield();
+                Thread.Sleep(1);
             }
 
             gameServer.Stop();
