@@ -3,59 +3,32 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Pokemon3D.Server.Component
 {
-    class GameContentComponent : IServerComponent
+    class GameContentComponent : AsyncComponentBase
     {
         private readonly string _zipFilePath;
-        private readonly IMessageBroker _messageBroker;
         private byte[] _data;
 
-        private CancellationTokenSource _cancelSource;
-        private Task _task;
         private TcpListener _listener;
 
-        public GameContentComponent(string zipFilePath, IMessageBroker messageBroker)
+        public GameContentComponent(string zipFilePath, IMessageBroker messageBroker) : base(messageBroker)
         {
             _zipFilePath = zipFilePath;
-            _messageBroker = messageBroker;
         }
 
-        public string Name => "Game Mode Content Server";
+        public override string Name => "Game Mode Content Server";
 
-        public bool Start()
+        protected override void OnStart()
         {
-            try
-            {
-                _data = File.ReadAllBytes(_zipFilePath);
+            _data = File.ReadAllBytes(_zipFilePath);
 
-                _listener = new TcpListener(IPAddress.Any, 14555);
-                _listener.Start();
-
-                _cancelSource = new CancellationTokenSource();
-                _task = Task.Factory.StartNew(() => ListenToFileRequests(_cancelSource.Token), _cancelSource.Token);
-            }
-            catch (Exception ex)
-            {
-                _messageBroker.Notify("Starting Content Download task failed: " + ex);
-                return false;
-            }
-
-            return true;
+            _listener = new TcpListener(IPAddress.Any, 14555);
+            _listener.Start();
         }
 
-        public void Stop()
-        {
-            _cancelSource.Cancel();
-            if (!_task.Wait(TimeSpan.FromSeconds(10)))
-            {
-                _messageBroker.Notify("Stopping Content Download task was not possible withing 10 seconds");
-            }
-        }
-
-        private void ListenToFileRequests(CancellationToken token)
+        protected override void OnExecute(CancellationToken token)
         {
             while (true)
             {
@@ -74,7 +47,7 @@ namespace Pokemon3D.Server.Component
                 }
                 catch (Exception ex)
                 {
-                    _messageBroker.Notify("An exception occurred during processing a download request: " + ex);
+                    MessageBroker.Notify("An exception occurred during processing a download request: " + ex);
                 }
             }
         }

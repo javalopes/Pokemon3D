@@ -1,36 +1,36 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Lidgren.Network;
 
 namespace Pokemon3D.Server.Component
 {
-    class CommunicationComponent : IServerComponent
+    class CommunicationComponent : AsyncComponentBase
     {
-        private NetServer _server;
+        private readonly NetServer _server;
 
-        public string Name => "Network Communication";
+        public override string Name => "Network Communication";
 
-        public CommunicationComponent()
+        public CommunicationComponent(IMessageBroker messageBroker) : base(messageBroker)
         {
             var configuration = new NetPeerConfiguration("Pokemon3D.Network.Communcation.Server");
             _server = new NetServer(configuration);
         }
 
-        public bool Start()
+        protected override void OnStart()
         {
             _server.Start();
-
-            Task.Factory.StartNew(HandleNetMessages);
-
-            return true;
         }
 
-        private void HandleNetMessages()
+        protected override void OnExecute(CancellationToken token)
         {
             while (true)
             {
-                if (_server.Status == NetPeerStatus.ShutdownRequested) break;
-                if (_server.Status == NetPeerStatus.NotRunning) break;
+                if (token.IsCancellationRequested)
+                {
+                    _server.Shutdown("Shutdown from server");
+                    break;
+                }
 
                 NetIncomingMessage msg;
                 while ((msg = _server.ReadMessage()) != null)
@@ -50,12 +50,6 @@ namespace Pokemon3D.Server.Component
                     _server.Recycle(msg);
                 }
             }
-            
-        }
-
-        public void Stop()
-        {
-            _server.Shutdown("Shutdown from server");
         }
     }
 }

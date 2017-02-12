@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\AsyncComponentBase.cs" />
     <Compile Include="Component\CommunicationComponent.cs" />
     <Compile Include="Component\GameContentComponent.cs" />
     <Compile Include="Component\IServerComponent.cs" />

@@ -131,7 +131,7 @@ namespace Pokemon3D.Server
         private bool StartServerTasks()
         {
             _components.Add(new GameContentComponent(_contentFilePath, this));
-            _components.Add(new CommunicationComponent());
+            _components.Add(new CommunicationComponent(this));
 
             foreach (var component in _components)
             {
@@ -174,6 +174,7 @@ namespace Pokemon3D.Server
 
             foreach (var component in _components)
             {
+                Notify($"Stopping '{component.Name}'");
                 component.Stop();
             }
 

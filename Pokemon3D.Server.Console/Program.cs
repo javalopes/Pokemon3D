@@ -20,7 +20,11 @@ namespace Pokemon3D.Server.Console
             gameServer.OnMessage += OnMessageReceived;
 
             var cancel = false;
-            System.Console.CancelKeyPress += (s,e) => cancel = true;
+            System.Console.CancelKeyPress += (s, e) =>
+            {
+                cancel = true;
+                e.Cancel = true;
+            };
 
             var startedSuccessfully = gameServer.Start();
             cancel = !startedSuccessfully;
