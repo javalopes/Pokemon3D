@@ -66,6 +66,7 @@
     <Compile Include="IGameServer.cs" />
     <Compile Include="GameServerConfiguration.cs" />
     <Compile Include="Management\ClientRegistrator.cs" />
+    <Compile Include="Management\IClientRegistrator.cs" />
     <Compile Include="Management\IMessageBroker.cs" />
     <Compile Include="Management\MasterServerRegistrationClient.cs" />
     <Compile Include="Management\Player.cs" />
