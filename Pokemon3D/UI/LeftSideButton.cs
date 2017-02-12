@@ -20,8 +20,8 @@ namespace Pokemon3D.UI
 
         public LeftSideButton(LocalizedValue text, Vector2 position, Action<LeftSideButton> onClick)
         {
-            _font = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
-            _texture = GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
+            _font = IGameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _texture = IGameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.UI.Common.Button_Blank);
 
             Text = text;
             var bounds = Bounds;

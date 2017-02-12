@@ -173,10 +173,10 @@
     <Compile Include="General\TextureSourceModel.cs" />
     <Compile Include="General\Vector2Model.cs" />
     <Compile Include="General\Vector3Model.cs" />
-    <Compile Include="Serialization\DataSerializer.cs" />
-    <Compile Include="Serialization\JsonDataSerializer.cs" />
+    <Compile Include="Serialization\IDataSerializer.cs" />
+    <Compile Include="Serialization\JsonIDataSerializer.cs" />
     <Compile Include="Serialization\SerializerFactory.cs" />
-    <Compile Include="Serialization\XmlDataSerializer.cs" />
+    <Compile Include="Serialization\XmlIDataSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, PublicKeyToken=null">

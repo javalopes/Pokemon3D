@@ -34,7 +34,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public CameraEntityComponent(Entity referringEntity, Skybox skybox, int cameraMask = 1) : base(referringEntity)
         {
-            Camera = GameInstance.GetService<SceneRenderer>().CreateCamera(cameraMask);
+            Camera = IGameInstance.GetService<SceneRenderer>().CreateCamera(cameraMask);
             NearClipDistance = 0.1f;
             FarClipDistance = 1000.0f;
             FieldOfView = MathHelper.PiOver4;
@@ -45,7 +45,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public override void OnComponentRemove()
         {
-            GameInstance.GetService<SceneRenderer>().RemoveCamera(Camera);
+            IGameInstance.GetService<SceneRenderer>().RemoveCamera(Camera);
             Camera = null;
         }
 

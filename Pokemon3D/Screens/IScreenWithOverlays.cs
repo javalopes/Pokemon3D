@@ -4,7 +4,7 @@ using Pokemon3D.UI;
 
 namespace Pokemon3D.Screens
 {
-    internal abstract class ScreenWithOverlays : Screen
+    internal abstract class IScreenWithOverlays : IScreen
     {
         private readonly ScreenOverlay _screenOverlay = new ScreenOverlay();
 

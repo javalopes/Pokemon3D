@@ -5,7 +5,7 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.Transitions
 {
-    internal class SlideTransition : ScreenTransition
+    internal class SlideTransition : IScreenTransition
     {
         private Texture2D _source;
         private Texture2D _target;
@@ -38,12 +38,12 @@ namespace Pokemon3D.Screens.Transitions
 
         public void Draw()
         {
-            var offset = (_elapsedTime/_transitionTime)*GameInstance.ScreenBounds.Width;
-            var spriteBatch = GameInstance.GetService<SpriteBatch>();
+            var offset = (_elapsedTime/_transitionTime)*IGameInstance.ScreenBounds.Width;
+            var spriteBatch = IGameInstance.GetService<SpriteBatch>();
 
             spriteBatch.Begin(blendState: BlendState.NonPremultiplied);
             spriteBatch.Draw(_source, new Vector2(-offset, 0.0f), Color.White);
-            spriteBatch.Draw(_target, new Vector2(GameInstance.ScreenBounds.Width - offset, 0.0f), Color.White);
+            spriteBatch.Draw(_target, new Vector2(IGameInstance.ScreenBounds.Width - offset, 0.0f), Color.White);
             spriteBatch.End();
         }
     }

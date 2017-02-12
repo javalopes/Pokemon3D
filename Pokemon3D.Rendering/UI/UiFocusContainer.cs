@@ -7,7 +7,7 @@ namespace Pokemon3D.Rendering.UI
     public class UiFocusContainer
     {
         private readonly List<UiElement> _interactableElements;
-        protected readonly List<OverlayInputController> InputControllers;
+        protected readonly List<IOverlayInputController> InputControllers;
         private bool _rearrangeList;
         private UiElement _elementToGetFocus;
         private UiElement _currentElement;
@@ -27,7 +27,7 @@ namespace Pokemon3D.Rendering.UI
         public UiFocusContainer()
         {
             _interactableElements = new List<UiElement>();
-            InputControllers = new List<OverlayInputController>();
+            InputControllers = new List<IOverlayInputController>();
             CurrentElement = null;
         }
 
@@ -41,7 +41,7 @@ namespace Pokemon3D.Rendering.UI
             _elementToGetFocus = firstElement;
         }
 
-        public void AddInputController(OverlayInputController controller)
+        public void AddInputController(IOverlayInputController controller)
         {
             controller.MoveToNextElement += ControllerOnMoveToNextElement;
             controller.MoveToPreviousElement += ControllerOnMoveToPreviousElement;

@@ -12,7 +12,7 @@ namespace Pokemon3D
         {
             try
             {
-                using (var game = new GameController())
+                using (var game = new IGameController())
                 {
                     game.Run();
                 }

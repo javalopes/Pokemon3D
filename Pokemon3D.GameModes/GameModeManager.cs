@@ -30,7 +30,7 @@ namespace Pokemon3D.GameModes
 
         public GameMode ActiveGameMode { get; private set; }
 
-        public void LoadAndSetGameMode(GameModeInfo gameModeInfo, GameContext gameContext)
+        public void LoadAndSetGameMode(GameModeInfo gameModeInfo, IGameContext iGameContext)
         {
             if (ActiveGameMode != null)
             {
@@ -38,7 +38,7 @@ namespace Pokemon3D.GameModes
                 ActiveGameMode = null;
             }
 
-            ActiveGameMode = new GameMode(gameModeInfo, gameContext, new FileLoader());
+            ActiveGameMode = new GameMode(gameModeInfo, iGameContext, new IFileLoader());
         }
 
         public void UnloadGameMode()

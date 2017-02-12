@@ -26,7 +26,7 @@ namespace Pokemon3D.Entities.System.Components
 
             _collider = new Collider(ReferringEntity.Scale, isTrigger: true);
             _collider.SetPosition(ReferringEntity.GlobalPosition);
-            GameInstance.GetService<CollisionManager>().Add(_collider);
+            IGameInstance.GetService<CollisionManager>().Add(_collider);
             _collider.OnTriggerEnter = OnTriggerEnter;
             _collider.OnTriggerLeave = OnTriggerLeave;
 
@@ -44,7 +44,7 @@ namespace Pokemon3D.Entities.System.Components
         {
             if (collider.Tag != "Player") return;
 
-            var currentScreen = GameInstance.GetService<ScreenManager>().CurrentScreen;
+            var currentScreen = IGameInstance.GetService<ScreenManager>().CurrentIScreen;
 
             if (!_addedUiElement)
             {
@@ -65,15 +65,15 @@ namespace Pokemon3D.Entities.System.Components
         {
             if (_addedUiElement)
             {
-                var screen = GameInstance.GetService<ScreenManager>().CurrentScreen;
-                if (screen is OverworldScreen) screen.RemoveOverlay(_uiElement);
+                var screen = IGameInstance.GetService<ScreenManager>().CurrentIScreen;
+                if (screen is OverworldIScreen) screen.RemoveOverlay(_uiElement);
                 _addedUiElement = false;
             }
         }
 
         private void InteractionHandler(InteractionPromptOverworldUiElement uiElement)
         {
-            GameInstance.GetService<ScriptPipelineManager>().RunScript(_script);
+            IGameInstance.GetService<ScriptPipelineManager>().RunScript(_script);
         }
 
         protected override void OnDataChanged(string key, string oldData, string newData)

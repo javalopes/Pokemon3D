@@ -21,8 +21,8 @@ namespace Pokemon3D.UI
         public RenderStatisticsView(World activeWorld)
         {
             _world = activeWorld;
-            _shapeRenderer = GameInstance.GetService<ShapeRenderer>();
-            _debugSpriteFont = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
+            _shapeRenderer = IGameInstance.GetService<ShapeRenderer>();
+            _debugSpriteFont = IGameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -34,7 +34,7 @@ namespace Pokemon3D.UI
             var height = elementHeight * 4 + spacing;
             const int width = 180;
 
-            var startPosition = new Vector2(0, GameInstance.ScreenBounds.Height - height);
+            var startPosition = new Vector2(0, IGameInstance.ScreenBounds.Height - height);
 
             _shapeRenderer.DrawRectangle((int)startPosition.X,
                 (int)startPosition.Y,

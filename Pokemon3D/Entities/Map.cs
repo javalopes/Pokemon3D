@@ -28,7 +28,7 @@ namespace Pokemon3D.Entities
             _world = world;
             _id = id;
             _allMapEntities = new List<Entity>();
-            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
+            var gameMode = IGameInstance.GetService<GameModeManager>().ActiveGameMode;
             _dataPath = gameMode.GetMapFilePath(_id);
         }
 
@@ -36,7 +36,7 @@ namespace Pokemon3D.Entities
         {
             if (_allMapEntities.Count > 0) throw new InvalidOperationException("Map seems already loaded, call unload first.");
 
-            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
+            var gameMode = IGameInstance.GetService<GameModeManager>().ActiveGameMode;
             Model = gameMode.LoadMap(_id);
 
             Offset = basicOffset;
@@ -52,7 +52,7 @@ namespace Pokemon3D.Entities
                 }
             }
 
-            var mapFragmentManager = GameInstance.GetService<GameModeManager>().ActiveGameMode.MapFragmentManager;
+            var mapFragmentManager = IGameInstance.GetService<GameModeManager>().ActiveGameMode.MapFragmentManager;
 
             if (Model.Fragments != null)
             {
@@ -71,7 +71,7 @@ namespace Pokemon3D.Entities
             }
             IsActive = true;
 
-            if (GameInstance.GetService<GameConfiguration>().Data.EnableFileHotSwapping)
+            if (IGameInstance.GetService<GameConfiguration>().Data.EnableFileHotSwapping)
             {
                 FileObserver.Instance.StartFileObserve(_dataPath, MapChanged);
             }
@@ -94,7 +94,7 @@ namespace Pokemon3D.Entities
                 entity.IsActive = false;
             }
 
-            if (GameInstance.GetService<GameConfiguration>().Data.EnableFileHotSwapping)
+            if (IGameInstance.GetService<GameConfiguration>().Data.EnableFileHotSwapping)
             {
                 FileObserver.Instance.StopFileObserve(_dataPath, MapChanged);
             }
@@ -108,7 +108,7 @@ namespace Pokemon3D.Entities
             {
                 entity.IsActive = true;
             }
-            if (GameInstance.GetService<GameConfiguration>().Data.EnableFileHotSwapping)
+            if (IGameInstance.GetService<GameConfiguration>().Data.EnableFileHotSwapping)
             {
                 FileObserver.Instance.StartFileObserve(_dataPath, MapChanged);
             }

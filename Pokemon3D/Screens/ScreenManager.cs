@@ -16,28 +16,28 @@ namespace Pokemon3D.Screens
     {
         private readonly RenderTarget2D _sourceRenderTarget;
         private readonly RenderTarget2D _targetRenderTarget;
-        private readonly Dictionary<Type, Screen> _screensByType;
-        private readonly Dictionary<Type, ScreenTransition> _screenTransitionsByType;
+        private readonly Dictionary<Type, IScreen> _screensByType;
+        private readonly Dictionary<Type, IScreenTransition> _screenTransitionsByType;
         private readonly GraphicsDevice _device;
 
         private bool _executingScreenTransition;
         private bool _quitGame;
-        private ScreenTransition _currentTransition;
+        private IScreenTransition _currentTransition;
         
-        public Screen CurrentScreen { get; private set; }
+        public IScreen CurrentIScreen { get; private set; }
 
         public ScreenManager()
         {
-            _device = GameInstance.GetService<GraphicsDevice>();
+            _device = IGameInstance.GetService<GraphicsDevice>();
 
-            var clientBounds = GameInstance.ScreenBounds;
+            var clientBounds = IGameInstance.ScreenBounds;
             _sourceRenderTarget = new RenderTarget2D(_device, clientBounds.Width, clientBounds.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
             _targetRenderTarget = new RenderTarget2D(_device, clientBounds.Width, clientBounds.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
             _executingScreenTransition = false;
             _currentTransition = new BlendTransition();
 
-            _screensByType = GetImplementationsOf<Screen>().ToDictionary(s => s, s => (Screen)Activator.CreateInstance(s));
-            _screenTransitionsByType = GetImplementationsOf<ScreenTransition>().ToDictionary(s => s, s => (ScreenTransition)Activator.CreateInstance(s));
+            _screensByType = GetImplementationsOf<IScreen>().ToDictionary(s => s, s => (IScreen)Activator.CreateInstance(s));
+            _screenTransitionsByType = GetImplementationsOf<IScreenTransition>().ToDictionary(s => s, s => (IScreenTransition)Activator.CreateInstance(s));
         }
         
         /// <summary>
@@ -45,16 +45,16 @@ namespace Pokemon3D.Screens
         /// </summary>
         public void SetScreen(Type screenType, Type transition = null, object enterInformation = null)
         {
-            var oldScreen = CurrentScreen;
+            var oldScreen = CurrentIScreen;
 
-            CurrentScreen?.OnClosing();
+            CurrentIScreen?.OnClosing();
 
-            CurrentScreen = _screensByType[screenType];
-            CurrentScreen.OnOpening(enterInformation);
+            CurrentIScreen = _screensByType[screenType];
+            CurrentIScreen.OnOpening(enterInformation);
 
-            if (oldScreen != null && CurrentScreen != null && transition != null)
+            if (oldScreen != null && CurrentIScreen != null && transition != null)
             {
-                PrerenderSourceAndTargetAndMakeTransition(oldScreen, CurrentScreen, transition);
+                PrerenderSourceAndTargetAndMakeTransition(oldScreen, CurrentIScreen, transition);
             }
         }
 
@@ -74,7 +74,7 @@ namespace Pokemon3D.Screens
             }
             else
             {
-                CurrentScreen?.OnEarlyDraw(gameTime);
+                CurrentIScreen?.OnEarlyDraw(gameTime);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Pokemon3D.Screens
             }
             else
             {
-                CurrentScreen?.OnLateDraw(gameTime);
+                CurrentIScreen?.OnLateDraw(gameTime);
             }
         }
 
@@ -108,25 +108,25 @@ namespace Pokemon3D.Screens
             }
             else
             {
-                CurrentScreen?.OnUpdate(gameTime);
+                CurrentIScreen?.OnUpdate(gameTime);
             }
 
             return !_quitGame;
         }
 
-        private void PrerenderSourceAndTargetAndMakeTransition(Screen oldScreen, Screen currentScreen, Type transition)
+        private void PrerenderSourceAndTargetAndMakeTransition(IScreen oldIScreen, IScreen currentIScreen, Type transition)
         {
             _executingScreenTransition = true;
             var currentRenderTarget = _device.GetRenderTargets();
 
             _device.SetRenderTarget(_sourceRenderTarget);
-            oldScreen.OnEarlyDraw(new GameTime());
-            oldScreen.OnLateDraw(new GameTime());
+            oldIScreen.OnEarlyDraw(new GameTime());
+            oldIScreen.OnLateDraw(new GameTime());
 
             _device.SetRenderTarget(_targetRenderTarget);
-            currentScreen.OnEarlyDraw(new GameTime());
-            GameInstance.GetService<SceneRenderer>().Draw();
-            currentScreen.OnLateDraw(new GameTime());
+            currentIScreen.OnEarlyDraw(new GameTime());
+            IGameInstance.GetService<SceneRenderer>().Draw();
+            currentIScreen.OnLateDraw(new GameTime());
 
             _device.SetRenderTargets(currentRenderTarget);
             _currentTransition = _screenTransitionsByType[transition];

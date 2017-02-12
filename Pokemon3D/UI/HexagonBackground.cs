@@ -15,16 +15,16 @@ namespace Pokemon3D.UI
 
         public HexagonBackground()
         {
-            _hexagonTexture = GameProvider.GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.UI.Common.Hexagon);
+            _hexagonTexture = GameProvider.IGameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.UI.Common.Hexagon);
             GenerateHexagons(true);
         }
 
         private void GenerateHexagons(bool hasAnimation)
         {
             ClearChildren();
-            for (var x = -1; x < GameProvider.GameInstance.ScreenBounds.Width/Hexagon.Width + 1; x++)
+            for (var x = -1; x < GameProvider.IGameInstance.ScreenBounds.Width/Hexagon.Width + 1; x++)
             {
-                for (var y = -1; y < GameProvider.GameInstance.ScreenBounds.Height / Hexagon.HeightHalf + 1; y++)
+                for (var y = -1; y < GameProvider.IGameInstance.ScreenBounds.Height / Hexagon.HeightHalf + 1; y++)
                 {
                     var hexagon = new Hexagon(_hexagonTexture, x, y, hasAnimation);
                     AddChildElement(hexagon);

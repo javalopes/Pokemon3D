@@ -63,7 +63,7 @@
     <Compile Include="Component\CommunicationComponent.cs" />
     <Compile Include="Component\GameContentComponent.cs" />
     <Compile Include="Component\IServerComponent.cs" />
-    <Compile Include="GameServer.cs" />
+    <Compile Include="IGameServer.cs" />
     <Compile Include="GameServerConfiguration.cs" />
     <Compile Include="Management\ClientRegistrator.cs" />
     <Compile Include="Management\IMessageBroker.cs" />

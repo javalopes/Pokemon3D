@@ -5,7 +5,7 @@ namespace Pokemon3D.Rendering.UI
     /// <summary>
     /// Defining how to control the elements.
     /// </summary>
-    public interface OverlayInputController
+    public interface IOverlayInputController
     {
         /// <summary>
         /// Called once per frame.

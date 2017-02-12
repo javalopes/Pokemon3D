@@ -3,7 +3,7 @@ using Pokemon3D.Rendering.UI;
 
 namespace Pokemon3D.Screens
 {
-    internal class BattleScreen : Screen
+    internal class BattleIScreen : IScreen
     {
         public void OnClosing()
         {

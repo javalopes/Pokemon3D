@@ -10,7 +10,7 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens
 {
-    internal class OverworldScreen : ScreenWithOverlays, WorldContainer
+    internal class OverworldIScreen : IScreenWithOverlays, IWorldContainer
     {
         public World ActiveWorld { get; private set; }
 
@@ -31,15 +31,15 @@ namespace Pokemon3D.Screens
                 _renderStatisticsOverlay = AddOverlay(new UiOverlay());
                 _renderStatisticsOverlay.AddElement(new RenderStatisticsView(ActiveWorld));
                 
-                GameInstance.GetService<GameModeManager>().ActiveGameMode.LoadSaveGame(TestMock.CreateTempSave());
+                IGameInstance.GetService<GameModeManager>().ActiveGameMode.LoadSaveGame(TestMock.CreateTempSave());
 
                 _isLoaded = true;
             }
 
-            _inputSystem = GameInstance.GetService<InputSystem.InputSystem>();
-            _screenManager = GameInstance.GetService<ScreenManager>();
+            _inputSystem = IGameInstance.GetService<InputSystem.InputSystem>();
+            _screenManager = IGameInstance.GetService<ScreenManager>();
 
-            GameInstance.GetService<EventAggregator>().Subscribe<GameEvent>(OnGameEventRaised);
+            IGameInstance.GetService<EventAggregator>().Subscribe<GameEvent>(OnGameEventRaised);
         }
 
         private void OnGameEventRaised(GameEvent gameEvent)
@@ -50,8 +50,8 @@ namespace Pokemon3D.Screens
                 ActiveWorld = null;
                 _isLoaded = false;
 
-                _screenManager.SetScreen(typeof(MainMenuScreen), typeof(SlideTransition));
-                GameInstance.GetService<GameModeManager>().UnloadGameMode();
+                _screenManager.SetScreen(typeof(MainMenuIScreen), typeof(SlideTransition));
+                IGameInstance.GetService<GameModeManager>().UnloadGameMode();
             }
         }
 
@@ -75,7 +75,7 @@ namespace Pokemon3D.Screens
 
         public override void OnClosing()
         {
-            GameInstance.GetService<EventAggregator>().Unsubscribe<GameEvent>(OnGameEventRaised);
+            IGameInstance.GetService<EventAggregator>().Unsubscribe<GameEvent>(OnGameEventRaised);
         }
     }
 }

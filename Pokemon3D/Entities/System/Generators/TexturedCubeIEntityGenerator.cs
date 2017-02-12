@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Pokemon3D.Entities.System.Generators
 {
-    internal class TexturedCubeEntityGenerator : SimpleEntityGenerator
+    internal class TexturedCubeIEntityGenerator : SimpleIEntityGenerator
     {
         public override IEnumerable<Entity> Generate(EntitySystem entitySystem, EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 position)
         {

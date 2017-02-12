@@ -9,7 +9,7 @@ using Pokemon3D.Server.Management;
 
 namespace Pokemon3D.Server
 {
-    public class GameServer : GameContext, IMessageBroker
+    public class IGameServer : IGameContext, IMessageBroker
     {
         private readonly object _messageBrokerLockObject = new object();
 
@@ -21,7 +21,7 @@ namespace Pokemon3D.Server
         private readonly List<IServerComponent> _components = new List<IServerComponent>();
         public event Action<string> OnMessage;
 
-        public GameServer(GameServerConfiguration configuration)
+        public IGameServer(GameServerConfiguration configuration)
         {
             _configuration = configuration;
             _masterServerRegistrationClient = new MasterServerRegistrationClient(this);

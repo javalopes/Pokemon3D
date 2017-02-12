@@ -14,7 +14,7 @@ using Pokemon3D.Screens.Transitions;
 
 namespace Pokemon3D.Screens
 {
-    internal class GameModeLoadingScreen : ScreenWithOverlays
+    internal class GameModeLoadingIScreen : IScreenWithOverlays
     {
         private UiElement _pokeballSprite;
         private World _world;
@@ -22,12 +22,12 @@ namespace Pokemon3D.Screens
 
         public override void OnOpening(object enterInformation)
         {
-            var translation = GameProvider.GameInstance.GetService<TranslationProvider>();
-            var contentManager = GameProvider.GameInstance.GetService<ContentManager>();
+            var translation = GameProvider.IGameInstance.GetService<ITranslationProvider>();
+            var contentManager = GameProvider.IGameInstance.GetService<ContentManager>();
 
             _overlay = AddOverlay(new UiOverlay());
             _pokeballSprite = _overlay.AddElement(new Image(contentManager.Load<Texture2D>(ResourceNames.Textures.Pokeball)));
-            _pokeballSprite.SetPosition(new Vector2(GameProvider.GameInstance.ScreenBounds.Width, GameProvider.GameInstance.ScreenBounds.Height) * 0.5f);
+            _pokeballSprite.SetPosition(new Vector2(GameProvider.IGameInstance.ScreenBounds.Width, GameProvider.IGameInstance.ScreenBounds.Height) * 0.5f);
             _pokeballSprite.SetOriginPercentage(new Vector2(0.5f));
             _pokeballSprite.EnterAnimation = new UiScaleAnimation(0.5f, Vector2.Zero, Vector2.One);
             _pokeballSprite.LeaveAnimation = new UiScaleAnimation(0.5f, Vector2.One, Vector2.Zero);
@@ -35,7 +35,7 @@ namespace Pokemon3D.Screens
             _pokeballSprite.AddCustomAnimation("Rotating", new UiRotationAnimation(0.5f, 0.0f, MathHelper.TwoPi), true);
 
             var loadingText = _overlay.AddElement(new StaticText(contentManager.Load<SpriteFont>(ResourceNames.Fonts.BigFont), translation.CreateValue("System", "GameLoadingMessage")));
-            loadingText.SetPosition(new Vector2(GameProvider.GameInstance.ScreenBounds.Width * 0.5f, 400));
+            loadingText.SetPosition(new Vector2(GameProvider.IGameInstance.ScreenBounds.Width * 0.5f, 400));
             loadingText.SetOriginPercentage(new Vector2(0.5f, 0.0f));
             loadingText.EnterAnimation = new UiAlphaAnimation(0.4f, 0.0f, 1.0f);
             loadingText.LeaveAnimation = new UiAlphaAnimation(0.4f, 1.0f, 0.0f);
@@ -48,7 +48,7 @@ namespace Pokemon3D.Screens
 
         private void OnHidden()
         {
-            GameProvider.GameInstance.GetService<ScreenManager>().SetScreen(typeof(OverworldScreen), typeof(ShrinkOldTransition), _world);
+            GameProvider.IGameInstance.GetService<ScreenManager>().SetScreen(typeof(OverworldIScreen), typeof(ShrinkOldTransition), _world);
         }
 
         private void OverlayOnShowed()
@@ -59,15 +59,15 @@ namespace Pokemon3D.Screens
 
         public override void OnLateDraw(GameTime gameTime)
         {
-            GameProvider.GameInstance.GetService<GraphicsDevice>().Clear(Color.Black);
+            GameProvider.IGameInstance.GetService<GraphicsDevice>().Clear(Color.Black);
             base.OnLateDraw(gameTime);
         }
 
         private void StartCreateNewGame()
         {
-            var gameModeManager = GameProvider.GameInstance.GetService<GameModeManager>();
+            var gameModeManager = GameProvider.IGameInstance.GetService<GameModeManager>();
             var gameModes = gameModeManager.GetGameModeInfos();
-            gameModeManager.LoadAndSetGameMode(gameModes.First(), GameProvider.GameInstance);
+            gameModeManager.LoadAndSetGameMode(gameModes.First(), GameProvider.IGameInstance);
 
             _world = new World();
             _world.StartNewGameAsync(() => _overlay.Hide());

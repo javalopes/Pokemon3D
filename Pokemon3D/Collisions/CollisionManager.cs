@@ -29,7 +29,7 @@ namespace Pokemon3D.Collisions
 
         public CollisionManager()
         {
-            _device = GameInstance.GetService<GraphicsDevice>();
+            _device = IGameInstance.GetService<GraphicsDevice>();
             _allColliders = new List<Collider>();
             _allTriggers = new List<Collider>();
             _allTriggersAndColliders = new List<Collider>();
@@ -57,7 +57,7 @@ namespace Pokemon3D.Collisions
                 PrimitiveType = PrimitiveType.LineList
             };
 
-            _boundingBoxMesh = new Mesh(GameInstance.GetService<GraphicsDevice>(), geometryBox, false)
+            _boundingBoxMesh = new Mesh(IGameInstance.GetService<GraphicsDevice>(), geometryBox, false)
             {
                 PreventDrawCallCount = true
             };
@@ -71,7 +71,7 @@ namespace Pokemon3D.Collisions
                 IsUnlit = true
             };
 
-            GameInstance.GetService<SceneRenderer>().RegisterCustomDraw(OnCustomDraw);
+            IGameInstance.GetService<SceneRenderer>().RegisterCustomDraw(OnCustomDraw);
         }
 
         private void OnCustomDraw(Camera camera, SceneRenderer renderer)

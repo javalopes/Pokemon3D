@@ -19,7 +19,7 @@ namespace Pokemon3D.ScriptPipeline.ApiClasses
             {
                 var autoResetEvent = new AutoResetEvent(false);
 
-                var messengerService = GameProvider.GameInstance.GetService<MessengerService>();
+                var messengerService = GameProvider.IGameInstance.GetService<MessengerService>();
                 messengerService.ShowMessage(new MessageData
                 {
                     Text = (string)netObjects[0],

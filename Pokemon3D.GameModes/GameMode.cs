@@ -33,7 +33,7 @@ namespace Pokemon3D.GameModes
         private PokedexModel[] _pokedexModels;
         private AbilityModel[] _abilityModels;
 
-        public FileProvider FileLoader { get; }
+        public IFileProvider IFileLoader { get; }
         public GameModeInfo GameModeInfo { get; }
         public MapFragmentManager MapFragmentManager { get; private set; }
         public PokemonFactory PokemonFactory { get; private set; }
@@ -42,15 +42,15 @@ namespace Pokemon3D.GameModes
 
         public SaveGame SaveGame { get; private set; }
 
-        public GraphicsDevice GraphicsDevice => GameContext.GetService<GraphicsDevice>();
+        public GraphicsDevice GraphicsDevice => IGameContext.GetService<GraphicsDevice>();
 
         /// <summary>
         /// Creates an instance of the <see cref="GameMode"/> class and loads the data model.
         /// </summary>
-        internal GameMode(GameModeInfo gameModeInfo, GameContext gameContext, FileProvider fileLoader) : base(gameContext)
+        internal GameMode(GameModeInfo gameModeInfo, IGameContext iGameContext, IFileProvider iFileLoader) : base(iGameContext)
         {
             GameModeInfo = gameModeInfo;
-            FileLoader = fileLoader;
+            IFileLoader = iFileLoader;
 
             // only continue if the game mode config file loaded correctly.
             if (GameModeInfo.IsValid)
@@ -114,7 +114,7 @@ namespace Pokemon3D.GameModes
 
         public void Preload()
         {
-            var data = FileLoader.GetFiles(new[]
+            var data = IFileLoader.GetFiles(new[]
             {
                 PrimitivesFilePath,
                 NaturesFilePath,
@@ -137,7 +137,7 @@ namespace Pokemon3D.GameModes
                 };
 
                 Mesh mesh = null;
-                GameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() => mesh = new Mesh(GraphicsDevice, geometryData));
+                IGameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() => mesh = new Mesh(GraphicsDevice, geometryData));
                 _meshPrimitivesByName.Add(primitiveModel.Id, mesh);
             }
 
@@ -145,13 +145,13 @@ namespace Pokemon3D.GameModes
             _typeModels = DataModel<TypeModel[]>.FromByteArray(data[2].Data);
             _pokedexModels = DataModel<PokedexModel[]>.FromByteArray(data[3].Data);
 
-            var movesFilePaths = FileLoader.GetFilesOfFolder(MoveFilesPath);
+            var movesFilePaths = IFileLoader.GetFilesOfFolder(MoveFilesPath);
             _moveModels = movesFilePaths.Select(d => DataModel<MoveModel>.FromByteArray(d.Data)).ToArray();
 
-            var itemsFiles = FileLoader.GetFilesOfFolder(ItemFilesPath);
+            var itemsFiles = IFileLoader.GetFilesOfFolder(ItemFilesPath);
             _itemModels = itemsFiles.Select(d => DataModel<ItemModel>.FromByteArray(d.Data)).ToArray();
 
-            var abilityFiles = FileLoader.GetFilesOfFolder(AbilityFilesPath);
+            var abilityFiles = IFileLoader.GetFilesOfFolder(AbilityFilesPath);
             _abilityModels = abilityFiles.Select(d => DataModel<AbilityModel>.FromByteArray(d.Data)).ToArray();
         }
 
@@ -165,10 +165,10 @@ namespace Pokemon3D.GameModes
             Texture2D existing;
             if (_textureCache.TryGetValue(filePath, out existing)) return existing;
 
-            var data = FileLoader.GetFile(Path.Combine(TexturePath, filePath));
+            var data = IFileLoader.GetFile(Path.Combine(TexturePath, filePath));
 
             Texture2D texture = null;
-            GameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() =>
+            IGameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() =>
             {
                 using (var memoryStream = new MemoryStream(data.Data))
                 {
@@ -182,7 +182,7 @@ namespace Pokemon3D.GameModes
 
         public MapModel LoadMap(string dataPath, bool forceReloadCached = false)
         {
-            var data = FileLoader.GetFile(GetMapFilePath(dataPath), forceReloadCached);
+            var data = IFileLoader.GetFile(GetMapFilePath(dataPath), forceReloadCached);
             return DataModel<MapModel>.FromByteArray(data.Data);
         }
 
@@ -273,7 +273,7 @@ namespace Pokemon3D.GameModes
 
         public void EnsureExecutedInMainThread(Action action)
         {
-            GameContext.GetService<JobSystem>().EnsureExecutedInMainThread(action);
+            IGameContext.GetService<JobSystem>().EnsureExecutedInMainThread(action);
         }
     }
 }

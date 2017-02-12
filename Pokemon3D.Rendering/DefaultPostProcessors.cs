@@ -9,7 +9,7 @@ namespace Pokemon3D.Rendering
         public HorizontalBlurEffect HorizontalBlur { get; }
         public VerticalBlurEffect VerticalBlur { get; }
 
-        internal DefaultPostProcessors(GameContext context, EffectProcessor processor)
+        internal DefaultPostProcessors(IGameContext context, EffectProcessor processor)
         {
             HorizontalBlur = new HorizontalBlurEffect(context, processor.PostProcessingEffect);
             VerticalBlur = new VerticalBlurEffect(context, processor.PostProcessingEffect);

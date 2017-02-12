@@ -16,7 +16,7 @@ namespace Pokemon3D.UI
         private readonly Color _highlightColor;
         public BarEntry()
         {
-            _font = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.BigFont);
+            _font = IGameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.BigFont);
             _highlightColor = new Color(100, 193, 238);
         }
 
@@ -27,7 +27,7 @@ namespace Pokemon3D.UI
 
         public Texture2D GetTexture()
         {
-            var contentManager = GameInstance.GetService<ContentManager>();
+            var contentManager = IGameInstance.GetService<ContentManager>();
             switch (GamePadButton)
             {
                 case Buttons.Start:
@@ -51,9 +51,9 @@ namespace Pokemon3D.UI
         {
             var offset = 11 + Index*(26 + (int) _font.MeasureString(Text.Value).X);
 
-            if (GameInstance.GetService<InputSystem.InputSystem>().GamePadHandler.IsConnected())
+            if (IGameInstance.GetService<InputSystem.InputSystem>().GamePadHandler.IsConnected())
             {
-                spriteBatch.Draw(GetTexture(), new Rectangle(offset, GameInstance.ScreenBounds.Height - 48, 32, 32), _highlightColor);
+                spriteBatch.Draw(GetTexture(), new Rectangle(offset, IGameInstance.ScreenBounds.Height - 48, 32, 32), _highlightColor);
                 offset += 32;
             }
             else
@@ -66,13 +66,13 @@ namespace Pokemon3D.UI
                     boxWidth = (int)(_font.MeasureString(displayString).X + 10);
                 }
 
-                GameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(offset, GameInstance.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor,0.0f, Vector2.Zero, false);
-                spriteBatch.DrawString(_font, displayString, new Vector2(offset + 5, GameInstance.ScreenBounds.Height - 48), _highlightColor);
+                IGameInstance.GetService<ShapeRenderer>().DrawRectangle(new Rectangle(offset, IGameInstance.ScreenBounds.Height - 48, boxWidth, 32), _highlightColor,0.0f, Vector2.Zero, false);
+                spriteBatch.DrawString(_font, displayString, new Vector2(offset + 5, IGameInstance.ScreenBounds.Height - 48), _highlightColor);
 
                 offset += boxWidth;
             }
 
-            spriteBatch.DrawString(_font, Text.Value, new Vector2(offset + 10, GameInstance.ScreenBounds.Height - 48), _highlightColor);
+            spriteBatch.DrawString(_font, Text.Value, new Vector2(offset + 10, IGameInstance.ScreenBounds.Height - 48), _highlightColor);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Pokemon3D.UI
         public override void Draw(SpriteBatch spriteBatch)
         {
             var bounds = GetBounds();
-            GameProvider.GameInstance.GetService<ShapeRenderer>().DrawEllipsePie(new Ellipse(bounds.X, bounds.Y, bounds.Width, Bounds.Height), Color, Angle);
+            GameProvider.IGameInstance.GetService<ShapeRenderer>().DrawEllipsePie(new Ellipse(bounds.X, bounds.Y, bounds.Width, Bounds.Height), Color, Angle);
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Pokemon3D.Screens.Transitions
 {
-    internal interface ScreenTransition
+    internal interface IScreenTransition
     {
         void StartTransition(Texture2D source, Texture2D target);
 

@@ -4,12 +4,12 @@ using System.IO;
 
 namespace Pokemon3D.Common.DataHandling
 {
-    public class FileLoader : FileProvider
+    public class IFileLoader : IFileProvider
     {
         private readonly object _lockObject = new object();
         private readonly Dictionary<string, byte[]> _fileCache;
 
-        public FileLoader()
+        public IFileLoader()
         {
             _fileCache = new Dictionary<string, byte[]>();
         }

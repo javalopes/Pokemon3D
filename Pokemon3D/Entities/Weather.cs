@@ -10,7 +10,7 @@ namespace Pokemon3D.Entities
 
         public Weather()
         {
-            var renderer = GameInstance.GetService<SceneRenderer>();
+            var renderer = IGameInstance.GetService<SceneRenderer>();
 
             _mainLight = renderer.CreateDirectionalLight(new Vector3(-1.5f, -1.0f, -0.5f));
             _mainLight.AmbientIntensity = 0.5f;
@@ -20,7 +20,7 @@ namespace Pokemon3D.Entities
 
         public void Clear()
         {
-            GameInstance.GetService<SceneRenderer>().RemoveLight(_mainLight);
+            IGameInstance.GetService<SceneRenderer>().RemoveLight(_mainLight);
         }
     }
 }

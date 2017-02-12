@@ -3,9 +3,9 @@ using Pokemon3D.Common;
 
 namespace Pokemon3D.Rendering.Compositor.PostProcessing
 {
-    public class VerticalBlurEffect : PostProcessEffectBase
+    public class VerticalBlurEffect : IPostProcessEffectBase
     {
-        internal VerticalBlurEffect(GameContext context, Effect postProcessEffect) : base(context, postProcessEffect, "VerticalBlur")
+        internal VerticalBlurEffect(IGameContext context, Effect postProcessEffect) : base(context, postProcessEffect, "VerticalBlur")
         {
         }
     }

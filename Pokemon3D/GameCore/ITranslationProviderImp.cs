@@ -11,7 +11,7 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.GameCore
 {
-    internal class TranslationProviderImp : TranslationProvider
+    internal class ITranslationProviderImp : ITranslationProvider
     {
         private const string I18NFileExtension = ".json";
         private const string KeyFormat = "{0}>{1}>{2}";
@@ -19,9 +19,9 @@ namespace Pokemon3D.GameCore
 
         public event EventHandler LanguageChanged;
 
-        public TranslationProviderImp()
+        public ITranslationProviderImp()
         {
-            GameController.Instance.GetService<GameConfiguration>().ConfigFileLoaded += OnConfigFileLoaded;
+            IGameController.Instance.GetService<GameConfiguration>().ConfigFileLoaded += OnConfigFileLoaded;
 
             if (Directory.Exists(I18NPathProvider.LookupPath))
             {
@@ -73,7 +73,7 @@ namespace Pokemon3D.GameCore
 
         public string GetTranslation(string sectionId, string tokenId)
         {
-            var key = string.Format(KeyFormat, GameInstance.GetService<GameConfiguration>().Data.DisplayLanguage, sectionId, tokenId);
+            var key = string.Format(KeyFormat, IGameInstance.GetService<GameConfiguration>().Data.DisplayLanguage, sectionId, tokenId);
             string value;
             if (_translations.TryGetValue(key, out value)) return value;
 

@@ -20,7 +20,7 @@ namespace Pokemon3D.UI
         {
             var bounds = GetBounds();
 
-            GameInstance.GetService<ShapeRenderer>().DrawRectangle(bounds, Color);
+            IGameInstance.GetService<ShapeRenderer>().DrawRectangle(bounds, Color);
         }
     }
 }

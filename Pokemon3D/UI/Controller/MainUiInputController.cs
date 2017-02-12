@@ -3,13 +3,13 @@ using Pokemon3D.Rendering.UI;
 
 namespace Pokemon3D.UI.Controller
 {
-    internal class MainUiInputController : OverlayInputControllerBase
+    internal class MainUiInputController : IOverlayInputControllerBase
     {
         private readonly InputSystem.InputSystem _inputSystem;
 
         public MainUiInputController()
         {
-            _inputSystem = GameProvider.GameInstance.GetService<InputSystem.InputSystem>();
+            _inputSystem = GameProvider.IGameInstance.GetService<InputSystem.InputSystem>();
         }
 
         public override void Update(UiFocusContainer container)

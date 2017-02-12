@@ -1,6 +1,6 @@
 namespace Pokemon3D.Common.DataHandling
 {
-    public interface FileProvider
+    public interface IFileProvider
     {
         DataLoadResult GetFile(string filePath, bool forceReloadCached = false);
 

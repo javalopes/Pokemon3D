@@ -5,18 +5,18 @@ using Pokemon3D.Common;
 
 namespace Pokemon3D.Rendering.Compositor.PostProcessing
 {
-    public abstract class PostProcessEffectBase : PostProcessEffect
+    public abstract class IPostProcessEffectBase : IPostProcessEffect
     {
         private readonly EffectTechnique _technique;
         private readonly RenderTarget2D _target;
-        private readonly GameContext _context;
+        private readonly IGameContext _context;
         private readonly Effect _postProcessEffect;
 
         protected EffectParameter SourceMapParameter { get; }
         protected EffectParameter InvScreenSizeParameter { get; }
         
 
-        protected PostProcessEffectBase(GameContext context, Effect postProcessEffect, string techniqueName)
+        protected IPostProcessEffectBase(IGameContext context, Effect postProcessEffect, string techniqueName)
         {
             _context = context;
             _postProcessEffect = postProcessEffect;

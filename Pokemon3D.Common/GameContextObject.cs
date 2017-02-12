@@ -2,11 +2,11 @@
 {
     public abstract class GameContextObject
     {
-        public GameContext GameContext { get; private set; }
+        public IGameContext IGameContext { get; private set; }
 
-        protected GameContextObject(GameContext gameContext)
+        protected GameContextObject(IGameContext iGameContext)
         {
-            GameContext = gameContext;
+            IGameContext = iGameContext;
         }
     }
 }

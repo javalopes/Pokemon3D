@@ -6,14 +6,14 @@ namespace Pokemon3D.Rendering.Compositor.PostProcessing
 {
     public class PostProcess
     {
-        private readonly List<PostProcessEffect> _effects = new List<PostProcessEffect>();
+        private readonly List<IPostProcessEffect> _effects = new List<IPostProcessEffect>();
 
         internal PostProcess()
         {
             
         }
 
-        public void Add(PostProcessEffect effect)
+        public void Add(IPostProcessEffect effect)
         {
             _effects.Add(effect);
         }

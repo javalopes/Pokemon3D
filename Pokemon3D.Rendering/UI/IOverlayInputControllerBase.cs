@@ -2,7 +2,7 @@
 
 namespace Pokemon3D.Rendering.UI
 {
-    public abstract class OverlayInputControllerBase : OverlayInputController
+    public abstract class IOverlayInputControllerBase : IOverlayInputController
     {
         protected void InvokeMoveToNextElement()
         {

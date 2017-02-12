@@ -46,7 +46,7 @@ namespace Pokemon3D.UI
                             }
                             else
                             {
-                                var frame = new Texture2D(GameInstance.GetService<GraphicsDevice>(), frameWidth, frameHeight);
+                                var frame = new Texture2D(IGameInstance.GetService<GraphicsDevice>(), frameWidth, frameHeight);
                                 frame.SetData(frameData);
                                 frames.Add(frame);
                             }

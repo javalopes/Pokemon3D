@@ -6,7 +6,7 @@ namespace Pokemon3D.Rendering.Compositor
 {
     internal class ShadowCasterRenderQueue : RenderQueue
     {
-        public ShadowCasterRenderQueue(GameContext context, EffectProcessor effectProcessor) : base(context, effectProcessor)
+        public ShadowCasterRenderQueue(IGameContext context, EffectProcessor effectProcessor) : base(context, effectProcessor)
         {
         }
 

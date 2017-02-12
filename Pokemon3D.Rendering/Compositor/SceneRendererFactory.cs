@@ -4,9 +4,9 @@ namespace Pokemon3D.Rendering.Compositor
 {
     public static class SceneRendererFactory
     {
-        public static SceneRenderer Create(GameContext gameContext, EffectProcessor effectProcessor, RenderSettings settings)
+        public static SceneRenderer Create(IGameContext iGameContext, EffectProcessor effectProcessor, RenderSettings settings)
         {
-            return new ForwardSceneRenderer(gameContext, effectProcessor, settings);
+            return new ForwardSceneRenderer(iGameContext, effectProcessor, settings);
         }
     }
 }

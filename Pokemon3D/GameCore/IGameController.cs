@@ -17,9 +17,9 @@ using Pokemon3D.ScriptPipeline;
 
 namespace Pokemon3D.GameCore
 {
-    internal class GameController : Game, GameContext
+    internal class IGameController : Game, IGameContext
     {
-        public static GameController Instance { get; private set; }
+        public static IGameController Instance { get; private set; }
 
         public const string GameName = "Pokémon3D";
 
@@ -42,7 +42,7 @@ namespace Pokemon3D.GameCore
         private EventAggregator _eventAggregator;
         private MessengerService _messengerService;
 
-        public GameController()
+        public IGameController()
         {
             if (Instance != null) throw new InvalidOperationException("Game is singleton and can be created just once");
 
@@ -90,7 +90,7 @@ namespace Pokemon3D.GameCore
             _inputSystem = RegisterService(new InputSystem.InputSystem());
             RegisterService(new ShapeRenderer(_spriteBatch));
             _screenManager = RegisterService(new ScreenManager());
-            RegisterService<TranslationProvider>(new TranslationProviderImp());
+            RegisterService<ITranslationProvider>(new ITranslationProviderImp());
             _collisionManager = RegisterService(new CollisionManager());
             _eventAggregator = RegisterService(new EventAggregator());
             _messengerService = RegisterService(new MessengerService());
@@ -99,7 +99,7 @@ namespace Pokemon3D.GameCore
             RegisterService(_notificationBarOverlay.AddElement(new NotificationBar(400)));
             _notificationBarOverlay.Show();
 #if DEBUG
-            GetService<ScreenManager>().SetScreen(typeof(MainMenuScreen));
+            GetService<ScreenManager>().SetScreen(typeof(MainMenuIScreen));
 #else
             GetService<ScreenManager>().SetScreen(typeof(IntroScreen));
 #endif

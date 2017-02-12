@@ -7,7 +7,7 @@ namespace Pokemon3D.Entities.System.Generators
     /// <summary>
     /// Classes to generate entities based on patterns from map files.
     /// </summary>
-    interface EntityGenerator
+    interface IEntityGenerator
     {
         IEnumerable<Entity> Generate(EntitySystem entitySystem, EntityFieldModel entityDefinition, EntityFieldPositionModel entityPlacing, Vector3 position);
     }

@@ -1,6 +1,6 @@
 ﻿namespace Pokemon3D.DataModel.Serialization
 {
-    interface DataSerializer<T>
+    interface IDataSerializer<T>
     {
         T FromString(string data);
 

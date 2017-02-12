@@ -7,7 +7,7 @@ namespace Pokemon3D.DataModel.Serialization
     /// <summary>
     /// Serializes and deserializes json data.
     /// </summary>
-    class JsonDataSerializer<T> : DataSerializer<T>
+    class JsonIDataSerializer<T> : IDataSerializer<T>
     {
         public T FromString(string data)
         {

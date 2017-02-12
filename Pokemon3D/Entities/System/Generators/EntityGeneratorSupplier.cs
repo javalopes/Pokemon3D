@@ -4,18 +4,18 @@ namespace Pokemon3D.Entities.System.Generators
 {
     internal class EntityGeneratorSupplier
     {
-        private readonly Dictionary<string, EntityGenerator> _generators;
+        private readonly Dictionary<string, IEntityGenerator> _generators;
 
         public EntityGeneratorSupplier()
         {
-            _generators = new Dictionary<string, EntityGenerator>()
+            _generators = new Dictionary<string, IEntityGenerator>()
                 {
-                    { "simple", new SimpleEntityGenerator() },
-                    { "texturedcube", new TexturedCubeEntityGenerator() }
+                    { "simple", new SimpleIEntityGenerator() },
+                    { "texturedcube", new TexturedCubeIEntityGenerator() }
                 };
         }
 
-        public EntityGenerator GetGenerator(string identifier)
+        public IEntityGenerator GetGenerator(string identifier)
         { 
             if (string.IsNullOrWhiteSpace(identifier))
             {

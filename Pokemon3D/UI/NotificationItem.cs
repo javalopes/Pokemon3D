@@ -31,9 +31,9 @@ namespace Pokemon3D.UI
         
         public NotificationItem(float lifeTime, NotificationKind notificationKind, string message)
         {
-            _spriteFont = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.NotificationFont);
+            _spriteFont = IGameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.NotificationFont);
             _backgroundColor = new Color(70, 70, 70);
-            _notificationIcons = GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.NotificationIcons);
+            _notificationIcons = IGameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.NotificationIcons);
             NotificationKind = notificationKind;
             Message = message;
             
@@ -64,10 +64,10 @@ namespace Pokemon3D.UI
         {
             var elementHeight = _spriteFont.LineSpacing + 2 * ElementPadding;
 
-            var startY = GameInstance.ScreenBounds.Height - (Index+1) * (elementHeight + ElementMargin);
-            var startX = (GameInstance.ScreenBounds.Width - Width) / 2;
+            var startY = IGameInstance.ScreenBounds.Height - (Index+1) * (elementHeight + ElementMargin);
+            var startX = (IGameInstance.ScreenBounds.Width - Width) / 2;
 
-            GameInstance.GetService<ShapeRenderer>().DrawRectangle(startX, startY, Width, elementHeight, _backgroundColor * Alpha);
+            IGameInstance.GetService<ShapeRenderer>().DrawRectangle(startX, startY, Width, elementHeight, _backgroundColor * Alpha);
 
             var currentX = startX + ElementMargin;
             var sourceRectangle = _notificationRectangle[NotificationKind];

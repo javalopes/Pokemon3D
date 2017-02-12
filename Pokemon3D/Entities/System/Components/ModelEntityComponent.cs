@@ -33,12 +33,12 @@ namespace Pokemon3D.Entities.System.Components
 
         public ModelEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
-            _drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(true);
+            _drawableElement = IGameInstance.GetService<SceneRenderer>().CreateDrawableElement(true);
             IsBillboard = GetDataOrDefault("IsBillboard", false);
 
             var modelReference = GetData<string>("MeshReference");
             var useTransparency = GetDataOrDefault("UseTransparency", false);
-            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
+            var gameMode = IGameInstance.GetService<GameModeManager>().ActiveGameMode;
 
             if (!string.IsNullOrEmpty(modelReference))
             {
@@ -87,7 +87,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public ModelEntityComponent(Entity referringEntity, Mesh mesh, Material material, bool isBillboard) : base(referringEntity)
         {
-            _drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(true);
+            _drawableElement = IGameInstance.GetService<SceneRenderer>().CreateDrawableElement(true);
             _drawableElement.Material = material;
             _drawableElement.Mesh = mesh;
             IsBillboard = isBillboard;
@@ -108,7 +108,7 @@ namespace Pokemon3D.Entities.System.Components
             var clonedComponent = new ModelEntityComponent(target)
             {
                 _regions = _regions != null ? new List<TextureRegion>(_regions) : null,
-                _drawableElement = GameInstance.GetService<SceneRenderer>().CreateDrawableElement(target.IsInitializing)
+                _drawableElement = IGameInstance.GetService<SceneRenderer>().CreateDrawableElement(target.IsInitializing)
             };
             clonedComponent._drawableElement.Material = Material;
             clonedComponent._drawableElement.Mesh = Mesh;
@@ -120,7 +120,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public override void OnComponentRemove()
         {
-            GameInstance.GetService<SceneRenderer>().RemoveDrawableElement(_drawableElement);
+            IGameInstance.GetService<SceneRenderer>().RemoveDrawableElement(_drawableElement);
             _drawableElement = null;
         }
 

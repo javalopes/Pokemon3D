@@ -6,7 +6,7 @@ namespace Pokemon3D.Common.Localization
     {
         private readonly string _key;
         private readonly string _section;
-        private readonly TranslationProvider _translationprovider;
+        private readonly ITranslationProvider _translationprovider;
 
         public event Action ValueChanged;
 
@@ -20,9 +20,9 @@ namespace Pokemon3D.Common.Localization
             return new LocalizedValue(hardcoded);
         }
 
-        public LocalizedValue(TranslationProvider translationProvider, string section, string key)
+        public LocalizedValue(ITranslationProvider iTranslationProvider, string section, string key)
         {
-            _translationprovider = translationProvider;
+            _translationprovider = iTranslationProvider;
             _section = section;
             _key = key;
 

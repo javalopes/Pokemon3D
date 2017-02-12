@@ -2,7 +2,7 @@
 
 namespace Pokemon3D.Common
 {
-    public interface GameContext
+    public interface IGameContext
     {
         TService GetService<TService>() where TService : class;
 

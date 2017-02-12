@@ -10,19 +10,19 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens
 {
-    internal class MainMenuScreen : ScreenWithOverlays
+    internal class MainMenuIScreen : IScreenWithOverlays
     {
         private SelectionDialog _closeDialog;
 
         public override void OnOpening(object enterInformation)
         {
-            var graphicsDeviceManager = GameInstance.GetService<GraphicsDeviceManager>();
+            var graphicsDeviceManager = IGameInstance.GetService<GraphicsDeviceManager>();
             graphicsDeviceManager.PreferMultiSampling = true;
             graphicsDeviceManager.ApplyChanges();
 
             var mainOverlay = AddOverlay(new UiOverlay());
 
-            var translation = GameInstance.GetService<TranslationProvider>();
+            var translation = IGameInstance.GetService<ITranslationProvider>();
 
             mainOverlay.AddElement(new HexagonBackground());
             mainOverlay.AddElement(new LeftSideButton(translation.CreateValue("System", "StartNewGame"), new Vector2(26, 45), OnStartNewGame));
@@ -43,7 +43,7 @@ namespace Pokemon3D.Screens
                 }),
                 new LeftSideButton(translation.CreateValue("System", "Yes"), new Vector2(50, 100), b =>
                 {
-                    GameInstance.GetService<ScreenManager>().NotifyQuitGame();
+                    IGameInstance.GetService<ScreenManager>().NotifyQuitGame();
                 })
             });
 
@@ -55,7 +55,7 @@ namespace Pokemon3D.Screens
 
         private void OnStartNewGame(LeftSideButton button)
         {
-            GameInstance.GetService<ScreenManager>().SetScreen(typeof(GameModeLoadingScreen));
+            IGameInstance.GetService<ScreenManager>().SetScreen(typeof(GameModeLoadingIScreen));
         }
 
         private void OnLoadGame(LeftSideButton button)
@@ -65,7 +65,7 @@ namespace Pokemon3D.Screens
 
         public override void OnLateDraw(GameTime gameTime)
         {
-            GameInstance.GetService<GraphicsDevice>().Clear(Color.LightGray);
+            IGameInstance.GetService<GraphicsDevice>().Clear(Color.LightGray);
             base.OnLateDraw(gameTime);
         }
     }

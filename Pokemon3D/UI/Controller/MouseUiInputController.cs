@@ -4,13 +4,13 @@ using Pokemon3D.Rendering.UI;
 
 namespace Pokemon3D.UI.Controller
 {
-    internal class MouseUiInputController : OverlayInputControllerBase
+    internal class MouseUiInputController : IOverlayInputControllerBase
     {
         protected readonly InputSystem.InputSystem InputSystem;
 
         public MouseUiInputController()
         {
-            InputSystem = GameProvider.GameInstance.GetService<InputSystem.InputSystem>();
+            InputSystem = GameProvider.IGameInstance.GetService<InputSystem.InputSystem>();
         }
 
         protected virtual Point GetCurrentMousePosition()

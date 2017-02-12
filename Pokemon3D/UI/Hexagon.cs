@@ -27,7 +27,7 @@ namespace Pokemon3D.UI
         {
             _hexagonTexture = texture;
             Bounds = new Rectangle(x * Width, y * Height - ((x % 2) * HeightHalf), texture.Width, texture.Height);
-            var targetAlpha = GameInstance.GetService<Random>().Next(MinAlpha, MaxAlpha);
+            var targetAlpha = IGameInstance.GetService<Random>().Next(MinAlpha, MaxAlpha);
 
             if (hasAnimation)
             {
@@ -51,10 +51,10 @@ namespace Pokemon3D.UI
 
             if (State == UiState.Active && !IsAnimating)
             {
-                if (GameInstance.GetService<Random>().Next(0, BlinkingChance) != 0) return;
+                if (IGameInstance.GetService<Random>().Next(0, BlinkingChance) != 0) return;
 
                 _changeAlphaAnimation.StartAlpha = Alpha;
-                _changeAlphaAnimation.EndAlpha = GameInstance.GetService<Random>().Next(0, 2) == 0 ? 255 : 0;
+                _changeAlphaAnimation.EndAlpha = IGameInstance.GetService<Random>().Next(0, 2) == 0 ? 255 : 0;
                 PlayAnimation("ChangeAlpha");
             }
         }

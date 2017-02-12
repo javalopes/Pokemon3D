@@ -7,7 +7,7 @@ namespace Pokemon3D.DataModel.Serialization
     /// <summary>
     /// Serializes and deserializes xml data.
     /// </summary>
-    class XmlDataSerializer<T> : DataSerializer<T>
+    class XmlIDataSerializer<T> : IDataSerializer<T>
     {
         private const string XmlSchemaInstance = " xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"";
 

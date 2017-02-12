@@ -18,12 +18,12 @@ namespace Pokemon3D.UI
         public MessageOverlay()
         {
             var box = AddElement(new ColoredRectangle(Color.Black.Alpha(200), new Rectangle(0,0, 400, 100)));
-            box.SetPosition(new Vector2(GameInstance.ScreenBounds.Width / 2 - 200, 100));
+            box.SetPosition(new Vector2(IGameInstance.ScreenBounds.Width / 2 - 200, 100));
 
-            _text = AddElement(new StaticText(GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular),
+            _text = AddElement(new StaticText(IGameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular),
                     LocalizedValue.Static("")));
 
-            _text.SetPosition(new Vector2(GameInstance.ScreenBounds.Width / 2 - 190, 110));
+            _text.SetPosition(new Vector2(IGameInstance.ScreenBounds.Width / 2 - 190, 110));
         }
 
         public void SetMessage(string message)
@@ -34,7 +34,7 @@ namespace Pokemon3D.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if (GameInstance.GetService<InputSystem.InputSystem>().IsPressedOnce(ActionNames.MenuAccept))
+            if (IGameInstance.GetService<InputSystem.InputSystem>().IsPressedOnce(ActionNames.MenuAccept))
             {
                 Hide();
             }

@@ -5,7 +5,7 @@ namespace Pokemon3D.Common.Localization
     /// <summary>
     /// Implements functionality to get translations from raw text sources.
     /// </summary>
-    public interface TranslationProvider
+    public interface ITranslationProvider
     {
         /// <summary>
         /// Returns a localized string for a resourc ekey.

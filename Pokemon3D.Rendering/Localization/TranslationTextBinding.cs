@@ -9,16 +9,16 @@ namespace Pokemon3D.Rendering.Localization
     /// </summary>
     class TranslationTextBinding
     {
-        private readonly TranslationProvider _translationProvider;
+        private readonly ITranslationProvider _iTranslationProvider;
         private readonly string _text;
         private readonly Action<string> _resolveText;
 
-        public TranslationTextBinding(TranslationProvider translationProvider, string text, Action<string> resolveText)
+        public TranslationTextBinding(ITranslationProvider iTranslationProvider, string text, Action<string> resolveText)
         {
-            _translationProvider = translationProvider;
+            _iTranslationProvider = iTranslationProvider;
             _text = text;
             _resolveText = resolveText;
-            _translationProvider.LanguageChanged += (s,e) => Resolve();
+            _iTranslationProvider.LanguageChanged += (s,e) => Resolve();
 
             Resolve();
         }
@@ -39,7 +39,7 @@ namespace Pokemon3D.Rendering.Localization
             {
                 var match = matches[i];
                 var parts = match.Value.Trim('{', '}').Split(':');
-                var result = _translationProvider.GetTranslation(parts[1], parts[2]);
+                var result = _iTranslationProvider.GetTranslation(parts[1], parts[2]);
 
                 text = text.Remove(match.Index, match.Length);
 

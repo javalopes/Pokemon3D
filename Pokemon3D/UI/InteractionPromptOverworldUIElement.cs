@@ -28,7 +28,7 @@ namespace Pokemon3D.UI
         {
             _worldPosition = worldPosition;
 
-            var font = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular);
+            var font = IGameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.LargeUIRegular);
             var fontSize = font.MeasureString(message);
 
             var  rect = AddElement(new ColoredRectangle(new Color(0, 0, 0, 180), new Rectangle(0, 0,(int) fontSize.X + 6, 30)));
@@ -49,7 +49,7 @@ namespace Pokemon3D.UI
             _pie.SetPosition(new Vector2(0, +verticalOffset));
             _pie.Angle = 0.0f;
 
-            var actionText = AddElement(new Image(GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A)));
+            var actionText = AddElement(new Image(IGameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.UI.GamePadButtons.Button_A)));
             actionText.SetPosition(new Vector2(0.0f, verticalOffset));
             actionText.SetOriginPercentage(new Vector2(0.5f, 0.5f));
 
@@ -64,7 +64,7 @@ namespace Pokemon3D.UI
 
         private void OnShowed()
         {
-            var camera = GameInstance.GetService<SceneRenderer>().GetMainCamera();
+            var camera = IGameInstance.GetService<SceneRenderer>().GetMainCamera();
 
             var position = camera.ProjectWorldToScreen(_worldPosition + new Vector3(0, 0.5f, 0));
 
@@ -75,8 +75,8 @@ namespace Pokemon3D.UI
         {
             base.Update(gameTime);
 
-            if (GameInstance.GetService<InputSystem.InputSystem>().IsPressed(ActionNames.MenuAccept) &&
-                GameInstance.GetService<ScriptPipelineManager>().ActiveProcessorCount == 0) // only update these if this are no scripts running.
+            if (IGameInstance.GetService<InputSystem.InputSystem>().IsPressed(ActionNames.MenuAccept) &&
+                IGameInstance.GetService<ScriptPipelineManager>().ActiveProcessorCount == 0) // only update these if this are no scripts running.
             {
                 _buttonPressed += gameTime.GetSeconds() * 1.5f;
                 if (_buttonPressed >= 1f)

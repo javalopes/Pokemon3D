@@ -5,7 +5,7 @@ using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens.Transitions
 {
-    internal class BlendTransition : ScreenTransition
+    internal class BlendTransition : IScreenTransition
     {
         private Texture2D _source;
         private Texture2D _target;
@@ -37,7 +37,7 @@ namespace Pokemon3D.Screens.Transitions
 
         public void Draw()
         {
-            var spriteBatch = GameInstance.GetService<SpriteBatch>();
+            var spriteBatch = IGameInstance.GetService<SpriteBatch>();
             var alpha = _elapsedTime/_transitionTime;
 
             spriteBatch.Begin(blendState: BlendState.NonPremultiplied);

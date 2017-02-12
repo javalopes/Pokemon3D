@@ -24,7 +24,7 @@ namespace Pokemon3D.Rendering.Compositor
             
         public bool IsEnabled { get; set; }
 
-        public RenderQueue(GameContext context, EffectProcessor effectProcessor) : base(context)
+        public RenderQueue(IGameContext context, EffectProcessor effectProcessor) : base(context)
         {
             EffectProcessor = effectProcessor;
             IsEnabled = true;

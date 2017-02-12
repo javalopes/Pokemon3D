@@ -14,9 +14,9 @@ namespace Pokemon3D.GameCore
         // Might consider renaming it to something like "GAME" (all caps) to differenciate it from the class name and make the name shorter.
 
         /// <summary>
-        /// The active <see cref="GameController"/> instance.
+        /// The active <see cref="IGameController"/> instance.
         /// </summary>
-        public static GameContext GameInstance => GameController.Instance;
+        public static IGameContext IGameInstance => IGameController.Instance;
     }
 }
 

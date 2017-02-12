@@ -33,7 +33,7 @@ namespace Pokemon3D.ScriptPipeline.ApiClasses
             object[] netObjects;
             if (EnsureTypeContract(parameters, new[] { typeof(string), typeof(Vector3Wrapper) }, out netObjects))
             {
-                var screen = (OverworldScreen)GameProvider.GameInstance.GetService<ScreenManager>().CurrentScreen;
+                var screen = (OverworldIScreen)GameProvider.IGameInstance.GetService<ScreenManager>().CurrentIScreen;
 
                 var position = netObjects[1] as Vector3Wrapper;
                 if (position != null)
