@@ -34,7 +34,7 @@ namespace Pokemon3D.Server
 
             try
             {
-                if (!RegisterOnMasterServer()) return false;
+                if (!_masterServerRegistrationClient.Register(_configuration)) return false;
                 if (!PrepareGameMode()) return false;
                 if (!StartServerTasks()) return false;
             }
@@ -47,11 +47,6 @@ namespace Pokemon3D.Server
             Notify("Server started successfully.");
 
             return true;
-        }
-
-        private bool RegisterOnMasterServer()
-        {
-            return _masterServerRegistrationClient.Register(_configuration);
         }
 
         private bool PrepareGameMode()
