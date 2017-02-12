@@ -5,7 +5,7 @@ using Pokemon3D.Screens.Transitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Pokemon3D.GameProvider;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens
 {

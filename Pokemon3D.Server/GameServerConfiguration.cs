@@ -7,5 +7,7 @@
         public bool IsPrivate { get; set; }
 
         public string Name { get; set; }
+
+        public int MaxPlayerCount { get; set; } = 1;
     }
 }

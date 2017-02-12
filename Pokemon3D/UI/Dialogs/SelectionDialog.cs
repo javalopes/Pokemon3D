@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Content;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Common.Localization;
+using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.Shapes;
 
 namespace Pokemon3D.UI.Dialogs

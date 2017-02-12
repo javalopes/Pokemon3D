@@ -1,34 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using Ionic.Zip;
 using Microsoft.Xna.Framework;
 using Pokemon3D.Common;
-using Pokemon3D.DataModel.Multiplayer;
 using Pokemon3D.GameModes;
 using Pokemon3D.Server.Component;
-using RestSharp;
+using Pokemon3D.Server.Management;
 
 namespace Pokemon3D.Server
 {
     public class GameServer : GameContext, IMessageBroker
     {
-        private readonly GameServerConfiguration _configuration;
-        private int _gameServerId;
-        private GameModeManager _gameModeManager;
-        private readonly RestClient _restClient;
-        private readonly List<IServerComponent> _components = new List<IServerComponent>();
-        private string _contentFilePath;
+        private readonly object _messageBrokerLockObject = new object();
 
+        private readonly GameServerConfiguration _configuration;
+        private GameModeManager _gameModeManager;
+        private readonly MasterServerRegistrationClient _masterServerRegistrationClient;
+        private readonly ClientRegistrator _clientRegistrator;
+
+        private readonly List<IServerComponent> _components = new List<IServerComponent>();
         public event Action<string> OnMessage;
 
         public GameServer(GameServerConfiguration configuration)
         {
             _configuration = configuration;
-            _gameServerId = -1;
-            _restClient = new RestClient();
+            _masterServerRegistrationClient = new MasterServerRegistrationClient(this);
+            _clientRegistrator = new ClientRegistrator(configuration, this);
         }
 
         public bool Start()
@@ -54,30 +51,7 @@ namespace Pokemon3D.Server
 
         private bool RegisterOnMasterServer()
         {
-            if (string.IsNullOrEmpty(_configuration.MasterServerUrl))
-            {
-                Notify("No master server url declared, no registration is done.");
-                return true;
-            }
-            
-            _restClient.BaseUrl = new Uri(_configuration.MasterServerUrl);
-
-            var gameServerData = new GameServerRegistrationModel
-            {
-                Name = _configuration.Name,
-                IpAddress = "127.0.0.1"
-            };
-
-            var response = SendPostRequest("/api/gameserver/register", gameServerData);
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                _gameServerId = int.Parse(response.Content);
-                Notify($"Registered successfully with id = {_gameServerId}");
-                return true;
-            }
-
-            Notify($"Registration not successful  with status code {response.StatusCode}: {response.ErrorMessage}");
-            return false;
+            return _masterServerRegistrationClient.Register(_configuration);
         }
 
         private bool PrepareGameMode()
@@ -106,32 +80,13 @@ namespace Pokemon3D.Server
                 return false;
             }
 
-            var rootFolderName = Path.GetFileName(gameMode.GameModeInfo.DirectoryPath);
-            var parentFolder = Path.GetDirectoryName(gameMode.GameModeInfo.DirectoryPath) ?? "";
-            _contentFilePath = Path.Combine(parentFolder, rootFolderName + ".zip");
-
-            if (File.Exists(_contentFilePath))
-            {
-                File.Delete(_contentFilePath);
-                Notify("Existing Game Mode content package deleted");
-            }
-
-            using (var zipFile = new ZipFile(_contentFilePath))
-            {
-                zipFile.AddDirectory(Path.Combine(gameMode.GameModeInfo.DirectoryPath, "Content"));
-                zipFile.Comment = gameMode.CalculateChecksum().ToString();
-                zipFile.Save();
-            }
-
-            Notify("Game mode has been zipped and saved with checksum");
-
             return true;
         }
 
         private bool StartServerTasks()
         {
-            _components.Add(new GameContentComponent(_contentFilePath, this));
-            _components.Add(new CommunicationComponent(this));
+            _components.Add(new GameContentComponent(_gameModeManager.ActiveGameMode, this));
+            _components.Add(new CommunicationComponent(this, _clientRegistrator));
 
             foreach (var component in _components)
             {
@@ -147,31 +102,13 @@ namespace Pokemon3D.Server
 
             return true;
         }
-
-        public void Update()
-        {
-            
-        }
         
-        private IRestResponse SendPostRequest(string requestUriPart, object toSend)
-        {
-            var request = new RestRequest(requestUriPart);
-            var jsonToSend = request.JsonSerializer.Serialize(toSend);
-
-            request.AddParameter("application/json; charset=utf-8", jsonToSend, ParameterType.RequestBody);
-            request.RequestFormat = DataFormat.Json;
-
-            return _restClient.Post(request);
-        }
-
         public void Stop()
         {
             Notify($"Shutting down server '{_configuration.Name}'...");
-            if (_gameServerId != -1 && !string.IsNullOrEmpty(_configuration.MasterServerUrl))
-            {
-                SendPostRequest("/api/gameserver/unregister", _gameServerId);
-            }
 
+            _masterServerRegistrationClient.Unregister(_configuration);
+            
             foreach (var component in _components)
             {
                 Notify($"Stopping '{component.Name}'");
@@ -186,11 +123,17 @@ namespace Pokemon3D.Server
             throw new NotImplementedException();
         }
 
+        // ReSharper disable UnassignedGetOnlyAutoProperty
         public Rectangle ScreenBounds { get; }
+        // ReSharper restore UnassignedGetOnlyAutoProperty
 
         public void Notify(string message)
         {
-            OnMessage?.Invoke(message);
+            lock (_messageBrokerLockObject)
+            {
+                OnMessage?.Invoke(message);
+            }
         }
+
     }
 }

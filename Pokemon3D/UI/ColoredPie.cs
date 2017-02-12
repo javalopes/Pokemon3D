@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.Shapes;
 using Pokemon3D.Rendering.UI;
 

@@ -1,7 +1,6 @@
 ﻿using Pokemon3D.Common;
-using Pokemon3D.GameCore;
 
-namespace Pokemon3D
+namespace Pokemon3D.GameCore
 {
     /// <summary>
     /// A static class to provide a shorthand access to the global game instance.

@@ -8,7 +8,7 @@ using Pokemon3D.Rendering.Data;
 using Pokemon3D.Content;
 using Pokemon3D.Entities.Components;
 using Pokemon3D.GameCore;
-using static Pokemon3D.GameProvider;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities
 {

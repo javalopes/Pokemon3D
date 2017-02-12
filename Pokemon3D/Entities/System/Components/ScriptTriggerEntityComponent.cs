@@ -4,7 +4,7 @@ using Pokemon3D.Collisions;
 using Pokemon3D.Screens;
 using Pokemon3D.ScriptPipeline;
 using Pokemon3D.UI;
-using static Pokemon3D.GameProvider;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities.System.Components
 {

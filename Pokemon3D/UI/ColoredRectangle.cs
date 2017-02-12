@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.Shapes;
 using Pokemon3D.Rendering.UI;
-using static Pokemon3D.GameProvider;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI
 {

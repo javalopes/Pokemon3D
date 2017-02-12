@@ -11,7 +11,7 @@ using Pokemon3D.Rendering.Shapes;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Rendering.UI.Controls;
 using Pokemon3D.ScriptPipeline;
-using static Pokemon3D.GameProvider;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI
 {

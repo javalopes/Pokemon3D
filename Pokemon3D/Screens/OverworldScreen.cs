@@ -6,7 +6,7 @@ using Pokemon3D.GameModes;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Screens.Transitions;
 using Pokemon3D.UI;
-using static Pokemon3D.GameProvider;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens
 {

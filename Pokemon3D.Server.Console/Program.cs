@@ -5,35 +5,29 @@ namespace Pokemon3D.Server.Console
 {
     internal class Program
     {
-        private static readonly ILogger _logger = LogManager.GetLogger("P3D");
+        private static readonly ILogger Logger = LogManager.GetLogger("P3D");
 
-        static void Main()
+        private static void Main()
         {
             var configuration = new GameServerConfiguration
             {
                 Name = Properties.Settings.Default.ServerName,
                 MasterServerUrl = Properties.Settings.Default.MasterServerUrl,
-                IsPrivate = Properties.Settings.Default.IsPrivate
+                IsPrivate = Properties.Settings.Default.IsPrivate,
+                MaxPlayerCount = Properties.Settings.Default.MaxPlayerCount
             };
 
             var gameServer = new GameServer(configuration);
             gameServer.OnMessage += OnMessageReceived;
 
-            var cancel = false;
+            var running = gameServer.Start();
             System.Console.CancelKeyPress += (s, e) =>
             {
-                cancel = true;
+                running = false;
                 e.Cancel = true;
             };
-
-            var startedSuccessfully = gameServer.Start();
-            cancel = !startedSuccessfully;
-
-            while (!cancel)
-            {
-                gameServer.Update();
-                Thread.Sleep(1);
-            }
+            
+            while (running) Thread.Sleep(1);
 
             gameServer.Stop();
         }
@@ -41,7 +35,7 @@ namespace Pokemon3D.Server.Console
         private static void OnMessageReceived(string text)
         {
             System.Console.WriteLine(text);
-            _logger.Info(text);
+            Logger.Info(text);
         }
     }
 }

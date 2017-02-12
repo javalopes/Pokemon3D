@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Data;
 using Pokemon3D.Common;
-using static Pokemon3D.GameProvider;
+using static Pokemon3D.GameCore.GameProvider;
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace Pokemon3D.Collisions

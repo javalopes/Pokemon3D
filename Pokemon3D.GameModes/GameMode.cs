@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Common.DataHandling;
@@ -21,9 +19,6 @@ using Pokemon3D.GameModes.Monsters;
 
 namespace Pokemon3D.GameModes
 {
-    /// <summary>
-    /// Contains methods and members that control a GameMode, a collection of maps, scripts and assets.
-    /// </summary>
     public partial class GameMode : GameContextObject, IDataModelContainer, IDisposable
     {
         private readonly Dictionary<string, ModelMesh[]> _meshCache = new Dictionary<string, ModelMesh[]>();

@@ -6,7 +6,7 @@ using Pokemon3D.Entities.System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common;
-using static Pokemon3D.GameProvider;
+using static Pokemon3D.GameCore.GameProvider;
 using Pokemon3D.DataModel.GameMode.Map;
 using Pokemon3D.DataModel.GameMode.Map.Entities;
 using Pokemon3D.GameModes;

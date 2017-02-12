@@ -9,7 +9,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="MasterServerUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://localhost:15710</Value>
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MaxPlayerCount" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

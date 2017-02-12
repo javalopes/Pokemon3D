@@ -1,18 +1,21 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 using Lidgren.Network;
+using Pokemon3D.Server.Management;
 
 namespace Pokemon3D.Server.Component
 {
     class CommunicationComponent : AsyncComponentBase
     {
+        private readonly IMessageBroker _messageBroker;
+        private readonly IClientRegistrator _registrator;
         private readonly NetServer _server;
 
         public override string Name => "Network Communication";
 
-        public CommunicationComponent(IMessageBroker messageBroker) : base(messageBroker)
+        public CommunicationComponent(IMessageBroker messageBroker, IClientRegistrator registrator) : base(messageBroker)
         {
+            _messageBroker = messageBroker;
+            _registrator = registrator;
             var configuration = new NetPeerConfiguration("Pokemon3D.Network.Communcation.Server");
             _server = new NetServer(configuration);
         }
@@ -37,19 +40,33 @@ namespace Pokemon3D.Server.Component
                 {
                     switch (msg.MessageType)
                     {
+                        case NetIncomingMessageType.ConnectionApproval:
+                            OnConnectionApproval(msg);
+                            break;
                         case NetIncomingMessageType.VerboseDebugMessage:
+                            _messageBroker.Notify("Network VerboseDebugMsg: " + msg.ReadString());
+                            break;
                         case NetIncomingMessageType.DebugMessage:
+                            _messageBroker.Notify("Network DebugMsg: " + msg.ReadString());
+                            break;
                         case NetIncomingMessageType.WarningMessage:
+                            _messageBroker.Notify("Network WarningMsg: " + msg.ReadString());
+                            break;
                         case NetIncomingMessageType.ErrorMessage:
-                            Console.WriteLine(msg.ReadString());
+                            _messageBroker.Notify("Network ErrorMsg: " + msg.ReadString());
                             break;
                         default:
-                            Console.WriteLine("Unhandled type: " + msg.MessageType);
+                            _messageBroker.Notify("Unhandled type: " + msg.MessageType);
                             break;
                     }
                     _server.Recycle(msg);
                 }
             }
+        }
+
+        private void OnConnectionApproval(NetIncomingMessage msg)
+        {
+            _registrator.RegisterClient(new Player(msg.ReadString()));
         }
     }
 }

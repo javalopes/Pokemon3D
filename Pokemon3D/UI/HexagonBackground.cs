@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Content;
+using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.UI;
 
 namespace Pokemon3D.UI

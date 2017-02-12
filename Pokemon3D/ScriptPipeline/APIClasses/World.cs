@@ -4,6 +4,7 @@ using Pokemon3D.Scripting.Adapters;
 using Pokemon3D.Screens;
 using Pokemon3D.ScriptPipeline.Prototypes;
 using Pokemon3D.Common.ScriptPipeline;
+using Pokemon3D.GameCore;
 
 namespace Pokemon3D.ScriptPipeline.ApiClasses
 {

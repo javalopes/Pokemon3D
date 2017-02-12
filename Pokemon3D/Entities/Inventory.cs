@@ -9,7 +9,7 @@ using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.UI;
 using Pokemon3D.UI.Controller;
-using static Pokemon3D.GameProvider;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Entities
 {

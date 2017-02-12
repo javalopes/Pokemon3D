@@ -11,17 +11,12 @@ using Pokemon3D.Rendering;
 using Pokemon3D.Rendering.Compositor;
 using Pokemon3D.Rendering.UI;
 using System.Collections.Generic;
-using System.Linq;
 using Pokemon3D.Common.Localization;
-using Pokemon3D.DataModel.GameCore;
 using Pokemon3D.Rendering.Shapes;
 using Pokemon3D.ScriptPipeline;
 
 namespace Pokemon3D.GameCore
 {
-    /// <summary>
-    /// Wraps around the MonoGame <see cref="Game"/> class.
-    /// </summary>
     internal class GameController : Game, GameContext
     {
         public static GameController Instance { get; private set; }

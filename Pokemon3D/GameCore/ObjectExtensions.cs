@@ -1,7 +1,6 @@
 using System;
-using Pokemon3D.GameCore;
 
-namespace Pokemon3D
+namespace Pokemon3D.GameCore
 {
     public static class ObjectExtensions
     {

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pokemon3D.Common.Localization;
+using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.Shapes;
 using Pokemon3D.Rendering.UI;
 

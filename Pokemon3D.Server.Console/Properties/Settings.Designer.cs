@@ -49,13 +49,25 @@ namespace Pokemon3D.Server.Console.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:15710")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string MasterServerUrl {
             get {
                 return ((string)(this["MasterServerUrl"]));
             }
             set {
                 this["MasterServerUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int MaxPlayerCount {
+            get {
+                return ((int)(this["MaxPlayerCount"]));
+            }
+            set {
+                this["MaxPlayerCount"] = value;
             }
         }
     }
