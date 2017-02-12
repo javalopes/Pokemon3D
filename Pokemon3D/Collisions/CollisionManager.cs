@@ -71,10 +71,10 @@ namespace Pokemon3D.Collisions
                 IsUnlit = true
             };
 
-            IGameInstance.GetService<SceneRenderer>().RegisterCustomDraw(OnCustomDraw);
+            IGameInstance.GetService<ISceneRenderer>().RegisterCustomDraw(OnCustomDraw);
         }
 
-        private void OnCustomDraw(Camera camera, SceneRenderer renderer)
+        private void OnCustomDraw(Camera camera, ISceneRenderer renderer)
         {
             if (!DrawDebugShapes) return;
 
@@ -181,7 +181,7 @@ namespace Pokemon3D.Collisions
             }
         }
         
-        private void DrawBoundingBox(SceneRenderer renderer, Camera camera, Collider collider)
+        private void DrawBoundingBox(ISceneRenderer renderer, Camera camera, Collider collider)
         {
             var scale = -collider.BoundingBox.Min + collider.BoundingBox.Max;
             var position = collider.BoundingBox.Min + scale*0.5f;

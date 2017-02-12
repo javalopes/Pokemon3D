@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
-    <Compile Include="Compositor\IEffectProcessor.cs" />
+    <Compile Include="Compositor\EffectProcessor.cs" />
     <Compile Include="Compositor\ForwardISceneRenderer.cs" />
     <Compile Include="Compositor\LightTechniqueFlag.cs" />
     <Compile Include="Compositor\PostProcessing\HorizontalBlurEffect.cs" />

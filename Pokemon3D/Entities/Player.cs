@@ -50,7 +50,7 @@ namespace Pokemon3D.Entities
             _mainCameraComponent.FarClipDistance = 50.0f;
             _mainCameraComponent.Camera.IsMain = true;
 
-            var defaultPostProcessors = IGameInstance.GetService<SceneRenderer>().DefaultPostProcessors;
+            var defaultPostProcessors = IGameInstance.GetService<ISceneRenderer>().DefaultPostProcessors;
             _mainCameraComponent.Camera.PostProcess.Add(defaultPostProcessors.HorizontalBlur);
             _mainCameraComponent.Camera.PostProcess.Add(defaultPostProcessors.VerticalBlur);
 

@@ -125,7 +125,7 @@ namespace Pokemon3D.Screens
 
             _device.SetRenderTarget(_targetRenderTarget);
             currentIScreen.OnEarlyDraw(new GameTime());
-            IGameInstance.GetService<SceneRenderer>().Draw();
+            IGameInstance.GetService<ISceneRenderer>().Draw();
             currentIScreen.OnLateDraw(new GameTime());
 
             _device.SetRenderTargets(currentRenderTarget);

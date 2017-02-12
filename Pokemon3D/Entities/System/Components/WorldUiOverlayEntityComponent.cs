@@ -26,7 +26,7 @@ namespace Pokemon3D.Entities.System.Components
             var graphicsDevice = IGameInstance.GetService<GraphicsDevice>();
             _renderTarget = new RenderTarget2D(graphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.None);
 
-            _drawableElement = IGameInstance.GetService<SceneRenderer>().CreateDrawableElement(true, CameraMasks.UiOverlays);
+            _drawableElement = IGameInstance.GetService<ISceneRenderer>().CreateDrawableElement(true, CameraMasks.UiOverlays);
             _drawableElement.Mesh = new Mesh(graphicsDevice, Primitives.GenerateQuadForY(), false);
             _drawableElement.Material = new Material
             {
@@ -47,7 +47,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public override void OnComponentRemove()
         {
-            IGameInstance.GetService<SceneRenderer>().RemoveDrawableElement(_drawableElement);
+            IGameInstance.GetService<ISceneRenderer>().RemoveDrawableElement(_drawableElement);
         }
 
         public override void Update(GameTime gameTime)

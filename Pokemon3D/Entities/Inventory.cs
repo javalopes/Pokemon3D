@@ -47,7 +47,7 @@ namespace Pokemon3D.Entities
             _uiOverlay.Show();
 
             _uiOverlay.AddInputController(new MainUiInputController());
-            _uiOverlay.AddInputController(new MouseUiInputController3D(IGameInstance.GetService<SceneRenderer>().GetMainCamera(),  _inventoryOverlayEntity, 512,512));
+            _uiOverlay.AddInputController(new MouseUiInputController3D(IGameInstance.GetService<ISceneRenderer>().GetMainCamera(),  _inventoryOverlayEntity, 512,512));
         }
 
         private void OnQuit(LeftSideButton button)

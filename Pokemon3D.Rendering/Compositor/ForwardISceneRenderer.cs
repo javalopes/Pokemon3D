@@ -10,7 +10,7 @@ using Pokemon3D.Rendering.Data;
 
 namespace Pokemon3D.Rendering.Compositor
 {
-    internal class ForwardSceneRenderer : GameContextObject, SceneRenderer
+    internal class ForwardISceneRenderer : GameContextObject, ISceneRenderer
     {
         private readonly object _lockObject = new object();
 
@@ -21,7 +21,7 @@ namespace Pokemon3D.Rendering.Compositor
         // ReSharper restore CollectionNeverQueried.Local
         private readonly List<DrawableElement> _allDrawables = new List<DrawableElement>();
         private readonly List<Camera> _allCameras = new List<Camera>();
-        private readonly List<Action<Camera, SceneRenderer>> _customDrawActions = new List<Action<Camera, SceneRenderer>>();
+        private readonly List<Action<Camera, ISceneRenderer>> _customDrawActions = new List<Action<Camera, ISceneRenderer>>();
 
         private readonly GraphicsDevice _device;
         private readonly EffectProcessor _effectProcessor;
@@ -36,7 +36,7 @@ namespace Pokemon3D.Rendering.Compositor
 
         private readonly RenderTarget2D _cameraOutputRenderTarget;
         
-        public ForwardSceneRenderer(GameContext context, EffectProcessor effectProcessor, RenderSettings settings) : base(context)
+        public ForwardISceneRenderer(IGameContext context, EffectProcessor effectProcessor, RenderSettings settings) : base(context)
         {
             _device = context.GetService<GraphicsDevice>();
             _effectProcessor = effectProcessor;
@@ -110,7 +110,7 @@ namespace Pokemon3D.Rendering.Compositor
             RenderStatistics.Instance.EndFrame();
         }
 
-        public void RegisterCustomDraw(Action<Camera, SceneRenderer> onDraw)
+        public void RegisterCustomDraw(Action<Camera, ISceneRenderer> onDraw)
         {
             _customDrawActions.Add(onDraw);
         }

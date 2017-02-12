@@ -4,7 +4,7 @@ using Pokemon3D.Rendering.Data;
 
 namespace Pokemon3D.Rendering
 {
-    public interface SceneRenderer
+    public interface ISceneRenderer
     {
         RenderSettings RenderSettings { get; }
 
@@ -30,7 +30,7 @@ namespace Pokemon3D.Rendering
 
         void Draw();
 
-        void RegisterCustomDraw(Action<Camera, SceneRenderer> onDraw);
+        void RegisterCustomDraw(Action<Camera, ISceneRenderer> onDraw);
 
         void DrawImmediate(Camera camera, Matrix world, Material material, Mesh mesh);
     }

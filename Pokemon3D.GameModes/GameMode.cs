@@ -42,7 +42,7 @@ namespace Pokemon3D.GameModes
 
         public SaveGame SaveGame { get; private set; }
 
-        public GraphicsDevice GraphicsDevice => IGameContext.GetService<GraphicsDevice>();
+        public GraphicsDevice GraphicsDevice => GameContext.GetService<GraphicsDevice>();
 
         /// <summary>
         /// Creates an instance of the <see cref="GameMode"/> class and loads the data model.
@@ -137,7 +137,7 @@ namespace Pokemon3D.GameModes
                 };
 
                 Mesh mesh = null;
-                IGameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() => mesh = new Mesh(GraphicsDevice, geometryData));
+                GameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() => mesh = new Mesh(GraphicsDevice, geometryData));
                 _meshPrimitivesByName.Add(primitiveModel.Id, mesh);
             }
 
@@ -168,7 +168,7 @@ namespace Pokemon3D.GameModes
             var data = IFileLoader.GetFile(Path.Combine(TexturePath, filePath));
 
             Texture2D texture = null;
-            IGameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() =>
+            GameContext.GetService<JobSystem>().EnsureExecutedInMainThread(() =>
             {
                 using (var memoryStream = new MemoryStream(data.Data))
                 {
@@ -273,7 +273,7 @@ namespace Pokemon3D.GameModes
 
         public void EnsureExecutedInMainThread(Action action)
         {
-            IGameContext.GetService<JobSystem>().EnsureExecutedInMainThread(action);
+            GameContext.GetService<JobSystem>().EnsureExecutedInMainThread(action);
         }
     }
 }

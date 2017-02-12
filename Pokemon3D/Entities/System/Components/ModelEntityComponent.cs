@@ -33,7 +33,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public ModelEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
-            _drawableElement = IGameInstance.GetService<SceneRenderer>().CreateDrawableElement(true);
+            _drawableElement = IGameInstance.GetService<ISceneRenderer>().CreateDrawableElement(true);
             IsBillboard = GetDataOrDefault("IsBillboard", false);
 
             var modelReference = GetData<string>("MeshReference");
@@ -87,7 +87,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public ModelEntityComponent(Entity referringEntity, Mesh mesh, Material material, bool isBillboard) : base(referringEntity)
         {
-            _drawableElement = IGameInstance.GetService<SceneRenderer>().CreateDrawableElement(true);
+            _drawableElement = IGameInstance.GetService<ISceneRenderer>().CreateDrawableElement(true);
             _drawableElement.Material = material;
             _drawableElement.Mesh = mesh;
             IsBillboard = isBillboard;
@@ -108,7 +108,7 @@ namespace Pokemon3D.Entities.System.Components
             var clonedComponent = new ModelEntityComponent(target)
             {
                 _regions = _regions != null ? new List<TextureRegion>(_regions) : null,
-                _drawableElement = IGameInstance.GetService<SceneRenderer>().CreateDrawableElement(target.IsInitializing)
+                _drawableElement = IGameInstance.GetService<ISceneRenderer>().CreateDrawableElement(target.IsInitializing)
             };
             clonedComponent._drawableElement.Material = Material;
             clonedComponent._drawableElement.Mesh = Mesh;
@@ -120,7 +120,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public override void OnComponentRemove()
         {
-            IGameInstance.GetService<SceneRenderer>().RemoveDrawableElement(_drawableElement);
+            IGameInstance.GetService<ISceneRenderer>().RemoveDrawableElement(_drawableElement);
             _drawableElement = null;
         }
 

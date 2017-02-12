@@ -64,7 +64,7 @@ namespace Pokemon3D.UI
 
         private void OnShowed()
         {
-            var camera = IGameInstance.GetService<SceneRenderer>().GetMainCamera();
+            var camera = IGameInstance.GetService<ISceneRenderer>().GetMainCamera();
 
             var position = camera.ProjectWorldToScreen(_worldPosition + new Vector3(0, 0.5f, 0));
 

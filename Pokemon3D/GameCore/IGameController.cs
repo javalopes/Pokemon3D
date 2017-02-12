@@ -34,7 +34,7 @@ namespace Pokemon3D.GameCore
         private readonly Dictionary<Type, object> _services = new Dictionary<Type, object>();
         private readonly GameConfiguration _gameConfig;
         private UiOverlay _notificationBarOverlay;
-        private SceneRenderer _renderer;
+        private ISceneRenderer _renderer;
         private SpriteBatch _spriteBatch;
         private InputSystem.InputSystem _inputSystem;
         private ScreenManager _screenManager;

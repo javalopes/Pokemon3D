@@ -26,7 +26,7 @@ namespace Pokemon3D.Entities.System.Components
         {
             var gameMode = IGameInstance.GetService<GameModeManager>().ActiveGameMode;
 
-            _drawableElement = IGameInstance.GetService<SceneRenderer>().CreateDrawableElement(true);
+            _drawableElement = IGameInstance.GetService<ISceneRenderer>().CreateDrawableElement(true);
 
             _drawableElement.Material = new Material
             {
@@ -115,7 +115,7 @@ namespace Pokemon3D.Entities.System.Components
         {
             var component = new TilemapEntityComponent(target)
             {
-                _drawableElement = IGameInstance.GetService<SceneRenderer>().CreateDrawableElement(target.IsInitializing)
+                _drawableElement = IGameInstance.GetService<ISceneRenderer>().CreateDrawableElement(target.IsInitializing)
             };
             component._drawableElement.Mesh = _drawableElement.Mesh;
             component._drawableElement.Material = _drawableElement.Material;
@@ -125,7 +125,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public override void OnComponentRemove()
         {
-            IGameInstance.GetService<SceneRenderer>().RemoveDrawableElement(_drawableElement);
+            IGameInstance.GetService<ISceneRenderer>().RemoveDrawableElement(_drawableElement);
             _drawableElement = null;
         }
 
