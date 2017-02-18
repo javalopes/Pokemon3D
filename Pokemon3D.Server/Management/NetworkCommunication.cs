@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Lidgren.Network;
 using Pokemon3D.Networking;
+using Pokemon3D.Networking.Client;
+using Pokemon3D.Networking.Server;
 
 namespace Pokemon3D.Server.Management
 {
@@ -73,7 +75,16 @@ namespace Pokemon3D.Server.Management
         
         private void OnConnectionApproval(NetIncomingMessage msg)
         {
-            _registrator.RegisterClient(new Player(msg.ReadString()));
+            _registrator.RegisterClient(new Player(msg.ReadString(), msg.SenderConnection));
+        }
+
+        public void SendMessages(IEnumerable<ServerMessage> allMessages)
+        {
+            foreach (var serverMessage in allMessages)
+            {
+                var player = _registrator.GetPlayer(serverMessage.ClientUniqueId);
+                _server.SendMessage(player.Connection, serverMessage);
+            }
         }
     }
 }

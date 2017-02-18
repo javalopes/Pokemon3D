@@ -1,4 +1,5 @@
-﻿using Pokemon3D.Networking;
+﻿using Pokemon3D.Networking.Client;
+using Pokemon3D.Networking.Server;
 
 namespace Pokemon3D.Server.Component
 {
@@ -11,5 +12,7 @@ namespace Pokemon3D.Server.Component
         void Stop();
 
         bool HandleMessage(ClientMessage clientMessage);
+
+        ServerMessage[] GetAndClearServerMessages();
     }
 }

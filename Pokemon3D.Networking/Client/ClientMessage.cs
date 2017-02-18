@@ -1,7 +1,7 @@
 using System;
 using Lidgren.Network;
 
-namespace Pokemon3D.Networking
+namespace Pokemon3D.Networking.Client
 {
     public abstract class ClientMessage : Message
     {

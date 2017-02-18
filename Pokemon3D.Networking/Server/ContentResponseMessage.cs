@@ -1,12 +1,13 @@
-﻿using Lidgren.Network;
+﻿using System;
+using Lidgren.Network;
 
 namespace Pokemon3D.Networking.Server
 {
-    public class ContentResponseMessage : Message
+    public class ContentResponseMessage : ServerMessage
     {
         public bool ChecksumCorrect { get; private set; }
 
-        public ContentResponseMessage(bool checksumCorrect)
+        public ContentResponseMessage(Guid uniqueId, bool checksumCorrect) : base(uniqueId)
         {
             ChecksumCorrect = checksumCorrect;
         }
@@ -20,11 +21,13 @@ namespace Pokemon3D.Networking.Server
 
         public override void Read(NetIncomingMessage message)
         {
+            base.Read(message);
             ChecksumCorrect = message.ReadBoolean();
         }
 
         public override void Write(NetOutgoingMessage message)
         {
+            base.Write(message);
             message.Write(ChecksumCorrect);
         }
     }

@@ -9,7 +9,7 @@ namespace Pokemon3D.Server.Management
         private readonly GameServerConfiguration _configuration;
         private readonly IMessageBroker _messageBroker;
         private readonly object _clientRegistrationLockObject = new object();
-        private readonly List<Player> _players = new List<Player>();
+        private readonly Dictionary<Guid, Player> _players = new Dictionary<Guid, Player>();
 
         public ClientRegistrator(GameServerConfiguration configuration, IMessageBroker messageBroker)
         {
@@ -24,7 +24,7 @@ namespace Pokemon3D.Server.Management
                 if (_players.Count < _configuration.MaxPlayerCount)
                 {
                     _messageBroker.Notify($"Player '{player}' has entered the game");
-                    _players.Add(player);
+                    _players.Add(player.UniqueIdentifier, player);
                     return true;
                 }
 
@@ -37,7 +37,7 @@ namespace Pokemon3D.Server.Management
         {
             lock (_clientRegistrationLockObject)
             {
-                _players.Remove(player);
+                _players.Remove(player.UniqueIdentifier);
                 _messageBroker.Notify($"Player '{player}' quit the server");
             }
         }
@@ -46,8 +46,11 @@ namespace Pokemon3D.Server.Management
         {
             lock (_clientRegistrationLockObject)
             {
-                return _players.FirstOrDefault(p => p.UniqueIdentifier == uniqueId);
+                Player player;
+                if (_players.TryGetValue(uniqueId, out player)) return player;
             }
+
+            return null;
         }
     }
 }

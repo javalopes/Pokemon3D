@@ -6,6 +6,7 @@ using System.Threading;
 using Ionic.Zip;
 using Pokemon3D.GameModes;
 using Pokemon3D.Networking;
+using Pokemon3D.Networking.Client;
 using Pokemon3D.Networking.Server;
 using Pokemon3D.Server.Management;
 
@@ -14,6 +15,7 @@ namespace Pokemon3D.Server.Component
     class GameContentComponent : AsyncComponentBase
     {
         private readonly GameMode _gameMode;
+        private readonly IClientRegistrator _registrator;
         private readonly int _portNumber;
         private readonly string _gameModeRootPath;
         private byte[] _data;
@@ -21,10 +23,11 @@ namespace Pokemon3D.Server.Component
         private TcpListener _listener;
         private long _checkSum;
 
-        public GameContentComponent(GameMode gameMode, IMessageBroker messageBroker, int portNumber) 
+        public GameContentComponent(GameMode gameMode, IMessageBroker messageBroker, IClientRegistrator registrator, int portNumber) 
             : base(messageBroker)
         {
             _gameMode = gameMode;
+            _registrator = registrator;
             _portNumber = portNumber;
             _gameModeRootPath = _gameMode.GameModeInfo.DirectoryPath;
         }
@@ -72,7 +75,7 @@ namespace Pokemon3D.Server.Component
                     var request = DequeueClientMessage() as ContentRequestMessage;
                     if (request != null)
                     {
-                        EnqueueSendingMessage(new ContentResponseMessage(request.Checksum == _checkSum));
+                        EnqueueSendingMessage(new ContentResponseMessage(request.ClientIdentifier, request.Checksum == _checkSum));
                     }
                     
                     if (_listener.Pending())

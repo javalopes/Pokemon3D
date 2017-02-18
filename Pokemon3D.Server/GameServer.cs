@@ -72,6 +72,9 @@ namespace Pokemon3D.Server
                     Notify($"Message of type {message.MessageType} has not been handled by any component.");
                 }
             }
+
+            var allMessages = _components.SelectMany(c => c.GetAndClearServerMessages());
+            _networkCommunication.SendMessages(allMessages);
         }
 
         private bool StartNetworkCommunication()
@@ -120,7 +123,7 @@ namespace Pokemon3D.Server
 
         private bool StartServerTasks()
         {
-            _components.Add(new GameContentComponent(_gameModeManager.ActiveGameMode, this, _configuration.ContentDownloadPortNumber));
+            _components.Add(new GameContentComponent(_gameModeManager.ActiveGameMode, this, _clientRegistrator, _configuration.ContentDownloadPortNumber));
 
             foreach (var component in _components)
             {

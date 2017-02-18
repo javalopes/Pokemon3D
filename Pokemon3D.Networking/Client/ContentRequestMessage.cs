@@ -1,6 +1,6 @@
 using Lidgren.Network;
 
-namespace Pokemon3D.Networking
+namespace Pokemon3D.Networking.Client
 {
     public class ContentRequestMessage : ClientMessage
     {

@@ -1,5 +1,6 @@
 using System;
 using Lidgren.Network;
+using Pokemon3D.Networking.Client;
 
 namespace Pokemon3D.Networking
 {

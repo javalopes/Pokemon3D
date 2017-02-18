@@ -51,6 +51,7 @@
     <Compile Include="MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\ContentResponseMessage.cs" />
+    <Compile Include="Server\ServerMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

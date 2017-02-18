@@ -2,13 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Pokemon3D.Networking;
+using Pokemon3D.Networking.Client;
+using Pokemon3D.Networking.Server;
 using Pokemon3D.Server.Management;
 
 namespace Pokemon3D.Server.Component
 {
     abstract class AsyncComponentBase : IServerComponent
     {
+        private readonly List<ServerMessage> _serverMessages = new List<ServerMessage>();
         private readonly Queue<ClientMessage> _clientMessages = new Queue<ClientMessage>();
         private CancellationTokenSource _cancelSource;
         private Task _task;
@@ -62,6 +64,16 @@ namespace Pokemon3D.Server.Component
             return false;
         }
 
+        public ServerMessage[] GetAndClearServerMessages()
+        {
+            lock (_serverMessages)
+            {
+                var result = _serverMessages.ToArray();
+                _serverMessages.Clear();
+                return result;
+            }
+        }
+
         protected ClientMessage DequeueClientMessage()
         {
             lock (_clientMessages)
@@ -72,9 +84,12 @@ namespace Pokemon3D.Server.Component
             return null;
         }
 
-        protected void EnqueueSendingMessage(Message message)
+        protected void EnqueueSendingMessage(ServerMessage message)
         {
-            
+            lock (_serverMessages)
+            {
+                _serverMessages.Add(message);
+            }
         }
 
         protected abstract bool IsHandledMessageType(ClientMessage clientMessage);
