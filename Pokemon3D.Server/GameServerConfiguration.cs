@@ -9,5 +9,9 @@
         public string Name { get; set; }
 
         public int MaxPlayerCount { get; set; } = 1;
+
+        public int ContentDownloadPortNumber { get; set; } = 14455;
+
+        public int NetworkCommunicationPortNumber { get; set; } = 14456;
     }
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A6096166-5BB9-43D6-95C2-9A622CF66726}</ProjectGuid>
+    <ProjectGuid>{BDB72B97-A56B-4152-AA10-C562840A609E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pokemon3D.Server</RootNamespace>
-    <AssemblyName>Pokemon3D.Server</AssemblyName>
+    <RootNamespace>Pokemon3D.Networking</RootNamespace>
+    <AssemblyName>Pokemon3D.Networking</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -29,24 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.Reduced.1.9.1.8\lib\net20\Ionic.Zip.Reduced.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lidgren.Network.1.0.2\lib\net451\Lidgren.Network.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -59,36 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Component\AsyncComponentBase.cs" />
-    <Compile Include="Management\NetworkCommunication.cs" />
-    <Compile Include="Component\GameContentComponent.cs" />
-    <Compile Include="Component\IServerComponent.cs" />
-    <Compile Include="GameServer.cs" />
-    <Compile Include="GameServerConfiguration.cs" />
-    <Compile Include="Management\ClientRegistrator.cs" />
-    <Compile Include="Management\IClientRegistrator.cs" />
-    <Compile Include="Management\IMessageBroker.cs" />
-    <Compile Include="Management\MasterServerRegistrationClient.cs" />
-    <Compile Include="Management\Player.cs" />
+    <Compile Include="NetPeerExtensions.cs" />
+    <Compile Include="Client\ClientMessage.cs" />
+    <Compile Include="Client\ContentRequestMessage.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Pokemon3D.Common\Pokemon3D.Common.csproj">
-      <Project>{b29dc7f0-2a16-4585-80a2-b4030558ec35}</Project>
-      <Name>Pokemon3D.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Pokemon3D.DataModel\Pokemon3D.DataModel.csproj">
-      <Project>{261cf093-e9db-48ec-bade-1fa70ef36e3c}</Project>
-      <Name>Pokemon3D.DataModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Pokemon3D.GameModes\Pokemon3D.GameModes.csproj">
-      <Project>{54de5a5d-f265-4359-add6-f5b6e0ca6eaa}</Project>
-      <Name>Pokemon3D.GameModes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Pokemon3D.Networking\Pokemon3D.Networking.csproj">
-      <Project>{bdb72b97-a56b-4152-aa10-c562840a609e}</Project>
-      <Name>Pokemon3D.Networking</Name>
-    </ProjectReference>
+    <Compile Include="Server\ContentResponseMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

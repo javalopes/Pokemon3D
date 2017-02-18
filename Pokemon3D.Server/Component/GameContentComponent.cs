@@ -5,6 +5,8 @@ using System.Net.Sockets;
 using System.Threading;
 using Ionic.Zip;
 using Pokemon3D.GameModes;
+using Pokemon3D.Networking;
+using Pokemon3D.Networking.Server;
 using Pokemon3D.Server.Management;
 
 namespace Pokemon3D.Server.Component
@@ -12,18 +14,27 @@ namespace Pokemon3D.Server.Component
     class GameContentComponent : AsyncComponentBase
     {
         private readonly GameMode _gameMode;
+        private readonly int _portNumber;
         private readonly string _gameModeRootPath;
         private byte[] _data;
-
+        
         private TcpListener _listener;
+        private long _checkSum;
 
-        public GameContentComponent(GameMode gameMode, IMessageBroker messageBroker) : base(messageBroker)
+        public GameContentComponent(GameMode gameMode, IMessageBroker messageBroker, int portNumber) 
+            : base(messageBroker)
         {
             _gameMode = gameMode;
+            _portNumber = portNumber;
             _gameModeRootPath = _gameMode.GameModeInfo.DirectoryPath;
         }
 
         public override string Name => "Game Mode Content Server";
+
+        protected override bool IsHandledMessageType(ClientMessage clientMessage)
+        {
+            return clientMessage is ContentRequestMessage;
+        }
 
         protected override void OnStart()
         {
@@ -40,12 +51,13 @@ namespace Pokemon3D.Server.Component
             using (var zipFile = new ZipFile(contentFilePath))
             {
                 zipFile.AddDirectory(Path.Combine(_gameModeRootPath, "Content"));
-                zipFile.Comment = _gameMode.CalculateChecksum().ToString();
+                _checkSum = _gameMode.CalculateChecksum();
+                zipFile.Comment = _checkSum.ToString();
                 zipFile.Save();
             }
             _data = File.ReadAllBytes(contentFilePath);
 
-            _listener = new TcpListener(IPAddress.Any, 14555);
+            _listener = new TcpListener(IPAddress.Any, _portNumber);
             _listener.Start();
         }
 
@@ -57,6 +69,12 @@ namespace Pokemon3D.Server.Component
 
                 try
                 {
+                    var request = DequeueClientMessage() as ContentRequestMessage;
+                    if (request != null)
+                    {
+                        EnqueueSendingMessage(new ContentResponseMessage(request.Checksum == _checkSum));
+                    }
+                    
                     if (_listener.Pending())
                     {
                         var client = _listener.AcceptTcpClient();

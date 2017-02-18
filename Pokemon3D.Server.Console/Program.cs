@@ -17,7 +17,7 @@ namespace Pokemon3D.Server.Console
                 MaxPlayerCount = Properties.Settings.Default.MaxPlayerCount
             };
 
-            var gameServer = new IGameServer(configuration);
+            var gameServer = new GameServer(configuration);
             gameServer.OnMessage += OnMessageReceived;
 
             var running = gameServer.Start();
@@ -26,8 +26,12 @@ namespace Pokemon3D.Server.Console
                 running = false;
                 e.Cancel = true;
             };
-            
-            while (running) Thread.Sleep(1);
+
+            while (running)
+            {
+                gameServer.Update();
+                Thread.Sleep(1);
+            }
 
             gameServer.Stop();
         }

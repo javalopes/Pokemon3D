@@ -9,7 +9,7 @@ using Pokemon3D.Server.Management;
 
 namespace Pokemon3D.Server
 {
-    public class IGameServer : IGameContext, IMessageBroker
+    public class GameServer : IGameContext, IMessageBroker
     {
         private readonly object _messageBrokerLockObject = new object();
 
@@ -17,15 +17,17 @@ namespace Pokemon3D.Server
         private GameModeManager _gameModeManager;
         private readonly MasterServerRegistrationClient _masterServerRegistrationClient;
         private readonly ClientRegistrator _clientRegistrator;
+        private readonly NetworkCommunication _networkCommunication;
 
         private readonly List<IServerComponent> _components = new List<IServerComponent>();
         public event Action<string> OnMessage;
 
-        public IGameServer(GameServerConfiguration configuration)
+        public GameServer(GameServerConfiguration configuration)
         {
             _configuration = configuration;
             _masterServerRegistrationClient = new MasterServerRegistrationClient(this);
             _clientRegistrator = new ClientRegistrator(configuration, this);
+            _networkCommunication = new NetworkCommunication(this, _clientRegistrator, configuration.NetworkCommunicationPortNumber);
         }
 
         public bool Start()
@@ -37,6 +39,7 @@ namespace Pokemon3D.Server
                 if (!_masterServerRegistrationClient.Register(_configuration)) return false;
                 if (!PrepareGameMode()) return false;
                 if (!StartServerTasks()) return false;
+                if (!StartNetworkCommunication()) return false;
             }
             catch (Exception ex)
             {
@@ -47,6 +50,43 @@ namespace Pokemon3D.Server
             Notify("Server started successfully.");
 
             return true;
+        }
+
+        public void Update()
+        {
+            var messages = _networkCommunication.ReadMessages();
+            foreach (var message in messages)
+            {
+                var messageHandled = false;
+                foreach (var component in _components)
+                {
+                    if (component.HandleMessage(message))
+                    {
+                        messageHandled = true;
+                        break;
+                    }
+                }
+
+                if (!messageHandled)
+                {
+                    Notify($"Message of type {message.MessageType} has not been handled by any component.");
+                }
+            }
+        }
+
+        private bool StartNetworkCommunication()
+        {
+            try
+            {
+                Notify("Starting Network communication");
+                _networkCommunication.StartListening();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Notify("Exception occurred during network communication startup: " + ex);
+                return false;
+            }
         }
 
         private bool PrepareGameMode()
@@ -80,8 +120,7 @@ namespace Pokemon3D.Server
 
         private bool StartServerTasks()
         {
-            _components.Add(new GameContentComponent(_gameModeManager.ActiveGameMode, this));
-            _components.Add(new CommunicationComponent(this, _clientRegistrator));
+            _components.Add(new GameContentComponent(_gameModeManager.ActiveGameMode, this, _configuration.ContentDownloadPortNumber));
 
             foreach (var component in _components)
             {
