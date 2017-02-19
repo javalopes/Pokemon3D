@@ -50,6 +50,9 @@ namespace Pokemon3D.Server.Management
                     case NetIncomingMessageType.ConnectionApproval:
                         OnConnectionApproval(msg);
                         break;
+                    case NetIncomingMessageType.StatusChanged:
+                        OnStatusChanged(msg);
+                        break;
                     case NetIncomingMessageType.VerboseDebugMessage:
                         _messageBroker.Notify("Network VerboseDebugMsg: " + msg.ReadString());
                         break;
@@ -74,7 +77,7 @@ namespace Pokemon3D.Server.Management
 
             return _messageBuffer.ToArray();
         }
-        
+
         private void OnConnectionApproval(NetIncomingMessage incomingMessage)
         {
             var player = new Player(incomingMessage.ReadString(), incomingMessage.SenderConnection);
@@ -87,6 +90,21 @@ namespace Pokemon3D.Server.Management
             else
             {
                 incomingMessage.SenderConnection.Deny("Server full.");
+            }
+        }
+
+        private void OnStatusChanged(NetIncomingMessage msg)
+        {
+            var netState = (NetConnectionStatus) msg.ReadByte();
+            switch (netState)
+            {
+                case NetConnectionStatus.Disconnected:
+                    var player = _registrator.GetPlayer(msg.SenderConnection);
+                    if (player != null)
+                    {
+                        _registrator.UnregisterClient(player);
+                    }
+                    break;
             }
         }
 

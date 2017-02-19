@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lidgren.Network;
 
 namespace Pokemon3D.Server.Management
 {
-    class ClientRegistrator : IClientRegistrator
+    internal class ClientRegistrator : IClientRegistrator
     {
         private readonly GameServerConfiguration _configuration;
         private readonly IMessageBroker _messageBroker;
         private readonly object _clientRegistrationLockObject = new object();
         private readonly Dictionary<Guid, Player> _players = new Dictionary<Guid, Player>();
+        private readonly Dictionary<NetConnection, Player> _playersbyNetConnection = new Dictionary<NetConnection, Player>();
 
         public ClientRegistrator(GameServerConfiguration configuration, IMessageBroker messageBroker)
         {
@@ -25,6 +27,7 @@ namespace Pokemon3D.Server.Management
                 {
                     _messageBroker.Notify($"Player '{player}' has entered the game");
                     _players.Add(player.UniqueIdentifier, player);
+                    _playersbyNetConnection.Add(player.Connection, player);
                     return true;
                 }
 
@@ -38,6 +41,7 @@ namespace Pokemon3D.Server.Management
             lock (_clientRegistrationLockObject)
             {
                 _players.Remove(player.UniqueIdentifier);
+                _playersbyNetConnection.Remove(player.Connection);
                 _messageBroker.Notify($"Player '{player}' quit the server");
             }
         }
@@ -48,6 +52,17 @@ namespace Pokemon3D.Server.Management
             {
                 Player player;
                 if (_players.TryGetValue(uniqueId, out player)) return player;
+            }
+
+            return null;
+        }
+
+        public Player GetPlayer(NetConnection senderConnection)
+        {
+            lock(_clientRegistrationLockObject)
+            {
+                Player player;
+                if (_playersbyNetConnection.TryGetValue(senderConnection, out player)) return player;
             }
 
             return null;
