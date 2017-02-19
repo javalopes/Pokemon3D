@@ -9,8 +9,13 @@ namespace Pokemon3D.Networking.Client
         private readonly NetClient _netClient;
 
         public string HostName { get; }
+
         public int Port { get; }
+
         public NetworkClientState State { get; private set; }
+
+        public string ErrorMessage { get; private set; }
+
         public Guid ClientUniqueId { get; private set; }
 
         public GameNetworkClient(string hostName, int port)
@@ -21,19 +26,17 @@ namespace Pokemon3D.Networking.Client
 
             var configuration = new NetPeerConfiguration(NetworkSettings.ApplicationIdentifier);
             configuration.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
-
+            
             _netClient = new NetClient(configuration);
             _netClient.Start();
+
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            _netClient.RegisterReceivedCallback(NewMessageArrives);
         }
         
         public void Connect(string userName)
         {
             if (State != NetworkClientState.Disconnected) return;
-
-            State = NetworkClientState.Connecting;
-
-            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-            _netClient.RegisterReceivedCallback(NewMessageArrives);
 
             _netClient.Connect(HostName, Port, _netClient.CreateMessage(userName));
         }
@@ -69,11 +72,25 @@ namespace Pokemon3D.Networking.Client
             var netConnectionStatus = (NetConnectionStatus)readMessage.ReadByte();
             switch (netConnectionStatus)
             {
+                case NetConnectionStatus.InitiatedConnect:
+                    State = NetworkClientState.Connecting;
+                    break;
                 case NetConnectionStatus.Connected:
                     var remoteHail = readMessage.SenderConnection.RemoteHailMessage;
                     var remoteHailString = remoteHail.ReadString();
                     ClientUniqueId = Guid.Parse(remoteHailString);
                     State = NetworkClientState.Connected;
+                    break;
+                case NetConnectionStatus.Disconnected:
+                    if (State == NetworkClientState.Connecting)
+                    {
+                        ErrorMessage = readMessage.ReadString();
+                        State = NetworkClientState.ConnectionFailed;
+                    }
+                    else
+                    {
+                        State = NetworkClientState.Disconnected;
+                    }
                     break;
             }
         }

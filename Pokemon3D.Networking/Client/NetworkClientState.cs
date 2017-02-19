@@ -4,6 +4,7 @@
     {
         Disconnected,
         Connecting,
-        Connected
+        Connected,
+        ConnectionFailed,
     }
 }

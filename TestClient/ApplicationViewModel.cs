@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using Pokemon3D.Networking.Client;
 using TestClient.Framework;
 
@@ -53,7 +54,7 @@ namespace TestClient
 
         private void UpdateCommandStates()
         {
-            ConnectCommand.IsEnabled = _model.State == NetworkClientState.Disconnected;
+            ConnectCommand.IsEnabled = _model.State == NetworkClientState.Disconnected || _model.State == NetworkClientState.ConnectionFailed;
             DisconnectCommand.IsEnabled = _model.State == NetworkClientState.Connected;
         }
 
@@ -65,8 +66,15 @@ namespace TestClient
 
         private void OnConnect()
         {
-            UniqueId = _model.Connect(ServerIp, Port, Name);
+            var result = _model.Connect(ServerIp, Port, Name);
+            UniqueId = result.Id;
             UpdateCommandStates();
+
+            if (!result.IsConnected)
+            {
+                MessageBox.Show("Connection failed because: " + result.ErrorMessage, "Error", MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation);
+            }
         }
     }
 }
