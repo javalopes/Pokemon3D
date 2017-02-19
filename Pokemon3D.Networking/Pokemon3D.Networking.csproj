@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\GameNetworkClient.cs" />
+    <Compile Include="Client\NetworkClientState.cs" />
     <Compile Include="NetPeerExtensions.cs" />
     <Compile Include="Client\ClientMessage.cs" />
     <Compile Include="Client\ContentRequestMessage.cs" />

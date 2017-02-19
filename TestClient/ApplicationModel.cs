@@ -1,53 +1,24 @@
 using System;
-using Lidgren.Network;
-using Pokemon3D.Networking;
+using Pokemon3D.Networking.Client;
 
 namespace TestClient
 {
     public class ApplicationModel : IApplicationModel
     {
-        private NetClient _netClient;
+        private GameNetworkClient _client;
 
         public Guid Connect(string serverIp, int port, string name)
         {
-            var configuration = new NetPeerConfiguration(NetworkSettings.ApplicationIdentifier);
-            configuration.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
+            _client = new GameNetworkClient(serverIp, port);
 
-            _netClient = new NetClient(configuration);
-            _netClient.Start();
-
-            _netClient.Connect(serverIp, port, _netClient.CreateMessage(name));
-
-            while (true)
+            _client.Connect(name);
+            
+            while (_client.State != NetworkClientState.Connected)
             {
-                var readMessage = _netClient.ReadMessage();
-                if (readMessage == null) continue;
-
-                switch (readMessage.MessageType)
-                {
-                    case NetIncomingMessageType.Error:
-                        break;
-                    case NetIncomingMessageType.StatusChanged:
-                        var guid = HandleStatusChanged(readMessage);
-                        if (guid != Guid.Empty) return guid;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                _client.ProcessMessages();
             }
-        }
 
-        private Guid HandleStatusChanged(NetIncomingMessage readMessage)
-        {
-            var netConnectionStatus = (NetConnectionStatus)readMessage.ReadByte();
-            switch (netConnectionStatus)
-            {
-                case NetConnectionStatus.Connected:
-                    var remoteHail = readMessage.SenderConnection.RemoteHailMessage;
-                    var remoteHailString = remoteHail.ReadString();
-                    return Guid.Parse(remoteHailString);
-            }
-            return Guid.Empty;
+            return _client.ClientUniqueId;
         }
     }
 }
