@@ -19,10 +19,12 @@ namespace Pokemon3D.Server.Management
             if (messageBroker == null) throw new ArgumentNullException(nameof(messageBroker));
             _messageBroker = messageBroker;
             _registrator = registrator;
-            var configuration = new NetPeerConfiguration("Pokemon3D.Network.Communcation.Server")
+            var configuration = new NetPeerConfiguration(NetworkSettings.ApplicationIdentifier)
             {
                 Port = port
             };
+
+            configuration.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
             _server = new NetServer(configuration);
         }
 
@@ -73,9 +75,19 @@ namespace Pokemon3D.Server.Management
             return _messageBuffer.ToArray();
         }
         
-        private void OnConnectionApproval(NetIncomingMessage msg)
+        private void OnConnectionApproval(NetIncomingMessage incomingMessage)
         {
-            _registrator.RegisterClient(new Player(msg.ReadString(), msg.SenderConnection));
+            var player = new Player(incomingMessage.ReadString(), incomingMessage.SenderConnection);
+            if (_registrator.RegisterClient(player))
+            {
+                var msg = _server.CreateMessage();  
+                msg.Write(player.UniqueIdentifier.ToString());
+                incomingMessage.SenderConnection.Approve(msg);
+            }
+            else
+            {
+                incomingMessage.SenderConnection.Deny("Server full.");
+            }
         }
 
         public void SendMessages(IEnumerable<ServerMessage> allMessages)

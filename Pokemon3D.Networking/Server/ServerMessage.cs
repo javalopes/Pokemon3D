@@ -7,9 +7,9 @@ namespace Pokemon3D.Networking.Server
     {
         public Guid ClientUniqueId { get; private set; }
 
-        protected ServerMessage(Guid clientIdentiier)
+        protected ServerMessage(Guid clientIdentier)
         {
-            ClientUniqueId = clientIdentiier;
+            ClientUniqueId = clientIdentier;
         }
 
         protected ServerMessage()

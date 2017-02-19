@@ -5,5 +5,7 @@ namespace Pokemon3D.Networking
         ContentRequestMessage,
 
         ContentResponseMessage,
+
+        ClientAcceptedMessage
     }
 }

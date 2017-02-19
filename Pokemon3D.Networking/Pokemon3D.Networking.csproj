@@ -49,6 +49,7 @@
     <Compile Include="Client\ContentRequestMessage.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageType.cs" />
+    <Compile Include="NetworkSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\ContentResponseMessage.cs" />
     <Compile Include="Server\ServerMessage.cs" />

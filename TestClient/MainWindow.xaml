@@ -1,0 +1,38 @@
+﻿<Window x:Class="TestClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <StackPanel Orientation="Vertical">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <Label Content="Server IP: " Grid.Column="0" Grid.Row="0" />
+            <TextBox Text="{Binding ServerIp, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="0" />
+
+            <Label Content="Server Port: " Grid.Column="0" Grid.Row="1" />
+            <TextBox Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" />
+
+            <Label Content="Username: " Grid.Column="0" Grid.Row="2" />
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="2" />
+
+
+            <Label Content="Client Received Guid: " Grid.Column="0" Grid.Row="3" />
+            <TextBox Text="{Binding UniqueId, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="3" IsReadOnly="True"/>
+
+            <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Left" Content="Connect" Command="{Binding ConnectCommand}" />
+        </Grid>
+    </StackPanel>
+</Window>
