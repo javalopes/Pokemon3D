@@ -32,7 +32,10 @@
             <Label Content="Client Received Guid: " Grid.Column="0" Grid.Row="3" />
             <TextBox Text="{Binding UniqueId, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="3" IsReadOnly="True"/>
 
-            <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Left" Content="Connect" Command="{Binding ConnectCommand}" />
+            <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2">
+                <Button  Content="Connect" Command="{Binding ConnectCommand}" />
+                <Button  Content="Disconnect" Command="{Binding DisconnectCommand}" />
+            </StackPanel>
         </Grid>
     </StackPanel>
 </Window>

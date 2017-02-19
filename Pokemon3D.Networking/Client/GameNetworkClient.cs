@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Lidgren.Network;
 
 namespace Pokemon3D.Networking.Client
@@ -30,17 +31,14 @@ namespace Pokemon3D.Networking.Client
             if (State != NetworkClientState.Disconnected) return;
 
             State = NetworkClientState.Connecting;
+
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            _netClient.RegisterReceivedCallback(NewMessageArrives);
+
             _netClient.Connect(HostName, Port, _netClient.CreateMessage(userName));
         }
 
-        public void Disconnect()
-        {
-            if (State == NetworkClientState.Disconnected) return;
-
-            _netClient.Disconnect("Bye!");
-        }
-
-        public void ProcessMessages()
+        private void NewMessageArrives(object state)
         {
             NetIncomingMessage readMessage;
             while ((readMessage = _netClient.ReadMessage()) != null)
@@ -56,6 +54,14 @@ namespace Pokemon3D.Networking.Client
                         throw new ArgumentOutOfRangeException();
                 }
             }
+        }
+
+        public void Disconnect()
+        {
+            if (State == NetworkClientState.Disconnected) return;
+
+            _netClient.Disconnect("Bye!");
+            State = NetworkClientState.Disconnected;
         }
 
         private void HandleStatusChanged(NetIncomingMessage readMessage)

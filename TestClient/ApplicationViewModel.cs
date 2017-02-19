@@ -1,4 +1,5 @@
 ﻿using System;
+using Pokemon3D.Networking.Client;
 using TestClient.Framework;
 
 namespace TestClient
@@ -37,18 +38,35 @@ namespace TestClient
 
         public CommandViewModel ConnectCommand { get; }
 
+        public CommandViewModel DisconnectCommand { get; }
+
         public ApplicationViewModel(IApplicationModel model)
         {
             _model = model;
             ConnectCommand = new CommandViewModel(OnConnect);
+            DisconnectCommand = new CommandViewModel(OnDisconnect);
             ServerIp = "localhost";
             Name = "TestUser";
             Port = 14456;
+            UpdateCommandStates();
+        }
+
+        private void UpdateCommandStates()
+        {
+            ConnectCommand.IsEnabled = _model.State == NetworkClientState.Disconnected;
+            DisconnectCommand.IsEnabled = _model.State == NetworkClientState.Connected;
+        }
+
+        private void OnDisconnect()
+        {
+            _model.Disconnect();
+            UpdateCommandStates();
         }
 
         private void OnConnect()
         {
             UniqueId = _model.Connect(ServerIp, Port, Name);
+            UpdateCommandStates();
         }
     }
 }
