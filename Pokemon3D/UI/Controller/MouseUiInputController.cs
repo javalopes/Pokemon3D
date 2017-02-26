@@ -10,7 +10,7 @@ namespace Pokemon3D.UI.Controller
 
         public MouseUiInputController()
         {
-            InputSystem = GameProvider.IGameInstance.GetService<InputSystem.InputSystem>();
+            InputSystem = GameProvider.GameInstance.GetService<InputSystem.InputSystem>();
         }
 
         protected virtual Point GetCurrentMousePosition()

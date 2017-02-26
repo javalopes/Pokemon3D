@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Net.Sockets;
 using System.Threading;
 using Lidgren.Network;
+using Pokemon3D.Networking.Server;
 
 namespace Pokemon3D.Networking.Client
 {
@@ -41,6 +43,19 @@ namespace Pokemon3D.Networking.Client
             _netClient.Connect(HostName, Port, _netClient.CreateMessage(userName));
         }
 
+        public void Disconnect()
+        {
+            if (State == NetworkClientState.Disconnected) return;
+
+            _netClient.Disconnect("Bye!");
+            State = NetworkClientState.Disconnected;
+        }
+
+        public void CheckContentFolder()
+        {
+            State = NetworkClientState.CheckContentFolderCorrect;
+        }
+
         private void NewMessageArrives(object state)
         {
             NetIncomingMessage readMessage;
@@ -53,20 +68,37 @@ namespace Pokemon3D.Networking.Client
                     case NetIncomingMessageType.StatusChanged:
                         HandleStatusChanged(readMessage);
                         break;
+                    case NetIncomingMessageType.Data:
+                        HandleDataMessages(readMessage);
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
         }
 
-        public void Disconnect()
+        private void HandleDataMessages(NetIncomingMessage readMessage)
         {
-            if (State == NetworkClientState.Disconnected) return;
+            var message = (ServerMessage)Message.ReadMessage(readMessage);
 
-            _netClient.Disconnect("Bye!");
-            State = NetworkClientState.Disconnected;
+            if (message is ContentResponseMessage)
+            {
+                var contentmessage = (ContentResponseMessage) message;
+                if (contentmessage.ChecksumCorrect)
+                {
+                    State = NetworkClientState.CheckContentFolderFinished;
+                }
+                else
+                {
+                    State = NetworkClientState.DownloadingContent;
+                    var tcpClient = new TcpClient();
+                    tcpClient.Connect("localhost", 11455);
+
+                    //todo: download and extract zip file.
+                }
+            }
         }
-
+        
         private void HandleStatusChanged(NetIncomingMessage readMessage)
         {
             var netConnectionStatus = (NetConnectionStatus)readMessage.ReadByte();

@@ -23,7 +23,7 @@ namespace Pokemon3D.ScriptPipeline.Prototypes
         private static MoveModel GetMoveModel(object This)
         {
             var prototype = (MovePrototype)This;
-            var gameMode = IGameInstance.GetService<GameModeManager>().ActiveGameMode;
+            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
             return gameMode.GetMoveModel(prototype.id);
         }
 

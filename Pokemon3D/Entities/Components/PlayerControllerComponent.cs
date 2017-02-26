@@ -45,12 +45,12 @@ namespace Pokemon3D.Entities.Components
             Speed = 2.0f;
             RotationSpeed = 2f;
 
-            IGameInstance.GetService<EventAggregator>().Subscribe<GameEvent>(OnGameEventRaised);
+            GameInstance.GetService<EventAggregator>().Subscribe<GameEvent>(OnGameEventRaised);
         }
 
         public override void OnComponentRemove()
         {
-            IGameInstance.GetService<EventAggregator>().Unsubscribe<GameEvent>(OnGameEventRaised);
+            GameInstance.GetService<EventAggregator>().Unsubscribe<GameEvent>(OnGameEventRaised);
         }
 
         private void OnGameEventRaised(GameEvent gameEvent)
@@ -70,7 +70,7 @@ namespace Pokemon3D.Entities.Components
         {
             if (!_isInputEnabled) return;
 
-            var inputSystem = IGameInstance.GetService<InputSystem.InputSystem>();
+            var inputSystem = GameInstance.GetService<InputSystem.InputSystem>();
             var currentMouseState = Mouse.GetState();
 
             var movementDirection = inputSystem.GetAxis(ActionNames.LeftAxis);
@@ -105,7 +105,7 @@ namespace Pokemon3D.Entities.Components
 
         private void HandleGodModeMovement(float elapsedTime, MouseState mouseState, Vector2 movementDirection)
         {
-            var inputSystem = IGameInstance.GetService<InputSystem.InputSystem>();
+            var inputSystem = GameInstance.GetService<InputSystem.InputSystem>();
 
             var speedFactor = inputSystem.IsPressed(ActionNames.SprintGodMode) ? 2.0f : 1.0f;
             var step = Speed * elapsedTime * speedFactor;
@@ -138,7 +138,7 @@ namespace Pokemon3D.Entities.Components
                 ReferringEntity.Parent.Translate(new Vector3(movementNormalized.X, 0.0f, movementNormalized.Y) * Speed * elapsedTime);
             }
 
-            var rightAxis = IGameInstance.GetService<InputSystem.InputSystem>().GetAxis(ActionNames.RightAxis);
+            var rightAxis = GameInstance.GetService<InputSystem.InputSystem>().GetAxis(ActionNames.RightAxis);
             if (rightAxis.X * rightAxis.X > 0.0f)
             {
                 ReferringEntity.Parent.RotateY(-rightAxis.X * RotationSpeed * elapsedTime);
@@ -153,7 +153,7 @@ namespace Pokemon3D.Entities.Components
                 ReferringEntity.Parent.Translate(new Vector3(movementNormalized.X, 0.0f, movementNormalized.Y) * Speed * elapsedTime);
             }
 
-            var rightAxis = IGameInstance.GetService<InputSystem.InputSystem>().GetAxis(ActionNames.RightAxis);
+            var rightAxis = GameInstance.GetService<InputSystem.InputSystem>().GetAxis(ActionNames.RightAxis);
 
             if (rightAxis.X*rightAxis.X > 0.0f)
             {

@@ -5,6 +5,9 @@
         Disconnected,
         Connecting,
         Connected,
+        CheckContentFolderCorrect,
+        DownloadingContent,
+        CheckContentFolderFinished,
         ConnectionFailed,
     }
 }

@@ -31,15 +31,15 @@ namespace Pokemon3D.Screens
                 _renderStatisticsOverlay = AddOverlay(new UiOverlay());
                 _renderStatisticsOverlay.AddElement(new RenderStatisticsView(ActiveWorld));
                 
-                IGameInstance.GetService<GameModeManager>().ActiveGameMode.LoadSaveGame(TestMock.CreateTempSave());
+                GameInstance.GetService<GameModeManager>().ActiveGameMode.LoadSaveGame(TestMock.CreateTempSave());
 
                 _isLoaded = true;
             }
 
-            _inputSystem = IGameInstance.GetService<InputSystem.InputSystem>();
-            _screenManager = IGameInstance.GetService<ScreenManager>();
+            _inputSystem = GameInstance.GetService<InputSystem.InputSystem>();
+            _screenManager = GameInstance.GetService<ScreenManager>();
 
-            IGameInstance.GetService<EventAggregator>().Subscribe<GameEvent>(OnGameEventRaised);
+            GameInstance.GetService<EventAggregator>().Subscribe<GameEvent>(OnGameEventRaised);
         }
 
         private void OnGameEventRaised(GameEvent gameEvent)
@@ -51,7 +51,7 @@ namespace Pokemon3D.Screens
                 _isLoaded = false;
 
                 _screenManager.SetScreen(typeof(MainMenuIScreen), typeof(SlideTransition));
-                IGameInstance.GetService<GameModeManager>().UnloadGameMode();
+                GameInstance.GetService<GameModeManager>().UnloadGameMode();
             }
         }
 
@@ -75,7 +75,7 @@ namespace Pokemon3D.Screens
 
         public override void OnClosing()
         {
-            IGameInstance.GetService<EventAggregator>().Unsubscribe<GameEvent>(OnGameEventRaised);
+            GameInstance.GetService<EventAggregator>().Unsubscribe<GameEvent>(OnGameEventRaised);
         }
     }
 }

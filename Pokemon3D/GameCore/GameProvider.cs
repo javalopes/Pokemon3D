@@ -16,7 +16,7 @@ namespace Pokemon3D.GameCore
         /// <summary>
         /// The active <see cref="IGameController"/> instance.
         /// </summary>
-        public static IGameContext IGameInstance => IGameController.Instance;
+        public static IGameContext GameInstance => IGameController.Instance;
     }
 }
 

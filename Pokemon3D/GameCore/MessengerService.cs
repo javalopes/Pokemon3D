@@ -17,7 +17,7 @@ namespace Pokemon3D.GameCore
             _overlay = new MessageOverlay();
             
             _overlay.Hidden += OverlayOnHidden;
-            _spriteBatch = IGameInstance.GetService<SpriteBatch>();
+            _spriteBatch = GameInstance.GetService<SpriteBatch>();
         }
 
         private void OverlayOnHidden()

@@ -14,7 +14,7 @@ namespace Pokemon3D.UI
 
         public ScreenOverlay()
         {
-            _spriteBatch = IGameInstance.GetService<SpriteBatch>();
+            _spriteBatch = GameInstance.GetService<SpriteBatch>();
         }
 
         public void AddOverlay(UiOverlay overlay)

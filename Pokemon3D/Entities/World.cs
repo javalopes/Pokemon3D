@@ -29,18 +29,18 @@ namespace Pokemon3D.Entities
         public World()
         {
             EntitySystem = new EntitySystem();
-            _inputSystem = IGameInstance.GetService<InputSystem.InputSystem>();
-            _notificationBar = IGameInstance.GetService<NotificationBar>();
+            _inputSystem = GameInstance.GetService<InputSystem.InputSystem>();
+            _notificationBar = GameInstance.GetService<NotificationBar>();
         }
 
         public void StartNewGameAsync(Action onFinished)
         {
-            IGameInstance.GetService<JobSystem>().ExecuteBackgroundJob(LoadWorldAsync, onFinished);
+            GameInstance.GetService<JobSystem>().ExecuteBackgroundJob(LoadWorldAsync, onFinished);
         }
 
         private void LoadWorldAsync()
         {
-            var gameMode = IGameInstance.GetService<GameModeManager>().ActiveGameMode;
+            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
             gameMode.Preload();
             
             Player = new Player(this);

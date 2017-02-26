@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Pokemon3D.Common;
 using Pokemon3D.Common.Localization;
-using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.Shapes;
 using Pokemon3D.Rendering.UI;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI
 {
@@ -30,7 +31,9 @@ namespace Pokemon3D.UI
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            GameProvider.IGameInstance.GetService<ShapeRenderer>().DrawRectangle(0, GameProvider.IGameInstance.ScreenBounds.Height - 64, GameProvider.IGameInstance.ScreenBounds.Width, 64, Color.White);
+            var bounds = GameInstance.GetService<Window>().ScreenBounds;
+
+            GameInstance.GetService<ShapeRenderer>().DrawRectangle(0, bounds.Height - 64, bounds.Width, 64, Color.White);
             base.Draw(spriteBatch);
         }
     }

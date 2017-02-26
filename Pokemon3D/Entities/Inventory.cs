@@ -23,7 +23,7 @@ namespace Pokemon3D.Entities
 
         public Inventory(World world)
         {
-            _device = IGameInstance.GetService<GraphicsDevice>();
+            _device = GameInstance.GetService<GraphicsDevice>();
             _spriteBatch = new SpriteBatch(_device);
 
             _inventoryOverlayEntity = world.EntitySystem.CreateEntity(true);
@@ -47,7 +47,7 @@ namespace Pokemon3D.Entities
             _uiOverlay.Show();
 
             _uiOverlay.AddInputController(new MainUiInputController());
-            _uiOverlay.AddInputController(new MouseUiInputController3D(IGameInstance.GetService<ISceneRenderer>().GetMainCamera(),  _inventoryOverlayEntity, 512,512));
+            _uiOverlay.AddInputController(new MouseUiInputController3D(GameInstance.GetService<ISceneRenderer>().GetMainCamera(),  _inventoryOverlayEntity, 512,512));
         }
 
         private void OnQuit(LeftSideButton button)
@@ -57,7 +57,7 @@ namespace Pokemon3D.Entities
 
         public void Update(GameTime gameTime)
         {
-            if (IGameInstance.GetService<InputSystem.InputSystem>().IsPressedOnce(ActionNames.OpenInventory))
+            if (GameInstance.GetService<InputSystem.InputSystem>().IsPressedOnce(ActionNames.OpenInventory))
             {
                 _inventoryOverlayEntity.IsActive = !_inventoryOverlayEntity.IsActive;
                 this.QueueGameEvent(GameEvent.Inventory, "Open", _inventoryOverlayEntity.IsActive);

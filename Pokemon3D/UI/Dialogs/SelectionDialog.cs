@@ -2,11 +2,12 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common;
 using Pokemon3D.Content;
 using Pokemon3D.Rendering.UI;
 using Pokemon3D.Common.Localization;
-using Pokemon3D.GameCore;
 using Pokemon3D.Rendering.Shapes;
+using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.UI.Dialogs
 {
@@ -27,8 +28,8 @@ namespace Pokemon3D.UI.Dialogs
                 AddChildElement(leftSideButton);
             }
 
-            _titleFont = GameProvider.IGameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.BigFont);
-            _textFont = GameProvider.IGameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
+            _titleFont = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.BigFont);
+            _textFont = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.NormalFont);
 
             _title = title;
             _text = text;
@@ -53,7 +54,9 @@ namespace Pokemon3D.UI.Dialogs
                 _calculatedHeight += textSpace;
             }
 
-            var startY = GameProvider.IGameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
+            var bounds = GameInstance.GetService<Window>().ScreenBounds;
+
+            var startY = bounds.Height / 2 - _calculatedHeight / 2 - 35;
             foreach (var uiElement in Children)
             {
                 uiElement.SetPosition(new Vector2(120, controlY + startY));
@@ -65,11 +68,12 @@ namespace Pokemon3D.UI.Dialogs
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            var startY = GameProvider.IGameInstance.ScreenBounds.Height / 2 - _calculatedHeight / 2 - 35;
+            var bounds = GameInstance.GetService<Window>().ScreenBounds;
+            var startY = bounds.Height / 2 - _calculatedHeight / 2 - 35;
 
-            var shapeRenderer = GameProvider.IGameInstance.GetService<ShapeRenderer>();
-            shapeRenderer.DrawRectangle(0, 0, GameProvider.IGameInstance.ScreenBounds.Width, GameProvider.IGameInstance.ScreenBounds.Height, Color.White * 0.4f);
-            shapeRenderer.DrawRectangle(0, startY, GameProvider.IGameInstance.ScreenBounds.Width, _calculatedHeight, new Color(251, 251, 251));
+            var shapeRenderer = GameInstance.GetService<ShapeRenderer>();
+            shapeRenderer.DrawRectangle(0, 0, bounds.Width, bounds.Height, Color.White * 0.4f);
+            shapeRenderer.DrawRectangle(0, startY, bounds.Width, _calculatedHeight, new Color(251, 251, 251));
 
             spriteBatch.DrawString(_titleFont, _title.Value, new Vector2(100, startY + 20), Color.Black);
 

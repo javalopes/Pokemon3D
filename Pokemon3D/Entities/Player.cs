@@ -22,8 +22,8 @@ namespace Pokemon3D.Entities
             var playerEntity = world.EntitySystem.CreateEntity(true);
             var collisionSize = new Vector3(0.35f, 0.6f, 0.35f);
             var collisionOffset = new Vector3(0.0f, 0.3f, 0.0f);
-            var mesh = new Mesh(IGameInstance.GetService<GraphicsDevice>(), Primitives.GenerateQuadForYBillboard());
-            var diffuseTexture = IGameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
+            var mesh = new Mesh(GameInstance.GetService<GraphicsDevice>(), Primitives.GenerateQuadForYBillboard());
+            var diffuseTexture = GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.DefaultGuy);
             var material = new Material
             {
                 DiffuseTexture = diffuseTexture,
@@ -42,15 +42,15 @@ namespace Pokemon3D.Entities
             cameraEntity.Id = "MainCamera";
             cameraEntity.SetParent(playerEntity);
             _controllerComponent = cameraEntity.AddComponent(new PlayerControllerComponent(cameraEntity));
-            _mainCameraComponent = cameraEntity.AddComponent(new CameraEntityComponent(cameraEntity, new Skybox(IGameInstance.GetService<GraphicsDevice>())
+            _mainCameraComponent = cameraEntity.AddComponent(new CameraEntityComponent(cameraEntity, new Skybox(GameInstance.GetService<GraphicsDevice>())
             {
                 Scale = 50,
-                Texture = IGameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.skybox_texture)
+                Texture = GameInstance.GetService<ContentManager>().Load<Texture2D>(ResourceNames.Textures.skybox_texture)
             }));
             _mainCameraComponent.FarClipDistance = 50.0f;
             _mainCameraComponent.Camera.IsMain = true;
 
-            var defaultPostProcessors = IGameInstance.GetService<ISceneRenderer>().DefaultPostProcessors;
+            var defaultPostProcessors = GameInstance.GetService<ISceneRenderer>().DefaultPostProcessors;
             _mainCameraComponent.Camera.PostProcess.Add(defaultPostProcessors.HorizontalBlur);
             _mainCameraComponent.Camera.PostProcess.Add(defaultPostProcessors.VerticalBlur);
 
@@ -61,7 +61,7 @@ namespace Pokemon3D.Entities
             overlayCamera.Camera.DepthStencilState = DepthStencilState.Default;
             overlayCamera.Camera.UseCulling = false;
 
-            IGameInstance.GetService<EventAggregator>().Subscribe<GameEvent>(GameInstanceOnGameEventRaised);
+            GameInstance.GetService<EventAggregator>().Subscribe<GameEvent>(GameInstanceOnGameEventRaised);
         }
 
         private void GameInstanceOnGameEventRaised(GameEvent gameEvent)

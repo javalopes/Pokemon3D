@@ -37,7 +37,7 @@ namespace Pokemon3D.Screens.Transitions
 
         public void Draw()
         {
-            var spriteBatch = IGameInstance.GetService<SpriteBatch>();
+            var spriteBatch = GameInstance.GetService<SpriteBatch>();
             var alpha = _elapsedTime/_transitionTime;
 
             spriteBatch.Begin(blendState: BlendState.NonPremultiplied);

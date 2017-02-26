@@ -16,13 +16,13 @@ namespace Pokemon3D.Screens
 
         public override void OnOpening(object enterInformation)
         {
-            var graphicsDeviceManager = IGameInstance.GetService<GraphicsDeviceManager>();
+            var graphicsDeviceManager = GameInstance.GetService<GraphicsDeviceManager>();
             graphicsDeviceManager.PreferMultiSampling = true;
             graphicsDeviceManager.ApplyChanges();
 
             var mainOverlay = AddOverlay(new UiOverlay());
 
-            var translation = IGameInstance.GetService<ITranslationProvider>();
+            var translation = GameInstance.GetService<ITranslationProvider>();
 
             mainOverlay.AddElement(new HexagonBackground());
             mainOverlay.AddElement(new LeftSideButton(translation.CreateValue("System", "StartNewGame"), new Vector2(26, 45), OnStartNewGame));
@@ -43,7 +43,7 @@ namespace Pokemon3D.Screens
                 }),
                 new LeftSideButton(translation.CreateValue("System", "Yes"), new Vector2(50, 100), b =>
                 {
-                    IGameInstance.GetService<ScreenManager>().NotifyQuitGame();
+                    GameInstance.GetService<ScreenManager>().NotifyQuitGame();
                 })
             });
 
@@ -55,7 +55,7 @@ namespace Pokemon3D.Screens
 
         private void OnStartNewGame(LeftSideButton button)
         {
-            IGameInstance.GetService<ScreenManager>().SetScreen(typeof(GameModeLoadingIScreen));
+            GameInstance.GetService<ScreenManager>().SetScreen(typeof(GameModeLoadingIScreen));
         }
 
         private void OnLoadGame(LeftSideButton button)
@@ -65,7 +65,7 @@ namespace Pokemon3D.Screens
 
         public override void OnLateDraw(GameTime gameTime)
         {
-            IGameInstance.GetService<GraphicsDevice>().Clear(Color.LightGray);
+            GameInstance.GetService<GraphicsDevice>().Clear(Color.LightGray);
             base.OnLateDraw(gameTime);
         }
     }

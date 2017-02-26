@@ -160,10 +160,6 @@ namespace Pokemon3D.Server
             throw new NotImplementedException();
         }
 
-        // ReSharper disable UnassignedGetOnlyAutoProperty
-        public Rectangle ScreenBounds { get; }
-        // ReSharper restore UnassignedGetOnlyAutoProperty
-
         public void Notify(string message)
         {
             lock (_messageBrokerLockObject)

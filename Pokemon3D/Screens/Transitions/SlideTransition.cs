@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pokemon3D.Common;
 using Pokemon3D.Common.Extensions;
 using static Pokemon3D.GameCore.GameProvider;
 
@@ -11,8 +12,7 @@ namespace Pokemon3D.Screens.Transitions
         private Texture2D _target;
         private float _elapsedTime;
         private float _transitionTime;
-
-
+        
         public void StartTransition(Texture2D source, Texture2D target)
         {
             _source = source;
@@ -38,12 +38,14 @@ namespace Pokemon3D.Screens.Transitions
 
         public void Draw()
         {
-            var offset = (_elapsedTime/_transitionTime)*IGameInstance.ScreenBounds.Width;
-            var spriteBatch = IGameInstance.GetService<SpriteBatch>();
+            var bounds = GameInstance.GetService<Window>().ScreenBounds;
+
+            var offset = (_elapsedTime/_transitionTime)* bounds.Width;
+            var spriteBatch = GameInstance.GetService<SpriteBatch>();
 
             spriteBatch.Begin(blendState: BlendState.NonPremultiplied);
             spriteBatch.Draw(_source, new Vector2(-offset, 0.0f), Color.White);
-            spriteBatch.Draw(_target, new Vector2(IGameInstance.ScreenBounds.Width - offset, 0.0f), Color.White);
+            spriteBatch.Draw(_target, new Vector2(bounds.Width - offset, 0.0f), Color.White);
             spriteBatch.End();
         }
     }

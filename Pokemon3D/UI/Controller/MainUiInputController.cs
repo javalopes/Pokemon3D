@@ -9,7 +9,7 @@ namespace Pokemon3D.UI.Controller
 
         public MainUiInputController()
         {
-            _inputSystem = GameProvider.IGameInstance.GetService<InputSystem.InputSystem>();
+            _inputSystem = GameProvider.GameInstance.GetService<InputSystem.InputSystem>();
         }
 
         public override void Update(UiFocusContainer container)

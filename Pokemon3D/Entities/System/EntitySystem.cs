@@ -219,7 +219,7 @@ namespace Pokemon3D.Entities.System
                 var mergedGeometry = GeometryData.Merge(mergeData);
                 Mesh mergedMesh = null;
 
-                IGameInstance.GetService<JobSystem>().EnsureExecutedInMainThread(() => mergedMesh = new Mesh(IGameController.Instance.GraphicsDevice, mergedGeometry));
+                GameInstance.GetService<JobSystem>().EnsureExecutedInMainThread(() => mergedMesh = new Mesh(IGameController.Instance.GraphicsDevice, mergedGeometry));
                 var material = entityListToMerge.First().GetComponent<ModelEntityComponent>().Material;
                 material.TexcoordOffset = Vector2.Zero;
                 material.TexcoordScale = Vector2.One;

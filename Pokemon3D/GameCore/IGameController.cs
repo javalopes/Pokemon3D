@@ -25,12 +25,6 @@ namespace Pokemon3D.GameCore
 
         public const string DevelopmentStage = "Alpha";
 
-        public event EventHandler WindowSizeChanged;
-        
-        public SaveGame LoadedSave { get; set; }
-
-        public Rectangle ScreenBounds { get; private set; }
-
         private readonly Dictionary<Type, object> _services = new Dictionary<Type, object>();
         private readonly GameConfiguration _gameConfig;
         private UiOverlay _notificationBarOverlay;
@@ -41,16 +35,16 @@ namespace Pokemon3D.GameCore
         private CollisionManager _collisionManager;
         private EventAggregator _eventAggregator;
         private MessengerService _messengerService;
+        private Window _window;
 
         public IGameController()
         {
             if (Instance != null) throw new InvalidOperationException("Game is singleton and can be created just once");
 
             GameLogger.Instance.Log(MessageType.Message, "Game started.");
-            
-            Window.ClientSizeChanged += OnClientSizeChanged;
 
-            ScreenBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
+            _window = new Window(Window);
+            
             Instance = this;
 
             Content.RootDirectory = "Content";
@@ -78,7 +72,7 @@ namespace Pokemon3D.GameCore
                 ShadowMapSize = _gameConfig.Data.ShadowMapSize
             };
 
-            RegisterService(Window);
+            RegisterService(_window);
             RegisterService(GraphicsDevice);
             RegisterService(Content);
             RegisterService(new JobSystem());
@@ -148,16 +142,6 @@ namespace Pokemon3D.GameCore
         {
             _gameConfig.Save();
             GameLogger.Instance.Log(MessageType.Message, "Exiting game.");
-        }
-
-        private void OnClientSizeChanged(object sender, EventArgs e)
-        {
-            var old = ScreenBounds;
-            ScreenBounds = new Rectangle(0,0,Window.ClientBounds.Width, Window.ClientBounds.Height);
-            if (WindowSizeChanged != null && old != Window.ClientBounds)
-            {
-                WindowSizeChanged(this, EventArgs.Empty);
-            }
         }
 
         public TService GetService<TService>() where TService : class

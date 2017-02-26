@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pokemon3D.Rendering.Compositor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Pokemon3D.Common;
 using static Pokemon3D.GameCore.GameProvider;
 using Pokemon3D.Entities;
 using Pokemon3D.Content;
@@ -21,8 +22,8 @@ namespace Pokemon3D.UI
         public RenderStatisticsView(World activeWorld)
         {
             _world = activeWorld;
-            _shapeRenderer = IGameInstance.GetService<ShapeRenderer>();
-            _debugSpriteFont = IGameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
+            _shapeRenderer = GameInstance.GetService<ShapeRenderer>();
+            _debugSpriteFont = GameInstance.GetService<ContentManager>().Load<SpriteFont>(ResourceNames.Fonts.DebugFont);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -34,7 +35,7 @@ namespace Pokemon3D.UI
             var height = elementHeight * 4 + spacing;
             const int width = 180;
 
-            var startPosition = new Vector2(0, IGameInstance.ScreenBounds.Height - height);
+            var startPosition = new Vector2(0, GameInstance.GetService<Window>().ScreenBounds.Height - height);
 
             _shapeRenderer.DrawRectangle((int)startPosition.X,
                 (int)startPosition.Y,

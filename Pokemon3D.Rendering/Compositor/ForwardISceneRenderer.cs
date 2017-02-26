@@ -26,6 +26,7 @@ namespace Pokemon3D.Rendering.Compositor
         private readonly GraphicsDevice _device;
         private readonly EffectProcessor _effectProcessor;
         private readonly SpriteBatch _spriteBatch;
+        private readonly Window _window;
         
         private readonly List<RenderQueue> _renderQueues = new List<RenderQueue>();
 
@@ -42,6 +43,7 @@ namespace Pokemon3D.Rendering.Compositor
             _effectProcessor = effectProcessor;
             _spriteBatch = new SpriteBatch(_device);
             RenderSettings = settings;
+            _window = context.GetService<Window>();
 
             _shadowCasterQueueSolid = new ShadowCasterRenderQueue(context, _effectProcessor)
             {
@@ -76,8 +78,8 @@ namespace Pokemon3D.Rendering.Compositor
             });
             
             _cameraOutputRenderTarget = new RenderTarget2D(context.GetService<GraphicsDevice>(),
-                                                           context.ScreenBounds.Width, 
-                                                           context.ScreenBounds.Height, 
+                                                           _window.ScreenBounds.Width,
+                                                           _window.ScreenBounds.Height, 
                                                            false, 
                                                            SurfaceFormat.Color, 
                                                            DepthFormat.Depth24);
@@ -257,14 +259,14 @@ namespace Pokemon3D.Rendering.Compositor
 
             if (camera.PostProcess.ShouldProcess)
             {
-                var invScreenSize = new Vector2(1.0f / GameContext.ScreenBounds.Width, 1.0f / GameContext.ScreenBounds.Height);
+                var invScreenSize = new Vector2(1.0f / _window.ScreenBounds.Width, 1.0f / _window.ScreenBounds.Height);
 
                 var resultTarget = camera.PostProcess.ProcessChain(_spriteBatch, invScreenSize, _cameraOutputRenderTarget);
 
                 _device.SetRenderTargets(renderTargetBindings);
                 
                 _spriteBatch.Begin();
-                _spriteBatch.Draw(resultTarget, GameContext.ScreenBounds, Color.White);
+                _spriteBatch.Draw(resultTarget, _window.ScreenBounds, Color.White);
                 _spriteBatch.End();
             }
 

@@ -5,6 +5,7 @@ using Pokemon3D.Screens.Transitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Pokemon3D.Common;
 using static Pokemon3D.GameCore.GameProvider;
 
 namespace Pokemon3D.Screens
@@ -28,9 +29,9 @@ namespace Pokemon3D.Screens
 
         public ScreenManager()
         {
-            _device = IGameInstance.GetService<GraphicsDevice>();
+            _device = GameInstance.GetService<GraphicsDevice>();
 
-            var clientBounds = IGameInstance.ScreenBounds;
+            var clientBounds = GameInstance.GetService<Window>().ScreenBounds;
             _sourceRenderTarget = new RenderTarget2D(_device, clientBounds.Width, clientBounds.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
             _targetRenderTarget = new RenderTarget2D(_device, clientBounds.Width, clientBounds.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
             _executingScreenTransition = false;
@@ -125,7 +126,7 @@ namespace Pokemon3D.Screens
 
             _device.SetRenderTarget(_targetRenderTarget);
             currentIScreen.OnEarlyDraw(new GameTime());
-            IGameInstance.GetService<ISceneRenderer>().Draw();
+            GameInstance.GetService<ISceneRenderer>().Draw();
             currentIScreen.OnLateDraw(new GameTime());
 
             _device.SetRenderTargets(currentRenderTarget);

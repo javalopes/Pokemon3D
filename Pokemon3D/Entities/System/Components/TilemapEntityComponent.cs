@@ -24,9 +24,9 @@ namespace Pokemon3D.Entities.System.Components
 
         public TilemapEntityComponent(EntityComponentDataCreationStruct parameters) : base(parameters)
         {
-            var gameMode = IGameInstance.GetService<GameModeManager>().ActiveGameMode;
+            var gameMode = GameInstance.GetService<GameModeManager>().ActiveGameMode;
 
-            _drawableElement = IGameInstance.GetService<ISceneRenderer>().CreateDrawableElement(true);
+            _drawableElement = GameInstance.GetService<ISceneRenderer>().CreateDrawableElement(true);
 
             _drawableElement.Material = new Material
             {
@@ -41,7 +41,7 @@ namespace Pokemon3D.Entities.System.Components
             _drawableElement.IsActive = ReferringEntity.IsActive;
 
             var geometryData = CreateTilemapData();
-            IGameInstance.GetService<JobSystem>().EnsureExecutedInMainThread(() => _drawableElement.Mesh = new Mesh(IGameInstance.GetService<GraphicsDevice>(), geometryData, holdGeometryData: false));
+            GameInstance.GetService<JobSystem>().EnsureExecutedInMainThread(() => _drawableElement.Mesh = new Mesh(GameInstance.GetService<GraphicsDevice>(), geometryData, holdGeometryData: false));
 
             if (!ReferringEntity.IsInitializing) _drawableElement.EndInitialzing();
         }
@@ -115,7 +115,7 @@ namespace Pokemon3D.Entities.System.Components
         {
             var component = new TilemapEntityComponent(target)
             {
-                _drawableElement = IGameInstance.GetService<ISceneRenderer>().CreateDrawableElement(target.IsInitializing)
+                _drawableElement = GameInstance.GetService<ISceneRenderer>().CreateDrawableElement(target.IsInitializing)
             };
             component._drawableElement.Mesh = _drawableElement.Mesh;
             component._drawableElement.Material = _drawableElement.Material;
@@ -125,7 +125,7 @@ namespace Pokemon3D.Entities.System.Components
 
         public override void OnComponentRemove()
         {
-            IGameInstance.GetService<ISceneRenderer>().RemoveDrawableElement(_drawableElement);
+            GameInstance.GetService<ISceneRenderer>().RemoveDrawableElement(_drawableElement);
             _drawableElement = null;
         }
 
